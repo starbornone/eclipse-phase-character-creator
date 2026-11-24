@@ -4,12 +4,14 @@ import { Dashboard } from '../components/Dashboard.tsx';
 import { Dossier } from '../components/Dossier.tsx';
 import { DraftEditor } from '../components/DraftEditor.tsx';
 import { MorphCatalog, QuickStartCredit } from '../components/MorphCatalog.tsx';
+import { ResleeveEditor } from '../components/ResleeveEditor.tsx';
 import { loadDrafts } from '../lib/storage/drafts.ts';
 import type { CharacterDraft } from '../types/character.ts';
 
 type Screen =
   | { name: 'dashboard' | 'catalog' }
   | { name: 'editor'; draft?: CharacterDraft }
+  | { name: 'resleeve'; draft: CharacterDraft }
   | { name: 'dossier'; draft: CharacterDraft };
 
 export default function App() {
@@ -120,7 +122,22 @@ export default function App() {
               onCancel={() => navigate(screen.draft ? { name: 'dossier', draft: screen.draft } : { name: 'dashboard' })}
             />
           )}
-          {screen.name === 'dossier' && <Dossier draft={screen.draft} onEdit={() => navigate({ name: 'editor', draft: screen.draft })} />}
+          {screen.name === 'resleeve' && (
+            <ResleeveEditor
+              draft={screen.draft}
+              onDirty={setDirty}
+              onSaving={setSaving}
+              onSaved={handleSaved}
+              onCancel={() => navigate({ name: 'dossier', draft: screen.draft })}
+            />
+          )}
+          {screen.name === 'dossier' && (
+            <Dossier
+              draft={screen.draft}
+              onEdit={() => navigate({ name: 'editor', draft: screen.draft })}
+              onResleeve={() => navigate({ name: 'resleeve', draft: screen.draft })}
+            />
+          )}
         </main>
         <footer className="screen-only">
           <p>Unofficial Eclipse Phase Second Edition character tool</p>

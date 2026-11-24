@@ -35,13 +35,26 @@ export interface Sleeve {
   egoId: string;
   morphDefinitionId: string;
   assignedAt: string;
+  event?: ResleevingEvent;
+}
+
+export interface ResleevingEvent {
+  date: string;
+  location: string;
+  cause: string;
+  notes: string;
 }
 
 export interface CharacterDraft {
-  schemaVersion: 1;
+  schemaVersion: 2;
   rulesVersion: 'prototype-1' | 'ep2-quick-start-2.4';
   revision: number;
   updatedAt: string;
   ego: Ego;
+  sleeves: Sleeve[];
+}
+
+export interface LegacyCharacterDraft extends Omit<CharacterDraft, 'schemaVersion' | 'sleeves'> {
+  schemaVersion: 1;
   sleeve?: Sleeve;
 }

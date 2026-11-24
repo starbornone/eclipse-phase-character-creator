@@ -43,6 +43,47 @@ const healthFields = [
   ['deathRating', 'Death rating'],
 ] as const;
 
+interface ProfileColumn {
+  id: string;
+  label: string;
+  morph?: MorphDefinition;
+}
+
+export function MorphProfileTable({ columns, titleId, noteId }: {
+  columns: ProfileColumn[];
+  titleId: string;
+  noteId: string;
+}) {
+  return (
+    <div className="comparison-scroll" role="region" aria-labelledby={titleId} tabIndex={0}>
+      <table aria-describedby={noteId}>
+        <thead>
+          <tr>
+            <th scope="col">Profile</th>
+            {columns.map(({ id, label }) => <th scope="col" key={id}>{label}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Category</th>
+            {columns.map(({ id, morph }) => <td key={id}>{morph?.category ?? 'Unverified'}</td>)}
+          </tr>
+          {healthFields.map(([field, label]) => (
+            <tr key={field}>
+              <th scope="row">{label}</th>
+              {columns.map(({ id, morph }) => <td key={id}>{morph?.[field] ?? 'Unverified'}</td>)}
+            </tr>
+          ))}
+          <tr>
+            <th scope="row">Source</th>
+            {columns.map(({ id, morph }) => <td key={id}>{morph ? <MorphSource morph={morph} /> : 'Unavailable'}</td>)}
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onClear: () => void }) {
   return (
     <section className="panel comparison" aria-labelledby="comparison-title">
@@ -53,32 +94,11 @@ function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onCle
       <p className="muted" id="comparison-note">
         Creation restrictions are unverified for these Quick-Start profiles.
       </p>
-      <div className="comparison-scroll" role="region" aria-labelledby="comparison-title" tabIndex={0}>
-        <table aria-describedby="comparison-note">
-          <thead>
-            <tr>
-              <th scope="col">Profile</th>
-              {morphs.map((morph) => <th scope="col" key={morph.id}>{morph.name}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">Category</th>
-              {morphs.map((morph) => <td key={morph.id}>{morph.category}</td>)}
-            </tr>
-            {healthFields.map(([field, label]) => (
-              <tr key={field}>
-                <th scope="row">{label}</th>
-                {morphs.map((morph) => <td key={morph.id}>{morph[field] ?? 'Unverified'}</td>)}
-              </tr>
-            ))}
-            <tr>
-              <th scope="row">Source</th>
-              {morphs.map((morph) => <td key={morph.id}><MorphSource morph={morph} /></td>)}
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <MorphProfileTable
+        columns={morphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}
+        titleId="comparison-title"
+        noteId="comparison-note"
+      />
     </section>
   );
 }

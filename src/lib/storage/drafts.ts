@@ -1,4 +1,5 @@
-import type { CharacterDraft } from '../../types/character.ts';
+import { normalizeDraft } from '../../features/sleeve/history.ts';
+import type { CharacterDraft, LegacyCharacterDraft } from '../../types/character.ts';
 
 const storeName = 'drafts';
 let connection: Promise<IDBDatabase> | undefined;
@@ -27,14 +28,12 @@ function openDatabase() {
 
 export async function loadDrafts() {
   const database = await openDatabase();
-  return new Promise<CharacterDraft[]>((resolve, reject) => {
+  const records = await new Promise<(CharacterDraft | LegacyCharacterDraft)[]>((resolve, reject) => {
     const request = database.transaction(storeName).objectStore(storeName).getAll();
-    request.onsuccess = () => {
-      const drafts = request.result as CharacterDraft[];
-      resolve(drafts.sort((first, second) => second.updatedAt.localeCompare(first.updatedAt)));
-    };
+    request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
   });
+  return records.map(normalizeDraft).sort((first, second) => second.updatedAt.localeCompare(first.updatedAt));
 }
 
 export class DraftConflictError extends Error {}
@@ -47,7 +46,7 @@ export async function saveDraft(draft: CharacterDraft, previousRevision: number 
     const request = store.get(draft.ego.id);
     let conflict = false;
     request.onsuccess = () => {
-      const current = request.result as CharacterDraft | undefined;
+      const current = request.result as CharacterDraft | LegacyCharacterDraft | undefined;
       if (current?.revision !== previousRevision) {
         conflict = true;
         transaction.abort();

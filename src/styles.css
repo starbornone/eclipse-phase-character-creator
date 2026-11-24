@@ -273,7 +273,7 @@ section.comparison { padding: 1.25rem; }
 .identity-fields .concept { grid-column: 1 / -1; }
 .aptitude-fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 :is(.identity-fields, .aptitude-fields) label { display: grid; gap: .4rem; min-width: 0; font-size: .875rem; font-weight: 600; }
-:is(.identity-fields, .aptitude-fields) :is(input, textarea) {
+:is(.identity-fields, .aptitude-fields) :is(input, textarea, select) {
   width: 100%;
   min-height: 2.65rem;
   border: 1px solid #3a4e69;
@@ -319,6 +319,13 @@ textarea { resize: vertical; }
 .dossier-heading .actions { margin-top: 0; }
 .dossier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .dossier-grid p { overflow-wrap: anywhere; }
+.resleeve-fields { display: grid; gap: 1rem; min-width: 0; }
+.resleeve-fields .comparison { margin-top: 0; min-width: 0; }
+.sleeve-history { margin-top: 1rem; }
+.sleeve-history li { padding-block: .65rem; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.sleeve-history-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: .3rem .7rem; }
+.sleeve-history-heading .caption { color: var(--muted); }
+.sleeve-history-heading time { color: var(--muted); font-size: .875rem; }
 .concept-text { white-space: pre-wrap; margin-top: .3rem; }
 .assigned-morph { display: flex; gap: .6rem; align-items: center; margin: .55rem 0; }
 .dossier-stats { margin-top: 1rem; }

@@ -1,12 +1,47 @@
-import { Fingerprint, Pencil, Printer } from 'lucide-react';
+import { Fingerprint, Pencil, Printer, Repeat2 } from 'lucide-react';
+import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
 
-export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () => void }) {
-  const morph = findSampleMorph(draft.sleeve?.morphDefinitionId);
+const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
+
+function SleeveHistory({ draft }: { draft: CharacterDraft }) {
+  return (
+    <section className="panel editor-panel sleeve-history screen-only" aria-labelledby="sleeve-history-title">
+      <h2 id="sleeve-history-title">Sleeve history</h2>
+      <ol>
+        {[...draft.sleeves].reverse().map((sleeve, index) => {
+          const profile = findSampleMorph(sleeve.morphDefinitionId);
+          const { event } = sleeve;
+          const date = event?.date || dateLabel.format(new Date(sleeve.assignedAt));
+          return (
+            <li key={sleeve.id}>
+              <div className="sleeve-history-heading">
+                <h3>{profile?.name ?? 'Unknown morph'}</h3>
+                <span className="caption">{index === 0 ? 'Active' : 'Previous'}</span>
+                <time dateTime={event?.date || sleeve.assignedAt}>{date}</time>
+              </div>
+              {event && (
+                <>
+                  {event.location && <p className="muted">Location <strong>{event.location}</strong></p>}
+                  {event.cause && <p className="muted">Cause <strong>{event.cause}</strong></p>}
+                  {event.notes && <p className="concept-text">{event.notes}</p>}
+                </>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
+export function Dossier({ draft, onEdit, onResleeve }: { draft: CharacterDraft; onEdit: () => void; onResleeve: () => void }) {
+  const sleeve = activeSleeve(draft);
+  const morph = findSampleMorph(sleeve?.morphDefinitionId);
   const values = traceAptitudeChecks(draft.ego.aptitudes);
 
   return (
@@ -15,10 +50,11 @@ export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () =
         <div>
           <p className="caption">Character dossier</p>
           <h1 tabIndex={-1}>{draft.ego.name || 'Untitled ego'}</h1>
-          <p>{morph ? `Active sleeve · ${morph.name}` : draft.sleeve ? 'Unknown morph' : 'No morph assigned'}</p>
+          <p>{morph ? `Active sleeve · ${morph.name}` : sleeve ? 'Unknown morph' : 'No morph assigned'}</p>
         </div>
         <div className="actions screen-only">
           <button type="button" className="button primary" onClick={onEdit}><Pencil size={17} aria-hidden="true" /> Edit ego</button>
+          {sleeve && <button type="button" className="button secondary" onClick={onResleeve}><Repeat2 size={17} aria-hidden="true" /> Resleeve</button>}
           <button type="button" className="button secondary" onClick={() => window.print()}><Printer size={17} aria-hidden="true" /> Print dossier</button>
         </div>
       </header>
@@ -40,7 +76,7 @@ export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () =
               <MorphSource morph={morph} />
             </>
           ) : (
-            <p className="muted">{draft.sleeve ? 'This draft references a morph outside the current library.' : 'Assign a sample morph from the ego editor.'}</p>
+            <p className="muted">{sleeve ? 'This draft references a morph outside the current library.' : 'Assign a sample morph from the ego editor.'}</p>
           )}
         </Card>
       </div>
@@ -61,6 +97,7 @@ export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () =
           </tbody>
         </table>
       </Card>
+      {sleeve && <SleeveHistory draft={draft} />}
       <p className="print-only rules-note"><QuickStartCredit /></p>
     </article>
   );

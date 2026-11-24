@@ -1,4 +1,5 @@
 import { ChevronRight, Fingerprint, Layers3, Plus } from 'lucide-react';
+import { activeSleeve } from '../features/sleeve/history.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { MorphIcon } from './MorphCatalog.tsx';
@@ -53,14 +54,15 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
             {drafts.length > 0 && (
               <ul className="record-list">
                 {drafts.map((draft) => {
-                  const morph = findSampleMorph(draft.sleeve?.morphDefinitionId);
+                  const sleeve = activeSleeve(draft);
+                  const morph = findSampleMorph(sleeve?.morphDefinitionId);
                   return (
                     <li key={draft.ego.id}>
                       <button type="button" className="record-row" onClick={() => onOpen(draft)}>
                         <span className="empty-icon" aria-hidden="true"><Fingerprint size={21} /></span>
                         <span>
                           <strong>{draft.ego.name || 'Untitled ego'}</strong>
-                          <span className="record-meta">{morph?.name ?? (draft.sleeve ? 'Unknown morph' : 'No morph assigned')}</span>
+                          <span className="record-meta">{morph?.name ?? (sleeve ? 'Unknown morph' : 'No morph assigned')}</span>
                         </span>
                         <time dateTime={draft.updatedAt}>{editedDate.format(new Date(draft.updatedAt))}</time>
                         <ChevronRight size={17} aria-hidden="true" />

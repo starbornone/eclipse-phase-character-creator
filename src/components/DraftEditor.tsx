@@ -1,6 +1,7 @@
 import { Fingerprint, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
+import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
@@ -22,18 +23,19 @@ interface DraftEditorProps {
 }
 
 export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: DraftEditorProps) {
+  const currentSleeve = activeSleeve(draft);
   const [name, setName] = useState(draft?.ego.name ?? '');
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
   const [inputs, setInputs] = useState(() => initialInputs(draft));
-  const [morphId, setMorphId] = useState(draft?.sleeve?.morphDefinitionId ?? '');
+  const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [conflict, setConflict] = useState(false);
-  const assignedMorph = findSampleMorph(draft?.sleeve?.morphDefinitionId);
+  const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
-    || concept !== (draft?.ego.concept ?? '') || morphId !== (draft?.sleeve?.morphDefinitionId ?? '')
+    || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -55,19 +57,20 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     try {
       const egoId = draft?.ego.id ?? crypto.randomUUID();
       const updatedAt = new Date().toISOString();
-      const sleeve = draft?.sleeve ?? (morphId ? {
+      const sleeves = draft?.sleeves ?? [];
+      const firstSleeve = !currentSleeve && morphId ? {
         id: crypto.randomUUID(),
         egoId,
         morphDefinitionId: morphId,
         assignedAt: updatedAt,
-      } : undefined);
+      } : undefined;
       const next: CharacterDraft = {
-        schemaVersion: 1,
+        schemaVersion: 2,
         rulesVersion: 'ep2-quick-start-2.4',
         revision: (draft?.revision ?? 0) + 1,
         updatedAt,
         ego: { id: egoId, name: name.trim(), pronouns: pronouns.trim(), concept: concept.trim(), aptitudes: parsed.scores },
-        sleeve,
+        sleeves: firstSleeve ? [firstSleeve] : sleeves,
       };
       await saveDraft(next, draft?.revision);
       onSaved(next);
@@ -125,7 +128,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           </div>
           <Card className="editor-panel morph-picker">
             <h2>First morph</h2>
-            {draft?.sleeve ? (
+            {currentSleeve ? (
               <>
                 <p className="muted">This ego already has a sleeve.</p>
                 <div className="assigned-morph">
