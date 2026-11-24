@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T10:51:40+11:00",
+  "updatedAt": "2026-11-25T10:57:10+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -13,7 +13,7 @@
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Desktop and narrow-screen library comparison passed browser review. Review the budget error, resleeving comparison, and private-note print states as those workflows land."
+      "notes": "Reviewed library and resleeving comparisons at desktop and narrow widths. Review the budget error and private-note print states as those workflows land."
     },
     {
       "id": "complete-first-creation-workflow",
@@ -26,12 +26,6 @@
       "title": "Browse, filter, and compare supported morphs",
       "group": "Character creation",
       "notes": "Quick-Start search, category filters, a three-profile comparison, and source links are in place. Add verified player-profile restrictions and the planned price, movement, durability, and capability filters as the supported catalogue expands."
-    },
-    {
-      "id": "preserve-sleeve-history",
-      "title": "Preserve sleeve history during resleeving",
-      "group": "Resleeving and export",
-      "notes": "Record the event and show old and new derived values side by side while preserving prior sleeve records."
     },
     {
       "id": "round-trip-character-backups",

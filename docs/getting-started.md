@@ -26,3 +26,12 @@ You can also save without a morph and assign one later from **Edit ego**. Older 
 ## Compare morph profiles
 
 Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
+
+## Resleeve an ego
+
+1. Open a dossier with an assigned morph and select **Resleeve**.
+2. Choose a new morph. Compare its health values with the current sleeve. The same morph profile can be used for a different body.
+3. Enter an optional event date, location, cause, and notes. Save the new sleeve.
+4. Check that **Sleeve history** shows the new sleeve as active and the old sleeve as previous. Reload and reopen the dossier to verify the history and aptitude checks.
+
+History is shown in save order, newest first. If you leave the event date blank, the history displays the save date. Event details appear in the on-screen history.

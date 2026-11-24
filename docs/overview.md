@@ -2,7 +2,7 @@
 
 Eclipse Phase 2e Character & Morph Creator is a web application for players building characters and GMs reviewing them at the table. The planned release helps users create, validate, save, and print characters with the rules and calculations visible along the way.
 
-The prototype supports saved ego drafts, an optional first Quick-Start morph profile, an aptitude check breakdown, and a printable dossier. The workflows below describe the intended release.
+The prototype supports saved ego drafts, Quick-Start morph profiles, resleeving with sleeve history, aptitude checks, and a printable dossier. The workflows below describe the intended release.
 
 ## From ego to dossier
 

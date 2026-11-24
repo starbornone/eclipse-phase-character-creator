@@ -2,7 +2,7 @@
 
 ## Project
 
-**Eclipse Phase 2e Character & Morph Creator** (`eclipse-phase-character-creator`) is a local-first web application for players and GMs. The prototype separates an ego draft from its optional first morph and displays a printable dossier with inspectable aptitude calculations. Resleeving and full character validation are planned.
+**Eclipse Phase 2e Character & Morph Creator** (`eclipse-phase-character-creator`) is a local-first web application for players and GMs. The prototype separates the ego from its morph, preserves sleeve history through resleeving, and displays a printable dossier with inspectable aptitude calculations. Full character validation is planned.
 
 ## Layout
 

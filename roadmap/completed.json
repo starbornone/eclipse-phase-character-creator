@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T10:51:40+11:00",
+  "updatedAt": "2026-11-25T10:57:10+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -98,6 +98,13 @@
       "group": "Character creation",
       "notes": "Added text search, category filters, three-profile health comparisons, and source links. Verified keyboard controls, selection across filters, and narrow-screen table scrolling in the browser.",
       "completedAt": "2026-11-25T10:51:40+11:00"
+    },
+    {
+      "id": "preserve-sleeve-history",
+      "title": "Preserve sleeve history during resleeving",
+      "group": "Resleeving and export",
+      "notes": "Added before-and-after morph comparison, optional event details, and an append-only sleeve history. Verified legacy migration, save order, reload, and later ego edits.",
+      "completedAt": "2026-11-25T10:57:10+11:00"
     }
   ]
 }
