@@ -1,6 +1,6 @@
 # Design decisions
 
-These records capture choices expressed in the [README](../README.md) and decisions made for the prototype. Exact v1 creation coverage remains open.
+These records capture choices expressed in the [README](../README.md) and decisions made for the prototype.
 
 ## 1. Use TypeScript, React, shadcn/ui, and Tailwind CSS
 
@@ -41,5 +41,13 @@ These records capture choices expressed in the [README](../README.md) and decisi
 **Decision.** Separate game data from code, retain source references for datasets and interpretations, and confirm rights before inclusion.
 
 **Consequences.** Licensing and provenance are discovery work before dataset implementation. Attribution follows the applicable requirements in the app and exports.
+
+## 6. Start with core package-buy
+
+**Context.** The publisher presents package-buy as the standard Second Edition workflow. Freeform skill allocation is a core alternative and the expanded lifepath is described in *Character Options*. [Second Edition overview](https://eclipsephase.com/whats-new-in-eclipse-phase-second-edition/) · [Character Options](https://eclipsephase.com/2024/10/24/eclipse-phase-character-options-pdf-available/)
+
+**Decision.** Implement one guided creation method for v1 using the current core rulebook’s package-buy chapter and errata 1.4. Cover background, career, interest, faction, aptitude choices, starting skills and customization, motivations, traits, reputation, equipment, and assignment of a supported published morph. Keep a route through creation that uses only verified core choices. Track the alternative freeform path and the expanded lifepath as future scope.
+
+**Consequences.** Each shipped option needs a versioned source reference and matching validation. The prototype can continue to save incomplete egos while package-buy tables and budgets are verified. [Rules source inventory](rules-sources.md)
 
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for open discovery work.

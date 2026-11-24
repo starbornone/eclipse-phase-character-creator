@@ -17,8 +17,8 @@ If npm cannot find `package.json`, switch to the checkout root. If installation 
 
 ## Create a first sleeve
 
-1. Select **Create ego**, enter a name, and set Intuition to 12.
-2. Select **Survey Sleeve**, then **Save draft**. The dossier should show Intuition 12 + 5 = 17 and leave unentered totals blank.
+1. Select **Create ego**, enter a name, and set Intuition to 15.
+2. Select **Bouncer**, then **Save draft**. The dossier should show an Intuition check of 15 × 3 = 45 and Bouncer durability of 35. Unentered aptitude checks remain blank.
 3. Reload the page and reopen the saved ego from **My egos**. Check the name, active sleeve, and calculation. Use **Print dossier** to open the browser print dialog.
 
-You can also save without a morph and assign one later from **Edit ego**. The sample rules are illustrative. See [Development](development.md) for checks and the [roadmap](../roadmap/roadmap.json) for upcoming work.
+You can also save without a morph and assign one later from **Edit ego**. Older prototype drafts still open with their original morph assignment. The prototype accepts loose aptitude values for drafting. Full package-buy validation is planned. See [rules sources](rules-sources.md) and the [roadmap](../roadmap/roadmap.json).

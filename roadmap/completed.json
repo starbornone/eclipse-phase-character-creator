@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T10:39:55+11:00",
+  "updatedAt": "2026-11-25T10:48:49+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -56,6 +56,41 @@
       "group": "Vertical slice",
       "notes": "Added identity and aptitude editing, optional first-morph assignment, and atomic IndexedDB persistence. Verified the ego and sleeve survive a browser reload.",
       "completedAt": "2026-11-25T10:39:55+11:00"
+    },
+    {
+      "id": "confirm-content-licensing",
+      "title": "Confirm licensing and attribution requirements",
+      "group": "Discovery",
+      "notes": "Documented the publisher's CC BY-NC-SA 4.0 terms, product-specific notices, logo policy, and attribution for adapted game material. Added app and dossier credit.",
+      "completedAt": "2026-11-25T10:48:49+11:00"
+    },
+    {
+      "id": "choose-v1-creation-pathways",
+      "title": "Decide which creation pathways v1 supports",
+      "group": "Discovery",
+      "notes": "Selected core package-buy against Second Edition errata 1.4 and documented the supported workflow and deferred alternatives.",
+      "completedAt": "2026-11-25T10:48:49+11:00"
+    },
+    {
+      "id": "inventory-rules-sources",
+      "title": "Inventory the rules data and source references",
+      "group": "Discovery",
+      "notes": "Mapped the draft checks, Quick-Start morph profiles, creation rules and errata, pools, and dossier field references in docs/rules-sources.md.",
+      "completedAt": "2026-11-25T10:48:49+11:00"
+    },
+    {
+      "id": "assign-sample-morph",
+      "title": "Assign a sourced sample morph",
+      "group": "Vertical slice",
+      "notes": "Added Bouncer, Case, and Synth Quick-Start health profiles with page links. Verified assignment and reload in a browser. Legacy drafts retain their original assignments.",
+      "completedAt": "2026-11-25T10:48:49+11:00"
+    },
+    {
+      "id": "calculate-traced-sleeve-stats",
+      "title": "Calculate sleeve stats with a trace",
+      "group": "Vertical slice",
+      "notes": "Replaced illustrative morph adjustments with the published aptitude score × 3 check. The dossier shows each calculation and the independently sourced morph health values.",
+      "completedAt": "2026-11-25T10:48:49+11:00"
     }
   ]
 }

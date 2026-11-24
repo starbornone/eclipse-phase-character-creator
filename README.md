@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status:** Early prototype. Create and save an ego draft, assign an optional sample morph, and inspect or print its dossier.
+> **Status:** Early prototype. Create and save an ego draft, assign an optional Quick-Start morph profile, and inspect or print its dossier.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
@@ -10,11 +10,12 @@ A TypeScript web application for creating, validating, saving, and printing **Ec
 
 With Node.js 22.12 or later, run `npm ci` and `npm run dev`, then open the local URL printed by Vite. Run `npm test` for calculation checks and `npm run build` for a type-checked production build.
 
-Sample morphs and calculation values are illustrative fixtures. The sections below describe the planned v1 product.
+The prototype uses selected Quick-Start morph health profiles and the Second Edition aptitude check rule. Full character creation is planned.
 
 ## Documentation
 
 - [Project overview](docs/overview.md) introduces the planned character workflows.
+- [Rules sources and content policy](docs/rules-sources.md) records source versions, licensing, and rules coverage.
 - [Agent guide](AGENTS.md) covers repository conventions and roadmap maintenance.
 - [Roadmap](roadmap/roadmap.json) lists upcoming work in priority order.
 
@@ -36,7 +37,7 @@ Sample morphs and calculation values are illustrative fixtures. The sections bel
 
 ## Licensing and content policy
 
-Eclipse Phase Second Edition is published with Creative Commons licensing information by Posthuman Studios. Before implementation, confirm the exact licence version, attribution wording, and treatment of artwork, logos, and full rules text from the official source.
+Posthuman Studios provides base licensing terms for Eclipse Phase releases. The prototype adapts Quick-Start Rules v2.4 game data for noncommercial use under CC BY-NC-SA 4.0. The app credits the publisher on screen and in print. See [Rules sources and content policy](docs/rules-sources.md) for the release-specific checks.
 
 Project policy:
 
@@ -75,7 +76,7 @@ A dossier is a printable, shareable representation of a sleeve. It combines rele
 ### 1. Create an ego
 
 1. Start a new character.
-2. Select creation method: guided lifepath or freeform point allocation.
+2. Use core package-buy for the first supported creation path.
 3. Enter identity and narrative anchors.
 4. Choose background, faction, aptitudes, skills, traits, motivations, and gear.
 5. Review budgets, validation messages, and calculated values.
@@ -189,7 +190,7 @@ Keep rules data, user data, and derived values distinct. The following is a plan
 
 export type Id = string;
 
-export type CreationMethod = 'lifepath' | 'point-buy';
+export type CreationMethod = 'package-buy';
 export type MorphCategory = 'biomorph' | 'pod' | 'synth' | 'infomorph' | 'other';
 
 export interface Ego {
@@ -220,7 +221,6 @@ export interface MorphDefinition {
   category: MorphCategory;
   description?: string;
   cost: number;
-  aptitudeModifiers: Record;
   durability: number;
   woundThreshold?: number;
   movement?: MovementProfile[];
@@ -245,7 +245,7 @@ export interface Sleeve {
 export interface DerivedCharacter {
   egoId: Id;
   sleeveId: Id;
-  finalAptitudes: Record;
+  aptitudeChecks: Record;
   activeSkills: DerivedSkill[];
   durability: number;
   woundThreshold?: number;
@@ -442,8 +442,6 @@ src/
 
 ## Open decisions
 
-- Which exact Eclipse Phase 2e creation options are in the first release?
-- Which rules content can be bundled, paraphrased, or linked under the confirmed licence?
 - Should custom morphs be available at launch, or only after official morph support is reliable?
 - What does the first printable dossier need to include to be table-ready?
 - Is the app strictly a character tool, or should it later include lightweight firewall, gear, and reputation trackers?

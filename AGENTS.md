@@ -15,7 +15,7 @@
 
 Use Node.js 22.12 or later. Run `npm ci`, `npm run dev`, `npm test`, and `npm run build`. The build runs `npm run typecheck`. For documentation changes, check `git diff --check`, verify relative links, and validate the roadmap JSON. See [Development](docs/development.md) for the verification workflow.
 
-Keep versioned rules datasets and source references separate from application code. Confirm attribution and content rights before adding published rules or assets. Keep calculations and validation in pure functions, with traces for derived values and tests for incomplete drafts.
+Keep versioned rules datasets and source references separate from application code. Use the [rules source inventory](docs/rules-sources.md) and confirm attribution and content rights before adding published rules or assets. Keep calculations and validation in pure functions, with traces for derived values and tests for incomplete drafts.
 
 ## Documentation
 

@@ -22,7 +22,7 @@ The root [README](../README.md) holds the product brief. [Architecture](architec
 
 | Layer | Scenarios to cover |
 | --- | --- |
-| Rules and data | Test aptitude, skill, cost, pool, and morph modifiers, both planned creation paths as supported, incomplete drafts, calculation traces, import parsing, and migrations. |
+| Rules and data | Test aptitude checks and sourced morph values, then add coverage for core package-buy, skills, budgets, pools, incomplete drafts, import parsing, and migrations as those workflows land. |
 | Components | Verify builder completion cues, validation links and announcements, keyboard navigation, morph filter/sort/compare, and dossier visibility controls for private notes. |
 | End to end | Create and save an ego and sleeve, reload an incomplete draft, resleeve and inspect history, export and re-import, and print a complete dossier. Verify that malformed imports preserve existing local characters. |
 

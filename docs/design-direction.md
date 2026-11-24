@@ -30,6 +30,19 @@ The patterns below come from the corresponding local source checkouts.
 
 Review the wireframes for an empty dashboard, an incomplete draft, an over-budget choice, a before-and-after morph comparison, and a grayscale printout. See the [product overview](overview.md) and the [wireframing roadmap item](../roadmap/roadmap.json).
 
+### Screen map for review
+
+| Screen | Desktop reading order | Narrow-screen reading order |
+| --- | --- | --- |
+| Dashboard | Workspace navigation → Create ego → saved egos beside the morph preview | Navigation → Create ego → saved egos → morph preview |
+| Builder | Section navigation → active editor next to budget and validation → save controls | Section navigation → compact budget summary → active editor → linked validation and save controls |
+| Morph library | Search and filters → results beside selected morphs → comparison table | Search and filters → result cards → selected morphs → scrollable comparison with labelled columns |
+| Dossier | Identity and actions → separate Ego and Morph panels → calculations → print options | Identity → actions → Ego → Morph → calculations → print options |
+
+For the first table-ready player dossier, include identity, aptitude checks, skills, the active morph and its health stats and pools, traits and equipment, and the rules credit. The GM view should lead with the values needed during play and include private notes only when selected. Preserve the ego and morph headings in grayscale. Use the [official sheet](rules-sources.md#source-inventory) to check field names.
+
+The dashboard, draft editor, sample library, and basic dossier can be reviewed in the current prototype. The budget error, comparison, and private-note print states still need review as their workflows land.
+
 ## Dashboard artwork
 
 The prototype uses an original [orbital habitat banner](../src/assets/orbital-habitat.jpg) generated with the built-in ImageGen tool. The artwork is decorative and the dashboard’s text and controls remain live HTML.

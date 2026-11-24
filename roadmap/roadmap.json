@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T10:39:55+11:00",
+  "updatedAt": "2026-11-25T10:48:49+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -10,46 +10,16 @@
   },
   "items": [
     {
-      "id": "confirm-content-licensing",
-      "title": "Confirm licensing and attribution requirements",
-      "group": "Discovery",
-      "notes": "Record the official source, permitted content, and attribution requirements for rules text, artwork, and logos."
-    },
-    {
-      "id": "choose-v1-creation-pathways",
-      "title": "Decide which creation pathways v1 supports",
-      "group": "Discovery",
-      "notes": "Define exact supported options and pick the first workflow to implement from lifepath and point allocation."
-    },
-    {
-      "id": "inventory-rules-sources",
-      "title": "Inventory the rules data and source references",
-      "group": "Discovery",
-      "notes": "Map the selected creation path and sample morphs to source-backed datasets and interpretations."
-    },
-    {
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Use docs/design-direction.md to draft and review the dashboard, builder, morph library, and dossier. Review desktop and mobile states and resolve the first printable dossier’s table-ready contents."
-    },
-    {
-      "id": "assign-sample-morph",
-      "title": "Assign a sourced sample morph",
-      "group": "Vertical slice",
-      "notes": "The prototype can assign an illustrative morph and save it with a sleeve. Replace the fixtures with a small dataset backed by confirmed rules sources."
-    },
-    {
-      "id": "calculate-traced-sleeve-stats",
-      "title": "Calculate sleeve stats with a trace",
-      "group": "Vertical slice",
-      "notes": "The prototype dossier shows a tested aptitude trace and supports incomplete drafts. Confirm calculations against rules sources and exercise the supported sample dataset."
+      "notes": "Review the desktop and narrow-screen maps and the proposed player and GM dossier contents in docs/design-direction.md. Check budget errors, comparison, and private-note print states as those workflows land."
     },
     {
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Add skills, traits, motivations, reputation, and equipment, with tested constraints, a validation ledger, and calculation explanations."
+      "notes": "Implement the guided core package-buy path using verified rules and errata 1.4. Add package selection, skills, traits, motivations, reputation, and equipment, with tested constraints and a validation ledger."
     },
     {
       "id": "browse-and-compare-morphs",

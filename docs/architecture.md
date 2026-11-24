@@ -2,7 +2,7 @@
 
 The prototype is a Vite-hosted React and TypeScript single-page application using Tailwind CSS and source-owned UI primitives. `src/main.tsx` mounts `src/app/App.tsx`, which renders the dashboard, editor, sample library, and dossier from `src/components/`.
 
-The editor validates aptitude entries through `src/rules/calculations/draft.ts` and commits the ego and optional first sleeve together through `src/lib/storage/drafts.ts`. The IndexedDB transaction checks the draft’s revision before writing so stale edits cannot overwrite a newer draft. The dossier looks up the selected morph in `src/rules/datasets/sample-morphs.ts` and passes the ego aptitudes and sample modifiers through the same rules module for its calculation breakdown.
+The editor validates aptitude entries through `src/rules/calculations/draft.ts` and commits the ego and optional first sleeve together through `src/lib/storage/drafts.ts`. The IndexedDB transaction checks the draft’s revision before writing so stale edits cannot overwrite a newer draft. The dossier derives aptitude checks from the ego and loads morph health values independently from `src/rules/datasets/sample-morphs.ts`. Legacy morph ids are retained for old drafts. New assignments use the [Quick-Start profiles](rules-sources.md).
 
 The diagram and component boundaries below describe the planned release, including import, backups, and resleeving.
 
