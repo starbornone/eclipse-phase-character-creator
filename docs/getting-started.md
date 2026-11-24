@@ -1,22 +1,24 @@
 # Getting started
 
-The repository is in planning and pre-build. A Git checkout and a Markdown reader are enough to work on the current project. The planned UI uses TypeScript, React, shadcn/ui, and Tailwind CSS. Runtime versions, supported browsers, and the host framework are open.
+Use a Git checkout, Node.js 22.12 or later with npm, and a current browser with IndexedDB enabled. The prototype uses Vite, React, TypeScript, and Tailwind CSS.
 
-## Open the repository
+## Start the prototype
 
 From an existing checkout, run:
 
 ```sh
-git status --short
-git rev-parse --show-toplevel
+npm ci
+npm run dev
 ```
 
-The second command should show the checkout root. The first may return an empty result for a clean worktree. Open [README.md](../README.md) and [the ordered roadmap](../roadmap/roadmap.json) from that root.
+Open the local URL Vite prints. The dashboard should show **My egos**, the **Create ego** action, and the sample morph library. Drafts belong to this browser profile and origin. If Vite selects another port, use the original URL to reopen drafts created there.
 
-There is no application install, start command, or browser smoke test at this stage. Missing `package.json` or `src/` is expected. If Git is unavailable, read the files directly in the repository. If Git reports that the current directory is outside a repository, switch to the checkout root. Browser support and IndexedDB availability need to be verified once the target platforms and runnable app are defined.
+If npm cannot find `package.json`, switch to the checkout root. If installation fails, check the Node version and registry connectivity. If local drafts cannot open, check that the browser permits site storage for the local origin. Use localhost for development so the browser can generate record ids in a secure context.
 
-## First useful action
+## Create a first sleeve
 
-Read the README’s **Milestone 0 — Product and rules discovery** and **Open decisions**, then pick the highest-priority unblocked roadmap item. A concrete first task is to record the official licensing source, attribution requirements, and which content may be bundled before preparing game data.
+1. Select **Create ego**, enter a name, and set Intuition to 12.
+2. Select **Survey Sleeve**, then **Save draft**. The dossier should show Intuition 12 + 5 = 17 and leave unentered totals blank.
+3. Reload the page and reopen the saved ego from **My egos**. Check the name, active sleeve, and calculation. Use **Print dossier** to open the browser print dialog.
 
-Once the first vertical slice exists, verify it by creating a draft ego, assigning a sample morph, reloading, and checking that the sleeve and its calculated summary survive the reload. See [Development](development.md) for the verification plan and [Contributing](contributing.md) for how to record progress.
+You can also save without a morph and assign one later from **Edit ego**. The sample rules are illustrative. See [Development](development.md) for checks and the [roadmap](../roadmap/roadmap.json) for upcoming work.

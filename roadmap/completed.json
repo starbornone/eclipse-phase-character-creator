@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T10:26:42+11:00",
+  "updatedAt": "2026-11-25T10:39:55+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -42,6 +42,20 @@
       "group": "Documentation",
       "notes": "Added the documentation entry points, agent guidance, and versioned roadmap files.",
       "completedAt": "2026-11-25T10:26:42+11:00"
+    },
+    {
+      "id": "select-react-host",
+      "title": "Select and set up the React host framework",
+      "group": "Vertical slice",
+      "notes": "Selected Vite with React, TypeScript, and Tailwind CSS. Added a checked build, calculation tests, and local setup commands.",
+      "completedAt": "2026-11-25T10:39:55+11:00"
+    },
+    {
+      "id": "persist-draft-ego-and-sleeve",
+      "title": "Save and reload a draft ego and sleeve",
+      "group": "Vertical slice",
+      "notes": "Added identity and aptitude editing, optional first-morph assignment, and atomic IndexedDB persistence. Verified the ego and sleeve survive a browser reload.",
+      "completedAt": "2026-11-25T10:39:55+11:00"
     }
   ]
 }

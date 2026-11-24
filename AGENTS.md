@@ -2,18 +2,18 @@
 
 ## Project
 
-**Eclipse Phase 2e Character & Morph Creator** (`eclipse-phase-character-creator`) is a planned local-first web application for players and GMs. It separates the character’s ego from its current morph, preserves sleeve history through resleeving, and uses explainable rules calculations for character validation and printable dossiers.
+**Eclipse Phase 2e Character & Morph Creator** (`eclipse-phase-character-creator`) is a local-first web application for players and GMs. The prototype separates an ego draft from its optional first morph and displays a printable dossier with inspectable aptitude calculations. Resleeving and full character validation are planned.
 
 ## Layout
 
 - [README.md](README.md) defines the product, licensing policy, planned workflows, and milestones.
 - [docs/](docs/overview.md) covers contributor onboarding, architecture, verification, and decisions.
 - [roadmap/](roadmap/roadmap.json) contains work to do, completed items, and cancelled items.
-- The README proposes `src/app/` for screens, `src/components/` for presentation, `src/features/` for character workflows, `src/rules/` for datasets and calculations, `src/lib/` for storage and schemas, and `src/tests/` for verification. These paths are for future implementation.
+- `src/main.tsx` mounts the React app. `src/app/App.tsx` handles screen navigation, `src/components/` holds the workspace UI, `src/rules/` holds the sample dataset and calculations, `src/lib/storage/` handles IndexedDB, and `src/tests/` contains calculation checks.
 
 ## Working agreements
 
-The README is a planning brief. It specifies TypeScript, React, shadcn/ui, and Tailwind CSS. Selecting the host framework is open, and there are no application install, run, lint, or test commands yet. For documentation changes, check `git diff --check`, verify relative links, and validate the roadmap JSON. See [Development](docs/development.md) for planned test coverage.
+Use Node.js 22.12 or later. Run `npm ci`, `npm run dev`, `npm test`, and `npm run build`. The build runs `npm run typecheck`. For documentation changes, check `git diff --check`, verify relative links, and validate the roadmap JSON. See [Development](docs/development.md) for the verification workflow.
 
 Keep versioned rules datasets and source references separate from application code. Confirm attribution and content rights before adding published rules or assets. Keep calculations and validation in pure functions, with traces for derived values and tests for incomplete drafts.
 

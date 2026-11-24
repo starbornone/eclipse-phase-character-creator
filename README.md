@@ -2,9 +2,15 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status:** Planning / pre-build
+> **Status:** Early prototype. Create and save an ego draft, assign an optional sample morph, and inspect or print its dossier.
 >
-> **Primary UI stack:** TypeScript, React, shadcn/ui, Tailwind CSS
+> **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
+
+## Run locally
+
+With Node.js 22.12 or later, run `npm ci` and `npm run dev`, then open the local URL printed by Vite. Run `npm test` for calculation checks and `npm run build` for a type-checked production build.
+
+Sample morphs and calculation values are illustrative fixtures. The sections below describe the planned v1 product.
 
 ## Documentation
 
@@ -441,7 +447,6 @@ src/
 - Should custom morphs be available at launch, or only after official morph support is reliable?
 - What does the first printable dossier need to include to be table-ready?
 - Is the app strictly a character tool, or should it later include lightweight firewall, gear, and reputation trackers?
-- Which framework should host the TypeScript React application: Next.js, Vite, or another agreed standard?
 
 ## Definition of done for v1
 

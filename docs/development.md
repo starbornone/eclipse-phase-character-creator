@@ -2,11 +2,20 @@
 
 ## Current workflow
 
-The root [README](../README.md) holds the product brief. [Architecture](architecture.md) maps the proposed source tree. The repository currently has no package manifest, source tree, lint script, or test runner. When a runnable stack is selected, record the actual prerequisites and commands in [Getting started](getting-started.md) and [AGENTS.md](../AGENTS.md).
+The root [README](../README.md) holds the product brief. [Architecture](architecture.md) describes the prototype and planned boundaries. Use Node.js 22.12 or later and run commands from the checkout root.
+
+| Command | Purpose |
+| --- | --- |
+| `npm ci` | Install the locked dependencies. |
+| `npm run dev` | Serve the prototype locally with Vite. |
+| `npm test` | Run Node tests for incomplete drafts, invalid aptitude input, and calculation traces. |
+| `npm run typecheck` | Check TypeScript types without emitting files. |
+| `npm run build` | Type-check and build the static site into `dist/`. |
+| `npm run preview` | Serve the built site locally. |
 
 1. Review the README milestone and relevant [roadmap item](../roadmap/roadmap.json). Check the working tree with `git status --short`.
 2. For a change to game content or rules, record its source and version. Confirm the content boundary before adding published mechanics, text, or assets.
-3. Review `git diff --check` for whitespace errors. For new files, also read them directly because unstaged additions do not appear in `git diff`. Follow relative Markdown links and check roadmap JSON against the [format contract](roadmap-format.md).
+3. Run the test and build commands for source changes, then follow the local [first sleeve walkthrough](getting-started.md#create-a-first-sleeve). Review `git diff --check` and validate links and roadmap JSON for documentation changes.
 4. Update the affected docs and move any finished roadmap item in the same change.
 
 ## Verification as implementation lands

@@ -1,14 +1,14 @@
 # Design decisions
 
-These records capture choices expressed in the [README](../README.md). They describe the pre-build design. Framework selection and exact v1 creation coverage are still open.
+These records capture choices expressed in the [README](../README.md) and decisions made for the prototype. Exact v1 creation coverage remains open.
 
 ## 1. Use TypeScript, React, shadcn/ui, and Tailwind CSS
 
 **Context.** The builder, morph comparison, and dossiers need a consistent presentation across phone, desktop, and print.
 
-**Decision.** Use TypeScript and React for the web UI, with shadcn/ui as the component foundation and Tailwind CSS for styling.
+**Decision.** Use Vite to host a TypeScript and React single-page application, with source-owned shadcn/ui-style primitives and Tailwind CSS for styling.
 
-**Consequences.** Reuse shared input and feedback components. Verify that product-specific views support keyboard navigation and that dossier layout works in browser printing. Framework-specific paths and commands follow the framework decision.
+**Consequences.** The prototype builds to static files and uses browser storage. Vite supplies the local setup and build commands. Verify that product-specific views support keyboard navigation and that the dossier layout works in browser printing.
 
 ## 2. Represent resleeving with separate sleeve records
 

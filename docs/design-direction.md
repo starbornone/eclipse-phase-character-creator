@@ -29,3 +29,9 @@ The patterns below come from the corresponding local source checkouts.
 4. **Sleeve dossier.** Separate ego and morph details, make derived values expandable, and label the old and proposed sleeves clearly during resleeving. Include the player and GM print previews and show where private-note visibility is set.
 
 Review the wireframes for an empty dashboard, an incomplete draft, an over-budget choice, a before-and-after morph comparison, and a grayscale printout. See the [product overview](overview.md) and the [wireframing roadmap item](../roadmap/roadmap.json).
+
+## Dashboard artwork
+
+The prototype uses an original [orbital habitat banner](../src/assets/orbital-habitat.jpg) generated with the built-in ImageGen tool. The artwork is decorative and the dashboard’s text and controls remain live HTML.
+
+> Wide cinematic website banner, photorealistic hard sci-fi concept art. Deep ink-blue space with sparse stars, an enormous cold cyan planet crescent on the right, and a small ring-shaped orbital habitat silhouetted in the light above it. Keep the left half very dark and low-detail for overlaid white text. Precise metallic details, high contrast, understated teal highlights. No text, logos, people, or UI. Landscape 3:1 composition.
