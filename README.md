@@ -296,6 +296,8 @@ Use shadcn/ui as the component foundation, with a visual direction that feels li
 
 ### Design principles
 
+See [Visual design direction](docs/design-direction.md) for the Astral Archives references and the spacecraft-inspired direction for the first wireframes.
+
 - Use strong hierarchy and dense-but-readable information layouts.
 - Never communicate a rule error using colour alone.
 - Keep character-sheet typography highly legible in both screen and print contexts.

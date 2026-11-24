@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T10:26:42+11:00",
+  "updatedAt": "2026-11-25T10:30:24+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -31,7 +31,7 @@
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Cover the dashboard, builder, morph library, and dossier. Resolve the first printable dossier’s table-ready contents."
+      "notes": "Use docs/design-direction.md to draft and review the dashboard, builder, morph library, and dossier. Review desktop and mobile states and resolve the first printable dossier’s table-ready contents."
     },
     {
       "id": "select-react-host",

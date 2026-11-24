@@ -13,4 +13,4 @@ The repository is in active planning and currently contains the product brief an
 
 The first release is designed for local use without an account. Virtual tabletop play, full campaign management, multiplayer collaboration, live sheets, cloud sync, and automated combat simulation are outside its scope. The tool assists with character creation alongside the core rulebook. Bundled rules content must follow the confirmed licensing and attribution plan.
 
-See [Getting started](getting-started.md) for the current repository workflow, [Architecture](architecture.md) for the planned design, and the [roadmap](../roadmap/roadmap.json) for delivery priorities.
+See [Getting started](getting-started.md) for the current repository workflow, [Architecture](architecture.md) for the planned system, [Visual design direction](design-direction.md) for the Astral Archives references and sci-fi wireframe guidance, and the [roadmap](../roadmap/roadmap.json) for delivery priorities.
