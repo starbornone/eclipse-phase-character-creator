@@ -1,5 +1,7 @@
 import { aptitudes } from '../../types/character.ts';
-import type { AptitudeInputs, AptitudeScores, MorphDefinition } from '../../types/character.ts';
+import type { AptitudeInputs, AptitudeScores } from '../../types/character.ts';
+
+const aptitudeCheckMultiplier = 3;
 
 export function parseAptitudes(inputs: AptitudeInputs) {
   const scores: AptitudeScores = {};
@@ -18,16 +20,15 @@ export function parseAptitudes(inputs: AptitudeInputs) {
   return { scores } as const;
 }
 
-export function traceAptitudes(scores: AptitudeScores, morph?: MorphDefinition) {
+export function traceAptitudeChecks(scores: AptitudeScores) {
   return aptitudes.map(({ id, label }) => {
     const base = scores[id];
-    const adjustment = morph?.aptitudeModifiers[id] ?? 0;
     return {
       id,
       label,
       base,
-      adjustment,
-      total: base === undefined ? undefined : base + adjustment,
+      multiplier: aptitudeCheckMultiplier,
+      target: base === undefined ? undefined : base * aptitudeCheckMultiplier,
     };
   });
 }

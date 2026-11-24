@@ -1,13 +1,13 @@
 import { Fingerprint, Pencil, Printer } from 'lucide-react';
-import { traceAptitudes } from '../rules/calculations/draft.ts';
-import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
+import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
+import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
-import { MorphIcon, MorphStats } from './MorphCatalog.tsx';
+import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
 
 export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () => void }) {
   const morph = findSampleMorph(draft.sleeve?.morphDefinitionId);
-  const values = traceAptitudes(draft.ego.aptitudes, morph);
+  const values = traceAptitudeChecks(draft.ego.aptitudes);
 
   return (
     <article className="dossier">
@@ -37,6 +37,7 @@ export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () =
                 <span><strong>{morph.name}</strong><span className="record-meta">{morph.category}</span></span>
               </div>
               <MorphStats morph={morph} />
+              <MorphSource morph={morph} />
             </>
           ) : (
             <p className="muted">{draft.sleeve ? 'This draft references a morph outside the current library.' : 'Assign a sample morph from the ego editor.'}</p>
@@ -44,22 +45,23 @@ export function Dossier({ draft, onEdit }: { draft: CharacterDraft; onEdit: () =
         </Card>
       </div>
       <Card className="editor-panel dossier-stats">
-        <h2>Aptitude breakdown</h2>
-        <p className="muted">Illustrative prototype calculations. A total appears when the ego has a base score.</p>
+        <h2>Aptitude checks</h2>
+        <p className="muted">An aptitude check is the ego’s score multiplied by 3. <a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
         <table>
-          <thead><tr><th scope="col">Aptitude</th><th scope="col">Ego base</th><th scope="col">Morph adjustment</th><th scope="col">Total</th></tr></thead>
+          <thead><tr><th scope="col">Aptitude</th><th scope="col">Ego score</th><th scope="col">Calculation</th><th scope="col">Check</th></tr></thead>
           <tbody>
-            {values.map(({ id, label, base, adjustment, total }) => (
+            {values.map(({ id, label, base, multiplier, target }) => (
               <tr key={id}>
                 <th scope="row">{label}</th>
                 <td>{base ?? '—'}</td>
-                <td>{adjustment > 0 && '+'}{adjustment || '—'}</td>
-                <td><strong>{total ?? '—'}</strong></td>
+                <td>{base === undefined ? '—' : `${base} × ${multiplier}`}</td>
+                <td><strong>{target ?? '—'}</strong></td>
               </tr>
             ))}
           </tbody>
         </table>
       </Card>
+      <p className="print-only rules-note"><QuickStartCredit /></p>
     </article>
   );
 }

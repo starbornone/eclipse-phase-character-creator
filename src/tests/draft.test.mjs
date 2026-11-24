@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { parseAptitudes, traceAptitudes } from '../rules/calculations/draft.ts';
-import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
+import { parseAptitudes, traceAptitudeChecks } from '../rules/calculations/draft.ts';
+import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 
 const blank = { cog: '', int: '', ref: '', sav: '', som: '', wil: '' };
 
@@ -17,12 +17,23 @@ test('identify the field for an invalid prototype aptitude', () => {
   }
 });
 
-test('trace the morph contribution without inventing an unentered base', () => {
-  const morph = findSampleMorph('survey-sleeve');
-  const intuition = traceAptitudes({ int: 12 }, morph).find((stat) => stat.id === 'int');
+test('trace an aptitude check using the Quick-Start example and preserve missing scores', () => {
+  const intuition = traceAptitudeChecks({ int: 15 }).find((stat) => stat.id === 'int');
   assert.deepEqual(intuition, {
-    id: 'int', label: 'Intuition', base: 12, adjustment: 5, total: 17,
+    id: 'int', label: 'Intuition', base: 15, multiplier: 3, target: 45,
   });
-  assert.equal(traceAptitudes({}, morph).find((stat) => stat.id === 'int').total, undefined);
-  assert.equal(traceAptitudes({ cog: 0 })[0].total, 0);
+  assert.equal(traceAptitudeChecks({}).find((stat) => stat.id === 'int').target, undefined);
+  assert.equal(traceAptitudeChecks({ cog: 0 })[0].target, 0);
+});
+
+test('offer sourced morph health profiles and retain legacy sleeves for existing drafts', () => {
+  assert.deepEqual(sampleMorphs.map(({ id, durability, woundThreshold, deathRating, sourcePage }) => (
+    [id, durability, woundThreshold, deathRating, sourcePage]
+  )), [
+    ['bouncer', 35, 7, 53, 24],
+    ['case', 25, 5, 50, 25],
+    ['synth', 40, 8, 80, 25],
+  ]);
+  assert.equal(findSampleMorph('survey-sleeve')?.name, 'Survey Sleeve');
+  assert.equal(findSampleMorph('unknown'), undefined);
 });

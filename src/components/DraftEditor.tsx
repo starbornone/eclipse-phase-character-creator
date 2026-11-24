@@ -6,7 +6,7 @@ import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { aptitudes } from '../types/character.ts';
 import type { Aptitude, AptitudeInputs, CharacterDraft } from '../types/character.ts';
-import { MorphIcon, MorphStats } from './MorphCatalog.tsx';
+import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
 
 function initialInputs(draft?: CharacterDraft) {
@@ -63,7 +63,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       } : undefined);
       const next: CharacterDraft = {
         schemaVersion: 1,
-        rulesVersion: 'prototype-1',
+        rulesVersion: 'ep2-quick-start-2.4',
         revision: (draft?.revision ?? 0) + 1,
         updatedAt,
         ego: { id: egoId, name: name.trim(), pronouns: pronouns.trim(), concept: concept.trim(), aptitudes: parsed.scores },
@@ -101,7 +101,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             </Card>
             <Card className="editor-panel">
               <h2>Aptitudes</h2>
-              <p className="muted">For this prototype, enter whole numbers from 0 to 99. Unknown aptitudes can stay blank.</p>
+              <p className="muted">Enter whole numbers from 0 to 99. You can leave aptitudes blank while drafting. Creation budgets will be checked in the full builder.</p>
               <div className="aptitude-fields">
                 {aptitudes.map(({ id, label }) => (
                   <label key={id} htmlFor={`aptitude-${id}`}>
@@ -132,6 +132,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                   {assignedMorph && <MorphIcon morph={assignedMorph} />}
                   <strong>{assignedMorph?.name ?? 'Unknown morph'}</strong>
                 </div>
+                {assignedMorph && <MorphSource morph={assignedMorph} />}
               </>
             ) : (
               <fieldset>

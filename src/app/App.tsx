@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Dashboard } from '../components/Dashboard.tsx';
 import { Dossier } from '../components/Dossier.tsx';
 import { DraftEditor } from '../components/DraftEditor.tsx';
-import { MorphCatalog } from '../components/MorphCatalog.tsx';
+import { MorphCatalog, QuickStartCredit } from '../components/MorphCatalog.tsx';
 import { loadDrafts } from '../lib/storage/drafts.ts';
 import type { CharacterDraft } from '../types/character.ts';
 
@@ -122,7 +122,10 @@ export default function App() {
           )}
           {screen.name === 'dossier' && <Dossier draft={screen.draft} onEdit={() => navigate({ name: 'editor', draft: screen.draft })} />}
         </main>
-        <footer className="screen-only">Unofficial Eclipse Phase Second Edition character tool</footer>
+        <footer className="screen-only">
+          <p>Unofficial Eclipse Phase Second Edition character tool</p>
+          <p className="rules-note"><QuickStartCredit /></p>
+        </footer>
       </div>
     </div>
   );

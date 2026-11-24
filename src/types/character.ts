@@ -25,7 +25,9 @@ export interface MorphDefinition {
   category: 'Biomorph' | 'Synthmorph';
   description: string;
   durability: number;
-  aptitudeModifiers: AptitudeScores;
+  woundThreshold?: number;
+  deathRating?: number;
+  sourcePage?: number;
 }
 
 export interface Sleeve {
@@ -37,7 +39,7 @@ export interface Sleeve {
 
 export interface CharacterDraft {
   schemaVersion: 1;
-  rulesVersion: 'prototype-1';
+  rulesVersion: 'prototype-1' | 'ep2-quick-start-2.4';
   revision: number;
   updatedAt: string;
   ego: Ego;
