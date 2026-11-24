@@ -6,6 +6,12 @@ A TypeScript web application for creating, validating, saving, and printing **Ec
 >
 > **Primary UI stack:** TypeScript, React, shadcn/ui, Tailwind CSS
 
+## Documentation
+
+- [Project overview](docs/overview.md) introduces the planned character workflows.
+- [Agent guide](AGENTS.md) covers repository conventions and roadmap maintenance.
+- [Roadmap](roadmap/roadmap.json) lists upcoming work in priority order.
+
 ## Product goals
 
 - Make Eclipse Phase 2e character creation approachable without hiding rules or calculations.

@@ -1,0 +1,45 @@
+# Design decisions
+
+These records capture choices expressed in the [README](../README.md). They describe the pre-build design. Framework selection and exact v1 creation coverage are still open.
+
+## 1. Use TypeScript, React, shadcn/ui, and Tailwind CSS
+
+**Context.** The builder, morph comparison, and dossiers need a consistent presentation across phone, desktop, and print.
+
+**Decision.** Use TypeScript and React for the web UI, with shadcn/ui as the component foundation and Tailwind CSS for styling.
+
+**Consequences.** Reuse shared input and feedback components. Verify that product-specific views support keyboard navigation and that dossier layout works in browser printing. Framework-specific paths and commands follow the framework decision.
+
+## 2. Represent resleeving with separate sleeve records
+
+**Context.** An ego persists through changes of body, and players need to compare the effects of each morph.
+
+**Decision.** Represent the ego, sourced morph definition, and ego-to-morph pairing separately. Record resleeving as a new sleeve.
+
+**Consequences.** The builder can save an ego before morph assignment. A character can retain prior sleeves while viewing the active one or comparing outcomes.
+
+## 3. Derive rules outputs with pure functions
+
+**Context.** Players need an explanation for each calculation, and drafts can be incomplete.
+
+**Decision.** Calculate and validate from versioned rules data and normalized selections. Return structured issues and a trace with derived outputs.
+
+**Consequences.** UI and exports share calculations. Tests can exercise draft cases and verify modifiers independently of rendering.
+
+## 4. Start with local storage and portable backups
+
+**Context.** Players should be able to build and keep characters without an account.
+
+**Decision.** Use IndexedDB for the MVP, support versioned JSON import/export, and print player and GM dossiers through the browser.
+
+**Consequences.** Backup import needs validation and migration reporting. Dossier exports need controls for private information. Optional account sync comes after local import and export are reliable.
+
+## 5. Track sources and confirm content rights before bundling
+
+**Context.** Mechanics, published text, artwork, and logos can have different attribution and licensing requirements.
+
+**Decision.** Separate game data from code, retain source references for datasets and interpretations, and confirm rights before inclusion.
+
+**Consequences.** Licensing and provenance are discovery work before dataset implementation. Attribution follows the applicable requirements in the app and exports.
+
+See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for open discovery work.

@@ -1,0 +1,47 @@
+{
+  "schema": "name -roadmap/v1",
+  "file": "completed",
+  "updatedAt": "2026-11-25T10:26:42+11:00",
+  "project": {
+    "key": "eclipse-phase-character-creator",
+    "title": "Eclipse Phase 2e Character & Morph Creator",
+    "status": "active"
+  },
+  "items": [
+    {
+      "id": "draft-product-brief",
+      "title": "Draft the product brief",
+      "group": "Planning",
+      "notes": "Documented the target players and GMs, v1 goals and non-goals, and the definition of done.",
+      "completedAt": "2026-11-25T10:21:28+11:00"
+    },
+    {
+      "id": "map-character-workflows",
+      "title": "Map the character workflows and screens",
+      "group": "Planning",
+      "notes": "Drafted ego creation, morph assignment, resleeving, and export flows, plus the information architecture and key screen requirements.",
+      "completedAt": "2026-11-25T10:21:28+11:00"
+    },
+    {
+      "id": "outline-technical-design",
+      "title": "Outline the technical design and testing plan",
+      "group": "Planning",
+      "notes": "Sketched the TypeScript domain model, traced calculations, local-first storage, and planned verification layers.",
+      "completedAt": "2026-11-25T10:21:28+11:00"
+    },
+    {
+      "id": "document-delivery-milestones",
+      "title": "Document delivery milestones and open decisions",
+      "group": "Planning",
+      "notes": "Published milestones and exit criteria from discovery through public beta.",
+      "completedAt": "2026-11-25T10:21:28+11:00"
+    },
+    {
+      "id": "publish-contributor-documentation",
+      "title": "Publish contributor documentation and the roadmap",
+      "group": "Documentation",
+      "notes": "Added the documentation entry points, agent guidance, and versioned roadmap files.",
+      "completedAt": "2026-11-25T10:26:42+11:00"
+    }
+  ]
+}

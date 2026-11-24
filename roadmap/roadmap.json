@@ -1,0 +1,103 @@
+{
+  "schema": "name -roadmap/v1",
+  "file": "roadmap",
+  "updatedAt": "2026-11-25T10:26:42+11:00",
+  "project": {
+    "key": "eclipse-phase-character-creator",
+    "title": "Eclipse Phase 2e Character & Morph Creator",
+    "status": "active",
+    "summary": "A local-first web tool for creating, validating, saving, resleeving, and printing Eclipse Phase Second Edition characters."
+  },
+  "items": [
+    {
+      "id": "confirm-content-licensing",
+      "title": "Confirm licensing and attribution requirements",
+      "group": "Discovery",
+      "notes": "Record the official source, permitted content, and attribution requirements for rules text, artwork, and logos."
+    },
+    {
+      "id": "choose-v1-creation-pathways",
+      "title": "Decide which creation pathways v1 supports",
+      "group": "Discovery",
+      "notes": "Define exact supported options and pick the first workflow to implement from lifepath and point allocation."
+    },
+    {
+      "id": "inventory-rules-sources",
+      "title": "Inventory the rules data and source references",
+      "group": "Discovery",
+      "notes": "Map the selected creation path and sample morphs to source-backed datasets and interpretations."
+    },
+    {
+      "id": "wireframe-core-screens",
+      "title": "Draft and review the core screen wireframes",
+      "group": "Discovery",
+      "notes": "Cover the dashboard, builder, morph library, and dossier. Resolve the first printable dossier’s table-ready contents."
+    },
+    {
+      "id": "select-react-host",
+      "title": "Select and set up the React host framework",
+      "group": "Vertical slice",
+      "notes": "Resolve the framework decision and document the actual setup, run, and verification commands."
+    },
+    {
+      "id": "persist-draft-ego-and-sleeve",
+      "title": "Save and reload a draft ego and sleeve",
+      "group": "Vertical slice",
+      "notes": "Allow identity and aptitude editing and persist one ego and one sleeve in IndexedDB."
+    },
+    {
+      "id": "assign-sample-morph",
+      "title": "Assign a sourced sample morph",
+      "group": "Vertical slice",
+      "notes": "Use a small dataset with source references and save the chosen morph as part of a sleeve."
+    },
+    {
+      "id": "calculate-traced-sleeve-stats",
+      "title": "Calculate sleeve stats with a trace",
+      "group": "Vertical slice",
+      "notes": "Test core calculations with source-backed inputs and incomplete drafts. Show the results in a basic dossier."
+    },
+    {
+      "id": "complete-first-creation-workflow",
+      "title": "Complete the first supported creation workflow",
+      "group": "Character creation",
+      "notes": "Add skills, traits, motivations, reputation, and equipment, with tested constraints, a validation ledger, and calculation explanations."
+    },
+    {
+      "id": "browse-and-compare-morphs",
+      "title": "Browse, filter, and compare supported morphs",
+      "group": "Character creation",
+      "notes": "Show source and restrictions, support comparison of up to three morphs, and resolve launch scope for custom morphs."
+    },
+    {
+      "id": "preserve-sleeve-history",
+      "title": "Preserve sleeve history during resleeving",
+      "group": "Resleeving and export",
+      "notes": "Record the event and show old and new derived values side by side while preserving prior sleeve records."
+    },
+    {
+      "id": "round-trip-character-backups",
+      "title": "Export and re-import character backups",
+      "group": "Resleeving and export",
+      "notes": "Validate versioned JSON, report migrations, and verify that a malformed import leaves existing records intact."
+    },
+    {
+      "id": "print-player-and-gm-dossiers",
+      "title": "Print player and GM dossiers",
+      "group": "Resleeving and export",
+      "notes": "Add browser print styles and explicit visibility controls for private notes."
+    },
+    {
+      "id": "verify-accessibility-and-layouts",
+      "title": "Verify keyboard access, mobile layouts, and print",
+      "group": "Public beta",
+      "notes": "Run the planned accessibility audit and test the complete player workflow across the supported layouts."
+    },
+    {
+      "id": "prepare-public-beta",
+      "title": "Prepare onboarding and feedback for public beta",
+      "group": "Public beta",
+      "notes": "Document known limitations and cover the planned feedback loop, error monitoring, and privacy-respecting metrics."
+    }
+  ]
+}
