@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T10:48:49+11:00",
+  "updatedAt": "2026-11-25T10:51:40+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -91,6 +91,13 @@
       "group": "Vertical slice",
       "notes": "Replaced illustrative morph adjustments with the published aptitude score × 3 check. The dossier shows each calculation and the independently sourced morph health values.",
       "completedAt": "2026-11-25T10:48:49+11:00"
+    },
+    {
+      "id": "compare-quick-start-morphs",
+      "title": "Browse and compare Quick-Start morph profiles",
+      "group": "Character creation",
+      "notes": "Added text search, category filters, three-profile health comparisons, and source links. Verified keyboard controls, selection across filters, and narrow-screen table scrolling in the browser.",
+      "completedAt": "2026-11-25T10:51:40+11:00"
     }
   ]
 }

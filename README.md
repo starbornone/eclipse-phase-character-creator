@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status:** Early prototype. Create and save an ego draft, assign an optional Quick-Start morph profile, and inspect or print its dossier.
+> **Status:** Early prototype. Create and save an ego draft, browse and compare Quick-Start morph profiles, assign a first morph, and inspect or print its dossier.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
@@ -442,7 +442,6 @@ src/
 
 ## Open decisions
 
-- Should custom morphs be available at launch, or only after official morph support is reliable?
 - What does the first printable dossier need to include to be table-ready?
 - Is the app strictly a character tool, or should it later include lightweight firewall, gear, and reputation trackers?
 

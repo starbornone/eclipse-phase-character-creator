@@ -48,6 +48,8 @@ These records capture choices expressed in the [README](../README.md) and decisi
 
 **Decision.** Implement one guided creation method for v1 using the current core rulebook’s package-buy chapter and errata 1.4. Cover background, career, interest, faction, aptitude choices, starting skills and customization, motivations, traits, reputation, equipment, and assignment of a supported published morph. Keep a route through creation that uses only verified core choices. Track the alternative freeform path and the expanded lifepath as future scope.
 
+Use published morphs for v1. Defer custom morph creation until the catalogue and validation for published morphs are reliable.
+
 **Consequences.** Each shipped option needs a versioned source reference and matching validation. The prototype can continue to save incomplete egos while package-buy tables and budgets are verified. [Rules source inventory](rules-sources.md)
 
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for open discovery work.

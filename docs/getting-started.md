@@ -22,3 +22,7 @@ If npm cannot find `package.json`, switch to the checkout root. If installation 
 3. Reload the page and reopen the saved ego from **My egos**. Check the name, active sleeve, and calculation. Use **Print dossier** to open the browser print dialog.
 
 You can also save without a morph and assign one later from **Edit ego**. Older prototype drafts still open with their original morph assignment. The prototype accepts loose aptitude values for drafting. Full package-buy validation is planned. See [rules sources](rules-sources.md) and the [roadmap](../roadmap/roadmap.json).
+
+## Compare morph profiles
+
+Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.

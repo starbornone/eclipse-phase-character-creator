@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T10:48:49+11:00",
+  "updatedAt": "2026-11-25T10:51:40+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -13,7 +13,7 @@
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Review the desktop and narrow-screen maps and the proposed player and GM dossier contents in docs/design-direction.md. Check budget errors, comparison, and private-note print states as those workflows land."
+      "notes": "Desktop and narrow-screen library comparison passed browser review. Review the budget error, resleeving comparison, and private-note print states as those workflows land."
     },
     {
       "id": "complete-first-creation-workflow",
@@ -25,7 +25,7 @@
       "id": "browse-and-compare-morphs",
       "title": "Browse, filter, and compare supported morphs",
       "group": "Character creation",
-      "notes": "Show source and restrictions, support comparison of up to three morphs, and resolve launch scope for custom morphs."
+      "notes": "Quick-Start search, category filters, a three-profile comparison, and source links are in place. Add verified player-profile restrictions and the planned price, movement, durability, and capability filters as the supported catalogue expands."
     },
     {
       "id": "preserve-sleeve-history",

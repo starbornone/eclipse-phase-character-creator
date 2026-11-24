@@ -16,7 +16,7 @@
 body { margin: 0; min-width: 280px; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; opacity: .6; }
-:is(button, a, input, textarea):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+:is(button, a, input, textarea, select, .comparison-scroll):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 [tabindex="-1"]:focus { outline: none; }
 h1, h2, h3 { font-weight: 650; letter-spacing: -.035em; }
 p { line-height: 1.55; }
@@ -221,6 +221,46 @@ footer {
 .catalog-card h2 { font-size: 1.35rem; }
 .catalog-card > p:not(.caption, .rules-note) { margin: .45rem 0 .9rem; color: var(--muted); flex: 1; }
 .catalog-note { margin-top: 1rem; }
+.catalog-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: .8rem;
+  max-width: 34rem;
+}
+.catalog-filters label { display: grid; gap: .4rem; min-width: 0; font-size: .875rem; font-weight: 600; }
+.catalog-filters :is(input, select) {
+  width: 100%;
+  min-height: 2.65rem;
+  padding: .5rem .65rem;
+  border: 1px solid #3a4e69;
+  border-radius: .35rem;
+  background: #0b1422;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.catalog-status { margin: .7rem 0; font-size: .875rem; }
+.catalog-empty { display: grid; justify-items: start; gap: .45rem; padding: 1rem; }
+.compare-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .8rem;
+  padding-block: .3rem;
+  font-size: .875rem;
+  cursor: pointer;
+}
+.compare-toggle input { accent-color: var(--accent); }
+.comparison { margin-top: 1rem; }
+section.comparison { padding: 1.25rem; }
+.comparison-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .55rem; }
+.comparison-heading h2 { font-size: 1.35rem; }
+.comparison > p { margin-top: .55rem; font-size: .875rem; }
+.comparison-scroll { overflow-x: auto; margin-top: .65rem; }
+.comparison table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.comparison :is(th, td) { padding: .65rem; border-bottom: 1px solid var(--line); text-align: left; }
+.comparison th { font-weight: 600; }
+.comparison tr > :first-child { position: sticky; left: 0; background: var(--surface); }
+.comparison td .rules-note { margin: 0; }
 .morph-stats { display: flex; flex-wrap: wrap; gap: .35rem .8rem; color: var(--muted); font-size: .8125rem; }
 .morph-stats strong { color: var(--accent); font-variant-numeric: tabular-nums; }
 .editor-grid { display: grid; grid-template-columns: 1.55fr minmax(15rem, 1fr); gap: 1rem; align-items: start; min-width: 0; }
@@ -314,6 +354,7 @@ textarea { resize: vertical; }
 @media (max-width: 36rem) {
   .hero { background-image: linear-gradient(90deg, #091120 0%, #091120dc 37%, #09112065 100%), url("./assets/orbital-habitat.jpg"); }
   .dashboard-grid, .catalog-grid, .dossier-grid { grid-template-columns: 1fr; }
+  .catalog-filters { grid-template-columns: 1fr; }
   .record-row time { display: none; }
   .record-row { grid-template-columns: auto minmax(0, 1fr) auto; }
   .editor-panel { padding: .85rem; }
