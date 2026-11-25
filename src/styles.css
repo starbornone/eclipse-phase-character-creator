@@ -58,15 +58,9 @@ strong { font-weight: 650; }
 .brand strong { display: block; font-size: 1.0625rem; letter-spacing: -.02em; }
 .brand span span { display: block; color: var(--muted); font-size: .8125rem; }
 .brand-mark {
-  display: grid;
-  place-items: center;
   width: 2.5rem;
   height: 2.5rem;
   flex: 0 0 auto;
-  border: 1px solid #28515c;
-  border-radius: .6rem;
-  background: #142b38;
-  color: var(--accent);
 }
 .sidebar nav { display: grid; gap: .35rem; }
 .sidebar nav button {
@@ -311,6 +305,11 @@ section.comparison { padding: 1.25rem; }
 .skill-grant.error { margin-top: 0; white-space: nowrap; }
 .skill-art { display: flex; align-items: center; gap: .3rem; margin-top: .2rem; color: var(--muted); font-weight: 400; white-space: nowrap; }
 .skill-art input { accent-color: var(--accent); }
+.skill-transfers { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+.skill-transfers h3 { font-size: 1.075rem; }
+.skill-transfers .identity-fields { align-items: end; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.skill-transfers .identity-fields button { justify-self: start; }
+.skill-transfers li { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
 input[aria-invalid="true"] { border-color: var(--error); }
 textarea { resize: vertical; }
 .morph-picker fieldset { min-width: 0; }
@@ -445,6 +444,7 @@ textarea { resize: vertical; }
   .aptitude-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .aptitude-template { grid-template-columns: 1fr; }
   .package-choices { grid-template-columns: 1fr; }
+  .skill-transfers .identity-fields { grid-template-columns: 1fr; }
   .aptitude-template .button { justify-self: start; }
   .dossier-stats :is(th, td) { padding-inline: .2rem; font-size: .875rem; }
 }

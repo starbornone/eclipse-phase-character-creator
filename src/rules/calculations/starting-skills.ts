@@ -31,9 +31,9 @@ interface SkillRow {
   grants: { source: string; points: number }[];
 }
 
-type SkillInputs = Pick<Ego, 'aptitudes' | 'packages' | 'artisticKnowFields'>;
+export type SkillInputs = Pick<Ego, 'aptitudes' | 'packages' | 'artisticKnowFields' | 'skillTransfers'>;
 
-export function calculateStartingSkills({ aptitudes, packages, artisticKnowFields }: SkillInputs) {
+export function calculateStartingSkills({ aptitudes, packages, artisticKnowFields, skillTransfers = [] }: SkillInputs) {
   const rows = new Map<string, SkillRow>();
   const artisticFields = new Set(artisticKnowFields);
   let unassignedKnowPoints = 0;
@@ -78,12 +78,37 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     const multiplier = row.activeSkill && doubledBases.has(row.activeSkill) ? 2 : 1;
     const base = aptitudeScore === undefined ? undefined : aptitudeScore * multiplier;
     const packagePoints = row.grants.reduce((total, grant) => total + grant.points, 0);
-    const total = base === undefined ? undefined : packagePoints + base;
     return {
-      ...row, id, adjustableKnow, isArt, aptitude, aptitudeScore, multiplier, base, packagePoints, total,
-      excess: total === undefined ? 0 : Math.max(0, total - startingSkillCap),
+      ...row, id, adjustableKnow, isArt, aptitude, aptitudeScore, multiplier, base, packagePoints,
+      allocatedPoints: packagePoints,
     };
   });
-  skills.sort((first, second) => first.name.localeCompare(second.name));
-  return { skills, unassignedKnowPoints, cap: startingSkillCap };
+  const balances = new Map(skills.map((skill) => [skill.id, skill]));
+  const transferResults = skillTransfers.map((transfer) => {
+    const source = balances.get(transfer.from);
+    const target = balances.get(transfer.to);
+    const fromName = source?.name ?? transfer.from;
+    const toName = target?.name ?? transfer.to;
+    let issue: string | undefined;
+
+    if (!source || !target) issue = 'Choose skills that still appear in the ledger.';
+    else if (source === target) issue = 'Choose two different skills.';
+    else if (!Number.isSafeInteger(transfer.points) || transfer.points < 1) issue = 'Enter a positive whole number of points.';
+    else if (source.fieldKey && !target.fieldKey) issue = 'Know points can only move to another Know skill.';
+    else if (transfer.points > source.allocatedPoints) issue = `${source.name} has only ${source.allocatedPoints} package points available.`;
+    else if (target.base === undefined) issue = `Enter the linked aptitude for ${target.name} first.`;
+    else if (target.base + target.allocatedPoints + transfer.points > startingSkillCap) {
+      issue = `That would raise ${target.name} above the starting cap of ${startingSkillCap}.`;
+    } else {
+      source.allocatedPoints -= transfer.points;
+      target.allocatedPoints += transfer.points;
+    }
+    return { transfer, fromName, toName, issue };
+  });
+
+  const totals = skills.map((skill) => {
+    const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.base;
+    return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - startingSkillCap) };
+  }).sort((first, second) => first.name.localeCompare(second.name));
+  return { skills: totals, transferResults, unassignedKnowPoints, cap: startingSkillCap };
 }

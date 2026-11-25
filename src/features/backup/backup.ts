@@ -99,6 +99,16 @@ function readEgo(value: unknown, path: string): Ego {
   const artisticKnowFields = ego.artisticKnowFields === undefined ? undefined
     : list(ego.artisticKnowFields, `${path}.artisticKnowFields`).map((field) => knowFieldKey(string(field, `${path}.artisticKnowFields`, true)));
   if (artisticKnowFields) ensureUnique(artisticKnowFields, `${path}.artisticKnowFields`);
+  const skillTransfers = ego.skillTransfers === undefined ? undefined
+    : list(ego.skillTransfers, `${path}.skillTransfers`).map((entry, index) => {
+      const field = `${path}.skillTransfers[${index}]`;
+      const transfer = object(entry, field);
+      const { points } = transfer;
+      if (typeof points !== 'number' || !Number.isSafeInteger(points) || points < 1) {
+        badField(`${field}.points`, 'a positive whole number');
+      }
+      return { from: string(transfer.from, `${field}.from`, true), to: string(transfer.to, `${field}.to`, true), points };
+    });
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -107,6 +117,7 @@ function readEgo(value: unknown, path: string): Ego {
     aptitudes: scores,
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
+    ...(skillTransfers === undefined ? {} : { skillTransfers }),
   };
 }
 

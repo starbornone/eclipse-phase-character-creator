@@ -18,12 +18,15 @@ test('round-trip core package choices and reject unknown packages and field slot
     background: { id: 'freelancer', fields: { 'know-1': 'Habitat Ops' } },
     faction: { id: 'factionless', fields: { 'know-1': 'Local Politics' }, motivation: '+Open access' },
   };
-  const withPackages = { ...draft, ego: { ...ego, packages, artisticKnowFields: ['local politics'] } };
+  const skillTransfers = [{ from: 'active:Interface', to: 'know:local politics', points: 5 }];
+  const withPackages = { ...draft, ego: { ...ego, packages, artisticKnowFields: ['local politics'], skillTransfers } };
   assert.deepEqual(previewBackup(encodeBackup([withPackages])).drafts[0], withPackages);
   const invalidChoice = { ...draft, ego: { ...ego, packages: { career: { id: 'freelancer' } } } };
   assert.throws(() => previewBackup(encodeBackup([invalidChoice])), /supported choice for this category/);
   const invalidSlot = { ...draft, ego: { ...ego, packages: { faction: { id: 'argonaut', fields: { 'know-1': 'Politics' } } } } };
   assert.throws(() => previewBackup(encodeBackup([invalidSlot])), /limited to slots/);
+  const invalidTransfer = { ...draft, ego: { ...ego, skillTransfers: [{ ...skillTransfers[0], points: 0 }] } };
+  assert.throws(() => previewBackup(encodeBackup([invalidTransfer])), /positive whole number/);
 });
 
 test('report a version 1 draft migration and retain its sleeve', () => {
