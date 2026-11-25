@@ -6,12 +6,13 @@ import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { aptitudes } from '../types/character.ts';
-import type { Aptitude, AptitudeInputs, CharacterDraft } from '../types/character.ts';
+import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft } from '../types/character.ts';
+import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
 
-function initialInputs(draft?: CharacterDraft) {
-  return Object.fromEntries(aptitudes.map(({ id }) => [id, draft?.ego.aptitudes[id]?.toString() ?? ''])) as AptitudeInputs;
+function aptitudeInputs(scores?: AptitudeScores) {
+  return Object.fromEntries(aptitudes.map(({ id }) => [id, scores?.[id]?.toString() ?? ''])) as AptitudeInputs;
 }
 
 interface DraftEditorProps {
@@ -27,13 +28,14 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [name, setName] = useState(draft?.ego.name ?? '');
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
-  const [inputs, setInputs] = useState(() => initialInputs(draft));
+  const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [conflict, setConflict] = useState(false);
   const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
+  const parsed = parseAptitudes(inputs);
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
@@ -44,7 +46,6 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     event.preventDefault();
     if (saving || conflict) return;
     const form = event.currentTarget;
-    const parsed = parseAptitudes(inputs);
     setIssue(parsed.issue);
     if (parsed.issue) {
       form.querySelector<HTMLInputElement>(`#aptitude-${parsed.issue.id}`)?.focus();
@@ -104,7 +105,11 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             </Card>
             <Card className="editor-panel">
               <h2>Aptitudes</h2>
-              <p className="muted">Enter whole numbers from 0 to 99. You can leave aptitudes blank while drafting. Creation budgets will be checked in the full builder.</p>
+              <p className="muted">You can save a partial draft. The budget below reports how your entries fit core character creation.</p>
+              <AptitudeTemplatePicker onApply={(scores) => {
+                setInputs(aptitudeInputs(scores));
+                setIssue(undefined);
+              }} />
               <div className="aptitude-fields">
                 {aptitudes.map(({ id, label }) => (
                   <label key={id} htmlFor={`aptitude-${id}`}>
@@ -124,6 +129,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 ))}
               </div>
               {issue && <p className="error" id="aptitude-error" role="alert">{issue.message}</p>}
+              <AptitudeBudget scores={parsed.scores} />
             </Card>
           </div>
           <Card className="editor-panel morph-picker">

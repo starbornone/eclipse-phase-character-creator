@@ -284,6 +284,15 @@ section.comparison { padding: 1.25rem; }
   font-weight: 400;
 }
 .aptitude-fields input { font-variant-numeric: tabular-nums; }
+.aptitude-template { align-items: end; grid-template-columns: minmax(0, 1fr) auto; }
+.aptitude-template .rules-note { margin: 0; }
+.aptitude-budget { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--line); }
+.aptitude-budget h3 { font-size: 1.075rem; }
+.aptitude-budget dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .35rem .65rem; margin: .55rem 0; }
+.aptitude-budget dt { color: var(--muted); font-size: .8125rem; }
+.aptitude-budget dd { font-size: 1.15rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.aptitude-budget :is(.muted, .error) { font-size: .875rem; }
+.aptitude-budget a { text-decoration: underline; text-underline-offset: .15em; }
 input[aria-invalid="true"] { border-color: var(--error); }
 textarea { resize: vertical; }
 .morph-picker fieldset { min-width: 0; }
@@ -416,6 +425,8 @@ textarea { resize: vertical; }
   .record-row { grid-template-columns: auto minmax(0, 1fr) auto; }
   .editor-panel { padding: .85rem; }
   .aptitude-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .aptitude-template { grid-template-columns: 1fr; }
+  .aptitude-template .button { justify-self: start; }
   .dossier-stats :is(th, td) { padding-inline: .2rem; font-size: .875rem; }
 }
 
