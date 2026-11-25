@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:22:39+11:00",
+  "updatedAt": "2026-11-25T12:27:19+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -210,6 +210,13 @@
       "group": "Character creation",
       "notes": "Added custom Hardware, Medicine, Pilot, and Exotic fields with linked aptitudes, transfers, purchases, and specializations. Verified backup validation, draft reload, and a custom specialization in print preview.",
       "completedAt": "2026-11-25T12:22:39+11:00"
+    },
+    {
+      "id": "apply-expert-training-skill-cap",
+      "title": "Apply the Expert Training starting skill cap",
+      "group": "Character creation",
+      "notes": "Added the two-CP trait and the 90-point cap for one chosen skill. Verified transfer and purchase checks, validation on removal, backup preservation, draft reload, and the print preview.",
+      "completedAt": "2026-11-25T12:27:19+11:00"
     }
   ]
 }

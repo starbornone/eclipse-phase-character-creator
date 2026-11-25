@@ -61,7 +61,7 @@ For a field beyond the rulebook samples, choose **Custom Active field…** as th
 
 ## Add a skill specialization
 
-Under **Skill specializations**, choose a skill from the ledger, enter a name, and select **Add specialization**. Each specialization costs 1 CP. The displayed target includes +10 for situations where it applies. The regular skill total still uses the standard cap of 80.
+Under **Skill specializations**, choose a skill from the ledger, enter a name, and select **Add specialization**. Each specialization costs 1 CP. The displayed target includes +10 for situations where it applies. The regular skill total still uses the chosen skill’s starting cap.
 
 Save the draft to keep the choice in the dossier and JSON backup. Both print previews include specializations with a skill still in the ledger. If a package or allocation change removes the skill, the dossier marks its specialization **Needs review**. Restore the skill to reactivate the bonus, or remove the specialization to release its CP.
 
@@ -70,6 +70,8 @@ Save the draft to keep the choice in the dossier and JSON backup. Both print pre
 Under **Ego traits**, choose a supported trait or level. Positive traits spend CP. Negative traits increase the available budget by up to 6 CP. Select **None** to remove a trait and recalculate the budget.
 
 The dossier and both print previews list the chosen traits and their effects for reference during play. JSON backups include the choices.
+
+In the **Starting skill ledger**, choose an **Expert Training skill** to spend 2 CP and raise that skill’s starting cap from 80 to 90. The trait changes the cap. Allocate points to raise the skill itself. If the field is new, add it to the ledger before choosing Expert Training. Removing or changing the choice rechecks existing allocations and flags any that now exceed the cap.
 
 ## Compare morph profiles
 
