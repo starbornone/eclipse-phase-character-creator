@@ -73,6 +73,12 @@ You can save a draft with empty slots. If the ego joins a faction, an existing t
 
 Use the optional goal field beside a motivation to record a specific short-term aim. The dossier and player print preview show it beneath the active motivation. If you draft a personal goal before naming the motivation, the goal stays in the draft until the motivation is named. Changing factions clears the previous faction’s custom motivation and goal.
 
+## Choose starting gear
+
+Under **Starting gear**, select Firewall, Criminal, or Gatecrashing. Firewall and Criminal use the same core gear pack. A supported career adds its own pack. The editor lists each pack’s items, Gear Points (GP), and restrictions along with the free muse.
+
+Choosing a synthmorph as the first sleeve applies the campaign pack’s listed alternatives. Resleeving leaves the starting loadout tied to the first sleeve. The dossier and player print preview show the packs. JSON backups preserve the campaign choice. Individual swaps and extra gear purchases are planned.
+
 ## Choose ego traits
 
 Under **Ego traits**, choose a supported trait or level. Positive traits spend CP. Negative traits increase the available budget by up to 6 CP. Select **None** to remove a trait and recalculate the budget.

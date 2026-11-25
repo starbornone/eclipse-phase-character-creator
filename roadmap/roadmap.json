@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T12:46:04+11:00",
+  "updatedAt": "2026-11-25T12:50:22+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -19,7 +19,7 @@
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Core aptitude templates, sourced starter packages with Hardware and Pilot field slots, skill totals, point transfers, custom Active fields, starting motivations and their optional goals, and shared CP spending on aptitude increases, skills, ego Flex, languages, reputation, and specializations are implemented. The starter ego trait set applies costs and capped bonuses, and Expert Training raises one skill cap. Add broader trait coverage and exceptions, Psi, the remaining core packages, and equipment."
+      "notes": "Core aptitude templates, sourced starter packages with Hardware and Pilot field slots, skill totals, point transfers, custom Active fields, starting motivations and their goals, starting campaign and career gear packs, and shared CP spending on aptitude increases, skills, ego Flex, languages, reputation, and specializations are implemented. The starter ego trait set applies costs and capped bonuses, and Expert Training raises one skill cap. Add broader trait coverage and exceptions, Psi, the remaining core packages, gear swaps, the infomorph pack, and extra equipment purchases."
     },
     {
       "id": "browse-and-compare-morphs",

@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:46:04+11:00",
+  "updatedAt": "2026-11-25T12:50:22+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -238,6 +238,13 @@
       "group": "Character creation",
       "notes": "Added one goal per faction or personal motivation. Verified draft and backup persistence, player print output, and goals saved before naming a motivation or while a personal slot is inactive.",
       "completedAt": "2026-11-25T12:46:04+11:00"
+    },
+    {
+      "id": "choose-starting-gear-packs",
+      "title": "Choose starting campaign and career gear packs",
+      "group": "Character creation",
+      "notes": "Added the core campaign packs, three supported career packs, and the free muse. Verified Gear Point totals, first-sleeve synthmorph alternatives, backup validation, draft reload, and player print output.",
+      "completedAt": "2026-11-25T12:50:22+11:00"
     }
   ]
 }
