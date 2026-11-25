@@ -27,9 +27,9 @@ You can also save without a morph and assign one later from **Edit ego**. Older 
 
 ## Apply an aptitude template
 
-In **Create ego** or **Edit ego**, choose a **Core aptitude template** and select **Apply template** to fill the six scores. Adjust the values and check **Core aptitude budget**. Moving points between aptitudes leaves the total unchanged. Each point above the starting total of 90 costs 1 Customization Point (CP).
+In **Create ego** or **Edit ego**, choose a **Core aptitude template** and select **Apply template** to fill the six scores. Adjust the values and check **Customization Point budget**. Moving points between aptitudes leaves the total unchanged. Each point above the starting total of 90 costs 1 Customization Point (CP).
 
-The budget shows the aptitude share of the core CP pool and flags scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved. The full builder will account for other CP spending and trait bonuses.
+The budget combines aptitude and skill costs and flags scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved. Other CP spending and trait bonuses are planned.
 
 ## Choose core creation packages
 
@@ -39,9 +39,11 @@ Your selections appear in the dossier and player print view, and are included in
 
 Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted as unassigned points. The ledger flags totals above the standard starting cap of 80.
 
-Under **Skill point transfers**, select a source and destination, enter a positive number of points, and select **Add transfer**. For a new destination, choose a skill from the **New Active skill** group or select **New Know field…** and enter a name. Select **Art field (Intuition)** to use Intuition for the new field. Active points can move to either skill type. Know points can move to another Know skill. Destination totals must stay at or below 80. Save the draft to keep the moves. **Remove** reverses a move and rechecks later transfers.
+Under **Allocate skill points**, select a source skill and destination, enter a positive number of points, and select **Add transfer**. For a new destination, choose a skill from the **New Active skill** group or select **New Know field…** and enter a name. Select **Art field (Intuition)** to use Intuition for the new field. Active package points can move to either skill type. Know package points can move to another Know skill. Destination totals must stay at or below 80.
 
-If a package or aptitude edit makes a transfer invalid, the ledger labels it **Needs review** and skips that move. You can remove it or revise the underlying choices. The Active list includes rulebook sample fields. Psi, custom Active fields, buying skill points with CP, and trait exceptions are planned.
+To buy points, choose **Customization Points (CP)** as the **Point source**, then select **Add purchase**. Each CP buys up to five points across skills. The budget shows any points still available from a partly allocated batch. **Remove** reverses a transfer or purchase and recalculates the ledger and budget. Save the draft to keep your allocations.
+
+If an edit makes an allocation invalid, the ledger labels it **Needs review** and skips it. Purchases awaiting review still count toward CP spent. Remove the entry or revise the underlying choices. The Active list includes rulebook sample fields. Psi, custom Active fields, and trait exceptions are planned.
 
 ## Compare morph profiles
 

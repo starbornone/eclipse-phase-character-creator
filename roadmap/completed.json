@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:54:30+11:00",
+  "updatedAt": "2026-11-25T11:59:38+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -168,6 +168,13 @@
       "group": "Character creation",
       "notes": "Added rulebook Active skill destinations, named Know fields, and optional Art classification at creation. Verified the starting cap, Know-only restrictions, saving, reloading, removal, and backup round-trips.",
       "completedAt": "2026-11-25T11:54:30+11:00"
+    },
+    {
+      "id": "share-cp-between-aptitudes-and-skills",
+      "title": "Share customization points between aptitudes and skill purchases",
+      "group": "Character creation",
+      "notes": "Added skill purchases in five-point batches with a shared aptitude and skill CP budget. Verified split purchases, cap warnings, draft and backup persistence, and CP refunds on removal.",
+      "completedAt": "2026-11-25T11:59:38+11:00"
     }
   ]
 }

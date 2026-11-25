@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T11:54:30+11:00",
+  "updatedAt": "2026-11-25T11:59:38+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -13,13 +13,13 @@
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Reviewed library and resleeving comparisons, print previews and private-field states, and aptitude range and CP warnings. Review the shared creation budget as other CP uses land."
+      "notes": "Reviewed library and resleeving comparisons, print previews and private-field states, aptitude warnings, and the shared aptitude and skill CP budget. Review the shared budget as more CP uses land."
     },
     {
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Core aptitude templates, a sourced starter package set, skill totals, and saved point transfers to listed and new destinations are implemented. Add shared CP spending on skills and other choices, trait exceptions, Psi and custom Active fields, and coverage for additional core packages, motivations, reputation, and equipment."
+      "notes": "Core aptitude templates, a sourced starter package set, skill totals, point transfers, and shared CP spending on aptitude increases and skill purchases are implemented. Add other CP purchases and trait bonuses, trait exceptions, Psi and custom Active fields, and coverage for additional core packages, motivations, reputation, and equipment."
     },
     {
       "id": "browse-and-compare-morphs",
