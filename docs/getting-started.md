@@ -19,7 +19,7 @@ If npm cannot find `package.json`, switch to the checkout root. If installation 
 
 1. Select **Create ego**, enter a name, and set Intuition to 15.
 2. Select **Bouncer**, then **Save draft**. The dossier should show an Intuition check of 15 × 3 = 45 and Bouncer durability of 35. Unentered aptitude checks remain blank.
-3. Reload the page and reopen the saved ego from **My egos**. Check the name, active sleeve, and calculation. Use **Print dossier** to open the browser print dialog.
+3. Reload the page and reopen the saved ego from **My egos**. Check the name, active sleeve, and calculation. Use **Print dossier** to preview a print layout.
 
 You can also save without a morph and assign one later from **Edit ego**. Older prototype drafts still open with their original morph assignment. The prototype accepts loose aptitude values for drafting. Full package-buy validation is planned. See [rules sources](rules-sources.md) and the [roadmap](../roadmap/roadmap.json).
 
@@ -34,7 +34,14 @@ Open **Morph library**. Search by name or description, or choose a category. Sel
 3. Enter an optional event date, location, cause, and notes. Save the new sleeve.
 4. Check that **Sleeve history** shows the new sleeve as active and the old sleeve as previous. Reload and reopen the dossier to verify the history and aptitude checks.
 
-History is shown in save order, newest first. If you leave the event date blank, the history displays the save date. Event details appear in the on-screen history.
+History is shown in save order, newest first. If you leave the event date blank, the history displays the save date. Event details appear in the on-screen history and can be selected separately for GM printing.
+
+## Print a player dossier or GM summary
+
+1. Open an ego’s dossier and choose **Print dossier**.
+2. Use **Player dossier** for identity, concept, the active morph, and aptitude calculations. Switch to **GM summary** for compact checks and a list of current and prior morphs.
+3. In the GM view, dates, locations, causes, and notes start excluded. Select any of those fields and check the preview. Switching layouts resets those choices.
+4. Choose **Print / Save PDF**. Select a printer or your browser’s PDF destination.
 
 ## Back up and restore drafts
 

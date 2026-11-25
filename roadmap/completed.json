@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:02:21+11:00",
+  "updatedAt": "2026-11-25T11:05:50+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -112,6 +112,13 @@
       "group": "Resleeving and export",
       "notes": "Added single-ego and workspace exports, validated preview, legacy migration reporting, and atomic restore as new copies. Verified malformed-file rejection and round-tripped a saved sleeve history in the browser.",
       "completedAt": "2026-11-25T11:02:21+11:00"
+    },
+    {
+      "id": "print-player-and-gm-dossiers",
+      "title": "Print player and GM dossiers",
+      "group": "Resleeving and export",
+      "notes": "Added player and compact GM print layouts, opt-in controls for private sleeve fields, and browser print styling. Verified privacy choices and the mobile preview. Native print pagination remains part of the accessibility and layout audit.",
+      "completedAt": "2026-11-25T11:05:50+11:00"
     }
   ]
 }

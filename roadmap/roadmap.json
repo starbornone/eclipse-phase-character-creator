@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T11:02:21+11:00",
+  "updatedAt": "2026-11-25T11:05:50+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -13,7 +13,7 @@
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Reviewed library and resleeving comparisons at desktop and narrow widths. Review the budget error and private-note print states as those workflows land."
+      "notes": "Reviewed library and resleeving comparisons and both print previews, including private-field states. Review budget errors when the core package-buy workflow lands."
     },
     {
       "id": "complete-first-creation-workflow",
@@ -28,16 +28,10 @@
       "notes": "Quick-Start search, category filters, a three-profile comparison, and source links are in place. Add verified player-profile restrictions and the planned price, movement, durability, and capability filters as the supported catalogue expands."
     },
     {
-      "id": "print-player-and-gm-dossiers",
-      "title": "Print player and GM dossiers",
-      "group": "Resleeving and export",
-      "notes": "Add browser print styles and explicit visibility controls for private notes."
-    },
-    {
       "id": "verify-accessibility-and-layouts",
       "title": "Verify keyboard access, mobile layouts, and print",
       "group": "Public beta",
-      "notes": "Run the planned accessibility audit and test the complete player workflow across the supported layouts."
+      "notes": "Run the planned accessibility audit and test the complete player workflow across supported layouts. Verify actual PDF and grayscale print output, pagination, and attribution in the browser print dialog."
     },
     {
       "id": "prepare-public-beta",

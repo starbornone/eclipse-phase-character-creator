@@ -8,6 +8,8 @@ Draft schema version 2 stores sleeves in save order, with the last sleeve active
 
 JSON backups use the `eclipse-phase-character-backup` format with an envelope version and a list of draft records. `src/features/backup/backup.ts` validates the envelope and all records before offering a preview. It normalizes draft schema 1 into schema 2 and reports how many records were converted. Restoration assigns new ego and sleeve ids, preserves the original content and timestamps, and writes the full batch in one IndexedDB transaction using insert-only operations.
 
+`src/features/dossier/print.ts` builds a printable view from the saved draft and the current audience and field choices. Player output carries the active morph and ego checks. GM output adds a compact check summary and sleeve history, with optional event dates, locations, causes, and notes. Only selected fields reach the preview markup, which doubles as the browser’s print content.
+
 The diagram and component boundaries below describe the planned release and show the existing backup flow.
 
 ```mermaid
@@ -39,6 +41,6 @@ An `Ego` holds portable identity and character choices. A `MorphDefinition` hold
 
 The rules engine should accept incomplete drafts and report issues with severity, message, affected field, and a source reference when available. Derived values carry their contributing inputs and modifiers. The builder, comparison view, and dossiers use these outputs to keep displayed values consistent.
 
-Imports validate and migrate before writing to local storage. A malformed backup leaves existing characters intact. Saved records carry an explicit rules version so future changes can be migrated. The planned player and GM dossier layouts will apply the user’s private-note selection before browser printing.
+Imports validate and migrate before writing to local storage. A malformed backup leaves existing characters intact. Saved records carry an explicit rules version so future changes can be migrated.
 
 For a rules change, confirm the source, update the dataset or pure function, verify the trace and affected constraints, then check the builder and dossier consumers. See [Development](development.md) and [Decisions](decisions.md).
