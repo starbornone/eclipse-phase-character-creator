@@ -3,6 +3,7 @@ import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
+import { isSpecializationSkillId, normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { knowFieldKey } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
@@ -154,6 +155,16 @@ function readEgo(value: unknown, path: string): Ego {
       const field = `${path}.skillPurchases[${index}]`;
       return readSkillAllocation(object(entry, field), field);
     });
+  const specializations = ego.specializations === undefined ? undefined
+    : list(ego.specializations, `${path}.specializations`).map((entry, index) => {
+      const field = `${path}.specializations[${index}]`;
+      const specialization = object(entry, field);
+      const skillId = string(specialization.skillId, `${field}.skillId`, true);
+      if (!isSpecializationSkillId(skillId)) badField(`${field}.skillId`, 'a supported skill ID');
+      const name = normalizeSpecializationName(string(specialization.name, `${field}.name`, true));
+      return { skillId, name };
+    });
+  if (specializations) ensureUnique(specializations.map(specializationKey), `${path}.specializations`);
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -167,6 +178,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),
+    ...(specializations === undefined ? {} : { specializations }),
   };
 }
 

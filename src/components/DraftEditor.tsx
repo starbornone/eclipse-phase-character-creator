@@ -43,6 +43,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
   const [skillPurchases, setSkillPurchases] = useState(draft?.ego.skillPurchases ?? []);
+  const [specializations, setSpecializations] = useState(draft?.ego.specializations ?? []);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [egoFlex, setEgoFlex] = useState<number>(draft?.ego.egoFlex ?? startingEgoFlex);
   const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
@@ -63,6 +64,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
     || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
+    || JSON.stringify(specializations) !== JSON.stringify(draft?.ego.specializations ?? [])
     || egoFlex !== (draft?.ego.egoFlex ?? startingEgoFlex)
     || JSON.stringify(languages) !== JSON.stringify(draft?.ego.languages ?? [])
     || reputationNetworks.some(({ id }) => (repInputs[id] ?? '') !== (draft?.ego.reputation?.[id]?.toString() ?? ''))
@@ -115,6 +117,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
           ...(skillPurchases.length ? { skillPurchases } : {}),
+          ...(specializations.length ? { specializations } : {}),
         },
         sleeves: firstSleeve ? [firstSleeve] : sleeves,
       };
@@ -201,13 +204,15 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 egoFlex={egoFlex}
                 languages={languages}
                 reputation={parsedRep.scores}
+                specializations={specializations}
                 invalidReputation={Boolean(parsedRep.issue)}
               />
             </Card>
             <StartingSkills
-              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases }}
+              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations }}
               onTransfersChange={setSkillTransfers}
               onPurchasesChange={setSkillPurchases}
+              onSpecializationsChange={setSpecializations}
               onToggleArt={(field) => setArtisticKnowFields((fields) => (
                 fields.includes(field) ? fields.filter((item) => item !== field) : [...fields, field]
               ))}

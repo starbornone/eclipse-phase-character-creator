@@ -1,18 +1,23 @@
 import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
 import type { SkillInputs } from '../rules/calculations/starting-skills.ts';
+import { traceSkillSpecializations } from '../rules/calculations/skill-specializations.ts';
 import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
-import type { SkillPointPurchase, SkillPointTransfer } from '../types/character.ts';
+import type { Ego, SkillPointPurchase, SkillPointTransfer, SkillSpecialization } from '../types/character.ts';
+import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { SkillTransfers } from './SkillTransfers.tsx';
 
-export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange }: {
-  ego: SkillInputs;
+export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange, onSpecializationsChange }: {
+  ego: SkillInputs & Pick<Ego, 'specializations'>;
   onToggleArt?: (field: string) => void;
   onTransfersChange?: (transfers: SkillPointTransfer[]) => void;
   onPurchasesChange?: (purchases: SkillPointPurchase[]) => void;
+  onSpecializationsChange?: (specializations: SkillSpecialization[]) => void;
 }) {
   const ledger = calculateStartingSkills(ego);
   const { skills, unassignedKnowPoints, cap, transferResults } = ledger;
-  if (!skills.length && !unassignedKnowPoints && !transferResults.length && !ledger.purchaseResults.length && !onToggleArt) return null;
+  const specializations = traceSkillSpecializations(skills, ego.specializations);
+  if (!skills.length && !unassignedKnowPoints && !transferResults.length && !ledger.purchaseResults.length
+    && !specializations.length && !onToggleArt && !onSpecializationsChange) return null;
 
   return (
     <section className="panel editor-panel starting-skills" aria-labelledby="starting-skills-title">
@@ -58,6 +63,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
         </div>
       ) : <p className="muted">Choose a package or enter Reflexes or Intuition to see skills here.</p>}
       <SkillTransfers ego={ego} ledger={ledger} onChange={onTransfersChange} onPurchasesChange={onPurchasesChange} onToggleArt={onToggleArt} />
+      <SkillSpecializations entries={specializations} skills={skills} onChange={onSpecializationsChange} />
       <p className="rules-note">
         Art fields use Intuition. Other Know fields use Cognition. Review over-cap totals before play.{' '}
         <a href={coreAptitudeRules.coreBookUrl}>Core rulebook, pp. 45 and 48–50</a>

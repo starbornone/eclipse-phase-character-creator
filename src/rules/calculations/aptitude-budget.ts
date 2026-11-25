@@ -24,7 +24,8 @@ export function parseLanguages(entries: readonly string[]) {
 export function evaluateAptitudeBudget(
   scores: AptitudeScores,
   skillPurchases: readonly SkillPointPurchase[] = [],
-  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation }: Pick<Ego, 'egoFlex' | 'languages' | 'reputation'> = {},
+  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation, specializations = [] }:
+    Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> = {},
 ) {
   const entered = aptitudes.flatMap(({ id, label }) => {
     const score = scores[id];
@@ -42,7 +43,8 @@ export function evaluateAptitudeBudget(
     : coreCustomizationRules.bonusLanguageThresholds.filter((threshold) => languageAptitudes >= threshold).length);
   const languageCp = Math.max(0, languages.length - freeLanguages) * coreCustomizationRules.cpPerExtraLanguage;
   const reputationBudget = evaluateReputation(reputation);
-  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp;
+  const specializationCp = specializations.length * coreCustomizationRules.cpPerSpecialization;
+  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp + specializationCp;
 
   return {
     entered: entered.length,
@@ -55,6 +57,7 @@ export function evaluateAptitudeBudget(
     languageAptitudes,
     languageCp,
     reputationBudget,
+    specializationCp,
     totalCp,
     purchasedSkillPoints,
     unspentPurchasedSkillPoints: skillCp * coreCustomizationRules.skillsPerCp - purchasedSkillPoints,

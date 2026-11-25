@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
+import { traceSkillSpecializations } from '../rules/calculations/skill-specializations.ts';
 import { coreCreationPackages } from '../rules/datasets/creation-packages.ts';
 
 test('combine duplicate grants with their aptitude and report the standard starting cap', () => {
@@ -174,4 +175,17 @@ test('apply skill purchases after transfers, track their source, and enforce the
   const raised = calculateStartingSkills({ ...input, skillTransfers: [], aptitudes: { ...transferDraft.aptitudes, cog: 20 } });
   assert.equal(raised.skills.find(({ name }) => name === 'Interface').total, 80);
   assert.match(raised.purchaseResults[1].issue, /above the starting cap/);
+});
+
+test('trace situational specialization targets without changing base totals or the cap', () => {
+  const skillId = 'active:Fray';
+  const choices = [{ skillId, name: 'Full Defense' }, { skillId, name: 'Ranged Attacks' }, { skillId: 'know:astronomy', name: 'Comets' }];
+  const ledger = calculateStartingSkills({ aptitudes: { ref: 30 }, skillPurchases: [{ to: skillId, points: 20 }] });
+  const trace = traceSkillSpecializations(ledger.skills, choices);
+  assert.deepEqual(trace.map(({ target, missingSkill }) => [target, missingSkill]), [[90, false], [90, false], [undefined, true]]);
+  assert.deepEqual(ledger.skills.map(({ total, excess }) => [total, excess]), [[80, 0]]);
+  const partial = calculateStartingSkills({ aptitudes: {}, packages: { interest: { id: 'paramedic' } } });
+  assert.deepEqual(traceSkillSpecializations(partial.skills, choices)[0], {
+    ...choices[0], skillName: 'Fray', target: undefined, missingSkill: false,
+  });
 });

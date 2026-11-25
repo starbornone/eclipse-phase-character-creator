@@ -26,12 +26,13 @@ export function AptitudeTemplatePicker({ onApply }: { onApply: (scores: Aptitude
   );
 }
 
-export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, reputation, invalidReputation }: Pick<Ego, 'egoFlex' | 'languages' | 'reputation'> & {
+export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, reputation, specializations, invalidReputation }:
+  Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> & {
   scores?: AptitudeScores;
   skillPurchases: SkillPointPurchase[];
   invalidReputation: boolean;
 }) {
-  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, { egoFlex, languages, reputation });
+  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, { egoFlex, languages, reputation, specializations });
   return (
     <section className="aptitude-budget" aria-labelledby="aptitude-budget-title">
       <h3 id="aptitude-budget-title">Customization Point budget</h3>
@@ -44,6 +45,7 @@ export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, rep
               <div><dt>CP for Flex</dt><dd>{budget.flexCp}</dd></div>
               <div><dt>CP for languages</dt><dd>{budget.languageCp}</dd></div>
               <div><dt>CP for reputation</dt><dd>{budget.reputationBudget.cp}</dd></div>
+              <div><dt>CP for specializations</dt><dd>{budget.specializationCp}</dd></div>
               <div><dt>Total spent</dt><dd>{budget.totalCp} / {coreAptitudeRules.startingCp}</dd></div>
             </dl>
             <p className="muted">Aptitude points <strong>{budget.total} / {coreAptitudeRules.basePoints}</strong> across {budget.entered} / {aptitudes.length} scores</p>

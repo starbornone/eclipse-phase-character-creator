@@ -7,6 +7,9 @@ export const coreCustomizationRules = {
   bonusLanguageThresholds: [35, 45],
   cpPerExtraLanguage: 1,
   skillsPerCp: 5,
+  cpPerSpecialization: 1,
+  specializationBonus: 10,
+  specializationsUrl: 'https://eclipsephase.github.io/en/04/13-step-10-customization.html#specializations',
   languagesUrl: 'https://eclipsephase.github.io/en/04/10-step-7-languages.html',
   flexUrl: 'https://eclipsephase.github.io/en/04/11-step-8-flex.html',
 } as const;

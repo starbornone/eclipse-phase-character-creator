@@ -1,5 +1,7 @@
 import { activeSleeve } from '../sleeve/history.ts';
 import { traceAptitudeChecks } from '../../rules/calculations/draft.ts';
+import { traceSkillSpecializations } from '../../rules/calculations/skill-specializations.ts';
+import { calculateStartingSkills } from '../../rules/calculations/starting-skills.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { findSampleMorph } from '../../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../../types/character.ts';
@@ -21,12 +23,16 @@ export function buildPrintableDossier(
   includedFields: readonly PrivatePrintField[],
 ) {
   const sleeve = activeSleeve(draft);
+  const specializations = draft.ego.specializations?.length
+    ? traceSkillSpecializations(calculateStartingSkills(draft.ego).skills, draft.ego.specializations).filter(({ missingSkill }) => !missingSkill)
+    : [];
   return {
     name: draft.ego.name || 'Untitled ego',
     pronouns: draft.ego.pronouns,
     egoFlex: draft.ego.egoFlex ?? coreCustomizationRules.startingEgoFlex,
     languages: draft.ego.languages ?? [],
     reputation: draft.ego.reputation,
+    specializations,
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
     hasSleeve: Boolean(sleeve),

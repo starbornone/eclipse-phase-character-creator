@@ -37,6 +37,11 @@ export interface SkillPointTransfer extends SkillPointAllocation {
   from: string;
 }
 
+export interface SkillSpecialization {
+  skillId: string;
+  name: string;
+}
+
 export interface Ego {
   id: string;
   name: string;
@@ -50,6 +55,7 @@ export interface Ego {
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
   skillPurchases?: SkillPointPurchase[];
+  specializations?: SkillSpecialization[];
 }
 
 export interface MorphDefinition {
