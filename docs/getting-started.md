@@ -71,6 +71,8 @@ Under **Motivations**, enter a short phrase for each personal choice and select 
 
 You can save a draft with empty slots. If the ego joins a faction, an existing third personal motivation stays in the draft and returns when the ego has no faction. Active motivations appear in the dossier and player print preview. JSON backups preserve the choices.
 
+Use the optional goal field beside a motivation to record a specific short-term aim. The dossier and player print preview show it beneath the active motivation. If you draft a personal goal before naming the motivation, the goal stays in the draft until the motivation is named. Changing factions clears the previous faction’s custom motivation and goal.
+
 ## Choose ego traits
 
 Under **Ego traits**, choose a supported trait or level. Positive traits spend CP. Negative traits increase the available budget by up to 6 CP. Select **None** to remove a trait and recalculate the budget.

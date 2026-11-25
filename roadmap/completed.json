@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:33:43+11:00",
+  "updatedAt": "2026-11-25T12:46:04+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -231,6 +231,13 @@
       "group": "Character creation",
       "notes": "Added faction defaults and overrides, support and opposition, and a third personal choice for unaffiliated egos. Verified legacy Factionless text, backup validation, saved faction changes, and player print output.",
       "completedAt": "2026-11-25T12:33:43+11:00"
+    },
+    {
+      "id": "record-short-term-motivation-goals",
+      "title": "Record optional short-term goals for motivations",
+      "group": "Character creation",
+      "notes": "Added one goal per faction or personal motivation. Verified draft and backup persistence, player print output, and goals saved before naming a motivation or while a personal slot is inactive.",
+      "completedAt": "2026-11-25T12:46:04+11:00"
     }
   ]
 }
