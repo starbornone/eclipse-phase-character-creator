@@ -1,5 +1,7 @@
 import { normalizeDraft } from '../sleeve/history.ts';
 import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
+import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
+import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { knowFieldKey } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
 import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ResleevingEvent, Sleeve } from '../../types/character.ts';
@@ -109,6 +111,16 @@ function readEgo(value: unknown, path: string): Ego {
   if (Object.keys(fields).length !== Object.keys(scores).length) {
     badField(`${path}.aptitudes`, 'limited to supported aptitude keys');
   }
+  const { egoFlex } = ego;
+  const { startingEgoFlex, maximumEgoFlex } = coreCustomizationRules;
+  if (egoFlex !== undefined && (typeof egoFlex !== 'number' || !Number.isInteger(egoFlex)
+    || egoFlex < startingEgoFlex || egoFlex > maximumEgoFlex)) {
+    badField(`${path}.egoFlex`, `a whole number from ${startingEgoFlex} to ${maximumEgoFlex}`);
+  }
+  const languages = ego.languages === undefined ? undefined
+    : list(ego.languages, `${path}.languages`).map((language, index) =>
+      normalizeLanguage(string(language, `${path}.languages[${index}]`, true)));
+  if (languages) ensureUnique(languages.map((language) => language.toLowerCase()), `${path}.languages`);
   const artisticKnowFields = ego.artisticKnowFields === undefined ? undefined
     : list(ego.artisticKnowFields, `${path}.artisticKnowFields`).map((field) => knowFieldKey(string(field, `${path}.artisticKnowFields`, true)));
   if (artisticKnowFields) ensureUnique(artisticKnowFields, `${path}.artisticKnowFields`);
@@ -129,6 +141,8 @@ function readEgo(value: unknown, path: string): Ego {
     pronouns: string(ego.pronouns, `${path}.pronouns`),
     concept: string(ego.concept, `${path}.concept`),
     aptitudes: scores,
+    ...(egoFlex === undefined ? {} : { egoFlex }),
+    ...(languages === undefined ? {} : { languages }),
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),

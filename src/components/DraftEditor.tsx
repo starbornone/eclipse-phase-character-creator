@@ -1,9 +1,11 @@
 import { Fingerprint, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
+import { parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
+import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { aptitudes } from '../types/character.ts';
 import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections } from '../types/character.ts';
@@ -16,6 +18,9 @@ import { Card } from './ui/card.tsx';
 function aptitudeInputs(scores?: AptitudeScores) {
   return Object.fromEntries(aptitudes.map(({ id }) => [id, scores?.[id]?.toString() ?? ''])) as AptitudeInputs;
 }
+
+const { startingEgoFlex, maximumEgoFlex, cpPerExtraFlex } = coreCustomizationRules;
+const flexOptions = Array.from({ length: maximumEgoFlex - startingEgoFlex + 1 }, (_, index) => startingEgoFlex + index);
 
 interface DraftEditorProps {
   draft?: CharacterDraft;
@@ -35,6 +40,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
   const [skillPurchases, setSkillPurchases] = useState(draft?.ego.skillPurchases ?? []);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
+  const [egoFlex, setEgoFlex] = useState<number>(draft?.ego.egoFlex ?? startingEgoFlex);
+  const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
   const [error, setError] = useState('');
@@ -42,12 +49,15 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [conflict, setConflict] = useState(false);
   const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
   const parsed = parseAptitudes(inputs);
+  const { languages, hasDuplicates } = parseLanguages(languageText.split('\n'));
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
     || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
+    || egoFlex !== (draft?.ego.egoFlex ?? startingEgoFlex)
+    || JSON.stringify(languages) !== JSON.stringify(draft?.ego.languages ?? [])
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -86,6 +96,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           pronouns: pronouns.trim(),
           concept: concept.trim(),
           aptitudes: parsed.scores,
+          ...(egoFlex === startingEgoFlex ? {} : { egoFlex }),
+          ...(languages.length ? { languages } : {}),
           ...(Object.keys(packages).length ? { packages } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
@@ -150,7 +162,26 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 ))}
               </div>
               {issue && <p className="error" id="aptitude-error" role="alert">{issue.message}</p>}
-              <AptitudeBudget scores={parsed.scores} skillPurchases={skillPurchases} />
+            </Card>
+            <Card className="editor-panel">
+              <h2>Customization</h2>
+              <div className="identity-fields">
+                <label>
+                  Ego Flex
+                  <select value={egoFlex} onChange={(event) => setEgoFlex(Number(event.target.value))}>
+                    {flexOptions.map((flex) => <option key={flex} value={flex}>{flex} ({(flex - startingEgoFlex) * cpPerExtraFlex} CP)</option>)}
+                  </select>
+                </label>
+                <label>
+                  Languages
+                  <textarea rows={3} value={languageText} onChange={(event) => setLanguageText(event.target.value)} aria-describedby="language-note" />
+                </label>
+                <p id="language-note" className="concept rules-note">
+                  Enter one language per line. Each language above the free allowance costs {coreCustomizationRules.cpPerExtraLanguage} CP.
+                  {hasDuplicates && ' Duplicate names count once and are saved as one entry.'}
+                </p>
+              </div>
+              <AptitudeBudget scores={parsed.scores} skillPurchases={skillPurchases} egoFlex={egoFlex} languages={languages} />
             </Card>
             <StartingSkills
               ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases }}

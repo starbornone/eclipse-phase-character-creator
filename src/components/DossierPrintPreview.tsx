@@ -2,6 +2,7 @@ import { Printer } from 'lucide-react';
 import { useState } from 'react';
 import { buildPrintableDossier, privatePrintFields } from '../features/dossier/print.ts';
 import type { PrintAudience, PrivatePrintField } from '../features/dossier/print.ts';
+import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
@@ -102,6 +103,15 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             </dl>
           )}
           <p className="rules-note"><a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
+        </section>
+        <section>
+          <h3>Ego Flex and languages</h3>
+          <p>Ego Flex <strong>{dossier.egoFlex}</strong></p>
+          {dossier.languages.length > 0 && <p className="concept-text">Languages <strong>{dossier.languages.join(', ')}</strong></p>}
+          <p className="rules-note">
+            <a href={coreCustomizationRules.flexUrl}>Core Flex rules</a>
+            {dossier.languages.length > 0 && <> · <a href={coreCustomizationRules.languagesUrl}>Core language rules</a></>}
+          </p>
         </section>
         {dossier.history.length > 0 && (
           <section className="print-history">

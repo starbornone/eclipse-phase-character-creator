@@ -4,6 +4,7 @@ import { egoPath } from '../app/paths.ts';
 import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
+import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
@@ -73,6 +74,8 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
           <h2><Fingerprint size={21} aria-hidden="true" /> Ego</h2>
           <p><strong>{draft.ego.name || 'Untitled ego'}</strong>{draft.ego.pronouns && ` · ${draft.ego.pronouns}`}</p>
           <p className="concept-text muted">{draft.ego.concept || 'No concept recorded.'}</p>
+          <p>Ego Flex <strong>{draft.ego.egoFlex ?? coreCustomizationRules.startingEgoFlex}</strong></p>
+          {Boolean(draft.ego.languages?.length) && <p className="concept-text">Languages <strong>{draft.ego.languages?.join(', ')}</strong></p>}
           <PackageSummary packages={draft.ego.packages} />
           {draft.ego.packages && <CorePackageCredit />}
         </Card>

@@ -1,5 +1,6 @@
 import { activeSleeve } from '../sleeve/history.ts';
 import { traceAptitudeChecks } from '../../rules/calculations/draft.ts';
+import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { findSampleMorph } from '../../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../../types/character.ts';
 
@@ -23,6 +24,8 @@ export function buildPrintableDossier(
   return {
     name: draft.ego.name || 'Untitled ego',
     pronouns: draft.ego.pronouns,
+    egoFlex: draft.ego.egoFlex ?? coreCustomizationRules.startingEgoFlex,
+    languages: draft.ego.languages ?? [],
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
     hasSleeve: Boolean(sleeve),

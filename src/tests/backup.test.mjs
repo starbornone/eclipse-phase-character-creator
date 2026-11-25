@@ -52,6 +52,17 @@ test('round-trip skill purchases and reject malformed entries', () => {
   assert.throws(() => previewBackup(encodeBackup([invalid])), /skillPurchases\[0\].points must be a positive whole number/);
 });
 
+test('round-trip Flex and languages and reject invalid values', () => {
+  const withCustomization = { ...draft, ego: { ...ego, egoFlex: 3, languages: ['English', 'Skandinavíska'] } };
+  assert.deepEqual(previewBackup(encodeBackup([withCustomization])).drafts[0], withCustomization);
+  const invalidFlex = { ...draft, ego: { ...ego, egoFlex: 4 } };
+  assert.throws(() => previewBackup(encodeBackup([invalidFlex])), /egoFlex must be a whole number from 1 to 3/);
+  const duplicates = { ...draft, ego: { ...ego, languages: ['English', ' english '] } };
+  assert.throws(() => previewBackup(encodeBackup([duplicates])), /languages must be unique/);
+  const blank = { ...draft, ego: { ...ego, languages: ['  '] } };
+  assert.throws(() => previewBackup(encodeBackup([blank])), /languages\[0\] must be a non-empty string/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts';
+import { evaluateAptitudeBudget, parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { aptitudeTemplates } from '../rules/datasets/aptitude-templates.ts';
 
 const factotum = aptitudeTemplates.find(({ name }) => name === 'Factotum').scores;
@@ -54,4 +54,25 @@ test('split purchased skill points across skills and share the aptitude CP pool'
   const over = evaluateAptitudeBudget({ ...factotum, cog: 30, int: 25 }, purchases);
   assert.equal(over.baseCpLeft, -7);
   assert.equal(over.exceedsMaximumCp, true);
+});
+
+test('include ego Flex and languages in the shared budget at the core thresholds', () => {
+  const choices = { egoFlex: 3, languages: ['French', 'Hindi', 'Mandarin', 'Spanish', 'Skandinavíska'] };
+  const purchases = [{ to: 'active:Survival', points: 5 }];
+  for (const [int, freeLanguages] of [[14, 2], [15, 3], [24, 3], [25, 4], [30, 4]]) {
+    const budget = evaluateAptitudeBudget({ ...factotum, cog: 20, int }, purchases, choices);
+    assert.equal(budget.freeLanguages, freeLanguages);
+    assert.equal(budget.flexCp, 4);
+    assert.equal(budget.languageCp, 5 - freeLanguages);
+    assert.equal(budget.totalCp, budget.aptitudeCp + 1 + 4 + budget.languageCp);
+  }
+  const partial = evaluateAptitudeBudget({ cog: 20 });
+  assert.equal(partial.languageAptitudes, undefined);
+  assert.deepEqual([partial.freeLanguages, partial.flexCp, partial.languageCp], [2, 0, 0]);
+});
+
+test('normalize language names, preserve order, and flag duplicates', () => {
+  assert.deepEqual(parseLanguages(['  British  Sign Language ', '', 'british sign language', 'Skandinavi\u0301ska']), {
+    languages: ['British Sign Language', 'Skandinavíska'], hasDuplicates: true,
+  });
 });

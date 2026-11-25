@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import type { AptitudeScores, SkillPointPurchase } from '../types/character.ts';
+import type { AptitudeScores, Ego, SkillPointPurchase } from '../types/character.ts';
 import { aptitudes } from '../types/character.ts';
-import { evaluateAptitudeBudget, skillPointsPerCp } from '../rules/calculations/aptitude-budget.ts';
+import { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts';
 import { aptitudeTemplates, coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
+import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 
 export function AptitudeTemplatePicker({ onApply }: { onApply: (scores: AptitudeScores) => void }) {
   const [selectedName, setSelectedName] = useState('');
@@ -24,8 +25,11 @@ export function AptitudeTemplatePicker({ onApply }: { onApply: (scores: Aptitude
   );
 }
 
-export function AptitudeBudget({ scores, skillPurchases }: { scores?: AptitudeScores; skillPurchases: SkillPointPurchase[] }) {
-  const budget = scores && evaluateAptitudeBudget(scores, skillPurchases);
+export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages }: Pick<Ego, 'egoFlex' | 'languages'> & {
+  scores?: AptitudeScores;
+  skillPurchases: SkillPointPurchase[];
+}) {
+  const budget = scores && evaluateAptitudeBudget(scores, skillPurchases, { egoFlex, languages });
   return (
     <section className="aptitude-budget" aria-labelledby="aptitude-budget-title">
       <h3 id="aptitude-budget-title">Customization Point budget</h3>
@@ -35,9 +39,16 @@ export function AptitudeBudget({ scores, skillPurchases }: { scores?: AptitudeSc
             <dl>
               <div><dt>CP for aptitudes</dt><dd>{budget.aptitudeCp}</dd></div>
               <div><dt>CP for skills</dt><dd>{budget.skillCp}</dd></div>
+              <div><dt>CP for Flex</dt><dd>{budget.flexCp}</dd></div>
+              <div><dt>CP for languages</dt><dd>{budget.languageCp}</dd></div>
               <div><dt>Total spent</dt><dd>{budget.totalCp} / {coreAptitudeRules.startingCp}</dd></div>
             </dl>
             <p className="muted">Aptitude points <strong>{budget.total} / {coreAptitudeRules.basePoints}</strong> across {budget.entered} / {aptitudes.length} scores</p>
+            <p className="muted">
+              Free languages <strong>{budget.freeLanguages}</strong>
+              {budget.languageAptitudes === undefined ? ' · Enter Cognition and Intuition to check bonus languages.'
+                : ` · Cognition + Intuition ${budget.languageAptitudes}`}
+            </p>
             {budget.unspentPurchasedSkillPoints > 0 && (
               <p className="muted">Skill points available from CP already spent <strong>{budget.unspentPurchasedSkillPoints}</strong></p>
             )}
@@ -58,10 +69,10 @@ export function AptitudeBudget({ scores, skillPurchases }: { scores?: AptitudeSc
         ) : <p className="muted">Enter whole numbers to review the budget.</p>}
       </div>
       <p className="rules-note">
-        Extra aptitude points cost 1 CP each. Each CP spent on skills buys {skillPointsPerCp} points you can split across skills.
+        Extra aptitude points cost 1 CP each. Each CP spent on skills buys {coreCustomizationRules.skillsPerCp} points you can split across skills.
       </p>
       <p className="rules-note">
-        Adapted from <a href={coreAptitudeRules.coreBookUrl}>Eclipse Phase Second Edition, pp. 44 and 46</a> by{' '}
+        Adapted from <a href={coreAptitudeRules.coreBookUrl}>Eclipse Phase Second Edition, pp. 44–46</a> by{' '}
         <a href="https://eclipsephase.com/">Posthuman Studios, LLC</a> under{' '}
         <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
       </p>

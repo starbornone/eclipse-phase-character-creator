@@ -44,4 +44,15 @@ test('an unassigned draft can be printed before choosing a morph', () => {
   assert.equal(dossier.hasSleeve, false);
   assert.equal(dossier.morph, undefined);
   assert.deepEqual(dossier.history, []);
+  assert.equal(dossier.egoFlex, 1);
+  assert.deepEqual(dossier.languages, []);
+});
+
+test('show recorded ego Flex and languages for both audiences', () => {
+  const withCustomization = { ...draft, ego: { ...draft.ego, egoFlex: 3, languages: ['English', 'Mandarin'] } };
+  for (const audience of ['player', 'gm']) {
+    const { egoFlex, languages } = buildPrintableDossier(withCustomization, audience, []);
+    assert.equal(egoFlex, 3);
+    assert.deepEqual(languages, ['English', 'Mandarin']);
+  }
 });

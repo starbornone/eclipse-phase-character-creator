@@ -40,6 +40,8 @@ export interface Ego {
   pronouns: string;
   concept: string;
   aptitudes: AptitudeScores;
+  egoFlex?: number;
+  languages?: string[];
   packages?: CreationPackages;
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
