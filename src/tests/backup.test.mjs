@@ -18,7 +18,7 @@ test('round-trip core package choices and reject unknown packages and field slot
     background: { id: 'freelancer', fields: { 'know-1': 'Habitat Ops' } },
     faction: { id: 'factionless', fields: { 'know-1': 'Local Politics' }, motivation: '+Open access' },
   };
-  const withPackages = { ...draft, ego: { ...ego, packages } };
+  const withPackages = { ...draft, ego: { ...ego, packages, artisticKnowFields: ['local politics'] } };
   assert.deepEqual(previewBackup(encodeBackup([withPackages])).drafts[0], withPackages);
   const invalidChoice = { ...draft, ego: { ...ego, packages: { career: { id: 'freelancer' } } } };
   assert.throws(() => previewBackup(encodeBackup([invalidChoice])), /supported choice for this category/);

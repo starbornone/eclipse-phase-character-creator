@@ -10,6 +10,7 @@ import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, Creation
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { StartingSkills } from './StartingSkills.tsx';
 import { Card } from './ui/card.tsx';
 
 function aptitudeInputs(scores?: AptitudeScores) {
@@ -30,6 +31,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
   const [packages, setPackages] = useState<PackageSelections>(draft?.ego.packages ?? {});
+  const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
@@ -41,6 +43,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
+    || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -80,6 +83,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           concept: concept.trim(),
           aptitudes: parsed.scores,
           ...(Object.keys(packages).length ? { packages } : {}),
+          ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
         },
         sleeves: firstSleeve ? [firstSleeve] : sleeves,
       };
@@ -142,6 +146,12 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               {issue && <p className="error" id="aptitude-error" role="alert">{issue.message}</p>}
               <AptitudeBudget scores={parsed.scores} />
             </Card>
+            <StartingSkills
+              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields }}
+              onToggleArt={(field) => setArtisticKnowFields((fields) => (
+                fields.includes(field) ? fields.filter((item) => item !== field) : [...fields, field]
+              ))}
+            />
           </div>
           <Card className="editor-panel morph-picker">
             <h2>First morph</h2>

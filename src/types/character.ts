@@ -29,6 +29,7 @@ export interface Ego {
   concept: string;
   aptitudes: AptitudeScores;
   packages?: CreationPackages;
+  artisticKnowFields?: string[];
 }
 
 export interface MorphDefinition {

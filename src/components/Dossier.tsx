@@ -6,6 +6,7 @@ import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-mor
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { StartingSkills } from './StartingSkills.tsx';
 import { Card } from './ui/card.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
@@ -110,6 +111,7 @@ export function Dossier({ draft, onEdit, onResleeve, onPrint }: {
           </tbody>
         </table>
       </Card>
+      <div className="screen-only dossier-starting-skills"><StartingSkills ego={draft.ego} /></div>
       {sleeve && <SleeveHistory draft={draft} />}
       <p className="print-only rules-note"><QuickStartCredit /></p>
     </article>

@@ -1,5 +1,6 @@
 import { normalizeDraft } from '../sleeve/history.ts';
 import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
+import { knowFieldKey } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
 import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ResleevingEvent, Sleeve } from '../../types/character.ts';
 
@@ -95,6 +96,9 @@ function readEgo(value: unknown, path: string): Ego {
   if (Object.keys(fields).length !== Object.keys(scores).length) {
     badField(`${path}.aptitudes`, 'limited to supported aptitude keys');
   }
+  const artisticKnowFields = ego.artisticKnowFields === undefined ? undefined
+    : list(ego.artisticKnowFields, `${path}.artisticKnowFields`).map((field) => knowFieldKey(string(field, `${path}.artisticKnowFields`, true)));
+  if (artisticKnowFields) ensureUnique(artisticKnowFields, `${path}.artisticKnowFields`);
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -102,6 +106,7 @@ function readEgo(value: unknown, path: string): Ego {
     concept: string(ego.concept, `${path}.concept`),
     aptitudes: scores,
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
+    ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
   };
 }
 

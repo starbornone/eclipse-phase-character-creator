@@ -301,6 +301,16 @@ section.comparison { padding: 1.25rem; }
 .package-grants li, .package-summary div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .2rem .5rem; overflow-wrap: anywhere; }
 .package-grants strong, .package-summary dd { font-weight: 650; }
 .package-summary dt { color: var(--muted); }
+.dossier-starting-skills { margin-top: 1rem; }
+.starting-skills { min-width: 0; }
+.starting-skills table { width: 100%; border-collapse: collapse; font-size: .875rem; font-variant-numeric: tabular-nums; }
+.starting-skills th, .starting-skills td { padding: .45rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.starting-skills th { font-weight: 650; }
+.starting-skills th:first-child { overflow-wrap: anywhere; }
+.skill-grant { display: block; font-size: .8125rem; }
+.skill-grant.error { margin-top: 0; white-space: nowrap; }
+.skill-art { display: flex; align-items: center; gap: .3rem; margin-top: .2rem; color: var(--muted); font-weight: 400; white-space: nowrap; }
+.skill-art input { accent-color: var(--accent); }
 input[aria-invalid="true"] { border-color: var(--error); }
 textarea { resize: vertical; }
 .morph-picker fieldset { min-width: 0; }
