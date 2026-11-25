@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:14:15+11:00",
+  "updatedAt": "2026-11-25T12:19:17+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -196,6 +196,13 @@
       "group": "Character creation",
       "notes": "Added named specialties for ledger skills, one CP per choice, and a separate situational target. Verified the standard cap, duplicate checks, backups, reload, print previews, and removal refunds.",
       "completedAt": "2026-11-25T12:14:15+11:00"
+    },
+    {
+      "id": "add-starter-ego-trait-budget",
+      "title": "Add starter ego trait costs and bonuses",
+      "group": "Character creation",
+      "notes": "Added six sourced ego traits with levels, positive costs, and the six-CP negative trait bonus cap. Verified changing the available budget, rejecting excess bonuses, backups, reload, and both print previews.",
+      "completedAt": "2026-11-25T12:19:17+11:00"
     }
   ]
 }

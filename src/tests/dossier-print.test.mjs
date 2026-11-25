@@ -75,3 +75,12 @@ test('print applicable skill specializations and omit missing choices', () => {
     ]);
   }
 });
+
+test('print saved ego traits for both audiences', () => {
+  const traits = [{ id: 'adaptability', level: 2 }, { id: 'identity-crisis', level: 1 }];
+  const withTraits = { ...draft, ego: { ...draft.ego, traits } };
+  for (const audience of ['player', 'gm']) {
+    assert.deepEqual(buildPrintableDossier(withTraits, audience, []).traits, traits);
+    assert.equal(buildPrintableDossier(draft, audience, []).traits, undefined);
+  }
+});

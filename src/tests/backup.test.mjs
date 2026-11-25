@@ -83,6 +83,18 @@ test('round-trip specializations and reject unsupported IDs and duplicate names 
   assert.throws(() => previewBackup(encodeBackup([withChoices([{ ...first, skillId: 'actives:Fray' }])])), /supported skill ID/);
 });
 
+test('round-trip ego traits and validate trait levels, uniqueness, and the bonus cap', () => {
+  const withTraits = (traits) => ({ ...draft, ego: { ...ego, traits } });
+  const adaptability = { id: 'adaptability', level: 2 };
+  const badLuck = { id: 'bad-luck', level: 1 };
+  const valid = withTraits([adaptability, badLuck]);
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([{ id: 'unknown-trait', level: 1 }])])), /supported ego trait/);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([{ ...adaptability, level: 3 }])])), /supported level/);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([adaptability, adaptability])])), /traits must be unique/);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([badLuck, { id: 'enemy', level: 1 }])])), /6 CP limit/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

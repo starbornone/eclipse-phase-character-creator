@@ -101,3 +101,15 @@ test('reserve one CP per specialization alongside other customization', () => {
   const budget = evaluateAptitudeBudget({ ...factotum, cog: 18 }, [], { egoFlex: 2, specializations });
   assert.deepEqual([budget.specializationCp, budget.totalCp, budget.baseCpLeft], [2, 7, 13]);
 });
+
+test('charge positive traits by level and add negative trait bonuses to available CP', () => {
+  const traits = [{ id: 'adaptability', level: 2 }, { id: 'bad-luck', level: 1 }];
+  const scores = { ...factotum, cog: 30, int: 20 };
+  const withTraits = evaluateAptitudeBudget(scores, [], { traits });
+  assert.deepEqual(withTraits.traitBudget, { cost: 4, bonus: 6 });
+  assert.deepEqual([withTraits.totalCp, withTraits.availableCp, withTraits.cpLeft], [24, 26, 2]);
+  const withoutBonus = evaluateAptitudeBudget(scores, [], { traits: traits.slice(0, 1) });
+  assert.deepEqual([withoutBonus.totalCp, withoutBonus.availableCp, withoutBonus.cpLeft], [24, 20, -4]);
+  const overBonus = evaluateAptitudeBudget(scores, [], { traits: [...traits, { id: 'enemy', level: 1 }] });
+  assert.equal(overBonus.availableCp, 26);
+});

@@ -29,7 +29,7 @@ You can also save without a morph and assign one later from **Edit ego**. Older 
 
 In **Create ego** or **Edit ego**, choose a **Core aptitude template** and select **Apply template** to fill the six scores. Adjust the values and check **Customization Point budget**. Moving points between aptitudes leaves the total unchanged. Each point above the starting total of 90 costs 1 Customization Point (CP).
 
-The budget combines aptitude, skill, Flex, language, and reputation costs and flags aptitude scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved. Trait bonuses and other CP spending are planned.
+The budget combines aptitude, skill, Flex, language, reputation, specialization, and ego trait costs. It also adds CP from negative traits and flags aptitude scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved.
 
 ## Choose ego Flex and languages
 
@@ -62,6 +62,12 @@ If an edit makes an allocation invalid, the ledger labels it **Needs review** an
 Under **Skill specializations**, choose a skill from the ledger, enter a name, and select **Add specialization**. Each specialization costs 1 CP. The displayed target includes +10 for situations where it applies. The regular skill total still uses the standard cap of 80.
 
 Save the draft to keep the choice in the dossier and JSON backup. Both print previews include specializations with a skill still in the ledger. If a package or allocation change removes the skill, the dossier marks its specialization **Needs review**. Restore the skill to reactivate the bonus, or remove the specialization to release its CP.
+
+## Choose ego traits
+
+Under **Ego traits**, choose a supported trait or level. Positive traits spend CP. Negative traits increase the available budget by up to 6 CP. Select **None** to remove a trait and recalculate the budget.
+
+The dossier and both print previews list the chosen traits and their effects for reference during play. JSON backups include the choices.
 
 ## Compare morph profiles
 
