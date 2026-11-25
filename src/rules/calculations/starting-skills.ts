@@ -1,5 +1,6 @@
 import { creationPackageKinds } from '../../types/character.ts';
-import type { Ego, SkillPointPurchase } from '../../types/character.ts';
+import type { CustomActiveField, Ego, SkillPointPurchase } from '../../types/character.ts';
+import { customActiveFieldDisplayName, resolveCustomActiveField } from './active-fields.ts';
 import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
 
@@ -14,6 +15,7 @@ export function knowFieldKey(field: string) {
 interface SkillRow {
   name: string;
   activeSkill?: string;
+  customActiveField?: CustomActiveField;
   fieldKey?: string;
   fixedKnowledge?: boolean;
   grants: { source: string; points: number }[];
@@ -61,7 +63,7 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   function calculateRow(id: string, row: SkillRow) {
     const adjustableKnow = Boolean(row.fieldKey && !row.fixedKnowledge);
     const isArt = Boolean(adjustableKnow && row.fieldKey && artisticFields.has(row.fieldKey));
-    const aptitude = row.activeSkill ? activeSkillAptitude(row.activeSkill) : isArt ? 'int' : 'cog';
+    const aptitude = row.customActiveField?.aptitude ?? (row.activeSkill ? activeSkillAptitude(row.activeSkill) : isArt ? 'int' : 'cog');
     const aptitudeScore = aptitude === undefined ? undefined : aptitudes[aptitude];
     const multiplier = row.activeSkill && doubledBases.has(row.activeSkill) ? 2 : 1;
     const base = aptitudeScore === undefined ? undefined : aptitudeScore * multiplier;
@@ -74,13 +76,23 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   }
 
   const balances = new Map([...rows].map(([id, row]) => [id, calculateRow(id, row)]));
-  function destination({ to, newKnowField }: SkillPointPurchase) {
+  function destination({ to, newKnowField, customActiveField }: SkillPointPurchase) {
+    const existing = balances.get(to);
+    if (customActiveField !== undefined) {
+      const custom = resolveCustomActiveField(customActiveField);
+      if (!custom || custom.id !== to || newKnowField !== undefined) {
+        return { issue: 'Choose a valid custom Active field and linked aptitude.' };
+      }
+      if (existing && existing.customActiveField?.aptitude !== custom.field.aptitude) {
+        return { issue: `${existing.name} already uses a different aptitude.` };
+      }
+      return { target: existing ?? calculateRow(to, { name: custom.skillName, activeSkill: custom.skillName, customActiveField: custom.field, grants: [] }) };
+    }
     const field = newKnowField?.trim().replace(/\s+/g, ' ');
     const fieldKey = field && knowFieldKey(field);
     if (newKnowField !== undefined && (!fieldKey || to !== `know:${fieldKey}`)) {
       return { issue: 'Enter a Know field that matches the destination.' };
     }
-    const existing = balances.get(to);
     if (existing) return { target: existing };
     if (field && fieldKey) {
       return { target: calculateRow(to, { name: `Know: ${field}`, fieldKey, grants: [] }) };
@@ -102,8 +114,8 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   const transferResults = skillTransfers.map((transfer) => {
     const source = balances.get(transfer.from);
     const { target, issue: destinationIssue } = destination(transfer);
-    const fromName = source?.name ?? transfer.from;
-    const toName = target?.name ?? transfer.to;
+    const fromName = source?.name ?? customActiveFieldDisplayName(transfer.from) ?? transfer.from;
+    const toName = target?.name ?? customActiveFieldDisplayName(transfer.to) ?? transfer.to;
     let issue = destinationIssue;
 
     if (!source) {
@@ -137,7 +149,7 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
         balances.set(target.id, target);
       }
     }
-    return { purchase, toName: target?.name ?? purchase.to, issue };
+    return { purchase, toName: target?.name ?? customActiveFieldDisplayName(purchase.to) ?? purchase.to, issue };
   });
 
   const totals = [...balances.values()].map((skill) => {

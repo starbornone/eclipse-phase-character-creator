@@ -189,3 +189,30 @@ test('trace situational specialization targets without changing base totals or t
     ...choices[0], skillName: 'Fray', target: undefined, missingSkill: false,
   });
 });
+
+test('keep custom Active fields distinct and apply fixed or selected aptitudes', () => {
+  const hardware = { category: 'hardware', name: ' Drone  Maintenance ', aptitude: 'cog' };
+  const exotic = { category: 'exotic', name: 'Tether Dance', aptitude: 'som' };
+  const to = 'active-field:hardware:drone maintenance';
+  const input = {
+    ...transferDraft,
+    aptitudes: { ...transferDraft.aptitudes, som: 12 },
+    skillTransfers: [
+      { from: 'active:Persuade', to, points: 10, customActiveField: hardware },
+      { from: 'know:argonauts', to, points: 5, customActiveField: hardware },
+    ],
+    skillPurchases: [
+      { to, points: 5, customActiveField: hardware },
+      { to: 'active-field:exotic:tether dance', points: 5, customActiveField: exotic },
+      { to: 'active-field:exotic:tether dance', points: 5, customActiveField: { ...exotic, aptitude: 'ref' } },
+    ],
+  };
+  const ledger = calculateStartingSkills(input);
+  const row = ledger.skills.find(({ id }) => id === to);
+  assert.deepEqual([row.name, row.aptitude, row.total], ['Hardware: Drone Maintenance', 'cog', 30]);
+  assert.match(ledger.transferResults[1].issue, /Know points can only move/);
+  assert.equal(ledger.skills.find(({ name }) => name === 'Exotic Skill: Tether Dance').total, 17);
+  assert.match(ledger.purchaseResults[2].issue, /already uses a different aptitude/);
+  assert.equal(calculateStartingSkills({ ...input, skillTransfers: [] }).skills.find(({ id }) => id === to).total, 20);
+  assert.equal(traceSkillSpecializations(ledger.skills, [{ skillId: to, name: 'Orbital docks' }])[0].target, 40);
+});

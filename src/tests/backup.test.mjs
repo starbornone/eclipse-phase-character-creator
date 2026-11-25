@@ -95,6 +95,22 @@ test('round-trip ego traits and validate trait levels, uniqueness, and the bonus
   assert.throws(() => previewBackup(encodeBackup([withTraits([badLuck, { id: 'enemy', level: 1 }])])), /6 CP limit/);
 });
 
+test('round-trip custom Active fields and validate category, aptitude, and canonical destination', () => {
+  const skillId = 'active-field:pilot:sail skiff';
+  const field = { category: 'pilot', name: 'Sail Skiff', aptitude: 'ref' };
+  const purchase = { to: skillId, points: 5, customActiveField: field };
+  const withPurchase = (entry) => ({ ...draft, ego: {
+    ...ego, skillPurchases: [entry], specializations: [{ skillId, name: 'Storm sailing' }],
+  } });
+  const valid = withPurchase(purchase);
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  for (const customActiveField of [{ ...field, aptitude: 'cog' }, { ...field, category: 'invented' }, { ...field, name: 'Different' }]) {
+    assert.throws(() => previewBackup(encodeBackup([withPurchase({ ...purchase, customActiveField })])), /customActiveField.*matching the destination/);
+  }
+  const sample = { ...purchase, to: 'active-field:pilot:space', customActiveField: { ...field, name: ' space ' } };
+  assert.throws(() => previewBackup(encodeBackup([withPurchase(sample)])), /customActiveField.*matching the destination/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

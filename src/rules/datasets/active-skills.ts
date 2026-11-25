@@ -28,3 +28,12 @@ export const activeSkillNames = [...activeSkills.keys()].sort((first, second) =>
 export function activeSkillAptitude(skill: string) {
   return activeSkills.get(skill);
 }
+
+export const activeFieldCategories = [
+  { id: 'hardware', name: 'Hardware', aptitude: 'cog' },
+  { id: 'medicine', name: 'Medicine', aptitude: 'cog' },
+  { id: 'pilot', name: 'Pilot', aptitude: 'ref' },
+  { id: 'exotic', name: 'Exotic Skill', aptitude: undefined },
+] as const;
+
+export type ActiveFieldCategory = (typeof activeFieldCategories)[number]['id'];

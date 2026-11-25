@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { resolveCustomActiveField } from '../rules/calculations/active-fields.ts';
 import { calculateStartingSkills, knowFieldKey } from '../rules/calculations/starting-skills.ts';
 import type { SkillInputs } from '../rules/calculations/starting-skills.ts';
-import { activeSkillNames } from '../rules/datasets/active-skills.ts';
+import { activeFieldCategories, activeSkillNames } from '../rules/datasets/active-skills.ts';
+import { aptitudes } from '../types/character.ts';
 import type { SkillPointPurchase, SkillPointTransfer } from '../types/character.ts';
 
 type Ledger = ReturnType<typeof calculateStartingSkills>;
 const newKnowDestination = 'new-know';
+const newActiveFieldDestination = 'new-active-field';
 const cpSource = 'cp';
 
 export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onToggleArt }: {
@@ -18,6 +21,9 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [knowField, setKnowField] = useState('');
+  const [activeCategory, setActiveCategory] = useState('');
+  const [activeField, setActiveField] = useState('');
+  const [exoticAptitude, setExoticAptitude] = useState('');
   const [isArt, setIsArt] = useState(false);
   const [points, setPoints] = useState('');
   const [issue, setIssue] = useState('');
@@ -30,9 +36,11 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
   const listedSkills = new Set(ledger.skills.map(({ id }) => id));
   const newActiveSkills = activeSkillNames.filter((name) => !listedSkills.has(`active:${name}`));
   const isNewKnow = to === newKnowDestination;
+  const isNewActive = to === newActiveFieldDestination;
+  const activeFieldCategory = activeFieldCategories.find(({ id }) => id === activeCategory);
   const buying = Boolean(onPurchasesChange && from === cpSource);
   const selectedSource = buying || sources.some(({ id }) => id === from) ? from : '';
-  const selectedDestination = isNewKnow || listedSkills.has(to) || newActiveSkills.some((name) => `active:${name}` === to) ? to : '';
+  const selectedDestination = isNewKnow || isNewActive || listedSkills.has(to) || newActiveSkills.some((name) => `active:${name}` === to) ? to : '';
   const newKnowField = knowField.trim().replace(/\s+/g, ' ');
   const newFieldKey = knowFieldKey(newKnowField);
   const newKnowId = `know:${newFieldKey}`;
@@ -44,15 +52,26 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
       setIssue('Enter a name for the new Know field.');
       return;
     }
+    const newActive = isNewActive ? resolveCustomActiveField({
+      category: activeCategory,
+      name: activeField,
+      aptitude: activeFieldCategory?.aptitude ?? exoticAptitude,
+    }) : undefined;
+    if (isNewActive && !newActive) {
+      setIssue('Choose a category and enter a new field name. For an Exotic Skill, choose its linked aptitude. Use the existing option for a sample field.');
+      return;
+    }
     const entered = points.trim();
     const listedDestination = ledger.skills.find(({ id }) => id === selectedDestination);
     const existingField = listedDestination?.fieldKey && (buying || listedDestination.purchasedOnly)
       ? listedDestination.name.slice('Know: '.length) : undefined;
     const destinationField = isNewKnow ? newKnowField : existingField;
+    const customActiveField = newActive?.field ?? listedDestination?.customActiveField;
     const allocation = {
-      to: isNewKnow ? newKnowId : selectedDestination,
+      to: isNewKnow ? newKnowId : newActive?.id ?? selectedDestination,
       points: /^\d+$/.test(entered) ? Number(entered) : NaN,
       ...(destinationField ? { newKnowField: destinationField } : {}),
+      ...(customActiveField ? { customActiveField } : {}),
     };
     const nextTransfers = buying ? transfers : [...transfers, { from: selectedSource, ...allocation }];
     const nextPurchases = buying ? [...purchases, allocation] : purchases;
@@ -72,6 +91,10 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
     if (isNewKnow) {
       setKnowField('');
       setIsArt(false);
+      setTo(allocation.to);
+    }
+    if (isNewActive) {
+      setActiveField('');
       setTo(allocation.to);
     }
     setNotice(buying ? 'Purchase added to the draft.' : 'Transfer added to the draft.');
@@ -117,6 +140,7 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
                 <optgroup label="New Active skill">
                   {newActiveSkills.map((name) => <option key={name} value={`active:${name}`}>{name}</option>)}
                 </optgroup>
+                <option value={newActiveFieldDestination}>Custom Active field…</option>
                 <option value={newKnowDestination}>New Know field…</option>
               </select>
             </label>
@@ -125,6 +149,30 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
                 New Know field
                 <input value={knowField} onChange={(event) => { setKnowField(event.target.value); setIssue(''); }} />
               </label>
+            )}
+            {isNewActive && (
+              <>
+                <label>
+                  Active field category
+                  <select value={activeCategory} onChange={(event) => { setActiveCategory(event.target.value); setIssue(''); }}>
+                    <option value="">Choose a category</option>
+                    {activeFieldCategories.map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
+                  </select>
+                </label>
+                <label>
+                  Active field name
+                  <input value={activeField} onChange={(event) => { setActiveField(event.target.value); setIssue(''); }} />
+                </label>
+                {activeCategory === 'exotic' && (
+                  <label>
+                    GM-approved aptitude
+                    <select value={exoticAptitude} onChange={(event) => { setExoticAptitude(event.target.value); setIssue(''); }}>
+                      <option value="">Choose an aptitude</option>
+                      {aptitudes.map(({ id, label }) => <option key={id} value={id}>{label}</option>)}
+                    </select>
+                  </label>
+                )}
+              </>
             )}
             {canClassifyField && (
               <label className="skill-art">

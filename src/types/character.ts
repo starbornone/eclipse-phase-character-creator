@@ -1,4 +1,5 @@
 import type { ReputationNetwork } from '../rules/datasets/reputation.ts';
+import type { ActiveFieldCategory } from '../rules/datasets/active-skills.ts';
 
 export const aptitudes = [
   { id: 'cog', label: 'Cognition' },
@@ -25,10 +26,17 @@ export interface CreationPackageSelection {
 
 export type CreationPackages = Partial<Record<CreationPackageKind, CreationPackageSelection>>;
 
+export interface CustomActiveField {
+  category: ActiveFieldCategory;
+  name: string;
+  aptitude: Aptitude;
+}
+
 interface SkillPointAllocation {
   to: string;
   points: number;
   newKnowField?: string;
+  customActiveField?: CustomActiveField;
 }
 
 export type SkillPointPurchase = SkillPointAllocation;

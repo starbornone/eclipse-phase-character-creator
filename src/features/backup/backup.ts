@@ -3,6 +3,7 @@ import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
+import { resolveCustomActiveField } from '../../rules/calculations/active-fields.ts';
 import { evaluateEgoTraitBudget } from '../../rules/calculations/ego-traits.ts';
 import { isSpecializationSkillId, normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
@@ -99,7 +100,18 @@ function readSkillAllocation(entry: Record<string, unknown>, field: string) {
   if (newKnowField !== undefined && to !== `know:${knowFieldKey(newKnowField)}`) {
     badField(`${field}.to`, 'the key matching the new Know field');
   }
-  return { to, points, ...(newKnowField === undefined ? {} : { newKnowField }) };
+  const customInput = entry.customActiveField === undefined ? undefined : object(entry.customActiveField, `${field}.customActiveField`);
+  const custom = customInput && resolveCustomActiveField({
+    category: customInput.category, name: customInput.name, aptitude: customInput.aptitude,
+  });
+  if (customInput && (!custom || custom.id !== to || newKnowField !== undefined)) {
+    badField(`${field}.customActiveField`, 'a supported custom Active field matching the destination');
+  }
+  return {
+    to, points,
+    ...(newKnowField === undefined ? {} : { newKnowField }),
+    ...(custom === undefined ? {} : { customActiveField: custom.field }),
+  };
 }
 
 function readReputation(value: unknown, path: string) {
