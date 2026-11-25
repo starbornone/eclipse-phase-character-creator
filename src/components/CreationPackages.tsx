@@ -57,17 +57,23 @@ export function CreationPackages({ packages, onChange }: {
                     {coreCreationPackages[kind].map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
                   </select>
                 </label>
-                {selection && choice && choice.grants.flatMap(({ skill, points, slot }) => slot ? [
+                {selection && choice && choice.grants.flatMap(({ skill, points, slot, suggestedFields }) => slot ? [
                   <label className="concept" key={slot}>
                     {`${label} ${skill} field (${points} points)`}
                     <input
                       value={selection.fields?.[slot] ?? ''}
+                      list={suggestedFields ? `${kind}-${slot}-suggestions` : undefined}
                       maxLength={100}
                       onChange={(event) => update(kind, {
                         ...selection,
                         fields: { ...selection.fields, [slot]: event.target.value },
                       })}
                     />
+                    {suggestedFields && (
+                      <datalist id={`${kind}-${slot}-suggestions`}>
+                        {suggestedFields.map((field) => <option key={field} value={field} />)}
+                      </datalist>
+                    )}
                   </label>,
                 ] : [])}
                 {kind === 'faction' && selection && choice && (
@@ -93,7 +99,7 @@ export function CreationPackages({ packages, onChange }: {
           );
         })}
       </div>
-      <p className="rules-note">Know fields and the faction motivation can be filled in later.</p>
+      <p className="rules-note">Skill fields and the faction motivation can be filled in later.</p>
       <CorePackageCredit />
     </Card>
   );

@@ -239,3 +239,23 @@ test('Expert Training raises exactly one skill cap and rechecks allocations when
   const trained = aboveCap.skills.find(({ name }) => name === 'Persuade');
   assert.deepEqual([trained.total, trained.cap, trained.excess], [81, 90, 0]);
 });
+
+test('keep blank Active slots pending and merge package grants with matching sample and custom fields', () => {
+  const packages = {
+    background: { id: 'colonist', fields: { 'hardware-1': 'Drone Maintenance', 'pilot-1': ' space ' } },
+    career: { id: 'explorer', fields: { 'pilot-1': 'Space' } },
+    interest: { id: 'spacer', fields: { 'hardware-1': 'drone   maintenance' } },
+  };
+  const input = { packages, aptitudes: { cog: 15, ref: 15, int: 15 } };
+  const ledger = calculateStartingSkills(input);
+  assert.equal(ledger.unassignedActivePoints, 0);
+  assert.equal(ledger.unassignedKnowPoints, 220);
+  const pilot = ledger.skills.find(({ id }) => id === 'active:Pilot: Space');
+  assert.deepEqual([pilot.packagePoints, pilot.base, pilot.total], [50, 15, 65]);
+  const hardware = ledger.skills.find(({ id }) => id === 'active-field:hardware:drone maintenance');
+  assert.deepEqual([hardware.name, hardware.packagePoints, hardware.base, hardware.excess], ['Hardware: Drone Maintenance', 80, 15, 15]);
+  assert.deepEqual(hardware.grants.map(({ source }) => source), ['Colonist', 'Spacer']);
+  const blanks = calculateStartingSkills({ ...input, packages: { background: { id: 'colonist' }, career: { id: 'explorer' } } });
+  assert.equal(blanks.unassignedActivePoints, 90);
+  assert.equal(blanks.unassignedKnowPoints, 180);
+});

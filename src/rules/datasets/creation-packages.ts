@@ -5,6 +5,8 @@ interface SkillGrant {
   skill: string;
   points: number;
   slot?: string;
+  activeField?: 'hardware' | 'pilot';
+  suggestedFields?: readonly string[];
 }
 
 interface CreationPackage {
@@ -20,11 +22,23 @@ export const packageLabels: Record<CreationPackageKind, string> = {
 
 const grant = (skill: string, points: number): SkillGrant => ({ skill, points });
 const know = (slot: string, points: number): SkillGrant => ({ skill: 'Know', points, slot });
+const hardware = (points: number, suggestedFields: readonly string[]): SkillGrant =>
+  ({ skill: 'Hardware', activeField: 'hardware', slot: 'hardware-1', points, suggestedFields });
+const pilot = (points: number): SkillGrant =>
+  ({ skill: 'Pilot', activeField: 'pilot', slot: 'pilot-1', points, suggestedFields: ['Air', 'Ground', 'Nautical', 'Space'] });
 
 // Adapted from Eclipse Phase Second Edition, pp. 38–44, Posthuman Studios, LLC.
 // CC BY-NC-SA 4.0. Faction Know grants follow the April 2025 errata.
 export const coreCreationPackages: Record<CreationPackageKind, readonly CreationPackage[]> = {
   background: [
+    { id: 'colonist', name: 'Colonist', page: 38, grants: [
+      grant('Free Fall', 40), hardware(40, ['Aerospace', 'Electronics', 'Industrial']),
+      grant('Interface', 30), pilot(30), grant('Survival', 30), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'enclaver', name: 'Enclaver', page: 38, grants: [
+      grant('Athletics', 40), grant('Interface', 40), grant('Kinesics', 30), grant('Persuade', 20),
+      grant('Pilot: Ground', 20), grant('Program', 20), know('know-1', 60), know('know-2', 30),
+    ] },
     { id: 'freelancer', name: 'Freelancer', page: 38, grants: [
       grant('Interface', 40), grant('Kinesics', 20), grant('Persuade', 40), grant('Program', 30),
       grant('Research', 40), know('know-1', 60), know('know-2', 30),
@@ -38,6 +52,10 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'academic', name: 'Academic', page: 40, grants: [
       grant('Interface', 30), grant('Research', 60), know('know-1', 60), know('know-2', 40), know('know-3', 30),
     ] },
+    { id: 'explorer', name: 'Explorer', page: 40, grants: [
+      grant('Athletics', 30), grant('Medicine: Paramedic', 20), pilot(20), grant('Survival', 60),
+      know('know-1', 60), know('know-2', 30),
+    ] },
     { id: 'face', name: 'Face', page: 40, grants: [
       grant('Deceive', 40), grant('Kinesics', 30), grant('Persuade', 60), know('know-1', 60), know('know-2', 30),
     ] },
@@ -48,6 +66,10 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     ] },
     { id: 'paramedic', name: 'Paramedic', page: 42, grants: [
       grant('Fray', 20), grant('Kinesics', 40), grant('Medicine: Paramedic', 40), grant('Know: Emergency Services', 40),
+    ] },
+    { id: 'spacer', name: 'Spacer', page: 43, grants: [
+      grant('Free Fall', 40), hardware(40, ['Electronics', 'Industrial', 'Robotics']),
+      grant('Interface', 20), know('know-1', 40),
     ] },
   ],
   faction: [

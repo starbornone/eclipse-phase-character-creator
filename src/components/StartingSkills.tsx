@@ -16,11 +16,11 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
   onTraitsChange?: (traits: EgoTraitChoice[]) => void;
 }) {
   const ledger = calculateStartingSkills(ego);
-  const { skills, unassignedKnowPoints, transferResults } = ledger;
+  const { skills, unassignedKnowPoints, unassignedActivePoints, transferResults } = ledger;
   const specializations = traceSkillSpecializations(skills, ego.specializations);
   const expertSkillId = ego.traits?.find(({ id }) => id === expertTraining.id)?.skillId;
   const missingExpertSkill = expertSkillId && !skills.some(({ id }) => id === expertSkillId);
-  if (!skills.length && !unassignedKnowPoints && !transferResults.length && !ledger.purchaseResults.length
+  if (!skills.length && !unassignedKnowPoints && !unassignedActivePoints && !transferResults.length && !ledger.purchaseResults.length
     && !specializations.length && !expertSkillId && !onToggleArt && !onSpecializationsChange && !onTraitsChange) return null;
 
   function chooseExpertSkill(skillId: string) {
@@ -51,6 +51,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
       )}
       {missingExpertSkill && <p className="error">Needs review. Expert Training points to a missing skill and still costs {expertTraining.cost} CP.</p>}
       {unassignedKnowPoints > 0 && <p className="muted">{unassignedKnowPoints} Know points await a field choice.</p>}
+      {unassignedActivePoints > 0 && <p className="muted">{unassignedActivePoints} Active points await a field choice.</p>}
       {skills.length ? (
         <div className="comparison-scroll" role="region" aria-label="Starting skill totals" tabIndex={0}>
           <table>

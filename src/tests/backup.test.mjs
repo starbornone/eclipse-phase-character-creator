@@ -121,6 +121,14 @@ test('round-trip the Expert Training skill and require one valid selection', () 
   assert.throws(() => previewBackup(encodeBackup([withTraits([trait, { ...trait, skillId: 'active:Fray' }])])), /traits must be unique/);
 });
 
+test('round-trip Active package slots and reject slots outside the selected package', () => {
+  const fields = { 'hardware-1': 'Drone Maintenance', 'pilot-1': 'Space' };
+  const withPackage = (id) => ({ ...draft, ego: { ...ego, packages: { background: { id, fields } } } });
+  const colonist = withPackage('colonist');
+  assert.deepEqual(previewBackup(encodeBackup([colonist])).drafts[0], colonist);
+  assert.throws(() => previewBackup(encodeBackup([withPackage('enclaver')])), /limited to slots in the selected package/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

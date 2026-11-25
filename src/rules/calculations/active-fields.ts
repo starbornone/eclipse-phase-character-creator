@@ -1,6 +1,7 @@
 import { aptitudes } from '../../types/character.ts';
 import type { CustomActiveField } from '../../types/character.ts';
 import { activeFieldCategories, activeSkillNames } from '../datasets/active-skills.ts';
+import type { ActiveFieldCategory } from '../datasets/active-skills.ts';
 
 const prefix = 'active-field:';
 
@@ -17,6 +18,16 @@ export function resolveCustomActiveField(input: { category: unknown; name: unkno
   if (activeSkillNames.some((sample) => sample.toLowerCase() === skillName.toLowerCase())) return undefined;
   const field: CustomActiveField = { category: category.id, name, aptitude };
   return { field, skillName, id: `${prefix}${category.id}:${name.toLowerCase()}` };
+}
+
+export function resolveFixedActiveField(categoryId: ActiveFieldCategory, field: string) {
+  const category = activeFieldCategories.find(({ id }) => id === categoryId);
+  const name = cleanName(field);
+  if (!category?.aptitude || !name) return undefined;
+  const sampleName = `${category.name}: ${name}`.toLowerCase();
+  const skillName = activeSkillNames.find((sample) => sample.toLowerCase() === sampleName);
+  if (skillName) return { id: `active:${skillName}`, skillName, field: undefined };
+  return resolveCustomActiveField({ category: categoryId, name, aptitude: category.aptitude });
 }
 
 export function customActiveFieldDisplayName(id: string) {

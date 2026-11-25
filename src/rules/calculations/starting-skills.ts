@@ -1,6 +1,6 @@
 import { creationPackageKinds } from '../../types/character.ts';
 import type { CustomActiveField, Ego, SkillPointPurchase } from '../../types/character.ts';
-import { customActiveFieldDisplayName, resolveCustomActiveField } from './active-fields.ts';
+import { customActiveFieldDisplayName, resolveCustomActiveField, resolveFixedActiveField } from './active-fields.ts';
 import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
 import { expertTraining } from '../datasets/ego-traits.ts';
@@ -41,13 +41,26 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   const expertSkillId = traits?.find(({ id, level }) => id === expertTraining.id && level === 1)?.skillId;
   const artisticFields = new Set(artisticKnowFields);
   let unassignedKnowPoints = 0;
+  let unassignedActivePoints = 0;
 
   for (const kind of creationPackageKinds) {
     const selection = packages?.[kind];
     const chosen = findCreationPackage(kind, selection?.id);
     if (!chosen) continue;
-    for (const { skill, points, slot } of chosen.grants) {
+    for (const { skill, points, slot, activeField } of chosen.grants) {
       const field = slot ? selection?.fields?.[slot]?.trim() : skill.startsWith('Know: ') ? skill.slice(6) : undefined;
+      if (activeField) {
+        const selected = field && resolveFixedActiveField(activeField, field);
+        if (!selected) {
+          unassignedActivePoints += points;
+          continue;
+        }
+        const { id, skillName, field: customActiveField } = selected;
+        const row = rows.get(id) ?? { name: skillName, activeSkill: skillName, customActiveField, grants: [] };
+        row.grants.push({ source: chosen.name, points });
+        rows.set(id, row);
+        continue;
+      }
       if (slot && !field) {
         unassignedKnowPoints += points;
         continue;
@@ -171,5 +184,5 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.purchasedPoints + skill.base;
     return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - skill.cap), purchasedOnly: !transferSkillIds.has(skill.id) };
   }).sort((first, second) => first.name.localeCompare(second.name));
-  return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, cap: startingSkillCap };
+  return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, unassignedActivePoints, cap: startingSkillCap };
 }
