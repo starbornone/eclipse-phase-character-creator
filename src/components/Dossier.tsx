@@ -5,6 +5,7 @@ import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { listStartingMotivations } from '../rules/calculations/motivations.ts';
+import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
@@ -14,6 +15,7 @@ import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCat
 import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
+import { StartingGearSummary } from './StartingGear.tsx';
 import { Card } from './ui/card.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
@@ -120,6 +122,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
         </table>
       </Card>
       <div className="screen-only dossier-starting-skills"><StartingSkills ego={draft.ego} /></div>
+      <StartingGearSummary gear={startingGearForDraft(draft)} styled />
       {sleeve && <SleeveHistory draft={draft} />}
       <p className="print-only rules-note"><QuickStartCredit /></p>
     </article>

@@ -9,6 +9,7 @@ import { evaluateEgoTraitBudget } from '../../rules/calculations/ego-traits.ts';
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
+import { findGearCampaign } from '../../rules/datasets/starting-gear.ts';
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
@@ -230,6 +231,9 @@ function readEgo(value: unknown, path: string): Ego {
       return { skillId, name };
     });
   if (specializations) ensureUnique(specializations.map(specializationKey), `${path}.specializations`);
+  const campaign = ego.startingCampaign === undefined ? undefined
+    : findGearCampaign(string(ego.startingCampaign, `${path}.startingCampaign`, true));
+  if (ego.startingCampaign !== undefined && !campaign) badField(`${path}.startingCampaign`, 'a supported starting campaign');
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -241,6 +245,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(ego.reputation === undefined ? {} : { reputation: readReputation(ego.reputation, `${path}.reputation`) }),
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(ego.personalMotivations === undefined ? {} : { personalMotivations: readPersonalMotivations(ego.personalMotivations, `${path}.personalMotivations`) }),
+    ...(campaign ? { startingCampaign: campaign.id } : {}),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),

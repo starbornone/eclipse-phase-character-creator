@@ -20,6 +20,7 @@ import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
 import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
+import { StartingGearEditor } from './StartingGear.tsx';
 import { Card } from './ui/card.tsx';
 
 function aptitudeInputs(scores?: AptitudeScores) {
@@ -43,6 +44,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
   const [packages, setPackages] = useState<PackageSelections>(draft?.ego.packages ?? {});
+  const [startingCampaign, setStartingCampaign] = useState(draft?.ego.startingCampaign);
   const [motivations, setMotivations] = useState(() => personalMotivationChoices(draft?.ego));
   const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
@@ -60,6 +62,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [saving, setSaving] = useState(false);
   const [conflict, setConflict] = useState(false);
   const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
+  const startingMorph = findSampleMorph(draft?.sleeves[0]?.morphDefinitionId ?? morphId);
   const parsed = parseAptitudes(inputs);
   const parsedRep = parseReputation(repInputs);
   const personalMotivations = cleanPersonalMotivations(motivations);
@@ -67,6 +70,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
+    || startingCampaign !== draft?.ego.startingCampaign
     || JSON.stringify(personalMotivations) !== JSON.stringify(cleanPersonalMotivations(personalMotivationChoices(draft?.ego)))
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
@@ -123,6 +127,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(languages.length ? { languages } : {}),
           ...(Object.keys(parsedRep.scores).length ? { reputation: parsedRep.scores } : {}),
           ...(Object.keys(savedPackages).length ? { packages: savedPackages } : {}),
+          ...(startingCampaign ? { startingCampaign } : {}),
           ...(Object.keys(personalMotivations).length ? { personalMotivations } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
@@ -234,6 +239,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 fields.includes(field) ? fields.filter((item) => item !== field) : [...fields, field]
               ))}
             />
+            <StartingGearEditor campaign={startingCampaign} career={packages.career?.id}
+              morphCategory={startingMorph?.category} onChange={setStartingCampaign} />
           </div>
           <Card className="editor-panel morph-picker">
             <h2>First morph</h2>

@@ -11,6 +11,7 @@ import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
+import { StartingGearSummary } from './StartingGear.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
@@ -76,6 +77,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           </section>
         )}
         <MotivationSummary motivations={dossier.motivations} />
+        <StartingGearSummary gear={dossier.startingGear} />
         <section>
           <h3>Active morph</h3>
           {dossier.morph ? (

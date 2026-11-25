@@ -3,6 +3,7 @@ import { traceAptitudeChecks } from '../../rules/calculations/draft.ts';
 import { listStartingMotivations } from '../../rules/calculations/motivations.ts';
 import { traceSkillSpecializations } from '../../rules/calculations/skill-specializations.ts';
 import { calculateStartingSkills } from '../../rules/calculations/starting-skills.ts';
+import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { findSampleMorph } from '../../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../../types/character.ts';
@@ -38,6 +39,7 @@ export function buildPrintableDossier(
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
     motivations: audience === 'player' ? listStartingMotivations(draft.ego) : [],
+    startingGear: audience === 'player' ? startingGearForDraft(draft) : undefined,
     hasSleeve: Boolean(sleeve),
     morph: findSampleMorph(sleeve?.morphDefinitionId),
     checks: traceAptitudeChecks(draft.ego.aptitudes),

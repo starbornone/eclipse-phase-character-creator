@@ -150,6 +150,13 @@ test('round-trip personal and faction goals and reject misplaced or non-text goa
   assert.throws(() => previewBackup(encodeBackup([malformed])), /goal must be a string/);
 });
 
+test('round-trip a starting campaign and reject unknown campaigns', () => {
+  const equipped = { ...draft, ego: { ...ego, startingCampaign: 'criminal' } };
+  assert.deepEqual(previewBackup(encodeBackup([equipped])).drafts[0], equipped);
+  const invalid = { ...draft, ego: { ...ego, startingCampaign: 'unknown' } };
+  assert.throws(() => previewBackup(encodeBackup([invalid])), /supported starting campaign/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

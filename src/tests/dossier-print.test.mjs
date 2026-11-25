@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { buildPrintableDossier, privatePrintFields } from '../features/dossier/print.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
+import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
 
 const assignedAt = '2026-11-25T01:00:00.000Z';
 const event = { date: '2026-11-20', location: 'Private habitat', cause: 'Private cause', notes: 'Private notes' };
@@ -129,4 +130,22 @@ test('keep goals with their motivations and omit goals for inactive or unnamed s
   assert.deepEqual(buildPrintableDossier(aligned, 'gm', []).motivations, []);
   const unaligned = { ...aligned, ego: { ...aligned.ego, packages: {} } };
   assert.deepEqual(buildPrintableDossier(unaligned, 'player', []).motivations[1], { label: '+Accessibility', goal: 'Build a shared guide' });
+});
+
+test('derive campaign and career gear packs and use the first sleeve for alternates', () => {
+  const equipped = { ...draft, ego: { ...draft.ego, startingCampaign: 'gatecrashing', packages: { career: { id: 'explorer' } } } };
+  const player = buildPrintableDossier(equipped, 'player', []);
+  assert.equal(player.morph.name, 'Synth');
+  assert.deepEqual(player.startingGear.packs.map(({ name, gp }) => [name, gp]), [['Gatecrashing', 10], ['Explorer', 10]]);
+  assert.ok(player.startingGear.packs[0].items.some(({ name }) => name === 'Standard Vacsuit'));
+  assert.equal(player.startingGear.packs[0].usesSynthAlternatives, false);
+  const synthFirst = { ...equipped, sleeves: [draft.sleeves[1]] };
+  const [pack] = buildPrintableDossier(synthFirst, 'player', []).startingGear.packs;
+  assert.equal(pack.usesSynthAlternatives, true);
+  assert.equal(pack.gp, 10);
+  assert.ok(pack.items.some(({ name }) => name === 'Medichines'));
+  assert.ok(!pack.items.some(({ name }) => name === 'Standard Vacsuit'));
+  assert.equal(buildPrintableDossier(equipped, 'gm', []).startingGear, undefined);
+  assert.deepEqual(deriveStartingGear('criminal', 'face'), deriveStartingGear('firewall', 'face'));
+  assert.equal(deriveStartingGear(undefined, 'academic').packs[0].gp, 10);
 });

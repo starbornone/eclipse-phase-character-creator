@@ -1,5 +1,6 @@
 import type { ReputationNetwork } from '../rules/datasets/reputation.ts';
 import type { ActiveFieldCategory } from '../rules/datasets/active-skills.ts';
+import type { GearCampaign } from '../rules/datasets/starting-gear.ts';
 
 export const aptitudes = [
   { id: 'cog', label: 'Cognition' },
@@ -76,6 +77,7 @@ export interface Ego {
   reputation?: ReputationScores;
   packages?: CreationPackages;
   personalMotivations?: PersonalMotivations;
+  startingCampaign?: GearCampaign;
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
   skillPurchases?: SkillPointPurchase[];
