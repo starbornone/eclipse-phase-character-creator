@@ -1,6 +1,7 @@
 import { normalizeDraft } from '../sleeve/history.ts';
-import { aptitudes } from '../../types/character.ts';
-import type { AptitudeScores, CharacterDraft, Ego, ResleevingEvent, Sleeve } from '../../types/character.ts';
+import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
+import { aptitudes, creationPackageKinds } from '../../types/character.ts';
+import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ResleevingEvent, Sleeve } from '../../types/character.ts';
 
 const format = 'eclipse-phase-character-backup';
 const backupVersion = 1;
@@ -46,6 +47,39 @@ function ensureUnique(ids: string[], path: string) {
   if (new Set(ids).size !== ids.length) badField(path, 'unique');
 }
 
+function readCreationPackages(value: unknown, path: string): CreationPackages {
+  const choices = object(value, path);
+  const validated: CreationPackages = {};
+  for (const kind of creationPackageKinds) {
+    if (!Object.hasOwn(choices, kind)) continue;
+    const selectionPath = `${path}.${kind}`;
+    const selection = object(choices[kind], selectionPath);
+    const id = string(selection.id, `${selectionPath}.id`, true);
+    const option = findCreationPackage(kind, id);
+    if (!option) badField(`${selectionPath}.id`, 'a supported choice for this category');
+    const fields = selection.fields === undefined
+      ? undefined
+      : Object.fromEntries(Object.entries(object(selection.fields, `${selectionPath}.fields`)).map(([slot, field]) => {
+        if (!option.grants.some((grant) => grant.slot === slot)) {
+          badField(`${selectionPath}.fields`, 'limited to slots in the selected package');
+        }
+        return [slot, string(field, `${selectionPath}.fields.${slot}`)];
+      }));
+    if (selection.motivation !== undefined && kind !== 'faction') {
+      badField(`${selectionPath}.motivation`, 'absent outside the faction choice');
+    }
+    validated[kind] = {
+      id,
+      ...(fields === undefined ? {} : { fields }),
+      ...(selection.motivation === undefined ? {} : { motivation: string(selection.motivation, `${selectionPath}.motivation`) }),
+    };
+  }
+  if (Object.keys(choices).length !== Object.keys(validated).length) {
+    badField(path, 'limited to supported package categories');
+  }
+  return validated;
+}
+
 function readEgo(value: unknown, path: string): Ego {
   const ego = object(value, path);
   const fields = object(ego.aptitudes, `${path}.aptitudes`);
@@ -67,6 +101,7 @@ function readEgo(value: unknown, path: string): Ego {
     pronouns: string(ego.pronouns, `${path}.pronouns`),
     concept: string(ego.concept, `${path}.concept`),
     aptitudes: scores,
+    ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
   };
 }
 

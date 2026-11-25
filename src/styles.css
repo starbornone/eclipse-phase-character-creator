@@ -293,6 +293,14 @@ section.comparison { padding: 1.25rem; }
 .aptitude-budget dd { font-size: 1.15rem; font-weight: 650; font-variant-numeric: tabular-nums; }
 .aptitude-budget :is(.muted, .error) { font-size: .875rem; }
 .aptitude-budget a { text-decoration: underline; text-underline-offset: .15em; }
+.package-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0; }
+.package-choices fieldset { min-width: 0; padding: .4rem .7rem .7rem; border: 1px solid var(--line); border-radius: .4rem; }
+.package-choices legend { padding: 0 .25rem; font-weight: 650; }
+.package-choices .identity-fields { margin-top: 0; }
+.package-grants, .package-summary { display: grid; gap: .2rem; margin-top: .6rem; font-size: .875rem; }
+.package-grants li, .package-summary div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .2rem .5rem; overflow-wrap: anywhere; }
+.package-grants strong, .package-summary dd { font-weight: 650; }
+.package-summary dt { color: var(--muted); }
 input[aria-invalid="true"] { border-color: var(--error); }
 textarea { resize: vertical; }
 .morph-picker fieldset { min-width: 0; }
@@ -426,6 +434,7 @@ textarea { resize: vertical; }
   .editor-panel { padding: .85rem; }
   .aptitude-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .aptitude-template { grid-template-columns: 1fr; }
+  .package-choices { grid-template-columns: 1fr; }
   .aptitude-template .button { justify-self: start; }
   .dossier-stats :is(th, td) { padding-inline: .2rem; font-size: .875rem; }
 }

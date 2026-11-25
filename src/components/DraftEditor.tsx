@@ -6,8 +6,9 @@ import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { aptitudes } from '../types/character.ts';
-import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft } from '../types/character.ts';
+import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections } from '../types/character.ts';
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
+import { CreationPackages } from './CreationPackages.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
 
@@ -28,6 +29,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [name, setName] = useState(draft?.ego.name ?? '');
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
+  const [packages, setPackages] = useState<PackageSelections>(draft?.ego.packages ?? {});
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
@@ -38,6 +40,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const parsed = parseAptitudes(inputs);
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
+    || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -70,7 +73,14 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
         rulesVersion: 'ep2-quick-start-2.4',
         revision: (draft?.revision ?? 0) + 1,
         updatedAt,
-        ego: { id: egoId, name: name.trim(), pronouns: pronouns.trim(), concept: concept.trim(), aptitudes: parsed.scores },
+        ego: {
+          id: egoId,
+          name: name.trim(),
+          pronouns: pronouns.trim(),
+          concept: concept.trim(),
+          aptitudes: parsed.scores,
+          ...(Object.keys(packages).length ? { packages } : {}),
+        },
         sleeves: firstSleeve ? [firstSleeve] : sleeves,
       };
       await saveDraft(next, draft?.revision);
@@ -90,7 +100,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     <>
       <header className="page-heading">
         <h1 tabIndex={-1}>{draft ? 'Edit ego' : 'Create ego'}</h1>
-        <p>Start with identity and aptitudes. You can save a draft before assigning a morph.</p>
+        <p>Start with identity, core packages, and aptitudes. You can save a draft before assigning a morph.</p>
       </header>
       <form onSubmit={submit}>
         <fieldset disabled={saving} className="editor-grid">
@@ -103,6 +113,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 <label className="concept">Concept<textarea value={concept} onChange={(event) => setConcept(event.target.value)} maxLength={1000} rows={3} /></label>
               </div>
             </Card>
+            <CreationPackages packages={packages} onChange={setPackages} />
             <Card className="editor-panel">
               <h2>Aptitudes</h2>
               <p className="muted">You can save a partial draft. The budget below reports how your entries fit core character creation.</p>

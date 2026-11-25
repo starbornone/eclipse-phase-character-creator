@@ -4,6 +4,7 @@ import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
+import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
 
@@ -73,6 +74,8 @@ export function Dossier({ draft, onEdit, onResleeve, onPrint }: {
           <h2><Fingerprint size={21} aria-hidden="true" /> Ego</h2>
           <p><strong>{draft.ego.name || 'Untitled ego'}</strong>{draft.ego.pronouns && ` · ${draft.ego.pronouns}`}</p>
           <p className="concept-text muted">{draft.ego.concept || 'No concept recorded.'}</p>
+          <PackageSummary packages={draft.ego.packages} />
+          {draft.ego.packages && <CorePackageCredit />}
         </Card>
         <Card className="editor-panel">
           <h2>Morph</h2>

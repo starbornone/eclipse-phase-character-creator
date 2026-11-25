@@ -11,12 +11,24 @@ export type Aptitude = (typeof aptitudes)[number]['id'];
 export type AptitudeScores = Partial<Record<Aptitude, number>>;
 export type AptitudeInputs = Record<Aptitude, string>;
 
+export const creationPackageKinds = ['background', 'career', 'interest', 'faction'] as const;
+export type CreationPackageKind = (typeof creationPackageKinds)[number];
+
+export interface CreationPackageSelection {
+  id: string;
+  fields?: Record<string, string>;
+  motivation?: string;
+}
+
+export type CreationPackages = Partial<Record<CreationPackageKind, CreationPackageSelection>>;
+
 export interface Ego {
   id: string;
   name: string;
   pronouns: string;
   concept: string;
   aptitudes: AptitudeScores;
+  packages?: CreationPackages;
 }
 
 export interface MorphDefinition {

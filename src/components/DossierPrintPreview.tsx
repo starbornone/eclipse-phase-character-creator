@@ -4,6 +4,7 @@ import { buildPrintableDossier, privatePrintFields } from '../features/dossier/p
 import type { PrintAudience, PrivatePrintField } from '../features/dossier/print.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
+import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
@@ -60,6 +61,13 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           <section>
             <h3>Ego concept</h3>
             <p className="concept-text">{dossier.concept}</p>
+          </section>
+        )}
+        {dossier.packages && (
+          <section>
+            <h3>Creation packages</h3>
+            <PackageSummary packages={dossier.packages} />
+            <CorePackageCredit />
           </section>
         )}
         <section>

@@ -13,6 +13,19 @@ test('round-trip partial aptitude scores, sleeve order, and event details', () =
   assert.deepEqual(previewBackup(encodeBackup([draft])), { drafts: [draft], migratedCount: 0 });
 });
 
+test('round-trip core package choices and reject unknown packages and field slots', () => {
+  const packages = {
+    background: { id: 'freelancer', fields: { 'know-1': 'Habitat Ops' } },
+    faction: { id: 'factionless', fields: { 'know-1': 'Local Politics' }, motivation: '+Open access' },
+  };
+  const withPackages = { ...draft, ego: { ...ego, packages } };
+  assert.deepEqual(previewBackup(encodeBackup([withPackages])).drafts[0], withPackages);
+  const invalidChoice = { ...draft, ego: { ...ego, packages: { career: { id: 'freelancer' } } } };
+  assert.throws(() => previewBackup(encodeBackup([invalidChoice])), /supported choice for this category/);
+  const invalidSlot = { ...draft, ego: { ...ego, packages: { faction: { id: 'argonaut', fields: { 'know-1': 'Politics' } } } } };
+  assert.throws(() => previewBackup(encodeBackup([invalidSlot])), /limited to slots/);
+});
+
 test('report a version 1 draft migration and retain its sleeve', () => {
   const { sleeves, ...fields } = draft;
   const oldDraft = { ...fields, schemaVersion: 1, sleeve: sleeves[0] };

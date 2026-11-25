@@ -24,6 +24,7 @@ export function buildPrintableDossier(
     name: draft.ego.name || 'Untitled ego',
     pronouns: draft.ego.pronouns,
     concept: audience === 'player' ? draft.ego.concept : '',
+    packages: audience === 'player' ? draft.ego.packages : undefined,
     hasSleeve: Boolean(sleeve),
     morph: findSampleMorph(sleeve?.morphDefinitionId),
     checks: traceAptitudeChecks(draft.ego.aptitudes),
