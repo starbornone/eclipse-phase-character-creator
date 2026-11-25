@@ -65,6 +65,12 @@ Under **Skill specializations**, choose a skill from the ledger, enter a name, a
 
 Save the draft to keep the choice in the dossier and JSON backup. Both print previews include specializations with a skill still in the ledger. If a package or allocation change removes the skill, the dossier marks its specialization **Needs review**. Restore the skill to reactivate the bonus, or remove the specialization to release its CP.
 
+## Record starting motivations
+
+Under **Motivations**, enter a short phrase for each personal choice and select **Support** or **Oppose**. A named faction supplies a default faction motivation and leaves two personal slots. Enter a signed phrase in **Faction motivation** to override the default. With no faction or **Factionless**, you can enter three personal motivations.
+
+You can save a draft with empty slots. If the ego joins a faction, an existing third personal motivation stays in the draft and returns when the ego has no faction. Active motivations appear in the dossier and player print preview. JSON backups preserve the choices.
+
 ## Choose ego traits
 
 Under **Ego traits**, choose a supported trait or level. Positive traits spend CP. Negative traits increase the available budget by up to 6 CP. Select **None** to remove a trait and recalculate the budget.

@@ -20,6 +20,8 @@ Allocations to custom Active fields carry their category, display name, and link
 
 Package Active field slots use the same skill IDs as transfers and purchases. A named Hardware or Pilot field resolves to a sample ID when one matches, or to a custom ID with the same category’s aptitude. Blank Active slots track pending points separately from blank Know slots.
 
+Personal motivations use three optional ego slots with a stance and text. A named faction supplies the first displayed motivation from its stored override or the default interests label. It reserves the third personal slot for use without a faction. Legacy Factionless text is read into the third slot and moves there when the draft is saved. The player print layout shows the currently active choices.
+
 Ego Flex and language choices are optional ego fields in drafts and JSON backups. Older drafts default to one ego Flex and an empty language list. The CP budget derives Flex cost from the selected total and language cost from the current Cognition and Intuition scores. Flex in this calculation belongs to the ego and carries across sleeves.
 
 Reputation is an optional map from supported network IDs to starting scores. Drafts preserve explicit zeroes and omitted networks. The editor and backup validation share the 0–80 range. The CP budget derives cost from the total above the 100 free points and shows the balance of each five-point purchase.

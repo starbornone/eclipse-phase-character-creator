@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:30:27+11:00",
+  "updatedAt": "2026-11-25T12:33:43+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -224,6 +224,13 @@
       "group": "Character creation",
       "notes": "Added sourced grants and open Hardware and Pilot fields with rulebook suggestions. Verified pending points, matching field merges, cap warnings, backup validation, draft reload, and player package names.",
       "completedAt": "2026-11-25T12:30:27+11:00"
+    },
+    {
+      "id": "record-starting-motivations",
+      "title": "Record starting faction and personal motivations",
+      "group": "Character creation",
+      "notes": "Added faction defaults and overrides, support and opposition, and a third personal choice for unaffiliated egos. Verified legacy Factionless text, backup validation, saved faction changes, and player print output.",
+      "completedAt": "2026-11-25T12:33:43+11:00"
     }
   ]
 }
