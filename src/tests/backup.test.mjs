@@ -73,6 +73,16 @@ test('round-trip partial reputation and validate its keys and starting scores', 
   }
 });
 
+test('round-trip specializations and reject unsupported IDs and duplicate names within a skill', () => {
+  const first = { skillId: 'active:Fray', name: 'Full Defense' };
+  const second = { skillId: 'know:astronomy', name: 'Comets' };
+  const withChoices = (specializations) => ({ ...draft, ego: { ...ego, specializations } });
+  const valid = withChoices([first, second]);
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  assert.throws(() => previewBackup(encodeBackup([withChoices([first, { ...first, name: ' full  defense ' }])])), /specializations must be unique/);
+  assert.throws(() => previewBackup(encodeBackup([withChoices([{ ...first, skillId: 'actives:Fray' }])])), /supported skill ID/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

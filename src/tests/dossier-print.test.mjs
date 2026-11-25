@@ -65,3 +65,13 @@ test('include recorded reputation in both print layouts', () => {
     assert.equal(buildPrintableDossier(draft, audience, []).reputation, undefined);
   }
 });
+
+test('print applicable skill specializations and omit missing choices', () => {
+  const specializations = [{ skillId: 'active:Perceive', name: 'Visual' }, { skillId: 'know:astronomy', name: 'Comets' }];
+  const specialized = { ...draft, ego: { ...draft.ego, specializations } };
+  for (const audience of ['player', 'gm']) {
+    assert.deepEqual(buildPrintableDossier(specialized, audience, []).specializations, [
+      { ...specializations[0], skillName: 'Perceive', target: 40, missingSkill: false },
+    ]);
+  }
+});

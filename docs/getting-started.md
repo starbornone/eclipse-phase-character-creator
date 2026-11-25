@@ -57,6 +57,12 @@ To buy points, choose **Customization Points (CP)** as the **Point source**, the
 
 If an edit makes an allocation invalid, the ledger labels it **Needs review** and skips it. Purchases awaiting review still count toward CP spent. Remove the entry or revise the underlying choices. The Active list includes rulebook sample fields. Psi, custom Active fields, and trait exceptions are planned.
 
+## Add a skill specialization
+
+Under **Skill specializations**, choose a skill from the ledger, enter a name, and select **Add specialization**. Each specialization costs 1 CP. The displayed target includes +10 for situations where it applies. The regular skill total still uses the standard cap of 80.
+
+Save the draft to keep the choice in the dossier and JSON backup. Both print previews include specializations with a skill still in the ledger. If a package or allocation change removes the skill, the dossier marks its specialization **Needs review**. Restore the skill to reactivate the bonus, or remove the specialization to release its CP.
+
 ## Compare morph profiles
 
 Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.

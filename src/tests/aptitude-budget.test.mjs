@@ -95,3 +95,9 @@ test('spend reputation points above 100 in five-point batches from the shared CP
   assert.deepEqual(combined.reputationBudget, { total: 106, freeRemaining: 0, cp: 2, purchasedRemaining: 4 });
   assert.deepEqual([combined.totalCp, combined.baseCpLeft], [9, 11]);
 });
+
+test('reserve one CP per specialization alongside other customization', () => {
+  const specializations = [{ skillId: 'active:Fray', name: 'Full Defense' }, { skillId: 'know:astronomy', name: 'Comets' }];
+  const budget = evaluateAptitudeBudget({ ...factotum, cog: 18 }, [], { egoFlex: 2, specializations });
+  assert.deepEqual([budget.specializationCp, budget.totalCp, budget.baseCpLeft], [2, 7, 13]);
+});

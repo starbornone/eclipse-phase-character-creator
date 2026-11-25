@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:08:46+11:00",
+  "updatedAt": "2026-11-25T12:14:15+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -189,6 +189,13 @@
       "group": "Character creation",
       "notes": "Added seven core networks, the 100 free points, the 80-point cap per network, and extra reputation spending in the shared CP budget. Verified draft and backup persistence and both print previews.",
       "completedAt": "2026-11-25T12:08:46+11:00"
+    },
+    {
+      "id": "buy-skill-specializations",
+      "title": "Buy skill specializations with CP",
+      "group": "Character creation",
+      "notes": "Added named specialties for ledger skills, one CP per choice, and a separate situational target. Verified the standard cap, duplicate checks, backups, reload, print previews, and removal refunds.",
+      "completedAt": "2026-11-25T12:14:15+11:00"
     }
   ]
 }
