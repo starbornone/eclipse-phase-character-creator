@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:19:17+11:00",
+  "updatedAt": "2026-11-25T12:22:39+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -203,6 +203,13 @@
       "group": "Character creation",
       "notes": "Added six sourced ego traits with levels, positive costs, and the six-CP negative trait bonus cap. Verified changing the available budget, rejecting excess bonuses, backups, reload, and both print previews.",
       "completedAt": "2026-11-25T12:19:17+11:00"
+    },
+    {
+      "id": "add-custom-active-skill-fields",
+      "title": "Add custom Active skill fields to the starting ledger",
+      "group": "Character creation",
+      "notes": "Added custom Hardware, Medicine, Pilot, and Exotic fields with linked aptitudes, transfers, purchases, and specializations. Verified backup validation, draft reload, and a custom specialization in print preview.",
+      "completedAt": "2026-11-25T12:22:39+11:00"
     }
   ]
 }

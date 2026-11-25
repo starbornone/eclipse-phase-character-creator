@@ -16,6 +16,8 @@ An ego may also store ordered skill-point transfers. The calculation replays eac
 
 Skill purchases are stored as a separate ordered list and applied after package transfers. The ledger keeps purchased and package points separate and checks their combined total against the skill cap. The shared CP budget counts all saved purchase points in groups of five and adds aptitude costs. A purchase awaiting review still reserves its points until the player removes it or resolves the issue.
 
+Allocations to custom Active fields carry their category, display name, and linked aptitude. A normalized category and field name identify the ledger row and its specializations. Incoming allocations preserve the field definition so a later purchase can still establish the row after an earlier transfer is removed.
+
 Ego Flex and language choices are optional ego fields in drafts and JSON backups. Older drafts default to one ego Flex and an empty language list. The CP budget derives Flex cost from the selected total and language cost from the current Cognition and Intuition scores. Flex in this calculation belongs to the ego and carries across sleeves.
 
 Reputation is an optional map from supported network IDs to starting scores. Drafts preserve explicit zeroes and omitted networks. The editor and backup validation share the 0–80 range. The CP budget derives cost from the total above the 100 free points and shows the balance of each five-point purchase.

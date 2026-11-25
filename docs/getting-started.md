@@ -55,7 +55,9 @@ Under **Allocate skill points**, select a source skill and destination, enter a 
 
 To buy points, choose **Customization Points (CP)** as the **Point source**, then select **Add purchase**. Each CP buys up to five points across skills. The budget shows any points still available from a partly allocated batch. **Remove** reverses a transfer or purchase and recalculates the ledger and budget. Save the draft to keep your allocations.
 
-If an edit makes an allocation invalid, the ledger labels it **Needs review** and skips it. Purchases awaiting review still count toward CP spent. Remove the entry or revise the underlying choices. The Active list includes rulebook sample fields. Psi, custom Active fields, and trait exceptions are planned.
+If an edit makes an allocation invalid, the ledger labels it **Needs review** and skips it. Purchases awaiting review still count toward CP spent. Remove the entry or revise the underlying choices. Psi and trait exceptions are planned.
+
+For a field beyond the rulebook samples, choose **Custom Active field…** as the destination. Choose Hardware, Medicine, Pilot, or Exotic Skill and enter a field name. Hardware and Medicine use Cognition, Pilot uses Reflexes, and Exotic Skill uses the aptitude agreed with the GM. You can create the field with a transfer of Active package points or a CP purchase, then specialize in it from the ledger.
 
 ## Add a skill specialization
 

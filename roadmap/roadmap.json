@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T12:19:17+11:00",
+  "updatedAt": "2026-11-25T12:22:39+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -19,7 +19,7 @@
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Core aptitude templates, a sourced starter package set, skill totals, point transfers, and shared CP spending on aptitude increases, skills, ego Flex, languages, reputation, and skill specializations are implemented. The starter ego trait set applies costs and capped bonuses. Add trait exceptions and broader trait coverage, Psi and custom Active fields, and coverage for additional core packages, motivations, and equipment."
+      "notes": "Core aptitude templates, a sourced starter package set, skill totals, point transfers, custom Active fields, and shared CP spending on aptitude increases, skills, ego Flex, languages, reputation, and skill specializations are implemented. The starter ego trait set applies costs and capped bonuses. Add trait exceptions, broader trait coverage, Psi, and coverage for additional core packages, motivations, and equipment."
     },
     {
       "id": "browse-and-compare-morphs",
