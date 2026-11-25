@@ -1,4 +1,5 @@
-import { Fingerprint, Pencil, Printer, Repeat2 } from 'lucide-react';
+import { Download, Fingerprint, Pencil, Printer, Repeat2 } from 'lucide-react';
+import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
@@ -56,8 +57,12 @@ export function Dossier({ draft, onEdit, onResleeve }: { draft: CharacterDraft; 
           <button type="button" className="button primary" onClick={onEdit}><Pencil size={17} aria-hidden="true" /> Edit ego</button>
           {sleeve && <button type="button" className="button secondary" onClick={onResleeve}><Repeat2 size={17} aria-hidden="true" /> Resleeve</button>}
           <button type="button" className="button secondary" onClick={() => window.print()}><Printer size={17} aria-hidden="true" /> Print dossier</button>
+          <button type="button" className="button secondary" aria-describedby="backup-content-note" onClick={() => downloadBackup([draft], 'eclipse-phase-ego.json')}>
+            <Download size={17} aria-hidden="true" /> Export JSON
+          </button>
         </div>
       </header>
+      <p className="rules-note screen-only dossier-backup-note" id="backup-content-note">JSON backups include all saved fields, including sleeve notes.</p>
       <div className="dossier-grid">
         <Card className="editor-panel">
           <h2><Fingerprint size={21} aria-hidden="true" /> Ego</h2>

@@ -38,6 +38,22 @@ export async function loadDrafts() {
 
 export class DraftConflictError extends Error {}
 
+export async function addDraftCopies(drafts: CharacterDraft[]) {
+  const database = await openDatabase();
+  return new Promise<void>((resolve, reject) => {
+    const transaction = database.transaction(storeName, 'readwrite');
+    const store = transaction.objectStore(storeName);
+    transaction.oncomplete = () => resolve();
+    transaction.onabort = () => reject(transaction.error ?? new Error('Restore transaction aborted'));
+    try {
+      for (const draft of drafts) store.add(draft);
+    } catch (error) {
+      transaction.abort();
+      reject(error);
+    }
+  });
+}
+
 export async function saveDraft(draft: CharacterDraft, previousRevision: number | undefined) {
   const database = await openDatabase();
   return new Promise<void>((resolve, reject) => {

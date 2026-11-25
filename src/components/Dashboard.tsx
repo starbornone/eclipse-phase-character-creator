@@ -1,4 +1,5 @@
-import { ChevronRight, Fingerprint, Layers3, Plus } from 'lucide-react';
+import { ChevronRight, Download, Fingerprint, Layers3, Plus, Upload } from 'lucide-react';
+import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
@@ -13,11 +14,12 @@ interface DashboardProps {
   onCreate: () => void;
   onOpen: (draft: CharacterDraft) => void;
   onCatalog: () => void;
+  onImport: () => void;
 }
 
 const editedDate = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
-export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpen, onCatalog }: DashboardProps) {
+export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpen, onCatalog, onImport }: DashboardProps) {
   return (
     <>
       <section className="hero" aria-labelledby="dashboard-title">
@@ -73,7 +75,18 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
               </ul>
             )}
           </Card>
+          <div className="actions">
+            <button type="button" className="button secondary" disabled={loading || loadError} onClick={onImport}>
+              <Upload size={17} aria-hidden="true" /> Import JSON
+            </button>
+            {drafts.length > 0 && (
+              <button type="button" className="button secondary" aria-describedby="backup-content-note" onClick={() => downloadBackup(drafts, 'eclipse-phase-drafts.json')}>
+                <Download size={17} aria-hidden="true" /> Export all drafts
+              </button>
+            )}
+          </div>
           <p className="storage-note"><Layers3 size={16} aria-hidden="true" /> Drafts are saved in this browser.</p>
+          {drafts.length > 0 && <p className="rules-note" id="backup-content-note">JSON backups include all saved fields, including sleeve notes.</p>}
         </section>
         <section aria-labelledby="morph-preview">
           <div className="section-heading">

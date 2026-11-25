@@ -1,5 +1,6 @@
 import { Boxes, CircleDot, HardDrive, LayoutGrid, Orbit } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { BackupRestore } from '../components/BackupRestore.tsx';
 import { Dashboard } from '../components/Dashboard.tsx';
 import { Dossier } from '../components/Dossier.tsx';
 import { DraftEditor } from '../components/DraftEditor.tsx';
@@ -9,7 +10,7 @@ import { loadDrafts } from '../lib/storage/drafts.ts';
 import type { CharacterDraft } from '../types/character.ts';
 
 type Screen =
-  | { name: 'dashboard' | 'catalog' }
+  | { name: 'dashboard' | 'catalog' | 'restore' }
   | { name: 'editor'; draft?: CharacterDraft }
   | { name: 'resleeve'; draft: CharacterDraft }
   | { name: 'dossier'; draft: CharacterDraft };
@@ -75,6 +76,14 @@ export default function App() {
     setScreen({ name: 'dossier', draft });
   }
 
+  function handleRestored(restored: CharacterDraft[]) {
+    setDrafts((records) => [...restored, ...records].sort((first, second) => second.updatedAt.localeCompare(first.updatedAt)));
+    setSaving(false);
+    setNotice(`Restored ${restored.length} ${restored.length === 1 ? 'draft' : 'drafts'}.`);
+    focusOnNavigation.current = true;
+    setScreen({ name: 'dashboard' });
+  }
+
   return (
     <div className="app">
       <a className="skip-link" href="#main">Skip to content</a>
@@ -109,9 +118,13 @@ export default function App() {
               onCreate={() => navigate({ name: 'editor' })}
               onOpen={(draft) => navigate({ name: 'dossier', draft })}
               onCatalog={() => navigate({ name: 'catalog' })}
+              onImport={() => navigate({ name: 'restore' })}
             />
           )}
           {screen.name === 'catalog' && <MorphCatalog />}
+          {screen.name === 'restore' && (
+            <BackupRestore onCancel={() => navigate({ name: 'dashboard' })} onRestored={handleRestored} onSaving={setSaving} />
+          )}
           {screen.name === 'editor' && (
             <DraftEditor
               key={screen.draft?.ego.id ?? 'new'}

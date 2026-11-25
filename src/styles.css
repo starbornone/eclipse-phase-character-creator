@@ -319,6 +319,21 @@ textarea { resize: vertical; }
 .dossier-heading .actions { margin-top: 0; }
 .dossier-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .dossier-grid p { overflow-wrap: anywhere; }
+.dossier-backup-note { margin: 0 0 1rem; }
+.backup-panel { max-width: 40rem; }
+.backup-file { display: grid; gap: .45rem; font-weight: 600; }
+.backup-file input { max-width: 100%; font-weight: 400; }
+.backup-file input::file-selector-button {
+  margin-right: .65rem;
+  padding: .4rem .65rem;
+  border: 1px solid #31455f;
+  border-radius: .35rem;
+  background: #162439;
+  cursor: pointer;
+}
+.backup-preview { margin-top: 1rem; }
+.backup-preview ul { margin-top: .55rem; }
+.backup-preview li { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .3rem .65rem; padding-block: .55rem; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
 .resleeve-fields { display: grid; gap: 1rem; min-width: 0; }
 .resleeve-fields .comparison { margin-top: 0; min-width: 0; }
 .sleeve-history { margin-top: 1rem; }
