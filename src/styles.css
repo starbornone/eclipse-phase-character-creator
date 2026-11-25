@@ -341,6 +341,40 @@ textarea { resize: vertical; }
 .sleeve-history-heading { display: flex; align-items: baseline; flex-wrap: wrap; gap: .3rem .7rem; }
 .sleeve-history-heading .caption { color: var(--muted); }
 .sleeve-history-heading time { color: var(--muted); font-size: .875rem; }
+.print-options { max-width: 48rem; margin-bottom: 1rem; }
+.print-options fieldset { display: flex; flex-wrap: wrap; gap: .4rem 1rem; }
+.print-options fieldset + fieldset { margin-top: .8rem; }
+.print-options legend { margin-bottom: .35rem; font-weight: 650; }
+.print-options label { display: inline-flex; align-items: center; gap: .4rem; min-height: 2rem; }
+.print-options input { accent-color: var(--accent); }
+.print-sheet {
+  --line: #adb6c0;
+  --muted: #3d4b59;
+  --accent: #182b3e;
+  max-width: 48rem;
+  padding: clamp(1rem, 4vw, 2.25rem);
+  border: 1px solid #ccd3da;
+  border-radius: .45rem;
+  background: #f8fafb;
+  color: #121b24;
+  overflow-wrap: anywhere;
+}
+.print-sheet > header { padding-bottom: .6rem; border-bottom: 2px solid var(--line); }
+.print-sheet h2 { font-size: clamp(1.8rem, 4vw, 2.65rem); line-height: 1.05; }
+.print-sheet h3 { font-size: 1.12rem; margin-bottom: .3rem; }
+.print-sheet section { margin-top: 1rem; }
+.print-sheet table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .9rem; }
+.print-sheet :is(th, td) { padding: .3rem .25rem; border-bottom: 1px solid var(--line); text-align: right; }
+.print-sheet tr > :first-child { text-align: left; }
+.print-sheet a { text-decoration: underline; }
+.print-gm section { margin-top: .75rem; }
+.print-checks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .35rem .8rem; }
+.print-checks div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .1rem .45rem; padding-block: .2rem; border-bottom: 1px solid var(--line); }
+.print-checks dd { font-variant-numeric: tabular-nums; font-weight: 650; }
+.print-history li { border-top: 1px solid var(--line); padding: .35rem 0; }
+.print-history h4 { font-weight: 650; }
+.print-history h4 span { font-weight: 400; }
+.print-credit { margin-top: 1rem; padding-top: .55rem; border-top: 1px solid var(--line); }
 .concept-text { white-space: pre-wrap; margin-top: .3rem; }
 .assigned-morph { display: flex; gap: .6rem; align-items: center; margin: .55rem 0; }
 .dossier-stats { margin-top: 1rem; }
@@ -377,6 +411,7 @@ textarea { resize: vertical; }
   .hero { background-image: linear-gradient(90deg, #091120 0%, #091120dc 37%, #09112065 100%), url("./assets/orbital-habitat.jpg"); }
   .dashboard-grid, .catalog-grid, .dossier-grid { grid-template-columns: 1fr; }
   .catalog-filters { grid-template-columns: 1fr; }
+  .print-checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .record-row time { display: none; }
   .record-row { grid-template-columns: auto minmax(0, 1fr) auto; }
   .editor-panel { padding: .85rem; }
@@ -385,6 +420,7 @@ textarea { resize: vertical; }
 }
 
 @media print {
+  @page { margin: 14mm; }
   :root { color-scheme: light; color: #111; background: white; --line: #888; --muted: #333; --accent: #111; }
   .app, .workspace { display: block; min-height: 0; }
   .screen-only, .skip-link { display: none !important; }
@@ -394,4 +430,10 @@ textarea { resize: vertical; }
   .dossier-grid { grid-template-columns: 1fr 1fr; }
   .dossier-heading h1 { font-size: 28pt; }
   .morph-icon { background: white; color: black; border-color: #888; }
+  .print-sheet { max-width: none; padding: 0; border: 0; border-radius: 0; background: white; color: #111; --line: #999; --muted: #333; --accent: #111; }
+  .print-sheet h2 { font-size: 26pt; }
+  .print-sheet :is(header, h3, h4) { break-after: avoid; }
+  .print-sheet :is(tr, .print-checks div) { break-inside: avoid; }
+  .print-gm { font-size: 10pt; }
+  .print-gm .print-checks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

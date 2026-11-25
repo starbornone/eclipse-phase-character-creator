@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { BackupRestore } from '../components/BackupRestore.tsx';
 import { Dashboard } from '../components/Dashboard.tsx';
 import { Dossier } from '../components/Dossier.tsx';
+import { DossierPrintPreview } from '../components/DossierPrintPreview.tsx';
 import { DraftEditor } from '../components/DraftEditor.tsx';
 import { MorphCatalog, QuickStartCredit } from '../components/MorphCatalog.tsx';
 import { ResleeveEditor } from '../components/ResleeveEditor.tsx';
@@ -13,6 +14,7 @@ type Screen =
   | { name: 'dashboard' | 'catalog' | 'restore' }
   | { name: 'editor'; draft?: CharacterDraft }
   | { name: 'resleeve'; draft: CharacterDraft }
+  | { name: 'print'; draft: CharacterDraft }
   | { name: 'dossier'; draft: CharacterDraft };
 
 export default function App() {
@@ -149,7 +151,11 @@ export default function App() {
               draft={screen.draft}
               onEdit={() => navigate({ name: 'editor', draft: screen.draft })}
               onResleeve={() => navigate({ name: 'resleeve', draft: screen.draft })}
+              onPrint={() => navigate({ name: 'print', draft: screen.draft })}
             />
+          )}
+          {screen.name === 'print' && (
+            <DossierPrintPreview draft={screen.draft} onBack={() => navigate({ name: 'dossier', draft: screen.draft })} />
           )}
         </main>
         <footer className="screen-only">

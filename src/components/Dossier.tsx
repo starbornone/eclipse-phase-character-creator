@@ -40,7 +40,12 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
   );
 }
 
-export function Dossier({ draft, onEdit, onResleeve }: { draft: CharacterDraft; onEdit: () => void; onResleeve: () => void }) {
+export function Dossier({ draft, onEdit, onResleeve, onPrint }: {
+  draft: CharacterDraft;
+  onEdit: () => void;
+  onResleeve: () => void;
+  onPrint: () => void;
+}) {
   const sleeve = activeSleeve(draft);
   const morph = findSampleMorph(sleeve?.morphDefinitionId);
   const values = traceAptitudeChecks(draft.ego.aptitudes);
@@ -56,7 +61,7 @@ export function Dossier({ draft, onEdit, onResleeve }: { draft: CharacterDraft; 
         <div className="actions screen-only">
           <button type="button" className="button primary" onClick={onEdit}><Pencil size={17} aria-hidden="true" /> Edit ego</button>
           {sleeve && <button type="button" className="button secondary" onClick={onResleeve}><Repeat2 size={17} aria-hidden="true" /> Resleeve</button>}
-          <button type="button" className="button secondary" onClick={() => window.print()}><Printer size={17} aria-hidden="true" /> Print dossier</button>
+          <button type="button" className="button secondary" onClick={onPrint}><Printer size={17} aria-hidden="true" /> Print dossier</button>
           <button type="button" className="button secondary" aria-describedby="backup-content-note" onClick={() => downloadBackup([draft], 'eclipse-phase-ego.json')}>
             <Download size={17} aria-hidden="true" /> Export JSON
           </button>
