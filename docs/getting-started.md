@@ -33,7 +33,9 @@ The budget shows the aptitude share of the core CP pool and flags scores outside
 
 In **Create ego** or **Edit ego**, pick a supported background, career, interest, or faction under **Core creation packages**. Each card lists the package’s skill points and source page. Enter optional Know fields and a faction motivation, or leave those entries open while you draft. Choose **Factionless** to enter a Know field of your choice.
 
-Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. Combining grants, adding aptitudes, and reallocating points under the starting skill cap remain part of the full builder.
+Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
+
+Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted as unassigned points. The ledger flags totals above the standard starting cap of 80. Point reallocations are a later step in the builder.
 
 ## Compare morph profiles
 

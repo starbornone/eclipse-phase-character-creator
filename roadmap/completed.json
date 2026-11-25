@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:34:16+11:00",
+  "updatedAt": "2026-11-25T11:37:38+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -133,6 +133,13 @@
       "group": "Character creation",
       "notes": "Added a sourced set of background, career, interest, and faction choices, with individual skill grants, optional Know fields, and faction motivation. Verified persistence, player preview, and backup validation.",
       "completedAt": "2026-11-25T11:34:16+11:00"
+    },
+    {
+      "id": "calculate-starting-skill-ledger",
+      "title": "Calculate starting skills from package grants and aptitudes",
+      "group": "Character creation",
+      "notes": "Summed matching grants with source labels, added linked bases and doubled Fray and Perceive, tracked unnamed Know points, and displayed totals above the standard cap. Verified Art classification and the saved ledger after reload.",
+      "completedAt": "2026-11-25T11:37:38+11:00"
     }
   ]
 }

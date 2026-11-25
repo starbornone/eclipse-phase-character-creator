@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status:** Early prototype. Start an ego with core aptitude templates and selected starter packages, compare Quick-Start morph profiles, resleeve with history, print player or GM views, and export or restore JSON backups.
+> **Status:** Early prototype. Start an ego with core aptitude templates and selected packages, review starting skill totals, compare and resleeve Quick-Start morphs, and print or back up your draft.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
