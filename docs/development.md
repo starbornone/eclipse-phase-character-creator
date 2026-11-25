@@ -18,6 +18,10 @@ The root [README](../README.md) holds the product brief. [Architecture](architec
 3. Run the test and build commands for source changes, then follow the local [first sleeve walkthrough](getting-started.md#create-a-first-sleeve). Review `git diff --check` and validate links and roadmap JSON for documentation changes.
 4. Update the affected docs and move any finished roadmap item in the same change.
 
+## Serve browser routes
+
+Vite dev and preview serve the app shell for direct visits to workspace paths. When deploying `dist/`, configure the static host to serve `index.html` for application paths without changing their URLs. Serve existing files such as `/favicon.png` and `/assets/*` directly. After deploying, open `/morphs` and refresh a nested ego URL to verify the host fallback.
+
 ## Verification as implementation lands
 
 | Layer | Scenarios to cover |

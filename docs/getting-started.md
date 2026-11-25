@@ -13,6 +13,8 @@ npm run dev
 
 Open the local URL Vite prints. The dashboard should show **My egos**, the **Create ego** action, and the sample morph library. Drafts belong to this browser profile and origin. If Vite selects another port, use the original URL to reopen drafts created there.
 
+You can bookmark a dossier, editor, or print link and reopen it in the browser profile and origin where the ego was saved. Browser Back and Forward follow the screens you visited.
+
 If npm cannot find `package.json`, switch to the checkout root. If installation fails, check the Node version and registry connectivity. If local drafts cannot open, check that the browser permits site storage for the local origin. Use localhost for development so the browser can generate record ids in a secure context.
 
 ## Create a first sleeve

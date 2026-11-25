@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:43:05+11:00",
+  "updatedAt": "2026-11-25T11:48:19+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -154,6 +154,13 @@
       "group": "Character creation",
       "notes": "Added ordered transfers with source balances, Know restrictions, destination cap checks, and revalidation after aptitude or package changes. Verified adding, rejecting, saving, reopening, and removing transfers.",
       "completedAt": "2026-11-25T11:41:39+11:00"
+    },
+    {
+      "id": "use-url-based-workspace-routes",
+      "title": "Use browser routes for workspace screens",
+      "group": "Workspace",
+      "notes": "Added direct URLs for the morph library, backup restore, and ego workflows. Verified direct links, refresh, draft save, Back and Forward, unsaved-edit protection, and recovery for missing pages and egos.",
+      "completedAt": "2026-11-25T11:48:19+11:00"
     }
   ]
 }

@@ -9,7 +9,7 @@
 - [README.md](README.md) defines the product, licensing policy, planned workflows, and milestones.
 - [docs/](docs/overview.md) covers contributor onboarding, architecture, verification, and decisions.
 - [roadmap/](roadmap/roadmap.json) contains work to do, completed items, and cancelled items.
-- `src/main.tsx` mounts the React app. `src/app/App.tsx` handles screen navigation, `src/components/` holds the workspace UI, `src/rules/` holds the sample dataset and calculations, `src/lib/storage/` handles IndexedDB, and `src/tests/` contains calculation checks.
+- `src/main.tsx` mounts React Router. `src/app/routes.tsx` maps URLs to screens, and `src/app/App.tsx` supplies the workspace shell and data. `src/components/` holds the UI, `src/rules/` holds datasets and calculations, `src/lib/storage/` handles IndexedDB, and `src/tests/` contains calculation checks.
 
 ## Working agreements
 
