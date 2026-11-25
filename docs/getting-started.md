@@ -45,11 +45,11 @@ Saved scores appear in the dossier, both print layouts, and JSON backups.
 
 ## Choose core creation packages
 
-In **Create ego** or **Edit ego**, pick a supported background, career, interest, or faction under **Core creation packages**. Each card lists the package’s skill points and source page. Enter optional Know fields and a faction motivation, or leave those entries open while you draft. Choose **Factionless** to enter a Know field of your choice.
+In **Create ego** or **Edit ego**, pick a supported background, career, interest, or faction under **Core creation packages**. Each card lists the package’s skill points and source page. When a package asks for a Hardware or Pilot field, choose a suggested name or enter your own. You can leave Active and Know fields blank while you draft. Choose **Factionless** to enter a Know field of your choice.
 
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
-Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted as unassigned points. The ledger flags totals above the standard starting cap of 80.
+Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted separately as unassigned Active or Know points. Matching fields from different packages combine in the ledger, which flags totals above the starting cap.
 
 Under **Allocate skill points**, select a source skill and destination, enter a positive number of points, and select **Add transfer**. For a new destination, choose a skill from the **New Active skill** group or select **New Know field…** and enter a name. Select **Art field (Intuition)** to use Intuition for the new field. Active package points can move to either skill type. Know package points can move to another Know skill. Destination totals must stay at or below 80.
 

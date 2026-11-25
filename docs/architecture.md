@@ -18,6 +18,8 @@ Skill purchases are stored as a separate ordered list and applied after package 
 
 Allocations to custom Active fields carry their category, display name, and linked aptitude. A normalized category and field name identify the ledger row and its specializations. Incoming allocations preserve the field definition so a later purchase can still establish the row after an earlier transfer is removed.
 
+Package Active field slots use the same skill IDs as transfers and purchases. A named Hardware or Pilot field resolves to a sample ID when one matches, or to a custom ID with the same category’s aptitude. Blank Active slots track pending points separately from blank Know slots.
+
 Ego Flex and language choices are optional ego fields in drafts and JSON backups. Older drafts default to one ego Flex and an empty language list. The CP budget derives Flex cost from the selected total and language cost from the current Cognition and Intuition scores. Flex in this calculation belongs to the ego and carries across sleeves.
 
 Reputation is an optional map from supported network IDs to starting scores. Drafts preserve explicit zeroes and omitted networks. The editor and backup validation share the 0–80 range. The CP budget derives cost from the total above the 100 free points and shows the balance of each five-point purchase.

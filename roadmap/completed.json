@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:27:19+11:00",
+  "updatedAt": "2026-11-25T12:30:27+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -217,6 +217,13 @@
       "group": "Character creation",
       "notes": "Added the two-CP trait and the 90-point cap for one chosen skill. Verified transfer and purchase checks, validation on removal, backup preservation, draft reload, and the print preview.",
       "completedAt": "2026-11-25T12:27:19+11:00"
+    },
+    {
+      "id": "add-space-creation-packages",
+      "title": "Add Colonist, Enclaver, Explorer, and Spacer packages",
+      "group": "Character creation",
+      "notes": "Added sourced grants and open Hardware and Pilot fields with rulebook suggestions. Verified pending points, matching field merges, cap warnings, backup validation, draft reload, and player package names.",
+      "completedAt": "2026-11-25T12:30:27+11:00"
     }
   ]
 }
