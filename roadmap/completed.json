@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:59:38+11:00",
+  "updatedAt": "2026-11-25T12:04:48+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -175,6 +175,13 @@
       "group": "Character creation",
       "notes": "Added skill purchases in five-point batches with a shared aptitude and skill CP budget. Verified split purchases, cap warnings, draft and backup persistence, and CP refunds on removal.",
       "completedAt": "2026-11-25T11:59:38+11:00"
+    },
+    {
+      "id": "add-ego-flex-and-languages",
+      "title": "Add ego Flex and languages to the shared CP budget",
+      "group": "Character creation",
+      "notes": "Added the ego Flex cap, aptitude-based language allowance, both CP costs, and dossier and print preview output. Verified cost changes, duplicate handling, persistence, and older draft defaults.",
+      "completedAt": "2026-11-25T12:04:48+11:00"
     }
   ]
 }
