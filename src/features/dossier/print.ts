@@ -33,6 +33,7 @@ export function buildPrintableDossier(
     languages: draft.ego.languages ?? [],
     reputation: draft.ego.reputation,
     specializations,
+    traits: draft.ego.traits,
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
     hasSleeve: Boolean(sleeve),

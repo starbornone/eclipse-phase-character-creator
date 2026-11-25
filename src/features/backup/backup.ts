@@ -3,8 +3,11 @@ import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
+import { evaluateEgoTraitBudget } from '../../rules/calculations/ego-traits.ts';
 import { isSpecializationSkillId, normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
+import { findEgoTrait } from '../../rules/datasets/ego-traits.ts';
+import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
 import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
@@ -116,6 +119,26 @@ function readReputation(value: unknown, path: string) {
   return scores;
 }
 
+function readEgoTraits(value: unknown, path: string) {
+  const traits = list(value, path).map((entry, index) => {
+    const field = `${path}[${index}]`;
+    const choice = object(entry, field);
+    const id = string(choice.id, `${field}.id`, true);
+    const definition = findEgoTrait(id);
+    if (!definition) badField(`${field}.id`, 'a supported ego trait');
+    const { level } = choice;
+    if (typeof level !== 'number' || !Number.isInteger(level) || level < 1 || level > definition.cpByLevel.length) {
+      badField(`${field}.level`, 'a supported level for this trait');
+    }
+    return { id, level };
+  });
+  ensureUnique(traits.map(({ id }) => id), path);
+  if (evaluateEgoTraitBudget(traits).bonus > coreAptitudeRules.maximumTraitBonus) {
+    badField(path, `within the ${coreAptitudeRules.maximumTraitBonus} CP limit for negative traits`);
+  }
+  return traits;
+}
+
 function readEgo(value: unknown, path: string): Ego {
   const ego = object(value, path);
   const fields = object(ego.aptitudes, `${path}.aptitudes`);
@@ -179,6 +202,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),
     ...(specializations === undefined ? {} : { specializations }),
+    ...(ego.traits === undefined ? {} : { traits: readEgoTraits(ego.traits, `${path}.traits`) }),
   };
 }
 

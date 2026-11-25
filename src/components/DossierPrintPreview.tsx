@@ -6,6 +6,7 @@ import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
+import { EgoTraitSummary } from './EgoTraits.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
@@ -116,6 +117,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           </p>
         </section>
         <ReputationSummary scores={dossier.reputation} />
+        <EgoTraitSummary choices={dossier.traits} />
         <SkillSpecializations entries={dossier.specializations} />
         {dossier.history.length > 0 && (
           <section className="print-history">

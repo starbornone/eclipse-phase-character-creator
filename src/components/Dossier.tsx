@@ -8,6 +8,7 @@ import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
+import { EgoTraitSummary } from './EgoTraits.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
@@ -80,6 +81,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
           <PackageSummary packages={draft.ego.packages} />
           {draft.ego.packages && <CorePackageCredit />}
           <ReputationSummary scores={draft.ego.reputation} />
+          <EgoTraitSummary choices={draft.ego.traits} />
         </Card>
         <Card className="editor-panel">
           <h2>Morph</h2>

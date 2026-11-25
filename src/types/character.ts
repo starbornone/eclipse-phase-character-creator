@@ -42,6 +42,11 @@ export interface SkillSpecialization {
   name: string;
 }
 
+export interface EgoTraitChoice {
+  id: string;
+  level: number;
+}
+
 export interface Ego {
   id: string;
   name: string;
@@ -56,6 +61,7 @@ export interface Ego {
   skillTransfers?: SkillPointTransfer[];
   skillPurchases?: SkillPointPurchase[];
   specializations?: SkillSpecialization[];
+  traits?: EgoTraitChoice[];
 }
 
 export interface MorphDefinition {

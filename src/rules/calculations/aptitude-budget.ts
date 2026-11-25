@@ -2,6 +2,7 @@ import { aptitudes } from '../../types/character.ts';
 import type { AptitudeScores, Ego, SkillPointPurchase } from '../../types/character.ts';
 import { coreAptitudeRules } from '../datasets/aptitude-templates.ts';
 import { coreCustomizationRules } from '../datasets/customization.ts';
+import { evaluateEgoTraitBudget } from './ego-traits.ts';
 import { evaluateReputation } from './reputation.ts';
 
 export function normalizeLanguage(language: string) {
@@ -24,8 +25,8 @@ export function parseLanguages(entries: readonly string[]) {
 export function evaluateAptitudeBudget(
   scores: AptitudeScores,
   skillPurchases: readonly SkillPointPurchase[] = [],
-  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation, specializations = [] }:
-    Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> = {},
+  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation, specializations = [], traits }:
+    Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations' | 'traits'> = {},
 ) {
   const entered = aptitudes.flatMap(({ id, label }) => {
     const score = scores[id];
@@ -44,7 +45,10 @@ export function evaluateAptitudeBudget(
   const languageCp = Math.max(0, languages.length - freeLanguages) * coreCustomizationRules.cpPerExtraLanguage;
   const reputationBudget = evaluateReputation(reputation);
   const specializationCp = specializations.length * coreCustomizationRules.cpPerSpecialization;
-  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp + specializationCp;
+  const traitBudget = evaluateEgoTraitBudget(traits);
+  const traitBonus = Math.min(traitBudget.bonus, coreAptitudeRules.maximumTraitBonus);
+  const availableCp = coreAptitudeRules.startingCp + traitBonus;
+  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp + specializationCp + traitBudget.cost;
 
   return {
     entered: entered.length,
@@ -58,6 +62,9 @@ export function evaluateAptitudeBudget(
     languageCp,
     reputationBudget,
     specializationCp,
+    traitBudget,
+    availableCp,
+    cpLeft: availableCp - totalCp,
     totalCp,
     purchasedSkillPoints,
     unspentPurchasedSkillPoints: skillCp * coreCustomizationRules.skillsPerCp - purchasedSkillPoints,

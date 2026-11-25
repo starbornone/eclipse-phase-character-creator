@@ -26,13 +26,13 @@ export function AptitudeTemplatePicker({ onApply }: { onApply: (scores: Aptitude
   );
 }
 
-export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, reputation, specializations, invalidReputation }:
-  Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> & {
+export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, reputation, specializations, traits, invalidReputation }:
+  Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations' | 'traits'> & {
   scores?: AptitudeScores;
   skillPurchases: SkillPointPurchase[];
   invalidReputation: boolean;
 }) {
-  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, { egoFlex, languages, reputation, specializations });
+  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, { egoFlex, languages, reputation, specializations, traits });
   return (
     <section className="aptitude-budget" aria-labelledby="aptitude-budget-title">
       <h3 id="aptitude-budget-title">Customization Point budget</h3>
@@ -46,7 +46,9 @@ export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, rep
               <div><dt>CP for languages</dt><dd>{budget.languageCp}</dd></div>
               <div><dt>CP for reputation</dt><dd>{budget.reputationBudget.cp}</dd></div>
               <div><dt>CP for specializations</dt><dd>{budget.specializationCp}</dd></div>
-              <div><dt>Total spent</dt><dd>{budget.totalCp} / {coreAptitudeRules.startingCp}</dd></div>
+              <div><dt>CP for positive traits</dt><dd>{budget.traitBudget.cost}</dd></div>
+              <div><dt>CP from negative traits</dt><dd>{budget.traitBudget.bonus} / {coreAptitudeRules.maximumTraitBonus}</dd></div>
+              <div><dt>Total spent</dt><dd>{budget.totalCp} / {budget.availableCp}</dd></div>
             </dl>
             <p className="muted">Aptitude points <strong>{budget.total} / {coreAptitudeRules.basePoints}</strong> across {budget.entered} / {aptitudes.length} scores</p>
             <p className="muted">
@@ -69,10 +71,10 @@ export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, rep
             )}
             {budget.exceedsMaximumCp ? (
               <p className="error">Spending exceeds the {coreAptitudeRules.startingCp + coreAptitudeRules.maximumTraitBonus} CP maximum, including possible trait bonuses.</p>
-            ) : budget.baseCpLeft < 0 ? (
-              <p className="error">Spending exceeds the base budget by {-budget.baseCpLeft} CP. Negative traits can add up to {coreAptitudeRules.maximumTraitBonus} CP.</p>
+            ) : budget.cpLeft < 0 ? (
+              <p className="error">Spending exceeds the available budget by {-budget.cpLeft} CP.</p>
             ) : (
-              <p className="muted">Base CP remaining <strong>{budget.baseCpLeft}</strong></p>
+              <p className="muted">CP remaining <strong>{budget.cpLeft}</strong></p>
             )}
           </>
         ) : <p className="muted">Enter valid aptitude and reputation scores to review the budget.</p>}

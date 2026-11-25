@@ -14,6 +14,7 @@ import { aptitudes } from '../types/character.ts';
 import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections } from '../types/character.ts';
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
+import { EgoTraitEditor } from './EgoTraits.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
 import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
@@ -44,6 +45,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
   const [skillPurchases, setSkillPurchases] = useState(draft?.ego.skillPurchases ?? []);
   const [specializations, setSpecializations] = useState(draft?.ego.specializations ?? []);
+  const [traits, setTraits] = useState(draft?.ego.traits ?? []);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [egoFlex, setEgoFlex] = useState<number>(draft?.ego.egoFlex ?? startingEgoFlex);
   const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
@@ -65,6 +67,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
     || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
     || JSON.stringify(specializations) !== JSON.stringify(draft?.ego.specializations ?? [])
+    || JSON.stringify(traits) !== JSON.stringify(draft?.ego.traits ?? [])
     || egoFlex !== (draft?.ego.egoFlex ?? startingEgoFlex)
     || JSON.stringify(languages) !== JSON.stringify(draft?.ego.languages ?? [])
     || reputationNetworks.some(({ id }) => (repInputs[id] ?? '') !== (draft?.ego.reputation?.[id]?.toString() ?? ''))
@@ -118,6 +121,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(skillTransfers.length ? { skillTransfers } : {}),
           ...(skillPurchases.length ? { skillPurchases } : {}),
           ...(specializations.length ? { specializations } : {}),
+          ...(traits.length ? { traits } : {}),
         },
         sleeves: firstSleeve ? [firstSleeve] : sleeves,
       };
@@ -180,6 +184,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               {issue && <p className="error" id="aptitude-error" role="alert">{issue.message}</p>}
             </Card>
             <ReputationEditor inputs={repInputs} issue={parsedRep.issue} onChange={setRepInputs} />
+            <EgoTraitEditor choices={traits} onChange={setTraits} />
             <Card className="editor-panel">
               <h2>Customization</h2>
               <div className="identity-fields">
@@ -205,6 +210,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 languages={languages}
                 reputation={parsedRep.scores}
                 specializations={specializations}
+                traits={traits}
                 invalidReputation={Boolean(parsedRep.issue)}
               />
             </Card>
