@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:05:50+11:00",
+  "updatedAt": "2026-11-25T11:09:47+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -119,6 +119,13 @@
       "group": "Resleeving and export",
       "notes": "Added player and compact GM print layouts, opt-in controls for private sleeve fields, and browser print styling. Verified privacy choices and the mobile preview. Native print pagination remains part of the accessibility and layout audit.",
       "completedAt": "2026-11-25T11:05:50+11:00"
+    },
+    {
+      "id": "apply-core-aptitude-templates",
+      "title": "Apply core aptitude templates and show their CP cost",
+      "group": "Character creation",
+      "notes": "Added the seven core templates, a live ledger for aptitude points and their share of CP, starting range and maximum warnings, and source attribution. Verified template application, redistribution, CP changes, and saving and reopening an ego in the browser.",
+      "completedAt": "2026-11-25T11:09:47+11:00"
     }
   ]
 }

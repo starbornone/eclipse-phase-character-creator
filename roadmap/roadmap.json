@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T11:05:50+11:00",
+  "updatedAt": "2026-11-25T11:09:47+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -13,13 +13,13 @@
       "id": "wireframe-core-screens",
       "title": "Draft and review the core screen wireframes",
       "group": "Discovery",
-      "notes": "Reviewed library and resleeving comparisons and both print previews, including private-field states. Review budget errors when the core package-buy workflow lands."
+      "notes": "Reviewed library and resleeving comparisons, print previews and private-field states, and aptitude range and CP warnings. Review the shared creation budget as other CP uses land."
     },
     {
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Implement the guided core package-buy path using verified rules and errata 1.4. Add package selection, skills, traits, motivations, reputation, and equipment, with tested constraints and a validation ledger."
+      "notes": "The seven core aptitude templates and aptitude CP ledger are implemented. Add verified background, career, interest, and faction packages, skills, traits, motivations, reputation, equipment, and validation of the shared budget."
     },
     {
       "id": "browse-and-compare-morphs",
