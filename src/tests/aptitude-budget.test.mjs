@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { evaluateAptitudeBudget, parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { aptitudeTemplates } from '../rules/datasets/aptitude-templates.ts';
+import { parseReputation } from '../rules/calculations/reputation.ts';
 
 const factotum = aptitudeTemplates.find(({ name }) => name === 'Factotum').scores;
 
@@ -75,4 +76,22 @@ test('normalize language names, preserve order, and flag duplicates', () => {
   assert.deepEqual(parseLanguages(['  British  Sign Language ', '', 'british sign language', 'Skandinavi\u0301ska']), {
     languages: ['British Sign Language', 'Skandinavíska'], hasDuplicates: true,
   });
+});
+
+test('preserve zero reputation and validate the per-network starting cap', () => {
+  assert.deepEqual(parseReputation({ '@-rep': '80', 'c-rep': ' ', 'i-rep': '0' }), { scores: { '@-rep': 80, 'i-rep': 0 } });
+  for (const value of ['81', '-1', '3.5', '4e1']) {
+    assert.equal(parseReputation({ 'r-rep': value }).issue.id, 'r-rep');
+  }
+});
+
+test('spend reputation points above 100 in five-point batches from the shared CP pool', () => {
+  const partial = evaluateAptitudeBudget(factotum, [], { reputation: { '@-rep': 60 } });
+  assert.deepEqual(partial.reputationBudget, { total: 60, freeRemaining: 40, cp: 0, purchasedRemaining: 0 });
+  assert.equal(evaluateAptitudeBudget(factotum, [], { reputation: { '@-rep': 60, 'c-rep': 40 } }).totalCp, 0);
+  const combined = evaluateAptitudeBudget({ ...factotum, cog: 18 }, [{ to: 'active:Survival', points: 5 }], {
+    egoFlex: 2, languages: ['English', 'Mandarin', 'French'], reputation: { '@-rep': 60, 'c-rep': 45, 'r-rep': 1 },
+  });
+  assert.deepEqual(combined.reputationBudget, { total: 106, freeRemaining: 0, cp: 2, purchasedRemaining: 4 });
+  assert.deepEqual([combined.totalCp, combined.baseCpLeft], [9, 11]);
 });

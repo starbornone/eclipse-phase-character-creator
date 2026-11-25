@@ -26,6 +26,7 @@ export function buildPrintableDossier(
     pronouns: draft.ego.pronouns,
     egoFlex: draft.ego.egoFlex ?? coreCustomizationRules.startingEgoFlex,
     languages: draft.ego.languages ?? [],
+    reputation: draft.ego.reputation,
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
     hasSleeve: Boolean(sleeve),

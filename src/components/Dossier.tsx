@@ -9,6 +9,7 @@ import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-mor
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { Card } from './ui/card.tsx';
 
@@ -78,6 +79,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
           {Boolean(draft.ego.languages?.length) && <p className="concept-text">Languages <strong>{draft.ego.languages?.join(', ')}</strong></p>}
           <PackageSummary packages={draft.ego.packages} />
           {draft.ego.packages && <CorePackageCredit />}
+          <ReputationSummary scores={draft.ego.reputation} />
         </Card>
         <Card className="editor-panel">
           <h2>Morph</h2>

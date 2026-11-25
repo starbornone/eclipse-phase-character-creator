@@ -2,9 +2,11 @@ import { normalizeDraft } from '../sleeve/history.ts';
 import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
+import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
+import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { knowFieldKey } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
-import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ResleevingEvent, Sleeve } from '../../types/character.ts';
+import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
 
 const format = 'eclipse-phase-character-backup';
 const backupVersion = 1;
@@ -96,6 +98,23 @@ function readSkillAllocation(entry: Record<string, unknown>, field: string) {
   return { to, points, ...(newKnowField === undefined ? {} : { newKnowField }) };
 }
 
+function readReputation(value: unknown, path: string) {
+  const entries = object(value, path);
+  const scores: ReputationScores = {};
+  for (const { id } of reputationNetworks) {
+    if (!Object.hasOwn(entries, id)) continue;
+    const score = entries[id];
+    if (!isStartingReputationScore(score)) {
+      badField(`${path}.${id}`, `a whole number from 0 to ${startingReputationRules.networkCap}`);
+    }
+    scores[id] = score;
+  }
+  if (Object.keys(entries).length !== Object.keys(scores).length) {
+    badField(path, 'limited to supported reputation networks');
+  }
+  return scores;
+}
+
 function readEgo(value: unknown, path: string): Ego {
   const ego = object(value, path);
   const fields = object(ego.aptitudes, `${path}.aptitudes`);
@@ -143,6 +162,7 @@ function readEgo(value: unknown, path: string): Ego {
     aptitudes: scores,
     ...(egoFlex === undefined ? {} : { egoFlex }),
     ...(languages === undefined ? {} : { languages }),
+    ...(ego.reputation === undefined ? {} : { reputation: readReputation(ego.reputation, `${path}.reputation`) }),
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),

@@ -1,3 +1,5 @@
+import type { ReputationNetwork } from '../rules/datasets/reputation.ts';
+
 export const aptitudes = [
   { id: 'cog', label: 'Cognition' },
   { id: 'int', label: 'Intuition' },
@@ -10,6 +12,7 @@ export const aptitudes = [
 export type Aptitude = (typeof aptitudes)[number]['id'];
 export type AptitudeScores = Partial<Record<Aptitude, number>>;
 export type AptitudeInputs = Record<Aptitude, string>;
+export type ReputationScores = Partial<Record<ReputationNetwork, number>>;
 
 export const creationPackageKinds = ['background', 'career', 'interest', 'faction'] as const;
 export type CreationPackageKind = (typeof creationPackageKinds)[number];
@@ -42,6 +45,7 @@ export interface Ego {
   aptitudes: AptitudeScores;
   egoFlex?: number;
   languages?: string[];
+  reputation?: ReputationScores;
   packages?: CreationPackages;
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];

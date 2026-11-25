@@ -2,6 +2,7 @@ import { aptitudes } from '../../types/character.ts';
 import type { AptitudeScores, Ego, SkillPointPurchase } from '../../types/character.ts';
 import { coreAptitudeRules } from '../datasets/aptitude-templates.ts';
 import { coreCustomizationRules } from '../datasets/customization.ts';
+import { evaluateReputation } from './reputation.ts';
 
 export function normalizeLanguage(language: string) {
   return language.normalize('NFC').trim().replace(/\s+/g, ' ');
@@ -23,7 +24,7 @@ export function parseLanguages(entries: readonly string[]) {
 export function evaluateAptitudeBudget(
   scores: AptitudeScores,
   skillPurchases: readonly SkillPointPurchase[] = [],
-  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [] }: Pick<Ego, 'egoFlex' | 'languages'> = {},
+  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation }: Pick<Ego, 'egoFlex' | 'languages' | 'reputation'> = {},
 ) {
   const entered = aptitudes.flatMap(({ id, label }) => {
     const score = scores[id];
@@ -40,7 +41,8 @@ export function evaluateAptitudeBudget(
   const freeLanguages = coreCustomizationRules.startingLanguages + (languageAptitudes === undefined ? 0
     : coreCustomizationRules.bonusLanguageThresholds.filter((threshold) => languageAptitudes >= threshold).length);
   const languageCp = Math.max(0, languages.length - freeLanguages) * coreCustomizationRules.cpPerExtraLanguage;
-  const totalCp = aptitudeCp + skillCp + flexCp + languageCp;
+  const reputationBudget = evaluateReputation(reputation);
+  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp;
 
   return {
     entered: entered.length,
@@ -52,6 +54,7 @@ export function evaluateAptitudeBudget(
     freeLanguages,
     languageAptitudes,
     languageCp,
+    reputationBudget,
     totalCp,
     purchasedSkillPoints,
     unspentPurchasedSkillPoints: skillCp * coreCustomizationRules.skillsPerCp - purchasedSkillPoints,

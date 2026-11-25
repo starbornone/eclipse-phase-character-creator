@@ -7,6 +7,7 @@ import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { ReputationSummary } from './Reputation.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
@@ -113,6 +114,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             {dossier.languages.length > 0 && <> · <a href={coreCustomizationRules.languagesUrl}>Core language rules</a></>}
           </p>
         </section>
+        <ReputationSummary scores={dossier.reputation} />
         {dossier.history.length > 0 && (
           <section className="print-history">
             <h3>Sleeve history</h3>

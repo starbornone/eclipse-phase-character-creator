@@ -5,13 +5,17 @@ import { parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
+import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
+import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
+import { reputationNetworks } from '../rules/datasets/reputation.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { aptitudes } from '../types/character.ts';
 import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections } from '../types/character.ts';
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { Card } from './ui/card.tsx';
 
@@ -42,6 +46,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [egoFlex, setEgoFlex] = useState<number>(draft?.ego.egoFlex ?? startingEgoFlex);
   const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
+  const [repInputs, setRepInputs] = useState<ReputationInputs>(() =>
+    Object.fromEntries(traceReputation(draft?.ego.reputation).map(({ id, score }) => [id, String(score)])));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
   const [error, setError] = useState('');
@@ -49,6 +55,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [conflict, setConflict] = useState(false);
   const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
   const parsed = parseAptitudes(inputs);
+  const parsedRep = parseReputation(repInputs);
   const { languages, hasDuplicates } = parseLanguages(languageText.split('\n'));
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
@@ -58,6 +65,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
     || egoFlex !== (draft?.ego.egoFlex ?? startingEgoFlex)
     || JSON.stringify(languages) !== JSON.stringify(draft?.ego.languages ?? [])
+    || reputationNetworks.some(({ id }) => (repInputs[id] ?? '') !== (draft?.ego.reputation?.[id]?.toString() ?? ''))
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -69,6 +77,10 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     setIssue(parsed.issue);
     if (parsed.issue) {
       form.querySelector<HTMLInputElement>(`#aptitude-${parsed.issue.id}`)?.focus();
+      return;
+    }
+    if (parsedRep.issue) {
+      form.querySelector<HTMLInputElement>(`[name="reputation-${parsedRep.issue.id}"]`)?.focus();
       return;
     }
 
@@ -98,6 +110,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           aptitudes: parsed.scores,
           ...(egoFlex === startingEgoFlex ? {} : { egoFlex }),
           ...(languages.length ? { languages } : {}),
+          ...(Object.keys(parsedRep.scores).length ? { reputation: parsedRep.scores } : {}),
           ...(Object.keys(packages).length ? { packages } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
@@ -163,6 +176,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               </div>
               {issue && <p className="error" id="aptitude-error" role="alert">{issue.message}</p>}
             </Card>
+            <ReputationEditor inputs={repInputs} issue={parsedRep.issue} onChange={setRepInputs} />
             <Card className="editor-panel">
               <h2>Customization</h2>
               <div className="identity-fields">
@@ -181,7 +195,14 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                   {hasDuplicates && ' Duplicate names count once and are saved as one entry.'}
                 </p>
               </div>
-              <AptitudeBudget scores={parsed.scores} skillPurchases={skillPurchases} egoFlex={egoFlex} languages={languages} />
+              <AptitudeBudget
+                scores={parsed.scores}
+                skillPurchases={skillPurchases}
+                egoFlex={egoFlex}
+                languages={languages}
+                reputation={parsedRep.scores}
+                invalidReputation={Boolean(parsedRep.issue)}
+              />
             </Card>
             <StartingSkills
               ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases }}
