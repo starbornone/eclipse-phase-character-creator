@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:09:47+11:00",
+  "updatedAt": "2026-11-25T11:34:16+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -126,6 +126,13 @@
       "group": "Character creation",
       "notes": "Added the seven core templates, a live ledger for aptitude points and their share of CP, starting range and maximum warnings, and source attribution. Verified template application, redistribution, CP changes, and saving and reopening an ego in the browser.",
       "completedAt": "2026-11-25T11:09:47+11:00"
+    },
+    {
+      "id": "choose-starter-core-packages",
+      "title": "Choose and save starter core packages",
+      "group": "Character creation",
+      "notes": "Added a sourced set of background, career, interest, and faction choices, with individual skill grants, optional Know fields, and faction motivation. Verified persistence, player preview, and backup validation.",
+      "completedAt": "2026-11-25T11:34:16+11:00"
     }
   ]
 }

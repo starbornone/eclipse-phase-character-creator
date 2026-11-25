@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T11:09:47+11:00",
+  "updatedAt": "2026-11-25T11:34:16+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -19,7 +19,7 @@
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "The seven core aptitude templates and aptitude CP ledger are implemented. Add verified background, career, interest, and faction packages, skills, traits, motivations, reputation, equipment, and validation of the shared budget."
+      "notes": "Core aptitude templates, the aptitude CP ledger, and a sourced starter set across all four package categories are implemented. Combine package grants and chosen fields into skills, allow point reallocations under the starting skill cap, expand catalogue coverage, and add traits, motivations, reputation, equipment, and shared budget validation."
     },
     {
       "id": "browse-and-compare-morphs",

@@ -29,6 +29,12 @@ In **Create ego** or **Edit ego**, choose a **Core aptitude template** and selec
 
 The budget shows the aptitude share of the core CP pool and flags scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved. The full builder will account for other CP spending and trait bonuses.
 
+## Choose core creation packages
+
+In **Create ego** or **Edit ego**, pick a supported background, career, interest, or faction under **Core creation packages**. Each card lists the package’s skill points and source page. Enter optional Know fields and a faction motivation, or leave those entries open while you draft. Choose **Factionless** to enter a Know field of your choice.
+
+Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. Combining grants, adding aptitudes, and reallocating points under the starting skill cap remain part of the full builder.
+
 ## Compare morph profiles
 
 Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
