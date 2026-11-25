@@ -35,3 +35,9 @@ Open **Morph library**. Search by name or description, or choose a category. Sel
 4. Check that **Sleeve history** shows the new sleeve as active and the old sleeve as previous. Reload and reopen the dossier to verify the history and aptitude checks.
 
 History is shown in save order, newest first. If you leave the event date blank, the history displays the save date. Event details appear in the on-screen history.
+
+## Back up and restore drafts
+
+Use **Export all drafts** on the dashboard to save the workspace, or **Export JSON** in a dossier to save one ego. JSON backups include all saved fields, including sleeve notes.
+
+To restore, choose **Import JSON**, select a backup, and review the names, sleeve counts, and any migration report. Select **Restore as copies** to add the drafts with fresh identifiers. The restore preserves aptitude scores, sleeve history, and event details. A malformed file displays an error before storage changes.

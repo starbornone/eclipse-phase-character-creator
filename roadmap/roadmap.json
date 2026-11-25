@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T10:57:10+11:00",
+  "updatedAt": "2026-11-25T11:02:21+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -26,12 +26,6 @@
       "title": "Browse, filter, and compare supported morphs",
       "group": "Character creation",
       "notes": "Quick-Start search, category filters, a three-profile comparison, and source links are in place. Add verified player-profile restrictions and the planned price, movement, durability, and capability filters as the supported catalogue expands."
-    },
-    {
-      "id": "round-trip-character-backups",
-      "title": "Export and re-import character backups",
-      "group": "Resleeving and export",
-      "notes": "Validate versioned JSON, report migrations, and verify that a malformed import leaves existing records intact."
     },
     {
       "id": "print-player-and-gm-dossiers",

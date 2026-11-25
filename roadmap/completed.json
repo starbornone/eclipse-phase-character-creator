@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T10:57:10+11:00",
+  "updatedAt": "2026-11-25T11:02:21+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -105,6 +105,13 @@
       "group": "Resleeving and export",
       "notes": "Added before-and-after morph comparison, optional event details, and an append-only sleeve history. Verified legacy migration, save order, reload, and later ego edits.",
       "completedAt": "2026-11-25T10:57:10+11:00"
+    },
+    {
+      "id": "round-trip-character-backups",
+      "title": "Export and re-import character backups",
+      "group": "Resleeving and export",
+      "notes": "Added single-ego and workspace exports, validated preview, legacy migration reporting, and atomic restore as new copies. Verified malformed-file rejection and round-tripped a saved sleeve history in the browser.",
+      "completedAt": "2026-11-25T11:02:21+11:00"
     }
   ]
 }
