@@ -63,7 +63,7 @@ strong { font-weight: 650; }
   flex: 0 0 auto;
 }
 .sidebar nav { display: grid; gap: .35rem; }
-.sidebar nav button {
+.sidebar nav a {
   display: flex;
   align-items: center;
   gap: .7rem;
@@ -75,8 +75,9 @@ strong { font-weight: 650; }
   font-size: .9375rem;
   font-weight: 600;
 }
-.sidebar nav button:hover:not(:disabled) { background: #132235; color: #f1f5fc; }
-.sidebar nav button[aria-current] { border-color: #294858; background: #142a39; color: var(--accent); }
+.sidebar nav a:hover:not([aria-disabled]) { background: #132235; color: #f1f5fc; }
+.sidebar nav a[aria-current] { border-color: #294858; background: #142a39; color: var(--accent); }
+.sidebar a[aria-disabled] { opacity: .55; cursor: not-allowed; }
 .sidebar-status {
   display: flex;
   align-items: center;
@@ -425,7 +426,7 @@ textarea { resize: vertical; }
   .app { display: block; }
   .sidebar { position: static; height: auto; gap: .7rem; padding: .75rem 1rem; border-right: 0; border-bottom: 1px solid var(--line); }
   .sidebar nav { display: flex; flex-wrap: wrap; }
-  .sidebar nav button { padding: .5rem .65rem; }
+  .sidebar nav a { padding: .5rem .65rem; }
   .sidebar-status, .topbar { display: none; }
   .workspace { min-height: 75dvh; }
   .hero { min-height: 20rem; background-position: center, 62% center; }

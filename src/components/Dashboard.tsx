@@ -1,4 +1,6 @@
 import { ChevronRight, Download, Fingerprint, Layers3, Plus, Upload } from 'lucide-react';
+import { Link } from 'react-router';
+import { egoPath } from '../app/paths.ts';
 import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
@@ -11,15 +13,11 @@ interface DashboardProps {
   loading: boolean;
   loadError: boolean;
   onRetry: () => void;
-  onCreate: () => void;
-  onOpen: (draft: CharacterDraft) => void;
-  onCatalog: () => void;
-  onImport: () => void;
 }
 
 const editedDate = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
-export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpen, onCatalog, onImport }: DashboardProps) {
+export function Dashboard({ drafts, loading, loadError, onRetry }: DashboardProps) {
   return (
     <>
       <section className="hero" aria-labelledby="dashboard-title">
@@ -27,9 +25,9 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
           <p className="caption">Eclipse Phase · Second Edition</p>
           <h1 id="dashboard-title" tabIndex={-1}>Character<br />&amp; Morph Creator</h1>
           <p>Build an ego, choose a morph, and see how they come together in a sleeve.</p>
-          <button type="button" className="button primary" onClick={onCreate} disabled={loading || loadError}>
+          <Link className="button primary" to="/egos/new">
             <Plus size={18} aria-hidden="true" /> Create ego
-          </button>
+          </Link>
         </div>
       </section>
       <div className="dashboard-grid">
@@ -60,7 +58,7 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
                   const morph = findSampleMorph(sleeve?.morphDefinitionId);
                   return (
                     <li key={draft.ego.id}>
-                      <button type="button" className="record-row" onClick={() => onOpen(draft)}>
+                      <Link className="record-row" to={egoPath(draft.ego.id)}>
                         <span className="empty-icon" aria-hidden="true"><Fingerprint size={21} /></span>
                         <span>
                           <strong>{draft.ego.name || 'Untitled ego'}</strong>
@@ -68,7 +66,7 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
                         </span>
                         <time dateTime={draft.updatedAt}>{editedDate.format(new Date(draft.updatedAt))}</time>
                         <ChevronRight size={17} aria-hidden="true" />
-                      </button>
+                      </Link>
                     </li>
                   );
                 })}
@@ -76,9 +74,9 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
             )}
           </Card>
           <div className="actions">
-            <button type="button" className="button secondary" disabled={loading || loadError} onClick={onImport}>
+            <Link className="button secondary" to="/backups/import">
               <Upload size={17} aria-hidden="true" /> Import JSON
-            </button>
+            </Link>
             {drafts.length > 0 && (
               <button type="button" className="button secondary" aria-describedby="backup-content-note" onClick={() => downloadBackup(drafts, 'eclipse-phase-drafts.json')}>
                 <Download size={17} aria-hidden="true" /> Export all drafts
@@ -91,7 +89,7 @@ export function Dashboard({ drafts, loading, loadError, onRetry, onCreate, onOpe
         <section aria-labelledby="morph-preview">
           <div className="section-heading">
             <h2 id="morph-preview">Morph library</h2>
-            <button type="button" className="text-button" onClick={onCatalog}>Browse library</button>
+            <Link className="text-button" to="/morphs">Browse library</Link>
           </div>
           <Card>
             <ul className="morph-list">

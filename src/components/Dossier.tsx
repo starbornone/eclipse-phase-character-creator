@@ -1,4 +1,6 @@
 import { Download, Fingerprint, Pencil, Printer, Repeat2 } from 'lucide-react';
+import { Link } from 'react-router';
+import { egoPath } from '../app/paths.ts';
 import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
@@ -42,12 +44,8 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
   );
 }
 
-export function Dossier({ draft, onEdit, onResleeve, onPrint }: {
-  draft: CharacterDraft;
-  onEdit: () => void;
-  onResleeve: () => void;
-  onPrint: () => void;
-}) {
+export function Dossier({ draft }: { draft: CharacterDraft }) {
+  const egoId = draft.ego.id;
   const sleeve = activeSleeve(draft);
   const morph = findSampleMorph(sleeve?.morphDefinitionId);
   const values = traceAptitudeChecks(draft.ego.aptitudes);
@@ -61,9 +59,9 @@ export function Dossier({ draft, onEdit, onResleeve, onPrint }: {
           <p>{morph ? `Active sleeve · ${morph.name}` : sleeve ? 'Unknown morph' : 'No morph assigned'}</p>
         </div>
         <div className="actions screen-only">
-          <button type="button" className="button primary" onClick={onEdit}><Pencil size={17} aria-hidden="true" /> Edit ego</button>
-          {sleeve && <button type="button" className="button secondary" onClick={onResleeve}><Repeat2 size={17} aria-hidden="true" /> Resleeve</button>}
-          <button type="button" className="button secondary" onClick={onPrint}><Printer size={17} aria-hidden="true" /> Print dossier</button>
+          <Link className="button primary" to={egoPath(egoId, 'edit')}><Pencil size={17} aria-hidden="true" /> Edit ego</Link>
+          {sleeve && <Link className="button secondary" to={egoPath(egoId, 'resleeve')}><Repeat2 size={17} aria-hidden="true" /> Resleeve</Link>}
+          <Link className="button secondary" to={egoPath(egoId, 'print')}><Printer size={17} aria-hidden="true" /> Print dossier</Link>
           <button type="button" className="button secondary" aria-describedby="backup-content-note" onClick={() => downloadBackup([draft], 'eclipse-phase-ego.json')}>
             <Download size={17} aria-hidden="true" /> Export JSON
           </button>
