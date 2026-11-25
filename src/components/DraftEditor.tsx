@@ -5,7 +5,7 @@ import { parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
-import { cleanPersonalMotivations, clearLegacyFactionlessMotivation, personalMotivationChoices } from '../rules/calculations/motivations.ts';
+import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
@@ -101,7 +101,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       const egoId = draft?.ego.id ?? crypto.randomUUID();
       const updatedAt = new Date().toISOString();
       const sleeves = draft?.sleeves ?? [];
-      const savedPackages = clearLegacyFactionlessMotivation(packages);
+      const savedPackages = cleanFactionMotivation(packages);
       const firstSleeve = !currentSleeve && morphId ? {
         id: crypto.randomUUID(),
         egoId,
@@ -163,8 +163,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               </div>
             </Card>
             <CreationPackages packages={packages} onChange={setPackages} />
-            <MotivationEditor packages={packages} choices={motivations} onChange={setMotivations} onFactionChange={(motivation) => {
-              if (packages.faction) setPackages({ ...packages, faction: { ...packages.faction, motivation } });
+            <MotivationEditor packages={packages} choices={motivations} onChange={setMotivations} onFactionChange={(update) => {
+              if (packages.faction) setPackages({ ...packages, faction: { ...packages.faction, ...update } });
             }} />
             <Card className="editor-panel">
               <h2>Aptitudes</h2>

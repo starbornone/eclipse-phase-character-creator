@@ -79,10 +79,16 @@ function readCreationPackages(value: unknown, path: string): CreationPackages {
     if (selection.motivation !== undefined && kind !== 'faction') {
       badField(`${selectionPath}.motivation`, 'absent outside the faction choice');
     }
+    if (selection.motivationGoal !== undefined && (kind !== 'faction' || id === 'factionless')) {
+      badField(`${selectionPath}.motivationGoal`, 'absent outside a named faction choice');
+    }
+    const motivationGoal = selection.motivationGoal === undefined ? undefined
+      : string(selection.motivationGoal, `${selectionPath}.motivationGoal`).trim();
     validated[kind] = {
       id,
       ...(fields === undefined ? {} : { fields }),
       ...(selection.motivation === undefined ? {} : { motivation: string(selection.motivation, `${selectionPath}.motivation`) }),
+      ...(motivationGoal ? { motivationGoal } : {}),
     };
   }
   if (Object.keys(choices).length !== Object.keys(validated).length) {
@@ -100,7 +106,9 @@ function readPersonalMotivations(value: unknown, path: string) {
     const entry = object(entries[slot], field);
     const { stance } = entry;
     if (stance !== 'support' && stance !== 'oppose') badField(`${field}.stance`, 'support or oppose');
-    choices[slot] = { stance, text: string(entry.text, `${field}.text`, true).trim() };
+    const goal = entry.goal === undefined ? undefined : string(entry.goal, `${field}.goal`).trim();
+    const text = string(entry.text, `${field}.text`, !goal).trim();
+    choices[slot] = { stance, text, ...(goal ? { goal } : {}) };
   }
   if (Object.keys(entries).length !== Object.keys(choices).length) badField(path, 'limited to the three personal motivation slots');
   return choices;

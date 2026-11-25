@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { buildPrintableDossier, privatePrintFields } from '../features/dossier/print.ts';
-import { clearLegacyFactionlessMotivation, personalMotivationChoices } from '../rules/calculations/motivations.ts';
+import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 
 const assignedAt = '2026-11-25T01:00:00.000Z';
 const event = { date: '2026-11-20', location: 'Private habitat', cause: 'Private cause', notes: 'Private notes' };
@@ -93,22 +93,40 @@ test('print two personal motivations with a faction or three without a faction',
     third: { stance: 'support', text: 'Open access' },
   };
   const aligned = { ...draft, ego: { ...draft.ego, packages: { faction: { id: 'argonaut' } }, personalMotivations } };
-  assert.deepEqual(buildPrintableDossier(aligned, 'player', []).motivations, ['+Argonaut Interests', '+Exploration', '−Censorship']);
+  assert.deepEqual(buildPrintableDossier(aligned, 'player', []).motivations.map(({ label }) => label), ['+Argonaut Interests', '+Exploration', '−Censorship']);
   assert.deepEqual(buildPrintableDossier(aligned, 'gm', []).motivations, []);
   const custom = { ...aligned, ego: { ...aligned.ego, packages: { faction: { id: 'argonaut', motivation: '+Open science' } } } };
-  assert.equal(buildPrintableDossier(custom, 'player', []).motivations[0], '+Open science');
+  assert.equal(buildPrintableDossier(custom, 'player', []).motivations[0].label, '+Open science');
   const unaligned = { ...aligned, ego: { ...aligned.ego, packages: {} } };
-  assert.deepEqual(buildPrintableDossier(unaligned, 'player', []).motivations, ['+Exploration', '−Censorship', '+Open access']);
+  assert.deepEqual(buildPrintableDossier(unaligned, 'player', []).motivations.map(({ label }) => label), ['+Exploration', '−Censorship', '+Open access']);
 });
 
 test('preserve legacy Factionless motivations when loading and saving a draft', () => {
   const packages = { faction: { id: 'factionless', motivation: '- Gate secrecy', fields: { 'know-1': 'Habitat lore' } } };
   const legacy = { ...draft, ego: { ...draft.ego, packages } };
-  assert.deepEqual(buildPrintableDossier(legacy, 'player', []).motivations, ['−Gate secrecy']);
+  assert.equal(buildPrintableDossier(legacy, 'player', []).motivations[0].label, '−Gate secrecy');
   const personalMotivations = personalMotivationChoices(legacy.ego);
   assert.deepEqual(personalMotivations, { third: { stance: 'oppose', text: 'Gate secrecy' } });
-  const savedPackages = clearLegacyFactionlessMotivation(packages);
+  const savedPackages = cleanFactionMotivation(packages);
   assert.deepEqual(savedPackages, { faction: { id: 'factionless', fields: { 'know-1': 'Habitat lore' } } });
   const saved = { ...legacy, ego: { ...legacy.ego, packages: savedPackages, personalMotivations } };
-  assert.deepEqual(buildPrintableDossier(saved, 'player', []).motivations, ['−Gate secrecy']);
+  assert.equal(buildPrintableDossier(saved, 'player', []).motivations[0].label, '−Gate secrecy');
+});
+
+test('keep goals with their motivations and omit goals for inactive or unnamed slots', () => {
+  const packages = { faction: { id: 'argonaut', motivationGoal: '  Publish the survey  ' } };
+  const personalMotivations = cleanPersonalMotivations({
+    first: { stance: 'support', text: 'Exploration', goal: ' Map a new route ' },
+    second: { stance: 'oppose', text: '  ', goal: ' Protect the archives ' },
+    third: { stance: 'support', text: 'Accessibility', goal: 'Build a shared guide' },
+  });
+  assert.deepEqual(personalMotivations.second, { stance: 'oppose', text: '', goal: 'Protect the archives' });
+  const aligned = { ...draft, ego: { ...draft.ego, packages: cleanFactionMotivation(packages), personalMotivations } };
+  assert.deepEqual(buildPrintableDossier(aligned, 'player', []).motivations, [
+    { label: '+Argonaut Interests', goal: 'Publish the survey' },
+    { label: '+Exploration', goal: 'Map a new route' },
+  ]);
+  assert.deepEqual(buildPrintableDossier(aligned, 'gm', []).motivations, []);
+  const unaligned = { ...aligned, ego: { ...aligned.ego, packages: {} } };
+  assert.deepEqual(buildPrintableDossier(unaligned, 'player', []).motivations[1], { label: '+Accessibility', goal: 'Build a shared guide' });
 });

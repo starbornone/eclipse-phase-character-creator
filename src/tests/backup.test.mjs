@@ -139,6 +139,17 @@ test('round-trip partial motivations and validate slots, stances, and text', () 
   assert.throws(() => previewBackup(encodeBackup([withChoices({ first: { ...motivation, text: ' ' } })])), /text must be a non-empty string/);
 });
 
+test('round-trip personal and faction goals and reject misplaced or non-text goals', () => {
+  const packages = { faction: { id: 'argonaut', motivationGoal: 'Publish the survey' } };
+  const personalMotivations = { first: { stance: 'support', text: '', goal: 'Map a route' } };
+  const valid = { ...draft, ego: { ...ego, packages, personalMotivations } };
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  const misplaced = { ...valid, ego: { ...valid.ego, packages: { faction: { ...packages.faction, id: 'factionless' } } } };
+  assert.throws(() => previewBackup(encodeBackup([misplaced])), /motivationGoal must be absent outside a named faction/);
+  const malformed = { ...valid, ego: { ...valid.ego, personalMotivations: { first: { ...personalMotivations.first, goal: 3 } } } };
+  assert.throws(() => previewBackup(encodeBackup([malformed])), /goal must be a string/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

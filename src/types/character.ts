@@ -22,6 +22,7 @@ export interface CreationPackageSelection {
   id: string;
   fields?: Record<string, string>;
   motivation?: string;
+  motivationGoal?: string;
 }
 
 export type CreationPackages = Partial<Record<CreationPackageKind, CreationPackageSelection>>;
@@ -29,6 +30,7 @@ export type CreationPackages = Partial<Record<CreationPackageKind, CreationPacka
 export interface PersonalMotivation {
   stance: 'support' | 'oppose';
   text: string;
+  goal?: string;
 }
 
 export type PersonalMotivations = Partial<Record<'first' | 'second' | 'third', PersonalMotivation>>;
