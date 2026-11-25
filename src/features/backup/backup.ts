@@ -107,7 +107,12 @@ function readEgo(value: unknown, path: string): Ego {
       if (typeof points !== 'number' || !Number.isSafeInteger(points) || points < 1) {
         badField(`${field}.points`, 'a positive whole number');
       }
-      return { from: string(transfer.from, `${field}.from`, true), to: string(transfer.to, `${field}.to`, true), points };
+      const to = string(transfer.to, `${field}.to`, true);
+      const newKnowField = transfer.newKnowField === undefined ? undefined : string(transfer.newKnowField, `${field}.newKnowField`, true);
+      if (newKnowField !== undefined && to !== `know:${knowFieldKey(newKnowField)}`) {
+        badField(`${field}.to`, 'the key matching the new Know field');
+      }
+      return { from: string(transfer.from, `${field}.from`, true), to, points, ...(newKnowField === undefined ? {} : { newKnowField }) };
     });
   return {
     id: string(ego.id, `${path}.id`, true),

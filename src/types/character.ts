@@ -26,6 +26,7 @@ export interface SkillPointTransfer {
   from: string;
   to: string;
   points: number;
+  newKnowField?: string;
 }
 
 export interface Ego {

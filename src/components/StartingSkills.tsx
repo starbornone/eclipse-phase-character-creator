@@ -55,7 +55,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange }: {
           </table>
         </div>
       ) : <p className="muted">Choose a package or enter Reflexes or Intuition to see skills here.</p>}
-      <SkillTransfers ego={ego} ledger={ledger} onChange={onTransfersChange} />
+      <SkillTransfers ego={ego} ledger={ledger} onChange={onTransfersChange} onToggleArt={onToggleArt} />
       <p className="rules-note">
         Art fields use Intuition. Other Know fields use Cognition. Review over-cap totals before play.{' '}
         <a href={coreAptitudeRules.coreBookUrl}>Core rulebook, pp. 45 and 48–50</a>

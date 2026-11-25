@@ -94,7 +94,7 @@ test('reject illegal or stale transfers without changing the ledger', () => {
   assert.match(ledger.transferResults[2].issue, /only 40/);
   assert.match(ledger.transferResults[3].issue, /positive whole number/);
   assert.match(ledger.transferResults[4].issue, /different skills/);
-  assert.match(ledger.transferResults[5].issue, /still appear/);
+  assert.match(ledger.transferResults[5].issue, /supported destination/);
   assert.deepEqual(ledger.skills, calculateStartingSkills(transferDraft).skills);
 });
 
@@ -114,4 +114,42 @@ test('recheck a downstream transfer when the earlier transfer or linked aptitude
   ];
   assert.ok(calculateStartingSkills({ ...draft, skillTransfers: dependent }).transferResults.every(({ issue }) => !issue));
   assert.match(calculateStartingSkills({ ...draft, skillTransfers: dependent.slice(1) }).transferResults[0].issue, /only 0/);
+});
+
+test('introduce Active and named Know destinations and replay subsequent moves', () => {
+  const skillTransfers = [
+    { from: 'active:Persuade', to: 'active:Pilot: Space', points: 12 },
+    { from: 'know:argonauts', to: 'know:orbital cartography', points: 15, newKnowField: ' Orbital  Cartography ' },
+    { from: 'know:orbital cartography', to: 'know:argonauts', points: 5 },
+  ];
+  const input = { ...transferDraft, skillTransfers };
+  const ledger = calculateStartingSkills(input);
+  assert.ok(ledger.transferResults.every(({ issue }) => !issue));
+  const pilot = ledger.skills.find(({ name }) => name === 'Pilot: Space');
+  assert.deepEqual([pilot.packagePoints, pilot.allocatedPoints, pilot.aptitude, pilot.total], [0, 12, 'ref', 27]);
+  const know = ledger.skills.find(({ name }) => name === 'Know: Orbital Cartography');
+  assert.deepEqual([know.packagePoints, know.allocatedPoints, know.aptitude, know.total], [0, 10, 'cog', 25]);
+  const art = calculateStartingSkills({ ...input, artisticKnowFields: ['orbital cartography'] }).skills.find(({ id }) => id === know.id);
+  assert.deepEqual([art.aptitude, art.total], ['int', 30]);
+  const removed = calculateStartingSkills({ ...input, skillTransfers: [skillTransfers[0], skillTransfers[2]] });
+  assert.match(removed.transferResults[1].issue, /Choose a source/);
+  assert.ok(!removed.skills.some(({ id }) => id === know.id));
+});
+
+test('leave new destinations out of the ledger when a move fails validation', () => {
+  const skillTransfers = [
+    { from: 'know:argonauts', to: 'active:Pilot: Space', points: 5 },
+    { from: 'active:Persuade', to: 'active:Free Fall', points: 5 },
+    { from: 'active:Persuade', to: 'active:Psi', points: 5 },
+    { from: 'active:Persuade', to: 'know:orbital cartography', points: 5, newKnowField: 'Astrogation' },
+    { from: 'active:Persuade', to: 'active:Pilot: Space', points: 6 },
+  ];
+  const input = { ...transferDraft, aptitudes: { ...transferDraft.aptitudes, ref: 75 } };
+  const ledger = calculateStartingSkills({ ...input, skillTransfers });
+  assert.match(ledger.transferResults[0].issue, /only move/);
+  assert.match(ledger.transferResults[1].issue, /linked aptitude/);
+  assert.match(ledger.transferResults[2].issue, /supported destination/);
+  assert.match(ledger.transferResults[3].issue, /matches the destination/);
+  assert.match(ledger.transferResults[4].issue, /above the starting cap/);
+  assert.deepEqual(ledger.skills, calculateStartingSkills(input).skills);
 });

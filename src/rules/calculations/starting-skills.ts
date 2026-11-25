@@ -1,22 +1,10 @@
 import { creationPackageKinds } from '../../types/character.ts';
-import type { Aptitude, Ego } from '../../types/character.ts';
+import type { Ego } from '../../types/character.ts';
+import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
 
 // Eclipse Phase Second Edition, pp. 45 and 48–50.
 const startingSkillCap = 80;
-const activeAptitudes: Readonly<Record<string, Aptitude | undefined>> = {
-  Athletics: 'som',
-  Deceive: 'sav',
-  Fray: 'ref',
-  Interface: 'cog',
-  Kinesics: 'sav',
-  'Medicine: Paramedic': 'cog',
-  Perceive: 'int',
-  Persuade: 'sav',
-  Program: 'cog',
-  Provoke: 'sav',
-  Research: 'int',
-};
 const doubledBases = new Set(['Fray', 'Perceive']);
 
 export function knowFieldKey(field: string) {
@@ -63,17 +51,17 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   }
 
   for (const skill of doubledBases) {
-    const aptitude = activeAptitudes[skill];
+    const aptitude = activeSkillAptitude(skill);
     const id = `active:${skill}`;
     if (aptitude && aptitudes[aptitude] !== undefined && !rows.has(id)) {
       rows.set(id, { name: skill, activeSkill: skill, grants: [] });
     }
   }
 
-  const skills = [...rows].map(([id, row]) => {
+  function calculateRow(id: string, row: SkillRow) {
     const adjustableKnow = Boolean(row.fieldKey && !row.fixedKnowledge);
     const isArt = Boolean(adjustableKnow && row.fieldKey && artisticFields.has(row.fieldKey));
-    const aptitude = row.activeSkill ? activeAptitudes[row.activeSkill] : isArt ? 'int' : 'cog';
+    const aptitude = row.activeSkill ? activeSkillAptitude(row.activeSkill) : isArt ? 'int' : 'cog';
     const aptitudeScore = aptitude === undefined ? undefined : aptitudes[aptitude];
     const multiplier = row.activeSkill && doubledBases.has(row.activeSkill) ? 2 : 1;
     const base = aptitudeScore === undefined ? undefined : aptitudeScore * multiplier;
@@ -82,16 +70,28 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
       ...row, id, adjustableKnow, isArt, aptitude, aptitudeScore, multiplier, base, packagePoints,
       allocatedPoints: packagePoints,
     };
-  });
-  const balances = new Map(skills.map((skill) => [skill.id, skill]));
+  }
+
+  const balances = new Map([...rows].map(([id, row]) => [id, calculateRow(id, row)]));
   const transferResults = skillTransfers.map((transfer) => {
     const source = balances.get(transfer.from);
-    const target = balances.get(transfer.to);
+    const field = transfer.newKnowField?.trim().replace(/\s+/g, ' ');
+    const fieldKey = field && knowFieldKey(field);
+    const newActiveSkill = transfer.to.startsWith('active:') ? transfer.to.slice(7) : '';
+    let target = balances.get(transfer.to);
+    if (!target && field && fieldKey && transfer.to === `know:${fieldKey}`) {
+      target = calculateRow(transfer.to, { name: `Know: ${field}`, fieldKey, grants: [] });
+    }
+    if (!target && activeSkillAptitude(newActiveSkill)) {
+      target = calculateRow(transfer.to, { name: newActiveSkill, activeSkill: newActiveSkill, grants: [] });
+    }
     const fromName = source?.name ?? transfer.from;
     const toName = target?.name ?? transfer.to;
     let issue: string | undefined;
 
-    if (!source || !target) issue = 'Choose skills that still appear in the ledger.';
+    if (transfer.newKnowField !== undefined && (!fieldKey || transfer.to !== `know:${fieldKey}`)) {
+      issue = 'Enter a Know field that matches the destination.';
+    } else if (!source || !target) issue = 'Choose a source and a supported destination skill.';
     else if (source === target) issue = 'Choose two different skills.';
     else if (!Number.isSafeInteger(transfer.points) || transfer.points < 1) issue = 'Enter a positive whole number of points.';
     else if (source.fieldKey && !target.fieldKey) issue = 'Know points can only move to another Know skill.';
@@ -102,11 +102,12 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     } else {
       source.allocatedPoints -= transfer.points;
       target.allocatedPoints += transfer.points;
+      balances.set(target.id, target);
     }
     return { transfer, fromName, toName, issue };
   });
 
-  const totals = skills.map((skill) => {
+  const totals = [...balances.values()].map((skill) => {
     const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.base;
     return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - startingSkillCap) };
   }).sort((first, second) => first.name.localeCompare(second.name));

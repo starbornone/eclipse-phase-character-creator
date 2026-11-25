@@ -36,6 +36,14 @@ test('report a version 1 draft migration and retain its sleeve', () => {
   assert.deepEqual(preview, { drafts: [{ ...draft, sleeves: [firstSleeve] }], migratedCount: 1 });
 });
 
+test('preserve new Know destinations and reject conflicting field keys', () => {
+  const transfer = { from: 'active:Athletics', to: 'know:orbital cartography', points: 10, newKnowField: 'Orbital Cartography' };
+  const withTransfer = { ...draft, ego: { ...ego, skillTransfers: [transfer] } };
+  assert.deepEqual(previewBackup(encodeBackup([withTransfer])).drafts[0], withTransfer);
+  const conflicting = { ...withTransfer, ego: { ...ego, skillTransfers: [{ ...transfer, to: 'know:astrogation' }] } };
+  assert.throws(() => previewBackup(encodeBackup([conflicting])), /key matching the new Know field/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);
