@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:37:38+11:00",
+  "updatedAt": "2026-11-25T11:43:05+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -140,6 +140,20 @@
       "group": "Character creation",
       "notes": "Summed matching grants with source labels, added linked bases and doubled Fray and Perceive, tracked unnamed Know points, and displayed totals above the standard cap. Verified Art classification and the saved ledger after reload.",
       "completedAt": "2026-11-25T11:37:38+11:00"
+    },
+    {
+      "id": "add-orbital-favicon",
+      "title": "Add an original orbital favicon",
+      "group": "Visual design",
+      "notes": "Created a cyan crescent and orbital arc on a dark rounded tile, and used the same artwork for the browser favicon and navigation brand button.",
+      "completedAt": "2026-11-25T11:40:22+11:00"
+    },
+    {
+      "id": "reallocate-listed-starting-skill-points",
+      "title": "Save point transfers between listed starting skills",
+      "group": "Character creation",
+      "notes": "Added ordered transfers with source balances, Know restrictions, destination cap checks, and revalidation after aptitude or package changes. Verified adding, rejecting, saving, reopening, and removing transfers.",
+      "completedAt": "2026-11-25T11:41:39+11:00"
     }
   ]
 }

@@ -35,7 +35,11 @@ In **Create ego** or **Edit ego**, pick a supported background, career, interest
 
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
-Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted as unassigned points. The ledger flags totals above the standard starting cap of 80. Point reallocations are a later step in the builder.
+Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted as unassigned points. The ledger flags totals above the standard starting cap of 80.
+
+Under **Skill point transfers**, select a source and destination from the skills already in your ledger, enter a positive number of points, and select **Add transfer**. Active points can move to either skill type. Know points can move to another Know skill. Destination totals must stay at or below 80. Save the draft to keep the moves. **Remove** reverses a move and rechecks later transfers.
+
+If a package or aptitude edit makes a transfer invalid, the ledger labels it **Needs review** and skips that move. You can remove it or revise the underlying choices. Adding new destinations, buying skill points with CP, and trait exceptions are planned.
 
 ## Compare morph profiles
 
