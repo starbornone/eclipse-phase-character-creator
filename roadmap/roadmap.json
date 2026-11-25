@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T11:41:39+11:00",
+  "updatedAt": "2026-11-25T11:54:30+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -19,7 +19,7 @@
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Core aptitude templates, a sourced starter package set, skill totals, and saved point transfers between listed skills are implemented. Add new skill destinations, shared CP spending on skills and other choices, trait exceptions, and coverage for additional core packages, motivations, reputation, and equipment."
+      "notes": "Core aptitude templates, a sourced starter package set, skill totals, and saved point transfers to listed and new destinations are implemented. Add shared CP spending on skills and other choices, trait exceptions, Psi and custom Active fields, and coverage for additional core packages, motivations, reputation, and equipment."
     },
     {
       "id": "browse-and-compare-morphs",

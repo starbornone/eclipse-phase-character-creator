@@ -39,9 +39,9 @@ Your selections appear in the dossier and player print view, and are included in
 
 Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted as unassigned points. The ledger flags totals above the standard starting cap of 80.
 
-Under **Skill point transfers**, select a source and destination from the skills already in your ledger, enter a positive number of points, and select **Add transfer**. Active points can move to either skill type. Know points can move to another Know skill. Destination totals must stay at or below 80. Save the draft to keep the moves. **Remove** reverses a move and rechecks later transfers.
+Under **Skill point transfers**, select a source and destination, enter a positive number of points, and select **Add transfer**. For a new destination, choose a skill from the **New Active skill** group or select **New Know field…** and enter a name. Select **Art field (Intuition)** to use Intuition for the new field. Active points can move to either skill type. Know points can move to another Know skill. Destination totals must stay at or below 80. Save the draft to keep the moves. **Remove** reverses a move and rechecks later transfers.
 
-If a package or aptitude edit makes a transfer invalid, the ledger labels it **Needs review** and skips that move. You can remove it or revise the underlying choices. Adding new destinations, buying skill points with CP, and trait exceptions are planned.
+If a package or aptitude edit makes a transfer invalid, the ledger labels it **Needs review** and skips that move. You can remove it or revise the underlying choices. The Active list includes rulebook sample fields. Psi, custom Active fields, buying skill points with CP, and trait exceptions are planned.
 
 ## Compare morph profiles
 

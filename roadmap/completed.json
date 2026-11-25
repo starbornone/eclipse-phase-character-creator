@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T11:48:19+11:00",
+  "updatedAt": "2026-11-25T11:54:30+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -161,6 +161,13 @@
       "group": "Workspace",
       "notes": "Added direct URLs for the morph library, backup restore, and ego workflows. Verified direct links, refresh, draft save, Back and Forward, unsaved-edit protection, and recovery for missing pages and egos.",
       "completedAt": "2026-11-25T11:48:19+11:00"
+    },
+    {
+      "id": "transfer-starting-points-to-new-skills",
+      "title": "Transfer starting points to new Active and Know skills",
+      "group": "Character creation",
+      "notes": "Added rulebook Active skill destinations, named Know fields, and optional Art classification at creation. Verified the starting cap, Know-only restrictions, saving, reloading, removal, and backup round-trips.",
+      "completedAt": "2026-11-25T11:54:30+11:00"
     }
   ]
 }
