@@ -1,4 +1,4 @@
-import { Boxes, CircleDot, HardDrive, LayoutGrid, Orbit } from 'lucide-react';
+import { Boxes, CircleDot, HardDrive, LayoutGrid } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { BackupRestore } from '../components/BackupRestore.tsx';
 import { Dashboard } from '../components/Dashboard.tsx';
@@ -91,7 +91,7 @@ export default function App() {
       <a className="skip-link" href="#main">Skip to content</a>
       <aside className="sidebar screen-only">
         <button type="button" className="brand" disabled={saving} onClick={() => navigate({ name: 'dashboard' })}>
-          <span className="brand-mark"><Orbit size={26} aria-hidden="true" /></span>
+          <img className="brand-mark" src={`${import.meta.env.BASE_URL}favicon.png`} width={40} height={40} alt="" />
           <span><strong>Eclipse Phase</strong><span>Character creator</span></span>
         </button>
         <nav aria-label="Workspace">
