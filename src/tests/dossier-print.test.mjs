@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { buildPrintableDossier, privatePrintFields } from '../features/dossier/print.ts';
+import { clearLegacyFactionlessMotivation, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 
 const assignedAt = '2026-11-25T01:00:00.000Z';
 const event = { date: '2026-11-20', location: 'Private habitat', cause: 'Private cause', notes: 'Private notes' };
@@ -83,4 +84,31 @@ test('print saved ego traits for both audiences', () => {
     assert.deepEqual(buildPrintableDossier(withTraits, audience, []).traits, traits);
     assert.equal(buildPrintableDossier(draft, audience, []).traits, undefined);
   }
+});
+
+test('print two personal motivations with a faction or three without a faction', () => {
+  const personalMotivations = {
+    first: { stance: 'support', text: 'Exploration' },
+    second: { stance: 'oppose', text: 'Censorship' },
+    third: { stance: 'support', text: 'Open access' },
+  };
+  const aligned = { ...draft, ego: { ...draft.ego, packages: { faction: { id: 'argonaut' } }, personalMotivations } };
+  assert.deepEqual(buildPrintableDossier(aligned, 'player', []).motivations, ['+Argonaut Interests', '+Exploration', '−Censorship']);
+  assert.deepEqual(buildPrintableDossier(aligned, 'gm', []).motivations, []);
+  const custom = { ...aligned, ego: { ...aligned.ego, packages: { faction: { id: 'argonaut', motivation: '+Open science' } } } };
+  assert.equal(buildPrintableDossier(custom, 'player', []).motivations[0], '+Open science');
+  const unaligned = { ...aligned, ego: { ...aligned.ego, packages: {} } };
+  assert.deepEqual(buildPrintableDossier(unaligned, 'player', []).motivations, ['+Exploration', '−Censorship', '+Open access']);
+});
+
+test('preserve legacy Factionless motivations when loading and saving a draft', () => {
+  const packages = { faction: { id: 'factionless', motivation: '- Gate secrecy', fields: { 'know-1': 'Habitat lore' } } };
+  const legacy = { ...draft, ego: { ...draft.ego, packages } };
+  assert.deepEqual(buildPrintableDossier(legacy, 'player', []).motivations, ['−Gate secrecy']);
+  const personalMotivations = personalMotivationChoices(legacy.ego);
+  assert.deepEqual(personalMotivations, { third: { stance: 'oppose', text: 'Gate secrecy' } });
+  const savedPackages = clearLegacyFactionlessMotivation(packages);
+  assert.deepEqual(savedPackages, { faction: { id: 'factionless', fields: { 'know-1': 'Habitat lore' } } });
+  const saved = { ...legacy, ego: { ...legacy.ego, packages: savedPackages, personalMotivations } };
+  assert.deepEqual(buildPrintableDossier(saved, 'player', []).motivations, ['−Gate secrecy']);
 });

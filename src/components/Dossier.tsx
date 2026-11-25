@@ -4,12 +4,14 @@ import { egoPath } from '../app/paths.ts';
 import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
+import { listStartingMotivations } from '../rules/calculations/motivations.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { Card } from './ui/card.tsx';
@@ -80,6 +82,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
           {Boolean(draft.ego.languages?.length) && <p className="concept-text">Languages <strong>{draft.ego.languages?.join(', ')}</strong></p>}
           <PackageSummary packages={draft.ego.packages} />
           {draft.ego.packages && <CorePackageCredit />}
+          <MotivationSummary motivations={listStartingMotivations(draft.ego)} />
           <ReputationSummary scores={draft.ego.reputation} />
           <EgoTraitSummary choices={draft.ego.traits} />
         </Card>

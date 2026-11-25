@@ -26,6 +26,13 @@ export interface CreationPackageSelection {
 
 export type CreationPackages = Partial<Record<CreationPackageKind, CreationPackageSelection>>;
 
+export interface PersonalMotivation {
+  stance: 'support' | 'oppose';
+  text: string;
+}
+
+export type PersonalMotivations = Partial<Record<'first' | 'second' | 'third', PersonalMotivation>>;
+
 export interface CustomActiveField {
   category: ActiveFieldCategory;
   name: string;
@@ -66,6 +73,7 @@ export interface Ego {
   languages?: string[];
   reputation?: ReputationScores;
   packages?: CreationPackages;
+  personalMotivations?: PersonalMotivations;
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
   skillPurchases?: SkillPointPurchase[];

@@ -1,5 +1,6 @@
 import { activeSleeve } from '../sleeve/history.ts';
 import { traceAptitudeChecks } from '../../rules/calculations/draft.ts';
+import { listStartingMotivations } from '../../rules/calculations/motivations.ts';
 import { traceSkillSpecializations } from '../../rules/calculations/skill-specializations.ts';
 import { calculateStartingSkills } from '../../rules/calculations/starting-skills.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
@@ -36,6 +37,7 @@ export function buildPrintableDossier(
     traits: draft.ego.traits,
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
+    motivations: audience === 'player' ? listStartingMotivations(draft.ego) : [],
     hasSleeve: Boolean(sleeve),
     morph: findSampleMorph(sleeve?.morphDefinitionId),
     checks: traceAptitudeChecks(draft.ego.aptitudes),

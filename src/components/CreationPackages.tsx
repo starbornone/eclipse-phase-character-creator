@@ -21,7 +21,6 @@ export function PackageSummary({ packages }: { packages?: PackageSelections }) {
   return (
     <dl className="package-summary">
       {names.map(({ kind, label, name }) => <div key={kind}><dt>{label}</dt><dd>{name}</dd></div>)}
-      {packages?.faction?.motivation && <div><dt>Faction motivation</dt><dd>{packages.faction.motivation}</dd></div>}
     </dl>
   );
 }
@@ -76,12 +75,6 @@ export function CreationPackages({ packages, onChange }: {
                     )}
                   </label>,
                 ] : [])}
-                {kind === 'faction' && selection && choice && (
-                  <label className="concept">
-                    Faction motivation
-                    <input value={selection.motivation ?? ''} maxLength={200} onChange={(event) => update(kind, { ...selection, motivation: event.target.value })} />
-                  </label>
-                )}
               </div>
               {choice && (
                 <>
@@ -99,7 +92,7 @@ export function CreationPackages({ packages, onChange }: {
           );
         })}
       </div>
-      <p className="rules-note">Skill fields and the faction motivation can be filled in later.</p>
+      <p className="rules-note">Skill fields can be filled in later.</p>
       <CorePackageCredit />
     </Card>
   );

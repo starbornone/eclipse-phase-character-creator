@@ -3,6 +3,7 @@ import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
+import { personalMotivationSlots } from '../../rules/calculations/motivations.ts';
 import { resolveCustomActiveField } from '../../rules/calculations/active-fields.ts';
 import { evaluateEgoTraitBudget } from '../../rules/calculations/ego-traits.ts';
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
@@ -11,7 +12,7 @@ import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
-import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
+import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, PersonalMotivations, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
 
 const format = 'eclipse-phase-character-backup';
 const backupVersion = 1;
@@ -88,6 +89,21 @@ function readCreationPackages(value: unknown, path: string): CreationPackages {
     badField(path, 'limited to supported package categories');
   }
   return validated;
+}
+
+function readPersonalMotivations(value: unknown, path: string) {
+  const entries = object(value, path);
+  const choices: PersonalMotivations = {};
+  for (const slot of personalMotivationSlots) {
+    if (!Object.hasOwn(entries, slot)) continue;
+    const field = `${path}.${slot}`;
+    const entry = object(entries[slot], field);
+    const { stance } = entry;
+    if (stance !== 'support' && stance !== 'oppose') badField(`${field}.stance`, 'support or oppose');
+    choices[slot] = { stance, text: string(entry.text, `${field}.text`, true).trim() };
+  }
+  if (Object.keys(entries).length !== Object.keys(choices).length) badField(path, 'limited to the three personal motivation slots');
+  return choices;
 }
 
 function readSkillAllocation(entry: Record<string, unknown>, field: string) {
@@ -216,6 +232,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(languages === undefined ? {} : { languages }),
     ...(ego.reputation === undefined ? {} : { reputation: readReputation(ego.reputation, `${path}.reputation`) }),
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
+    ...(ego.personalMotivations === undefined ? {} : { personalMotivations: readPersonalMotivations(ego.personalMotivations, `${path}.personalMotivations`) }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),

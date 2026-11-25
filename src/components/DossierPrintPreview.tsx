@@ -8,6 +8,7 @@ import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
 
@@ -74,6 +75,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             <CorePackageCredit />
           </section>
         )}
+        <MotivationSummary motivations={dossier.motivations} />
         <section>
           <h3>Active morph</h3>
           {dossier.morph ? (

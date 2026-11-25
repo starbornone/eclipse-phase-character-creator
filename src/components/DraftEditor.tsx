@@ -5,6 +5,7 @@ import { parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
+import { cleanPersonalMotivations, clearLegacyFactionlessMotivation, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
@@ -16,6 +17,7 @@ import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
 import { EgoTraitEditor } from './EgoTraits.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { Card } from './ui/card.tsx';
@@ -41,6 +43,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
   const [packages, setPackages] = useState<PackageSelections>(draft?.ego.packages ?? {});
+  const [motivations, setMotivations] = useState(() => personalMotivationChoices(draft?.ego));
   const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
   const [skillPurchases, setSkillPurchases] = useState(draft?.ego.skillPurchases ?? []);
@@ -59,10 +62,12 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
   const parsed = parseAptitudes(inputs);
   const parsedRep = parseReputation(repInputs);
+  const personalMotivations = cleanPersonalMotivations(motivations);
   const { languages, hasDuplicates } = parseLanguages(languageText.split('\n'));
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
+    || JSON.stringify(personalMotivations) !== JSON.stringify(cleanPersonalMotivations(personalMotivationChoices(draft?.ego)))
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
     || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
@@ -96,6 +101,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       const egoId = draft?.ego.id ?? crypto.randomUUID();
       const updatedAt = new Date().toISOString();
       const sleeves = draft?.sleeves ?? [];
+      const savedPackages = clearLegacyFactionlessMotivation(packages);
       const firstSleeve = !currentSleeve && morphId ? {
         id: crypto.randomUUID(),
         egoId,
@@ -116,7 +122,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(egoFlex === startingEgoFlex ? {} : { egoFlex }),
           ...(languages.length ? { languages } : {}),
           ...(Object.keys(parsedRep.scores).length ? { reputation: parsedRep.scores } : {}),
-          ...(Object.keys(packages).length ? { packages } : {}),
+          ...(Object.keys(savedPackages).length ? { packages: savedPackages } : {}),
+          ...(Object.keys(personalMotivations).length ? { personalMotivations } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
           ...(skillPurchases.length ? { skillPurchases } : {}),
@@ -156,6 +163,9 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               </div>
             </Card>
             <CreationPackages packages={packages} onChange={setPackages} />
+            <MotivationEditor packages={packages} choices={motivations} onChange={setMotivations} onFactionChange={(motivation) => {
+              if (packages.faction) setPackages({ ...packages, faction: { ...packages.faction, motivation } });
+            }} />
             <Card className="editor-panel">
               <h2>Aptitudes</h2>
               <p className="muted">You can save a partial draft. The budget below reports how your entries fit core character creation.</p>

@@ -129,6 +129,16 @@ test('round-trip Active package slots and reject slots outside the selected pack
   assert.throws(() => previewBackup(encodeBackup([withPackage('enclaver')])), /limited to slots in the selected package/);
 });
 
+test('round-trip partial motivations and validate slots, stances, and text', () => {
+  const motivation = { stance: 'oppose', text: 'Censorship' };
+  const withChoices = (personalMotivations) => ({ ...draft, ego: { ...ego, personalMotivations } });
+  const valid = withChoices({ third: motivation });
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  assert.throws(() => previewBackup(encodeBackup([withChoices({ fourth: motivation })])), /three personal motivation slots/);
+  assert.throws(() => previewBackup(encodeBackup([withChoices({ first: { ...motivation, stance: 'other' } })])), /stance must be support or oppose/);
+  assert.throws(() => previewBackup(encodeBackup([withChoices({ first: { ...motivation, text: ' ' } })])), /text must be a non-empty string/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);
