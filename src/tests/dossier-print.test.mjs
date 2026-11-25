@@ -56,3 +56,12 @@ test('show recorded ego Flex and languages for both audiences', () => {
     assert.deepEqual(languages, ['English', 'Mandarin']);
   }
 });
+
+test('include recorded reputation in both print layouts', () => {
+  const reputation = { '@-rep': 60, 'i-rep': 0 };
+  const withReputation = { ...draft, ego: { ...draft.ego, reputation } };
+  for (const audience of ['player', 'gm']) {
+    assert.deepEqual(buildPrintableDossier(withReputation, audience, []).reputation, reputation);
+    assert.equal(buildPrintableDossier(draft, audience, []).reputation, undefined);
+  }
+});

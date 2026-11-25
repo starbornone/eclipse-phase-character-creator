@@ -63,6 +63,16 @@ test('round-trip Flex and languages and reject invalid values', () => {
   assert.throws(() => previewBackup(encodeBackup([blank])), /languages\[0\] must be a non-empty string/);
 });
 
+test('round-trip partial reputation and validate its keys and starting scores', () => {
+  const withReputation = (reputation) => ({ ...draft, ego: { ...ego, reputation } });
+  const valid = withReputation({ '@-rep': 80, 'i-rep': 0 });
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  assert.throws(() => previewBackup(encodeBackup([withReputation({ 'u-rep': 5 })])), /supported reputation networks/);
+  for (const value of [81, -1, 0.5, '50']) {
+    assert.throws(() => previewBackup(encodeBackup([withReputation({ 'r-rep': value })])), /r-rep must be a whole number from 0 to 80/);
+  }
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

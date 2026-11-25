@@ -29,13 +29,19 @@ You can also save without a morph and assign one later from **Edit ego**. Older 
 
 In **Create ego** or **Edit ego**, choose a **Core aptitude template** and select **Apply template** to fill the six scores. Adjust the values and check **Customization Point budget**. Moving points between aptitudes leaves the total unchanged. Each point above the starting total of 90 costs 1 Customization Point (CP).
 
-The budget combines aptitude, skill, Flex, and language costs and flags scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved. Trait bonuses and other CP spending are planned.
+The budget combines aptitude, skill, Flex, language, and reputation costs and flags aptitude scores outside the starting 5–30 range. Partial and out-of-budget drafts can still be saved. Trait bonuses and other CP spending are planned.
 
 ## Choose ego Flex and languages
 
 Under **Customization**, choose 1–3 **Ego Flex**. The first point is free, and each additional point costs 2 CP. Enter one language per line. The free allowance starts at two languages, rises to three at a combined Cognition and Intuition of 35, and rises to four at 45. Each language above the allowance costs 1 CP. Duplicate names count once.
 
 Save the draft to keep your choices. Both print layouts and the dossier show ego Flex and recorded languages. JSON backups include both choices.
+
+## Allocate starting reputation
+
+Under **Reputation**, distribute 100 free points among the seven networks. Each network accepts a whole number from 0 to 80. Leave any network blank while you decide. Once you allocate more than 100 points, the **Customization Point budget** charges 1 CP for each batch of five additional points and shows any purchased points still available.
+
+Saved scores appear in the dossier, both print layouts, and JSON backups.
 
 ## Choose core creation packages
 
