@@ -48,3 +48,5 @@ The dashboard, draft editor, sample library, and dossier can be reviewed in the 
 The prototype uses an original [orbital habitat banner](../src/assets/orbital-habitat.jpg) generated with the built-in ImageGen tool. The artwork is decorative and the dashboard’s text and controls remain live HTML.
 
 > Wide cinematic website banner, photorealistic hard sci-fi concept art. Deep ink-blue space with sparse stars, an enormous cold cyan planet crescent on the right, and a small ring-shaped orbital habitat silhouetted in the light above it. Keep the left half very dark and low-detail for overlaid white text. Precise metallic details, high contrast, understated teal highlights. No text, logos, people, or UI. Landscape 3:1 composition.
+
+The browser favicon and navigation brand button share the same [original ImageGen artwork](../public/favicon.png). Its cyan planetary crescent and orbital arc echo the dashboard artwork, while the dark rounded tile follows the Astral Archives family.
