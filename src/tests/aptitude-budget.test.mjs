@@ -113,3 +113,11 @@ test('charge positive traits by level and add negative trait bonuses to availabl
   const overBonus = evaluateAptitudeBudget(scores, [], { traits: [...traits, { id: 'enemy', level: 1 }] });
   assert.equal(overBonus.availableCp, 26);
 });
+
+test('charge 2 CP for Expert Training alongside the selected skill purchase', () => {
+  const skillId = 'active:Fray';
+  const budget = evaluateAptitudeBudget(factotum, [{ to: skillId, points: 5 }], {
+    traits: [{ id: 'expert-training', level: 1, skillId }],
+  });
+  assert.deepEqual([budget.traitBudget.cost, budget.totalCp, budget.cpLeft], [2, 3, 17]);
+});

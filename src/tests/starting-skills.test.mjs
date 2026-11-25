@@ -216,3 +216,26 @@ test('keep custom Active fields distinct and apply fixed or selected aptitudes',
   assert.equal(calculateStartingSkills({ ...input, skillTransfers: [] }).skills.find(({ id }) => id === to).total, 20);
   assert.equal(traceSkillSpecializations(ledger.skills, [{ skillId: to, name: 'Orbital docks' }])[0].target, 40);
 });
+
+test('Expert Training raises exactly one skill cap and rechecks allocations when removed', () => {
+  const to = 'active:Interface';
+  const input = {
+    ...transferDraft,
+    traits: [{ id: 'expert-training', level: 1, skillId: to }],
+    skillTransfers: [{ from: 'active:Persuade', to, points: 30 }],
+    skillPurchases: [{ to, points: 5 }, { to, points: 1 }, { to: 'active:Perceive', points: 41 }],
+  };
+  const ledger = calculateStartingSkills(input);
+  const row = ledger.skills.find(({ id }) => id === to);
+  assert.deepEqual([row.total, row.cap, row.excess], [90, 90, 0]);
+  assert.equal(ledger.transferResults[0].issue, undefined);
+  assert.match(ledger.purchaseResults[1].issue, /cap of 90/);
+  assert.match(ledger.purchaseResults[2].issue, /cap of 80/);
+  const removed = calculateStartingSkills({ ...input, traits: [] });
+  assert.match(removed.transferResults[0].issue, /cap of 80/);
+  assert.equal(removed.skills.find(({ id }) => id === to).total, 61);
+  const aboveCap = calculateStartingSkills({ aptitudes: { sav: 21 }, packages: { career: { id: 'face' } },
+    traits: [{ id: 'expert-training', level: 1, skillId: 'active:Persuade' }] });
+  const trained = aboveCap.skills.find(({ name }) => name === 'Persuade');
+  assert.deepEqual([trained.total, trained.cap, trained.excess], [81, 90, 0]);
+});

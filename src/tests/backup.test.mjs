@@ -111,6 +111,16 @@ test('round-trip custom Active fields and validate category, aptitude, and canon
   assert.throws(() => previewBackup(encodeBackup([withPurchase(sample)])), /customActiveField.*matching the destination/);
 });
 
+test('round-trip the Expert Training skill and require one valid selection', () => {
+  const trait = { id: 'expert-training', level: 1, skillId: 'active-field:hardware:drone maintenance' };
+  const withTraits = (traits) => ({ ...draft, ego: { ...ego, traits } });
+  const valid = withTraits([trait]);
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([{ id: trait.id, level: 1 }])])), /skillId must be a non-empty string/);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([{ ...trait, skillId: 'unknown' }])])), /supported skill ID/);
+  assert.throws(() => previewBackup(encodeBackup([withTraits([trait, { ...trait, skillId: 'active:Fray' }])])), /traits must be unique/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

@@ -53,6 +53,7 @@ export interface SkillSpecialization {
 export interface EgoTraitChoice {
   id: string;
   level: number;
+  skillId?: string;
 }
 
 export interface Ego {

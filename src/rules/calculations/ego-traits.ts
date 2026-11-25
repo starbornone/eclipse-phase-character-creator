@@ -2,10 +2,10 @@ import type { EgoTraitChoice } from '../../types/character.ts';
 import { findEgoTrait } from '../datasets/ego-traits.ts';
 
 export function traceEgoTraits(choices: readonly EgoTraitChoice[] = []) {
-  return choices.flatMap(({ id, level }) => {
+  return choices.flatMap(({ id, level, skillId }) => {
     const trait = findEgoTrait(id);
     const cp = Number.isInteger(level) ? trait?.cpByLevel[level - 1] : undefined;
-    return trait && cp !== undefined ? [{ ...trait, level, cp }] : [];
+    return trait && cp !== undefined ? [{ ...trait, level, cp, skillId }] : [];
   });
 }
 

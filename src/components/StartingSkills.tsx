@@ -1,38 +1,66 @@
-import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
+import { calculateStartingSkills, skillNameFromId } from '../rules/calculations/starting-skills.ts';
 import type { SkillInputs } from '../rules/calculations/starting-skills.ts';
 import { traceSkillSpecializations } from '../rules/calculations/skill-specializations.ts';
 import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
-import type { Ego, SkillPointPurchase, SkillPointTransfer, SkillSpecialization } from '../types/character.ts';
+import { expertTraining } from '../rules/datasets/ego-traits.ts';
+import type { Ego, EgoTraitChoice, SkillPointPurchase, SkillPointTransfer, SkillSpecialization } from '../types/character.ts';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { SkillTransfers } from './SkillTransfers.tsx';
 
-export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange, onSpecializationsChange }: {
+export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange, onSpecializationsChange, onTraitsChange }: {
   ego: SkillInputs & Pick<Ego, 'specializations'>;
   onToggleArt?: (field: string) => void;
   onTransfersChange?: (transfers: SkillPointTransfer[]) => void;
   onPurchasesChange?: (purchases: SkillPointPurchase[]) => void;
   onSpecializationsChange?: (specializations: SkillSpecialization[]) => void;
+  onTraitsChange?: (traits: EgoTraitChoice[]) => void;
 }) {
   const ledger = calculateStartingSkills(ego);
-  const { skills, unassignedKnowPoints, cap, transferResults } = ledger;
+  const { skills, unassignedKnowPoints, transferResults } = ledger;
   const specializations = traceSkillSpecializations(skills, ego.specializations);
+  const expertSkillId = ego.traits?.find(({ id }) => id === expertTraining.id)?.skillId;
+  const missingExpertSkill = expertSkillId && !skills.some(({ id }) => id === expertSkillId);
   if (!skills.length && !unassignedKnowPoints && !transferResults.length && !ledger.purchaseResults.length
-    && !specializations.length && !onToggleArt && !onSpecializationsChange) return null;
+    && !specializations.length && !expertSkillId && !onToggleArt && !onSpecializationsChange && !onTraitsChange) return null;
+
+  function chooseExpertSkill(skillId: string) {
+    const choices = (ego.traits ?? []).filter(({ id }) => id !== expertTraining.id);
+    if (skillId) choices.push({ id: expertTraining.id, level: 1, skillId });
+    onTraitsChange?.(choices);
+  }
 
   return (
     <section className="panel editor-panel starting-skills" aria-labelledby="starting-skills-title">
       <h2 id="starting-skills-title">Starting skill ledger</h2>
       <p className="muted">Totals add allocated points to the linked aptitude. Fray and Perceive use twice their aptitude.</p>
+      {onTraitsChange && (
+        <div className="identity-fields">
+          <label>
+            Expert Training skill
+            <select value={expertSkillId ?? ''} aria-describedby="expert-training-note"
+              onChange={(event) => chooseExpertSkill(event.target.value)}>
+              <option value="">None</option>
+              {missingExpertSkill && <option value={expertSkillId} disabled>{skillNameFromId(expertSkillId)} (missing)</option>}
+              {skills.map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
+            </select>
+          </label>
+          <p id="expert-training-note" className="rules-note">
+            Spend {expertTraining.cost} CP to raise the starting cap of one ledger skill to {expertTraining.cap}.
+          </p>
+        </div>
+      )}
+      {missingExpertSkill && <p className="error">Needs review. Expert Training points to a missing skill and still costs {expertTraining.cost} CP.</p>}
       {unassignedKnowPoints > 0 && <p className="muted">{unassignedKnowPoints} Know points await a field choice.</p>}
       {skills.length ? (
         <div className="comparison-scroll" role="region" aria-label="Starting skill totals" tabIndex={0}>
           <table>
             <thead><tr><th scope="col">Skill</th><th scope="col">Allocated points</th><th scope="col">Aptitude base</th><th scope="col">Total</th></tr></thead>
             <tbody>
-              {skills.map(({ id, name, fieldKey, grants, adjustableKnow, isArt, aptitude, aptitudeScore, base, multiplier, packagePoints, allocatedPoints, purchasedPoints, total, excess }) => (
+              {skills.map(({ id, name, fieldKey, grants, adjustableKnow, isArt, aptitude, aptitudeScore, base, multiplier, packagePoints, allocatedPoints, purchasedPoints, total, excess, cap }) => (
                 <tr key={id}>
                   <th scope="row">
                     {name}
+                    {id === expertSkillId && <span className="skill-grant muted">Expert Training · cap {cap}</span>}
                     {fieldKey && adjustableKnow && onToggleArt && (
                       <label className="skill-art">
                         <input type="checkbox" checked={isArt} onChange={() => onToggleArt(fieldKey)} aria-label={`Art field for ${name}`} />

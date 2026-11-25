@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { evaluateEgoTraitBudget, traceEgoTraits } from '../rules/calculations/ego-traits.ts';
+import { skillNameFromId } from '../rules/calculations/starting-skills.ts';
 import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
-import { egoTraits, egoTraitsSource } from '../rules/datasets/ego-traits.ts';
+import { egoTraits, egoTraitsSource, expertTraining } from '../rules/datasets/ego-traits.ts';
 import type { EgoTraitChoice } from '../types/character.ts';
 import { Card } from './ui/card.tsx';
 
@@ -32,7 +33,7 @@ export function EgoTraitEditor({ choices, onChange }: {
       <h2>Ego traits</h2>
       <p className="muted">Choose from the supported traits. Negative traits can add up to {maximumTraitBonus} CP.</p>
       <div className="identity-fields">
-        {egoTraits.map(({ id, name, cpByLevel, effect }) => (
+        {egoTraits.filter(({ id }) => id !== expertTraining.id).map(({ id, name, cpByLevel, effect }) => (
           <div key={id}>
             <label>
               {name}
@@ -65,9 +66,10 @@ export function EgoTraitSummary({ choices }: { choices?: EgoTraitChoice[] }) {
     <section>
       <h3>Ego traits</h3>
       <ul>
-        {traits.map(({ id, name, level, cpByLevel, effect }) => (
+        {traits.map(({ id, name, level, cpByLevel, effect, skillId }) => (
           <li key={id}>
             <strong>{name}{cpByLevel.length > 1 && ` · Level ${level}`}</strong>
+            {skillId && <p>Skill <strong>{skillNameFromId(skillId)}</strong></p>}
             <p>{effect}</p>
           </li>
         ))}

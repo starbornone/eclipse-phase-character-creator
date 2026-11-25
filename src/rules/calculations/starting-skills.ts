@@ -3,6 +3,7 @@ import type { CustomActiveField, Ego, SkillPointPurchase } from '../../types/cha
 import { customActiveFieldDisplayName, resolveCustomActiveField } from './active-fields.ts';
 import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
+import { expertTraining } from '../datasets/ego-traits.ts';
 
 // Eclipse Phase Second Edition, pp. 45 and 48–50.
 const startingSkillCap = 80;
@@ -10,6 +11,18 @@ const doubledBases = new Set(['Fray', 'Perceive']);
 
 export function knowFieldKey(field: string) {
   return field.trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+export function skillNameFromId(id: string) {
+  if (id.startsWith('active:')) {
+    const skill = id.slice(7);
+    return activeSkillAptitude(skill) ? skill : undefined;
+  }
+  if (id.startsWith('know:')) {
+    const field = id.slice(5);
+    return field && field === knowFieldKey(field) ? `Know: ${field}` : undefined;
+  }
+  return customActiveFieldDisplayName(id);
 }
 
 interface SkillRow {
@@ -21,10 +34,11 @@ interface SkillRow {
   grants: { source: string; points: number }[];
 }
 
-export type SkillInputs = Pick<Ego, 'aptitudes' | 'packages' | 'artisticKnowFields' | 'skillTransfers' | 'skillPurchases'>;
+export type SkillInputs = Pick<Ego, 'aptitudes' | 'packages' | 'artisticKnowFields' | 'skillTransfers' | 'skillPurchases' | 'traits'>;
 
-export function calculateStartingSkills({ aptitudes, packages, artisticKnowFields, skillTransfers = [], skillPurchases = [] }: SkillInputs) {
+export function calculateStartingSkills({ aptitudes, packages, artisticKnowFields, skillTransfers = [], skillPurchases = [], traits }: SkillInputs) {
   const rows = new Map<string, SkillRow>();
+  const expertSkillId = traits?.find(({ id, level }) => id === expertTraining.id && level === 1)?.skillId;
   const artisticFields = new Set(artisticKnowFields);
   let unassignedKnowPoints = 0;
 
@@ -70,6 +84,7 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     const packagePoints = row.grants.reduce((total, grant) => total + grant.points, 0);
     return {
       ...row, id, adjustableKnow, isArt, aptitude, aptitudeScore, multiplier, base, packagePoints,
+      cap: expertSkillId === id ? expertTraining.cap : startingSkillCap,
       allocatedPoints: packagePoints,
       purchasedPoints: 0,
     };
@@ -106,8 +121,8 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
 
   function checkCap(target: ReturnType<typeof calculateRow>, points: number) {
     if (target.base === undefined) return `Enter the linked aptitude for ${target.name} first.`;
-    if (target.base + target.allocatedPoints + target.purchasedPoints + points > startingSkillCap) {
-      return `That would raise ${target.name} above the starting cap of ${startingSkillCap}.`;
+    if (target.base + target.allocatedPoints + target.purchasedPoints + points > target.cap) {
+      return `That would raise ${target.name} above the starting cap of ${target.cap}.`;
     }
   }
 
@@ -154,7 +169,7 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
 
   const totals = [...balances.values()].map((skill) => {
     const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.purchasedPoints + skill.base;
-    return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - startingSkillCap), purchasedOnly: !transferSkillIds.has(skill.id) };
+    return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - skill.cap), purchasedOnly: !transferSkillIds.has(skill.id) };
   }).sort((first, second) => first.name.localeCompare(second.name));
   return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, cap: startingSkillCap };
 }

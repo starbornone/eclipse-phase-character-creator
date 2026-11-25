@@ -215,10 +215,11 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               />
             </Card>
             <StartingSkills
-              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations }}
+              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations, traits }}
               onTransfersChange={setSkillTransfers}
               onPurchasesChange={setSkillPurchases}
               onSpecializationsChange={setSpecializations}
+              onTraitsChange={setTraits}
               onToggleArt={(field) => setArtisticKnowFields((fields) => (
                 fields.includes(field) ? fields.filter((item) => item !== field) : [...fields, field]
               ))}

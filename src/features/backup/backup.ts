@@ -5,11 +5,11 @@ import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
 import { resolveCustomActiveField } from '../../rules/calculations/active-fields.ts';
 import { evaluateEgoTraitBudget } from '../../rules/calculations/ego-traits.ts';
-import { isSpecializationSkillId, normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
+import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
-import { findEgoTrait } from '../../rules/datasets/ego-traits.ts';
+import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
-import { knowFieldKey } from '../../rules/calculations/starting-skills.ts';
+import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
 import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
 
@@ -142,6 +142,12 @@ function readEgoTraits(value: unknown, path: string) {
     if (typeof level !== 'number' || !Number.isInteger(level) || level < 1 || level > definition.cpByLevel.length) {
       badField(`${field}.level`, 'a supported level for this trait');
     }
+    if (id === expertTraining.id) {
+      const skillId = string(choice.skillId, `${field}.skillId`, true);
+      if (!skillNameFromId(skillId)) badField(`${field}.skillId`, 'a supported skill ID');
+      return { id, level, skillId };
+    }
+    if (choice.skillId !== undefined) badField(`${field}.skillId`, 'absent for this trait');
     return { id, level };
   });
   ensureUnique(traits.map(({ id }) => id), path);
@@ -195,7 +201,7 @@ function readEgo(value: unknown, path: string): Ego {
       const field = `${path}.specializations[${index}]`;
       const specialization = object(entry, field);
       const skillId = string(specialization.skillId, `${field}.skillId`, true);
-      if (!isSpecializationSkillId(skillId)) badField(`${field}.skillId`, 'a supported skill ID');
+      if (!skillNameFromId(skillId)) badField(`${field}.skillId`, 'a supported skill ID');
       const name = normalizeSpecializationName(string(specialization.name, `${field}.name`, true));
       return { skillId, name };
     });
