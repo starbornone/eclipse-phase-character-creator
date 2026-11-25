@@ -38,3 +38,20 @@ test('distinguish using trait bonuses from exceeding the maximum CP', () => {
   assert.equal(overBase.exceedsMaximumCp, false);
   assert.equal(evaluateAptitudeBudget({ ...factotum, cog: 30, int: 27 }).exceedsMaximumCp, true);
 });
+
+test('split purchased skill points across skills and share the aptitude CP pool', () => {
+  const purchases = [
+    { to: 'active:Survival', points: 2 },
+    { to: 'know:orbital cartography', points: 3 },
+    { to: 'active:Fray', points: 4 },
+  ];
+  const budget = evaluateAptitudeBudget({ ...factotum, cog: 18 }, purchases);
+  assert.deepEqual(
+    [budget.aptitudeCp, budget.skillCp, budget.totalCp, budget.baseCpLeft, budget.unspentPurchasedSkillPoints],
+    [3, 2, 5, 15, 1],
+  );
+  assert.equal(evaluateAptitudeBudget(factotum, purchases.slice(0, 2)).skillCp, 1);
+  const over = evaluateAptitudeBudget({ ...factotum, cog: 30, int: 25 }, purchases);
+  assert.equal(over.baseCpLeft, -7);
+  assert.equal(over.exceedsMaximumCp, true);
+});

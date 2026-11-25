@@ -33,6 +33,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [packages, setPackages] = useState<PackageSelections>(draft?.ego.packages ?? {});
   const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
+  const [skillPurchases, setSkillPurchases] = useState(draft?.ego.skillPurchases ?? []);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
@@ -46,6 +47,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
+    || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
     || aptitudes.some(({ id }) => inputs[id] !== (draft?.ego.aptitudes[id]?.toString() ?? ''));
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -87,6 +89,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(Object.keys(packages).length ? { packages } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
+          ...(skillPurchases.length ? { skillPurchases } : {}),
         },
         sleeves: firstSleeve ? [firstSleeve] : sleeves,
       };
@@ -147,11 +150,12 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 ))}
               </div>
               {issue && <p className="error" id="aptitude-error" role="alert">{issue.message}</p>}
-              <AptitudeBudget scores={parsed.scores} />
+              <AptitudeBudget scores={parsed.scores} skillPurchases={skillPurchases} />
             </Card>
             <StartingSkills
-              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers }}
+              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases }}
               onTransfersChange={setSkillTransfers}
+              onPurchasesChange={setSkillPurchases}
               onToggleArt={(field) => setArtisticKnowFields((fields) => (
                 fields.includes(field) ? fields.filter((item) => item !== field) : [...fields, field]
               ))}

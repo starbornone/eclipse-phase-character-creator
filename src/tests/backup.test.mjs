@@ -44,6 +44,14 @@ test('preserve new Know destinations and reject conflicting field keys', () => {
   assert.throws(() => previewBackup(encodeBackup([conflicting])), /key matching the new Know field/);
 });
 
+test('round-trip skill purchases and reject malformed entries', () => {
+  const purchase = { to: 'know:orbital cartography', points: 4, newKnowField: 'Orbital Cartography' };
+  const withPurchase = { ...draft, ego: { ...ego, skillPurchases: [purchase] } };
+  assert.deepEqual(previewBackup(encodeBackup([withPurchase])).drafts[0], withPurchase);
+  const invalid = { ...withPurchase, ego: { ...ego, skillPurchases: [{ ...purchase, points: 0 }] } };
+  assert.throws(() => previewBackup(encodeBackup([invalid])), /skillPurchases\[0\].points must be a positive whole number/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

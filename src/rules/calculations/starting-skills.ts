@@ -1,5 +1,5 @@
 import { creationPackageKinds } from '../../types/character.ts';
-import type { Ego } from '../../types/character.ts';
+import type { Ego, SkillPointPurchase } from '../../types/character.ts';
 import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
 
@@ -19,9 +19,9 @@ interface SkillRow {
   grants: { source: string; points: number }[];
 }
 
-export type SkillInputs = Pick<Ego, 'aptitudes' | 'packages' | 'artisticKnowFields' | 'skillTransfers'>;
+export type SkillInputs = Pick<Ego, 'aptitudes' | 'packages' | 'artisticKnowFields' | 'skillTransfers' | 'skillPurchases'>;
 
-export function calculateStartingSkills({ aptitudes, packages, artisticKnowFields, skillTransfers = [] }: SkillInputs) {
+export function calculateStartingSkills({ aptitudes, packages, artisticKnowFields, skillTransfers = [], skillPurchases = [] }: SkillInputs) {
   const rows = new Map<string, SkillRow>();
   const artisticFields = new Set(artisticKnowFields);
   let unassignedKnowPoints = 0;
@@ -69,47 +69,80 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     return {
       ...row, id, adjustableKnow, isArt, aptitude, aptitudeScore, multiplier, base, packagePoints,
       allocatedPoints: packagePoints,
+      purchasedPoints: 0,
     };
   }
 
   const balances = new Map([...rows].map(([id, row]) => [id, calculateRow(id, row)]));
+  function destination({ to, newKnowField }: SkillPointPurchase) {
+    const field = newKnowField?.trim().replace(/\s+/g, ' ');
+    const fieldKey = field && knowFieldKey(field);
+    if (newKnowField !== undefined && (!fieldKey || to !== `know:${fieldKey}`)) {
+      return { issue: 'Enter a Know field that matches the destination.' };
+    }
+    const existing = balances.get(to);
+    if (existing) return { target: existing };
+    if (field && fieldKey) {
+      return { target: calculateRow(to, { name: `Know: ${field}`, fieldKey, grants: [] }) };
+    }
+    const activeSkill = to.startsWith('active:') ? to.slice(7) : '';
+    if (activeSkillAptitude(activeSkill)) {
+      return { target: calculateRow(to, { name: activeSkill, activeSkill, grants: [] }) };
+    }
+    return { issue: 'Choose a supported destination skill.' };
+  }
+
+  function checkCap(target: ReturnType<typeof calculateRow>, points: number) {
+    if (target.base === undefined) return `Enter the linked aptitude for ${target.name} first.`;
+    if (target.base + target.allocatedPoints + target.purchasedPoints + points > startingSkillCap) {
+      return `That would raise ${target.name} above the starting cap of ${startingSkillCap}.`;
+    }
+  }
+
   const transferResults = skillTransfers.map((transfer) => {
     const source = balances.get(transfer.from);
-    const field = transfer.newKnowField?.trim().replace(/\s+/g, ' ');
-    const fieldKey = field && knowFieldKey(field);
-    const newActiveSkill = transfer.to.startsWith('active:') ? transfer.to.slice(7) : '';
-    let target = balances.get(transfer.to);
-    if (!target && field && fieldKey && transfer.to === `know:${fieldKey}`) {
-      target = calculateRow(transfer.to, { name: `Know: ${field}`, fieldKey, grants: [] });
-    }
-    if (!target && activeSkillAptitude(newActiveSkill)) {
-      target = calculateRow(transfer.to, { name: newActiveSkill, activeSkill: newActiveSkill, grants: [] });
-    }
+    const { target, issue: destinationIssue } = destination(transfer);
     const fromName = source?.name ?? transfer.from;
     const toName = target?.name ?? transfer.to;
-    let issue: string | undefined;
+    let issue = destinationIssue;
 
-    if (transfer.newKnowField !== undefined && (!fieldKey || transfer.to !== `know:${fieldKey}`)) {
-      issue = 'Enter a Know field that matches the destination.';
-    } else if (!source || !target) issue = 'Choose a source and a supported destination skill.';
-    else if (source === target) issue = 'Choose two different skills.';
-    else if (!Number.isSafeInteger(transfer.points) || transfer.points < 1) issue = 'Enter a positive whole number of points.';
-    else if (source.fieldKey && !target.fieldKey) issue = 'Know points can only move to another Know skill.';
-    else if (transfer.points > source.allocatedPoints) issue = `${source.name} has only ${source.allocatedPoints} package points available.`;
-    else if (target.base === undefined) issue = `Enter the linked aptitude for ${target.name} first.`;
-    else if (target.base + target.allocatedPoints + transfer.points > startingSkillCap) {
-      issue = `That would raise ${target.name} above the starting cap of ${startingSkillCap}.`;
-    } else {
-      source.allocatedPoints -= transfer.points;
-      target.allocatedPoints += transfer.points;
-      balances.set(target.id, target);
+    if (!source) {
+      issue = 'Choose a source skill with package points.';
+    } else if (target) {
+      if (source === target) issue = 'Choose two different skills.';
+      else if (!Number.isSafeInteger(transfer.points) || transfer.points < 1) issue = 'Enter a positive whole number of points.';
+      else if (source.fieldKey && !target.fieldKey) issue = 'Know points can only move to another Know skill.';
+      else if (transfer.points > source.allocatedPoints) issue = `${source.name} has only ${source.allocatedPoints} package points available.`;
+      else {
+        issue = checkCap(target, transfer.points);
+        if (!issue) {
+          source.allocatedPoints -= transfer.points;
+          target.allocatedPoints += transfer.points;
+          balances.set(target.id, target);
+        }
+      }
     }
     return { transfer, fromName, toName, issue };
   });
 
+  const transferSkillIds = new Set(balances.keys());
+  const purchaseResults = skillPurchases.map((purchase) => {
+    const { target, issue: destinationIssue } = destination(purchase);
+    let issue = destinationIssue;
+    if (target) {
+      issue = Number.isSafeInteger(purchase.points) && purchase.points > 0
+        ? checkCap(target, purchase.points) : 'Enter a positive whole number of points.';
+      if (!issue) {
+        target.purchasedPoints += purchase.points;
+        balances.set(target.id, target);
+      }
+    }
+    return { purchase, toName: target?.name ?? purchase.to, issue };
+  });
+
   const totals = [...balances.values()].map((skill) => {
-    const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.base;
-    return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - startingSkillCap) };
+    const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.purchasedPoints + skill.base;
+    return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - startingSkillCap), purchasedOnly: !transferSkillIds.has(skill.id) };
   }).sort((first, second) => first.name.localeCompare(second.name));
-  return { skills: totals, transferResults, unassignedKnowPoints, cap: startingSkillCap };
+  return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, cap: startingSkillCap };
 }

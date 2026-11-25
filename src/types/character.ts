@@ -22,11 +22,16 @@ export interface CreationPackageSelection {
 
 export type CreationPackages = Partial<Record<CreationPackageKind, CreationPackageSelection>>;
 
-export interface SkillPointTransfer {
-  from: string;
+interface SkillPointAllocation {
   to: string;
   points: number;
   newKnowField?: string;
+}
+
+export type SkillPointPurchase = SkillPointAllocation;
+
+export interface SkillPointTransfer extends SkillPointAllocation {
+  from: string;
 }
 
 export interface Ego {
@@ -38,6 +43,7 @@ export interface Ego {
   packages?: CreationPackages;
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
+  skillPurchases?: SkillPointPurchase[];
 }
 
 export interface MorphDefinition {

@@ -1,17 +1,18 @@
 import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
 import type { SkillInputs } from '../rules/calculations/starting-skills.ts';
 import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
-import type { SkillPointTransfer } from '../types/character.ts';
+import type { SkillPointPurchase, SkillPointTransfer } from '../types/character.ts';
 import { SkillTransfers } from './SkillTransfers.tsx';
 
-export function StartingSkills({ ego, onToggleArt, onTransfersChange }: {
+export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange }: {
   ego: SkillInputs;
   onToggleArt?: (field: string) => void;
   onTransfersChange?: (transfers: SkillPointTransfer[]) => void;
+  onPurchasesChange?: (purchases: SkillPointPurchase[]) => void;
 }) {
   const ledger = calculateStartingSkills(ego);
   const { skills, unassignedKnowPoints, cap, transferResults } = ledger;
-  if (!skills.length && !unassignedKnowPoints && !transferResults.length && !onToggleArt) return null;
+  if (!skills.length && !unassignedKnowPoints && !transferResults.length && !ledger.purchaseResults.length && !onToggleArt) return null;
 
   return (
     <section className="panel editor-panel starting-skills" aria-labelledby="starting-skills-title">
@@ -23,7 +24,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange }: {
           <table>
             <thead><tr><th scope="col">Skill</th><th scope="col">Allocated points</th><th scope="col">Aptitude base</th><th scope="col">Total</th></tr></thead>
             <tbody>
-              {skills.map(({ id, name, fieldKey, grants, adjustableKnow, isArt, aptitude, aptitudeScore, base, multiplier, packagePoints, allocatedPoints, total, excess }) => (
+              {skills.map(({ id, name, fieldKey, grants, adjustableKnow, isArt, aptitude, aptitudeScore, base, multiplier, packagePoints, allocatedPoints, purchasedPoints, total, excess }) => (
                 <tr key={id}>
                   <th scope="row">
                     {name}
@@ -35,11 +36,12 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange }: {
                     )}
                   </th>
                   <td>
-                    <strong>{allocatedPoints}</strong>
+                    <strong>{allocatedPoints + purchasedPoints}</strong>
                     {grants.map(({ source, points }, index) => <span className="skill-grant muted" key={index}>{source} +{points}</span>)}
                     {allocatedPoints !== packagePoints && (
                       <span className="skill-grant muted">Transfers {allocatedPoints > packagePoints ? '+' : ''}{allocatedPoints - packagePoints}</span>
                     )}
+                    {purchasedPoints > 0 && <span className="skill-grant muted">Purchased +{purchasedPoints}</span>}
                   </td>
                   <td>
                     {aptitude?.toUpperCase() ?? '—'}
@@ -55,7 +57,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange }: {
           </table>
         </div>
       ) : <p className="muted">Choose a package or enter Reflexes or Intuition to see skills here.</p>}
-      <SkillTransfers ego={ego} ledger={ledger} onChange={onTransfersChange} onToggleArt={onToggleArt} />
+      <SkillTransfers ego={ego} ledger={ledger} onChange={onTransfersChange} onPurchasesChange={onPurchasesChange} onToggleArt={onToggleArt} />
       <p className="rules-note">
         Art fields use Intuition. Other Know fields use Cognition. Review over-cap totals before play.{' '}
         <a href={coreAptitudeRules.coreBookUrl}>Core rulebook, pp. 45 and 48–50</a>

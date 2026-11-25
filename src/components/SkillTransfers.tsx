@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { calculateStartingSkills, knowFieldKey } from '../rules/calculations/starting-skills.ts';
 import type { SkillInputs } from '../rules/calculations/starting-skills.ts';
 import { activeSkillNames } from '../rules/datasets/active-skills.ts';
-import type { SkillPointTransfer } from '../types/character.ts';
+import type { SkillPointPurchase, SkillPointTransfer } from '../types/character.ts';
 
 type Ledger = ReturnType<typeof calculateStartingSkills>;
 const newKnowDestination = 'new-know';
+const cpSource = 'cp';
 
-export function SkillTransfers({ ego, ledger, onChange, onToggleArt }: {
+export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onToggleArt }: {
   ego: SkillInputs;
   ledger: Ledger;
   onChange?: (transfers: SkillPointTransfer[]) => void;
+  onPurchasesChange?: (purchases: SkillPointPurchase[]) => void;
   onToggleArt?: (field: string) => void;
 }) {
   const [from, setFrom] = useState('');
@@ -21,42 +23,48 @@ export function SkillTransfers({ ego, ledger, onChange, onToggleArt }: {
   const [issue, setIssue] = useState('');
   const [notice, setNotice] = useState('');
   const transfers = ego.skillTransfers ?? [];
+  const purchases = ego.skillPurchases ?? [];
   const sources = ledger.skills.filter((skill) => skill.allocatedPoints > 0);
-  const hasChoices = sources.length > 0;
-  if (!ledger.transferResults.length && (!onChange || !hasChoices)) return null;
+  const editable = Boolean(onPurchasesChange || (onChange && sources.length));
+  if (!editable && !ledger.transferResults.length && !ledger.purchaseResults.length) return null;
   const listedSkills = new Set(ledger.skills.map(({ id }) => id));
   const newActiveSkills = activeSkillNames.filter((name) => !listedSkills.has(`active:${name}`));
   const isNewKnow = to === newKnowDestination;
-  const selectedSource = sources.some(({ id }) => id === from) ? from : '';
+  const buying = Boolean(onPurchasesChange && from === cpSource);
+  const selectedSource = buying || sources.some(({ id }) => id === from) ? from : '';
   const selectedDestination = isNewKnow || listedSkills.has(to) || newActiveSkills.some((name) => `active:${name}` === to) ? to : '';
   const newKnowField = knowField.trim().replace(/\s+/g, ' ');
   const newFieldKey = knowFieldKey(newKnowField);
   const newKnowId = `know:${newFieldKey}`;
   const canClassifyField = isNewKnow && onToggleArt && !listedSkills.has(newKnowId);
 
-  function addTransfer() {
-    if (!onChange) return;
+  function addAllocation() {
     setNotice('');
     if (isNewKnow && !newKnowField) {
       setIssue('Enter a name for the new Know field.');
       return;
     }
     const entered = points.trim();
-    const transfer = {
-      from: selectedSource,
+    const listedDestination = ledger.skills.find(({ id }) => id === selectedDestination);
+    const existingField = listedDestination?.fieldKey && (buying || listedDestination.purchasedOnly)
+      ? listedDestination.name.slice('Know: '.length) : undefined;
+    const destinationField = isNewKnow ? newKnowField : existingField;
+    const allocation = {
       to: isNewKnow ? newKnowId : selectedDestination,
       points: /^\d+$/.test(entered) ? Number(entered) : NaN,
-      ...(isNewKnow ? { newKnowField } : {}),
+      ...(destinationField ? { newKnowField: destinationField } : {}),
     };
-    const next = [...transfers, transfer];
+    const nextTransfers = buying ? transfers : [...transfers, { from: selectedSource, ...allocation }];
+    const nextPurchases = buying ? [...purchases, allocation] : purchases;
     const artFields = ego.artisticKnowFields ?? [];
     const classificationChanged = canClassifyField && artFields.includes(newFieldKey) !== isArt;
     const artisticKnowFields = classificationChanged
       ? isArt ? [...artFields, newFieldKey] : artFields.filter((field) => field !== newFieldKey)
       : artFields;
-    const result = calculateStartingSkills({ ...ego, artisticKnowFields, skillTransfers: next }).transferResults.at(-1);
+    const updated = calculateStartingSkills({ ...ego, artisticKnowFields, skillTransfers: nextTransfers, skillPurchases: nextPurchases });
+    const result = (buying ? updated.purchaseResults : updated.transferResults).at(-1);
     if (!result || result.issue) {
-      setIssue(result?.issue ?? 'Choose a source and destination skill.');
+      setIssue(result?.issue ?? 'Choose a destination skill.');
       return;
     }
     setIssue('');
@@ -64,11 +72,12 @@ export function SkillTransfers({ ego, ledger, onChange, onToggleArt }: {
     if (isNewKnow) {
       setKnowField('');
       setIsArt(false);
-      setTo(transfer.to);
+      setTo(allocation.to);
     }
-    setNotice('Transfer added to the draft.');
+    setNotice(buying ? 'Purchase added to the draft.' : 'Transfer added to the draft.');
     if (classificationChanged) onToggleArt?.(newFieldKey);
-    onChange(next);
+    if (buying) onPurchasesChange?.(nextPurchases);
+    else onChange?.(nextTransfers);
   }
 
   function removeTransfer(index: number) {
@@ -77,18 +86,25 @@ export function SkillTransfers({ ego, ledger, onChange, onToggleArt }: {
     onChange?.(transfers.filter((_, transferIndex) => index !== transferIndex));
   }
 
+  function removePurchase(index: number) {
+    setIssue('');
+    setNotice('Purchase removed from the draft.');
+    onPurchasesChange?.(purchases.filter((_, purchaseIndex) => index !== purchaseIndex));
+  }
+
   return (
     <section className="skill-transfers" aria-labelledby="skill-transfers-title">
-      <h3 id="skill-transfers-title">Skill point transfers</h3>
-      {onChange && hasChoices && (
+      <h3 id="skill-transfers-title">Allocate skill points</h3>
+      {editable && (
         <>
-          <p className="muted">Move points to a listed skill or add a new destination. Know points can only move to another Know skill.</p>
+          <p className="muted">Move package points or buy points with CP. Know package points can only move to another Know skill.</p>
           <div className="identity-fields">
             <label>
-              From skill
+              Point source
               <select value={selectedSource} onChange={(event) => { setFrom(event.target.value); setIssue(''); }}>
                 <option value="">Choose source</option>
-                {sources.map(({ id, name, allocatedPoints }) => <option key={id} value={id}>{name} ({allocatedPoints} points)</option>)}
+                {onPurchasesChange && <option value={cpSource}>Customization Points (CP)</option>}
+                {onChange && sources.map(({ id, name, allocatedPoints }) => <option key={id} value={id}>{name} ({allocatedPoints} points)</option>)}
               </select>
             </label>
             <label>
@@ -117,10 +133,10 @@ export function SkillTransfers({ ego, ledger, onChange, onToggleArt }: {
               </label>
             )}
             <label>
-              Points to move
+              {buying ? 'Points to buy' : 'Points to move'}
               <input inputMode="numeric" value={points} onChange={(event) => { setPoints(event.target.value); setIssue(''); }} />
             </label>
-            <button className="button secondary" type="button" onClick={addTransfer}>Add transfer</button>
+            <button className="button secondary" type="button" onClick={addAllocation}>{buying ? 'Add purchase' : 'Add transfer'}</button>
           </div>
           {issue && <p role="alert" className="error">{issue}</p>}
         </>
@@ -135,6 +151,19 @@ export function SkillTransfers({ ego, ledger, onChange, onToggleArt }: {
                 {transferIssue && <p className="error">Needs review. {transferIssue}</p>}
               </div>
               {onChange && <button type="button" className="text-button" aria-label={`Remove transfer ${index + 1}`} onClick={() => removeTransfer(index)}>Remove</button>}
+            </li>
+          ))}
+        </ol>
+      )}
+      {ledger.purchaseResults.length > 0 && (
+        <ol aria-label="Skill purchases">
+          {ledger.purchaseResults.map(({ purchase, toName, issue: purchaseIssue }, index) => (
+            <li key={index}>
+              <div>
+                <p>{purchase.points} purchased points for <strong>{toName}</strong></p>
+                {purchaseIssue && <p className="error">Needs review. {purchaseIssue} These points still count toward CP spent.</p>}
+              </div>
+              {onPurchasesChange && <button type="button" className="text-button" aria-label={`Remove purchase ${index + 1}`} onClick={() => removePurchase(index)}>Remove</button>}
             </li>
           ))}
         </ol>

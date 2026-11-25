@@ -81,6 +81,19 @@ function readCreationPackages(value: unknown, path: string): CreationPackages {
   return validated;
 }
 
+function readSkillAllocation(entry: Record<string, unknown>, field: string) {
+  const { points } = entry;
+  if (typeof points !== 'number' || !Number.isSafeInteger(points) || points < 1) {
+    badField(`${field}.points`, 'a positive whole number');
+  }
+  const to = string(entry.to, `${field}.to`, true);
+  const newKnowField = entry.newKnowField === undefined ? undefined : string(entry.newKnowField, `${field}.newKnowField`, true);
+  if (newKnowField !== undefined && to !== `know:${knowFieldKey(newKnowField)}`) {
+    badField(`${field}.to`, 'the key matching the new Know field');
+  }
+  return { to, points, ...(newKnowField === undefined ? {} : { newKnowField }) };
+}
+
 function readEgo(value: unknown, path: string): Ego {
   const ego = object(value, path);
   const fields = object(ego.aptitudes, `${path}.aptitudes`);
@@ -103,16 +116,12 @@ function readEgo(value: unknown, path: string): Ego {
     : list(ego.skillTransfers, `${path}.skillTransfers`).map((entry, index) => {
       const field = `${path}.skillTransfers[${index}]`;
       const transfer = object(entry, field);
-      const { points } = transfer;
-      if (typeof points !== 'number' || !Number.isSafeInteger(points) || points < 1) {
-        badField(`${field}.points`, 'a positive whole number');
-      }
-      const to = string(transfer.to, `${field}.to`, true);
-      const newKnowField = transfer.newKnowField === undefined ? undefined : string(transfer.newKnowField, `${field}.newKnowField`, true);
-      if (newKnowField !== undefined && to !== `know:${knowFieldKey(newKnowField)}`) {
-        badField(`${field}.to`, 'the key matching the new Know field');
-      }
-      return { from: string(transfer.from, `${field}.from`, true), to, points, ...(newKnowField === undefined ? {} : { newKnowField }) };
+      return { from: string(transfer.from, `${field}.from`, true), ...readSkillAllocation(transfer, field) };
+    });
+  const skillPurchases = ego.skillPurchases === undefined ? undefined
+    : list(ego.skillPurchases, `${path}.skillPurchases`).map((entry, index) => {
+      const field = `${path}.skillPurchases[${index}]`;
+      return readSkillAllocation(object(entry, field), field);
     });
   return {
     id: string(ego.id, `${path}.id`, true),
@@ -123,6 +132,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
+    ...(skillPurchases === undefined ? {} : { skillPurchases }),
   };
 }
 

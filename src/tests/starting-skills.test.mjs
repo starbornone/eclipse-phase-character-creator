@@ -153,3 +153,25 @@ test('leave new destinations out of the ledger when a move fails validation', ()
   assert.match(ledger.transferResults[4].issue, /above the starting cap/);
   assert.deepEqual(ledger.skills, calculateStartingSkills(input).skills);
 });
+
+test('apply skill purchases after transfers, track their source, and enforce the shared skill cap', () => {
+  const skillPurchases = [
+    { to: 'active:Interface', points: 20 },
+    { to: 'active:Interface', points: 1 },
+    { to: 'know:orbital cartography', points: 4, newKnowField: 'Orbital Cartography' },
+  ];
+  const skillTransfers = [
+    { from: 'active:Interface', to: 'active:Survival', points: 15 },
+    { from: 'know:orbital cartography', to: 'know:argonauts', points: 1 },
+  ];
+  const input = { ...transferDraft, skillTransfers, skillPurchases };
+  const ledger = calculateStartingSkills(input);
+  const skill = ledger.skills.find(({ name }) => name === 'Interface');
+  assert.deepEqual([skill.packagePoints, skill.allocatedPoints, skill.purchasedPoints, skill.total], [40, 25, 21, 61]);
+  assert.match(ledger.transferResults[1].issue, /source skill with package points/);
+  const know = ledger.skills.find(({ name }) => name === 'Know: Orbital Cartography');
+  assert.deepEqual([know.allocatedPoints, know.purchasedPoints, know.total], [0, 4, 19]);
+  const raised = calculateStartingSkills({ ...input, skillTransfers: [], aptitudes: { ...transferDraft.aptitudes, cog: 20 } });
+  assert.equal(raised.skills.find(({ name }) => name === 'Interface').total, 80);
+  assert.match(raised.purchaseResults[1].issue, /above the starting cap/);
+});
