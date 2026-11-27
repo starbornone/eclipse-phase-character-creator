@@ -20,19 +20,25 @@ export function MorphIcon({ morph }: { morph: MorphDefinition }) {
   return <span aria-hidden="true" className={`morph-icon ${morph.id}`}><Icon size={20} /></span>;
 }
 
-export function MorphStats({ morph }: { morph: MorphDefinition }) {
-  const { pools } = morph;
+export function MorphStats({ morph, showPools = true }: { morph: MorphDefinition; showPools?: boolean }) {
+  const { pools, movement, armor } = morph;
   return (
     <span className="morph-stats">
       <span>Durability <strong>{morph.durability}</strong></span>
       {morph.woundThreshold !== undefined && <span>Wound threshold <strong>{morph.woundThreshold}</strong></span>}
       {morph.deathRating !== undefined && <span>Death rating <strong>{morph.deathRating}</strong></span>}
       {morph.morphPoints !== undefined && <span>Cost <strong>{morph.morphPoints} MP</strong></span>}
-      {pools && poolFields.map(([id, label]) => (
+      {movement && <span>Movement <strong>{movement}</strong></span>}
+      {armor && <span>Frame armor <strong>{armor}</strong></span>}
+      {showPools && pools && poolFields.map(([id, label]) => (
         <span key={id}>{label} <strong>{pools[id]}</strong></span>
       ))}
     </span>
   );
+}
+
+export function IncludedMorphWare({ morph }: { morph: MorphDefinition }) {
+  return morph.includedWare?.length ? <p className="concept-text">Built-in ware <strong>{morph.includedWare.join(', ')}</strong></p> : null;
 }
 
 export function MorphSource({ morph }: { morph: MorphDefinition }) {
@@ -135,7 +141,7 @@ function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onCle
         <button type="button" className="button secondary" onClick={onClear}>Clear comparison</button>
       </div>
       <p className="muted" id="comparison-note">
-        Compare listed health, Morph Point costs, and included traits. Core infomorphs also show their pools.
+        Compare health, pools, Morph Point costs, and included traits.
       </p>
       <MorphProfileTable
         columns={morphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}
@@ -213,6 +219,7 @@ export function MorphCatalog() {
             <h2>{morph.name}</h2>
             <p>{morph.description}</p>
             <MorphStats morph={morph} />
+            <IncludedMorphWare morph={morph} />
             <IncludedMorphTraits entries={traceIncludedMorphTraits(morph)} />
             <MorphSource morph={morph} />
             <label className="compare-toggle">

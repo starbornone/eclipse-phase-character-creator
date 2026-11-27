@@ -31,7 +31,7 @@ export function EgoTraitEditor({ choices, onChange }: {
 
   return (
     <Card className="editor-panel">
-      <h2>Ego traits</h2>
+      <h2 id="ego-trait-choices-title" className="creation-review-target" tabIndex={-1}>Ego traits</h2>
       <p className="muted">Choose from the supported traits. Negative traits can add up to {maximumTraitBonus} CP.</p>
       <p className="rules-note">The dossier traces any bonuses and penalties that apply to aptitude checks.</p>
       <p className="rules-note">Composure and Instability change Lucidity, Trauma Threshold, and Insanity Rating.</p>

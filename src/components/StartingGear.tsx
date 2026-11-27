@@ -61,9 +61,9 @@ function GearContents({ packs, replacements, onSwap }: {
   );
 }
 
-export function StartingGearEditor({ campaign, career, morphCategory, swaps, useInfomorphPack, onChange, onSwapsChange, onInfomorphPackChange }: {
+export function StartingGearEditor({ campaign, gear, morphCategory, swaps, useInfomorphPack, onChange, onSwapsChange, onInfomorphPackChange }: {
   campaign?: GearCampaign;
-  career?: string;
+  gear: StartingGear;
   morphCategory?: MorphDefinition['category'];
   swaps: StartingGearSwap[];
   useInfomorphPack: boolean;
@@ -71,7 +71,7 @@ export function StartingGearEditor({ campaign, career, morphCategory, swaps, use
   onSwapsChange: (swaps: StartingGearSwap[]) => void;
   onInfomorphPackChange: (selected: boolean) => void;
 }) {
-  const { packs, appliedSwaps, usesInfomorphPack } = deriveStartingGear(campaign, career, morphCategory, swaps, useInfomorphPack);
+  const { packs, appliedSwaps, usesInfomorphPack } = gear;
   function updateSwap(swap: StartingGearSwap) {
     const next = swaps.filter(({ packId, item }) => packId !== swap.packId || item !== swap.item);
     if (swap.replacement) next.push(swap);
@@ -80,11 +80,11 @@ export function StartingGearEditor({ campaign, career, morphCategory, swaps, use
 
   return (
     <Card className="editor-panel">
-      <h2>Starting gear</h2>
+      <h2 id="creation-starting-gear-title" className="creation-review-target" tabIndex={-1}>Starting gear</h2>
       <div className="identity-fields">
         <label>
           Campaign
-          <select value={campaign ?? ''} onChange={(event) => onChange(findGearCampaign(event.target.value)?.id)}>
+          <select id="creation-campaign" value={campaign ?? ''} onChange={(event) => onChange(findGearCampaign(event.target.value)?.id)}>
             <option value="">Choose campaign</option>
             {gearCampaigns.map(({ id, label }) => <option key={id} value={id}>{label}</option>)}
           </select>

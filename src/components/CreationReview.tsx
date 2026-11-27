@@ -17,7 +17,16 @@ export function CreationReview({ issues }: { issues: readonly CreationReviewIssu
           <h3>{title}</h3>
           <ul>
             {items.map(({ id, target, message }) => (
-              <li key={id}><a href={`#${target}`}>{message}</a></li>
+              <li key={id}>
+                <a href={`#${target}`} onClick={(event) => {
+                  if (event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+                  const field = document.getElementById(target);
+                  if (!field) return;
+                  event.preventDefault();
+                  field.focus({ preventScroll: true });
+                  field.scrollIntoView({ block: 'nearest' });
+                }}>{message}</a>
+              </li>
             ))}
           </ul>
         </div>

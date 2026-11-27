@@ -39,6 +39,16 @@ test('offer sourced morph health profiles and retain legacy sleeves for existing
   assert.equal(findSampleMorph('unknown'), undefined);
 });
 
+test('supported physical morphs use the published player pools, built-in ware, movement, and frame armor', () => {
+  assert.deepEqual(findSampleMorph('bouncer').pools, { insight: 1, moxie: 0, vigor: 1, flex: 2 });
+  assert.deepEqual(findSampleMorph('case').pools, { insight: 0, moxie: 0, vigor: 0, flex: 0 });
+  assert.deepEqual(findSampleMorph('synth').pools, { insight: 0, moxie: 0, vigor: 1, flex: 1 });
+  assert.ok(findSampleMorph('bouncer').includedWare.includes('Oxygen Reserve'));
+  assert.ok(findSampleMorph('case').includedWare.includes('Cyberbrain'));
+  assert.equal(findSampleMorph('synth').movement, 'Walker 4/20');
+  assert.equal(findSampleMorph('synth').armor, '6/4');
+});
+
 test('all four core infomorphs retain the published health, costs, pools and individual sources', () => {
   const infomorphs = sampleMorphs.filter(({ category }) => category === 'Infomorph');
   assert.deepEqual(infomorphs.map(({ id, durability, woundThreshold, deathRating, morphPoints, pools }) => (
@@ -51,6 +61,7 @@ test('all four core infomorphs retain the published health, costs, pools and ind
   ]);
   for (const morph of infomorphs) {
     assert.ok(morph.source.url.endsWith(`04/26-infomorphs.html#${morph.id}`));
+    assert.ok(morph.includedWare.includes('Mnemonics'));
     assert.equal(findSampleMorph(morph.id), morph);
   }
 });

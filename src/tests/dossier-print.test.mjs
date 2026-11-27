@@ -59,6 +59,20 @@ test('show recorded ego Flex and languages for both audiences', () => {
   }
 });
 
+test('both print layouts trace full Flex and switch pools and built-in ware on resleeving', () => {
+  const starting = { ...draft, ego: { ...draft.ego, egoFlex: 2 }, sleeves: draft.sleeves.slice(0, 1) };
+  const resleeved = { ...draft, ego: starting.ego };
+  const legacy = { ...starting, sleeves: [{ ...starting.sleeves[0], morphDefinitionId: 'survey-sleeve' }] };
+  for (const audience of ['player', 'gm']) {
+    const first = buildPrintableDossier(starting, audience, []);
+    assert.deepEqual(first.pools, { insight: 1, moxie: 0, vigor: 1, morphFlex: 2, egoFlex: 2, temporaryFlex: 1, flex: 5 });
+    assert.ok(first.morph.includedWare.includes('Prehensile Feet'));
+    const later = buildPrintableDossier(resleeved, audience, []);
+    assert.deepEqual(later.pools, { insight: 0, moxie: 0, vigor: 1, morphFlex: 1, egoFlex: 2, temporaryFlex: 0, flex: 3 });
+    assert.ok(later.morph.includedWare.includes('Cyberbrain'));
+    assert.equal(buildPrintableDossier(legacy, audience, []).pools, undefined);
+  }
+});
 test('include recorded reputation in both print layouts', () => {
   const reputation = { '@-rep': 60, 'i-rep': 0 };
   const withReputation = { ...draft, ego: { ...draft.ego, reputation } };

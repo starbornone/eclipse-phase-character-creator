@@ -128,6 +128,12 @@ test('the expanded equipment catalogue uses the listed section, complexity, and 
       ['tools-shop', 'Moderate', 2], ['tools-facility', 'Major', 3], ['utilitool', 'Minor', 1],
       ['viewers', 'Moderate', 2], ['wireless-energy-transmitter', 'Minor', 1],
     ]],
+    ['Exploration tools', 'exploration-tools', [['mapping-missile', 'Moderate', 2], ['scout-missile', 'Moderate', 2]]],
+    ['Robots', 'medical-bots', [['docbot', 'Major', 3], ['retriever', 'Major', 3]]],
+    ['Robots', 'personal-bots', [
+      ['creepy-bot', 'Minor', 1], ['manipulator', 'Major', 3], ['servitor-bot', 'Minor', 1], ['spider-hand', 'Minor', 1],
+    ]],
+    ['Salvage tools', 'salvage-tools', [['disassembly-tools', 'Moderate', 2]]],
     ['Science tools', 'science-tools', [
       ['adaptive-interface', 'Major', 3], ['fractal-gloves', 'Moderate', 2], ['pocket-lab', 'Moderate', 2],
       ['portable-solarchive', 'Minor', 1], ['specimen-container', 'Minor', 1],

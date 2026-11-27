@@ -14,7 +14,7 @@ export function MotivationEditor({ packages, choices, onChange, onFactionChange 
   const factionDefault = defaultFactionMotivation(packages);
   return (
     <Card className="editor-panel">
-      <h2>Motivations</h2>
+      <h2 id="creation-motivations-title" className="creation-review-target" tabIndex={-1}>Motivations</h2>
       <p className="muted">Choose causes or personal aims your ego supports or opposes. You can leave fields open while drafting.</p>
       <div className="identity-fields">
         {factionDefault && (

@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-28T08:39:50+11:00",
+  "updatedAt": "2026-11-28T08:55:16+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -10,16 +10,10 @@
   },
   "items": [
     {
-      "id": "complete-first-creation-workflow",
-      "title": "Complete the first supported creation workflow",
-      "group": "Character creation",
-      "notes": "Core aptitude templates, all ten core backgrounds with restricted combat-skill choices, all 14 core careers and matching gear packs, all core faction choices including six regional affiliations, all 16 core interest packages, including independent Pilot fields, skill totals and transfers, custom Active fields, starting motivations and goals, campaign gear packs, and shared CP spending on aptitudes, skills, ego Flex, languages, reputation, and specializations are implemented. Career gear includes Covert Operative and Soldier synthmorph alternatives, errata corrections, and the Genehacker payload cost qualifier. Supported ego traits apply costs and capped bonuses, Expert Training raises one skill cap, and each aptitude check has a supported positive and negative trait with traced per-level modifiers. Skill bases continue to use the underlying aptitude scores. Contact and Morph Familiarity support separate scoped purchases with duplicate checks and one CP per entry. Hardening supports four stress immunities and requires Psi for Unknown. Cumulative WIL Check and Persuade Test penalties appear in separate test targets, including specialization handling. Initiative, Lucidity, Trauma Threshold, and Insanity Rating have live calculation traces, normal rounding, and signed Composure and Instability modifiers. Instability grants 2 or 4 CP under the shared negative trait cap. Fixed-cost gear can be swapped for equal-GP items from supported packs, with source and restriction labels. The four core infomorphs can be chosen as sleeves, and an infomorph first sleeve can use the optional 10 GP pack in the campaign slot. The starting Morph Point budget uses a GM allowance, the Resources trait bonus, and verified first-sleeve costs. Unused MP grants temporary Flex until the first resleeve. Forty-seven Gear chapter entries support extra purchases at complexity-based MP costs and equal-GP pack swaps. The picker supports search by name or category and includes the complete Everyday Technology, Communications, Science Tools, and Survival Tools tables. Extra purchases reduce the balance used for temporary Flex. First-sleeve morph traits cover Toughness, Frailty, Striking Looks, Unattractiveness, and five other negative traits, with traced health, per-level eligibility, a 6 MP bonus cap, and sleeve-specific history. Starting Psi supports both trait levels, the WIL-linked skill, Lost and Async grants, all five sub-strains, the required drawback, a level-gated free sleight, and starting Infection Rating. All 57 core sleights are available at 1 CP each, with separate free and paid selections, level gates, a ten-purchase cap, and dossier and print summaries. All seven profiles supply their published included traits to the editor, dossier, and print. The MP budget counts only added traits and eligibility prevents buying an included trait again. All twelve general aptitude check traits are available as sleeve choices with MP pricing, live check traces, and scoped modifiers that follow the active sleeve. Resleeving previews Integration and Stress from the proposed sleeve with Adaptability, Morphing Disorder, the Exotic Morphology adjustment, and Morph Familiarity waivers. A live Creation review links malformed inputs and advisory findings to the editor fields. It covers packages, aptitudes, reputation, CP and MP, starting Psi, skill allocations, and the first sleeve price. Continue broader gear and elective trait coverage and extend the review as rules land."
-    },
-    {
       "id": "browse-and-compare-morphs",
       "title": "Browse, filter, and compare supported morphs",
       "group": "Character creation",
-      "notes": "Search, category filters, a comparison of up to three profiles, and source links cover the Quick-Start examples and all four core infomorphs. All listed profiles show a sourced MP cost and included traits, and the core infomorphs also show their pools. Expand verified player profiles and restrictions and add the planned price, movement, durability, and capability filters."
+      "notes": "Search, category filters, and a comparison of up to three profiles cover seven core player morphs. All profiles show sourced MP costs, pools, traits, and built-in ware. Expand verified player profiles and restrictions and add the planned price, movement, durability, and capability filters."
     },
     {
       "id": "verify-accessibility-and-layouts",

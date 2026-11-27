@@ -5,6 +5,7 @@ import { reviewCreation } from '../rules/calculations/creation-review.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { traceStartingPsi } from '../rules/calculations/psi.ts';
 import { parseReputation } from '../rules/calculations/reputation.ts';
+import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
 import { evaluateStartingMorphBudget, parseStartingMorphAllowance } from '../rules/calculations/starting-morph-budget.ts';
 import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
 import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
@@ -16,32 +17,61 @@ const completePackages = {
   career: { id: 'academic', fields: { 'know-1': 'History', 'know-2': 'Linguistics', 'know-3': 'Sociology' } },
   interest: { id: 'fighter' }, faction: { id: 'argonaut' },
 };
+const motivations = { first: { stance: 'support', text: 'Open research' }, second: { stance: 'oppose', text: 'Censorship' } };
 
 function review({
   aptitudeFields = scores, reputationFields = { '@-rep': '60', 'c-rep': '40' }, packages = completePackages,
   morphId = 'bouncer', allowanceField = '', traits = [], skillTransfers = [], skillPurchases = [],
-  startingEquipment = [], psi,
+  startingEquipment = [], psi, psiSleightPurchases, languages = ['English', 'Spanish'], personalMotivations = motivations,
+  startingCampaign = 'gatecrashing', useInfomorphPack = false, swaps = [], specializations = [],
 } = {}) {
   const aptitudeInput = parseAptitudes(aptitudeFields);
   const reputationInput = parseReputation(reputationFields);
   const { allowance, issue } = parseStartingMorphAllowance(allowanceField);
   const startingMorph = findSampleMorph(morphId);
+  const startingGear = deriveStartingGear(startingCampaign, packages.career?.id, startingMorph?.category, swaps, useInfomorphPack);
   return reviewCreation({
     aptitudeInput, reputationInput, morphAllowanceIssue: issue, packages, startingMorph, hasFirstSleeve: Boolean(morphId),
+    ego: { languages, personalMotivations, startingCampaign, specializations, traits },
+    startingGear, discardedGearSwaps: swaps.length - startingGear.appliedSwaps.length,
     customizationBudget: aptitudeInput.scores && evaluateAptitudeBudget(aptitudeInput.scores, skillPurchases,
-      { reputation: reputationInput.scores, traits, psi }),
+      { reputation: reputationInput.scores, languages, traits, psi, psiSleightPurchases, specializations }),
     morphBudget: issue ? undefined : evaluateStartingMorphBudget({ traits, startingEquipment, startingMorphPoints: allowance }, startingMorph),
-    startingPsi: traceStartingPsi({ packages, traits, psi }),
-    skills: calculateStartingSkills({ aptitudes: aptitudeInput.scores ?? {}, packages, traits, skillTransfers, skillPurchases }),
+    startingPsi: traceStartingPsi({ packages, traits, psi, psiSleightPurchases }),
+    skills: calculateStartingSkills({ aptitudes: aptitudeInput.scores ?? {}, packages, traits, skillTransfers, skillPurchases, specializations }),
   });
 }
 
 test('the creation review distinguishes a blank, saveable draft from supported choices that pass', () => {
-  const pending = review({ aptitudeFields: blank, reputationFields: {}, packages: {}, morphId: '' });
-  assert.deepEqual(pending.map(({ id }) => id), ['packages', 'aptitudes-missing', 'reputation-unspent', 'first-morph']);
+  const pending = review({ aptitudeFields: blank, reputationFields: {}, packages: {}, morphId: '', languages: [], personalMotivations: {}, startingCampaign: '' });
+  assert.deepEqual(pending.map(({ id }) => id), [
+    'packages', 'motivations', 'aptitudes-missing', 'languages', 'reputation-unspent', 'campaign-gear', 'first-morph',
+  ]);
   assert.ok(pending.every(({ severity }) => severity === 'review'));
   assert.deepEqual(review(), []);
   assert.deepEqual(review({ morphId: 'survey-sleeve' }).map(({ id }) => id), ['morph-price']);
+});
+
+test('free languages follow the final aptitudes and an eligible Infomorph pack fills the campaign slot', () => {
+  const settings = { aptitudeFields: { ...scores, cog: '20' }, startingCampaign: '', useInfomorphPack: true };
+  const issues = review(settings);
+  assert.deepEqual(issues.map(({ id, target }) => [id, target]), [
+    ['languages', 'creation-languages'], ['campaign-gear', 'creation-campaign'],
+  ]);
+  assert.deepEqual(review({ ...settings, morphId: 'operator', languages: ['English', 'Spanish', 'Arabic'] }), []);
+  assert.ok(review({ personalMotivations: {} }).some(({ id, target }) => id === 'motivations' && target === 'creation-motivations-title'));
+});
+
+test('review points to stale purchases and specializations after changing earlier choices', () => {
+  const issues = review({
+    traits: [{ id: 'expert-training', level: 1, skillId: 'know:linguistics' }, { id: 'bad-luck', level: 1 }, { id: 'enemy', level: 1 }],
+    packages: { ...completePackages, career: { id: 'academic', fields: { 'know-1': 'History', 'know-2': 'Cartography', 'know-3': 'Sociology' } } },
+    specializations: [{ skillId: 'know:linguistics', name: 'English' }],
+    psiSleightPurchases: ['Qualia'],
+    swaps: [{ packId: 'gatecrashing', item: 'Autocook', replacement: 'Pressure Tent' }],
+  });
+  assert.deepEqual(issues.map(({ id }) => id), ['negative-ego-traits', 'psi-purchases', 'expert-training', 'specializations', 'gear-swaps']);
+  assert.ok(issues.every(({ severity }) => severity === 'review'));
 });
 
 test('malformed form values use the existing save checks and target their exact inputs', () => {

@@ -27,17 +27,31 @@ If npm cannot find `package.json`, switch to the checkout root. If installation 
 
 You can also save without a morph and assign one later from **Edit ego**. Older prototype drafts still open with their original morph assignment. See [rules sources](rules-sources.md) and the [roadmap](../roadmap/roadmap.json).
 
+## Create a complete first character
+
+This example uses core package-buy and one starting sleeve. Mara Vale is an Argonaut academic headed through a Pandora gate.
+
+1. Select **Create ego**, enter **Mara Vale**, and choose **Colonist**, **Academic**, **Fighter**, and **Argonaut** for the four packages. Set the Colonist fields to Aerospace, Air, Orbital Mechanics, and Space Habitats. Fill Academic’s three Know fields with History, Linguistics, and Sociology.
+2. Apply **Factotum**. Raise Cognition and Willpower to 20. Leave the other aptitudes at 15. Add English, Spanish, and Arabic on separate lines. Set **Ego Flex** to 2. Assign 60 @-rep and 40 c-rep.
+3. Choose **Composure**, **Hyper Linguistics** Level 2, and **Resources** Level 1. Use **Allocate skill points** to buy five points in Perceive with CP. Specialize in Perceive with the name **Visual**. The CP budget should show **20 / 20**. Perceive should be **35**, or **45** for the specialization.
+4. Choose **Bouncer** and add **Rapid Healing**. Set the GM allowance to **7 MP** for this example. Choose the **Gatecrashing** campaign, swap Autocook for **Breadcrumb System**, and buy one **Spider Hand** under Extra starting equipment.
+5. Keep the default Argonaut motivation. Add **Open research** with Support and **Censorship** with Oppose. **Creation review** should report that the supported checks passed.
+6. Select **Save draft**. The dossier should show Wound Threshold **7**, Durability **35**, and Death Rating **53**. The MP budget has **2 MP** left. Character pools are **1 Insight, 0 Moxie, 1 Vigor, and 5 Flex**. The Flex total includes 2 from Bouncer, 2 from the ego, and 1 temporary point. Initiative, Lucidity, Trauma Threshold, and Insanity Rating are **6, 45, 9, and 90**.
+7. Reload, open both print layouts, and export the draft with **Export JSON**. Import the backup through **Import JSON** and restore it as a copy. Edit the copy to see the same passing review and budgets. If you resleeve the copy into Operator, its Flex becomes **3** and the Bouncer remains in sleeve history.
+
+The supported workflow covers the core starting choices and one sleeve. Reserve morph purchases, installed gear effects, and situational rules such as sleight bonuses are resolved at the table. The [source inventory](rules-sources.md) lists the current gear and trait coverage.
+
 ## Review creation
 
 **Creation review** appears at the top of **Create ego** and **Edit ego**. Select an item to move focus to the affected field or section. The list updates as you edit.
 
-**Fix before saving** lists input errors for aptitude scores, reputation scores, and the GM's MP allowance. **Review before play** covers pending packages and skill points, core aptitude bounds, available reputation points, CP and MP deficits, skill caps and invalid allocations, starting Psi choices, and the first sleeve's price. You can save an incomplete or over-budget draft. Reopening it runs the checks again from the saved choices.
+**Fix before saving** lists input errors for aptitude scores, reputation scores, and the GM's MP allowance. **Review before play** covers pending packages and motivations, free languages and reputation, CP and MP deficits, aptitude and skill limits, changed skill or Psi selections, campaign gear, and the first sleeve's price. You can save an incomplete or over-budget draft. Reopening it runs the checks again from the saved choices. The core rules allow undecided motivations to be filled in during play and CP to be saved with the GM's agreement.
 
 ## Set the starting Morph Point budget
 
 Under **First morph**, leave **GM allowance (MP)** blank to use 6 MP or enter the whole number your GM assigns. Zero is a valid allowance. Under **Ego traits**, **Resources** costs 2 CP per level and adds that level to your starting MP.
 
-The budget shows the first sleeve’s sourced cost, remaining MP, and temporary Flex. Each complete pair of unused MP gives 1 temporary Flex, up to 3. For example, a 6 MP allowance with Synth at 3 MP leaves 3 MP and grants 1 temporary Flex. The dossier and both print previews show the starting budget. The temporary bonus expires on the first resleeve, and the budget continues to refer to the original sleeve.
+The budget shows the first sleeve’s sourced cost, remaining MP, and temporary Flex. Each complete pair of unused MP gives 1 temporary Flex, up to 3. For example, a 6 MP allowance with Synth at 3 MP leaves 3 MP and grants 1 temporary Flex. The editor, dossier, and both print previews show the character pools and the contributions to Flex. The temporary bonus expires on the first resleeve, and the budget continues to refer to the original sleeve.
 
 Drafts can be saved with a pending cost or an over-budget warning. Missing and legacy unpriced sleeves leave the balance pending. JSON backups preserve the allowance and Resources choice.
 
@@ -188,7 +202,7 @@ These values use aptitude scores. Resolve, Quickness, Good Instincts, and Harden
 
 ## Compare morph profiles
 
-Open **Morph library**. Search by name or description, or choose a category such as **Infomorph**. Select two or three **Compare** checkboxes to see health values, Morph Point costs, and source links side by side. Core infomorphs also show their published pools. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
+Open **Morph library**. Search by name or description, or choose a category such as **Infomorph**. Select two or three **Compare** checkboxes to see health values, pools, Morph Point costs, and source links side by side. The individual cards also list built-in ware. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
 
 ## Resleeve an ego
 

@@ -483,7 +483,8 @@ textarea { resize: vertical; }
   .print-sheet :is(header, h3, h4) { break-after: avoid; }
   .print-sheet table { break-after: avoid; }
   .print-sheet :is(tr, .print-checks div, .print-history li, .ego-trait-summary li, .morph-trait-summary li, .starting-equipment-items li, .derived-ego-stat-list > div, .print-credit) { break-inside: avoid; }
-  .print-sheet .print-credit { break-before: avoid; }
+  .print-sheet :is(.starting-morph-budget, .character-pools) { break-inside: avoid; }
+  .print-sheet :is(.ego-trait-summary > .rules-note, .skill-transfers > .rules-note:last-child, .print-credit) { break-before: avoid; }
   .print-sheet .error { color: #111; }
   .print-gm { font-size: 10pt; }
   .print-gm .print-checks { grid-template-columns: repeat(3, minmax(0, 1fr)); }

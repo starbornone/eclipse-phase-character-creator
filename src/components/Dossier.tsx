@@ -6,6 +6,7 @@ import { activeSleeve } from '../features/sleeve/history.ts';
 import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { listStartingMotivations } from '../rules/calculations/motivations.ts';
+import { tracePools } from '../rules/calculations/pools.ts';
 import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
 import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
@@ -17,7 +18,8 @@ import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
-import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { IncludedMorphWare, MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { CharacterPools } from './CharacterPools.tsx';
 import { MorphTraitSummary } from './MorphTraits.tsx';
 import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
 import { MotivationSummary } from './Motivations.tsx';
@@ -74,6 +76,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
   const sleeve = activeSleeve(draft);
   const profile = morphProfileForSleeve(sleeve);
   const { morph, entries: activeMorphTraits } = profile;
+  const morphBudget = startingMorphBudgetForDraft(draft);
   const values = traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits, profile);
 
   return (
@@ -116,15 +119,17 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
                 <MorphIcon morph={morph} />
                 <span><strong>{morph.name}</strong><span className="record-meta">{morph.category}</span></span>
               </div>
-              <MorphStats morph={morph} />
+              <MorphStats morph={morph} showPools={false} />
+              <CharacterPools pools={tracePools(morph, draft.ego, morphBudget.temporaryFlex)} />
               <MorphSource morph={morph} />
+              <IncludedMorphWare morph={morph} />
               <IncludedMorphTraits entries={traceIncludedMorphTraits(morph)} />
               <MorphTraitSummary entries={activeMorphTraits} />
             </>
           ) : (
             <p className="muted">{sleeve ? 'This draft references a morph outside the current library.' : 'Assign a sample morph from the ego editor.'}</p>
           )}
-          <StartingMorphBudgetSummary budget={startingMorphBudgetForDraft(draft)} />
+          <StartingMorphBudgetSummary budget={morphBudget} />
         </Card>
       </div>
       <Card className="editor-panel dossier-stats">

@@ -2,7 +2,7 @@
 const gearChapter = 'https://eclipsephase.github.io/en/16';
 
 export const equipmentCategories = [
-  'Apps', 'Communications', 'Everyday technology', 'Robots', 'Science tools', 'Survival tools', 'Vacsuits',
+  'Apps', 'Communications', 'Everyday technology', 'Exploration tools', 'Robots', 'Salvage tools', 'Science tools', 'Survival tools', 'Vacsuits',
 ] as const;
 type EquipmentCategory = typeof equipmentCategories[number];
 
@@ -10,9 +10,12 @@ const section = (category: EquipmentCategory, path: string) => ({ category, sour
 const apps = section('Apps', '13-apps-and-alis.html#apps');
 const communications = section('Communications', '16-comms-and-mesh-gear.html#communications');
 const everyday = section('Everyday technology', '05-common-tech-and-ware.html#everyday-technology');
+const exploration = section('Exploration tools', '18-mission-gear.html#exploration-tools');
 const explorationBots = section('Robots', '21-robots.html#exploration-bots');
 const medicalBots = section('Robots', '21-robots.html#medical-bots');
+const personalBots = section('Robots', '21-robots.html#personal-bots');
 const utilityBots = section('Robots', '21-robots.html#utility-bots');
+const salvage = section('Salvage tools', '18-mission-gear.html#salvage-tools');
 const science = section('Science tools', '18-mission-gear.html#science-tools');
 const survival = section('Survival tools', '18-mission-gear.html#survival-tools');
 const vacsuits = section('Vacsuits', '18-mission-gear.html#vacsuits');
@@ -34,7 +37,9 @@ export const startingEquipment: readonly Equipment[] = [
   { id: 'breadcrumb-system', name: 'Breadcrumb System', complexity: 'Minor', gp: 1, ...communications },
   { id: 'breather', name: 'Breather', complexity: 'Minor', gp: 1, ...everyday },
   { id: 'cold-suit', name: 'Cold Suit', complexity: 'Minor', gp: 1, ...everyday },
+  { id: 'creepy-bot', name: 'Creepy Bot', complexity: 'Minor', gp: 1, ...personalBots },
   { id: 'crypto-app', name: 'Crypto App', complexity: 'Minor', gp: 1, ...apps },
+  { id: 'disassembly-tools', name: 'Disassembly Tools', complexity: 'Moderate', gp: 2, ...salvage },
   { id: 'docbot', name: 'Docbot', complexity: 'Major', gp: 3, ...medicalBots },
   { id: 'ecto', name: 'Ecto', complexity: 'Minor', gp: 1, ...everyday },
   { id: 'electrogravitics-net', name: 'Electrogravitics Net', complexity: 'Minor', gp: 1, ...survival },
@@ -49,6 +54,8 @@ export const startingEquipment: readonly Equipment[] = [
   { id: 'laser-microwave-link-micro', name: 'Laser/Microwave Link (Micro)', complexity: 'Minor', gp: 1, ...communications },
   { id: 'laser-microwave-link-small', name: 'Laser/Microwave Link (Small)', complexity: 'Moderate', gp: 2, ...communications },
   { id: 'light-vacsuit', name: 'Light Vacsuit', complexity: 'Moderate', gp: 2, ...vacsuits },
+  { id: 'manipulator', name: 'Manipulator', complexity: 'Major', gp: 3, ...personalBots },
+  { id: 'mapping-missile', name: 'Mapping Missile', complexity: 'Moderate', gp: 2, ...exploration },
   { id: 'micrograv-shoes', name: 'Micrograv Shoes', complexity: 'Minor', gp: 1, ...everyday },
   { id: 'mission-recorder', name: 'Mission Recorder', complexity: 'Minor', gp: 1, ...communications },
   { id: 'nuclear-battery', name: 'Nuclear Battery', complexity: 'Minor', gp: 1, ...everyday },
@@ -57,12 +64,16 @@ export const startingEquipment: readonly Equipment[] = [
   { id: 'portable-solarchive', name: 'Portable SolArchive', complexity: 'Minor', gp: 1, ...science },
   { id: 'pressure-tent', name: 'Pressure Tent', complexity: 'Moderate', gp: 2, ...survival },
   { id: 'radio-booster', name: 'Radio Booster', complexity: 'Minor', gp: 1, ...communications },
+  { id: 'retriever', name: 'Retriever', complexity: 'Major', gp: 3, ...medicalBots },
   { id: 'satnet-in-a-can', name: 'Satnet-in-a-Can', complexity: 'Major', gp: 3, ...communications },
+  { id: 'scout-missile', name: 'Scout Missile', complexity: 'Moderate', gp: 2, ...exploration },
+  { id: 'servitor-bot', name: 'Servitor Bot', complexity: 'Minor', gp: 1, ...personalBots },
   { id: 'smart-anchors', name: 'Smart Anchors', complexity: 'Minor', gp: 1, ...survival },
   { id: 'smart-clothing', name: 'Smart Clothing', complexity: 'Minor', gp: 1, ...everyday },
   { id: 'solar-charger', name: 'Solar Charger', complexity: 'Minor', gp: 1, ...everyday },
   { id: 'specimen-container', name: 'Specimen Container', complexity: 'Minor', gp: 1, ...science },
   { id: 'specs', name: 'Specs', complexity: 'Moderate', gp: 2, ...everyday },
+  { id: 'spider-hand', name: 'Spider Hand', complexity: 'Minor', gp: 1, ...personalBots },
   { id: 'spindle', name: 'Spindle', complexity: 'Moderate', gp: 2, ...survival },
   { id: 'spindle-climber', name: 'Spindle Climber', complexity: 'Minor', gp: 1, ...survival },
   { id: 'squishbot', name: 'Squishbot', complexity: 'Minor', gp: 1, ...explorationBots },

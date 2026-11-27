@@ -9,7 +9,8 @@ import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
-import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { IncludedMorphWare, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { CharacterPools } from './CharacterPools.tsx';
 import { MorphTraitSummary } from './MorphTraits.tsx';
 import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
@@ -92,8 +93,10 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           {dossier.morph ? (
             <>
               <p><strong>{dossier.morph.name}</strong> · {dossier.morph.category}</p>
-              <MorphStats morph={dossier.morph} />
+              <MorphStats morph={dossier.morph} showPools={false} />
+              <CharacterPools pools={dossier.pools} headingLevel={4} />
               <MorphSource morph={dossier.morph} />
+              <IncludedMorphWare morph={dossier.morph} />
               <IncludedMorphTraits entries={dossier.includedMorphTraits} />
               <MorphTraitSummary entries={dossier.activeMorphTraits} />
             </>

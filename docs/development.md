@@ -15,7 +15,7 @@ The root [README](../README.md) holds the product brief. [Architecture](architec
 
 1. Review the README milestone and relevant [roadmap item](../roadmap/roadmap.json). Check the working tree with `git status --short`.
 2. For a change to game content or rules, record its source and version. Confirm the content boundary before adding published mechanics, text, or assets.
-3. Run the test and build commands for source changes, then follow the local [first sleeve walkthrough](getting-started.md#create-a-first-sleeve). Review `git diff --check` and validate links and roadmap JSON for documentation changes.
+3. Run the test and build commands for source changes, then follow the local [first sleeve walkthrough](getting-started.md#create-a-first-sleeve). For creation-wide changes, run the [completed character walkthrough](getting-started.md#create-a-complete-first-character). Review `git diff --check` and validate links and roadmap JSON for documentation changes.
 4. Update the affected docs and move any finished roadmap item in the same change.
 
 ## Serve browser routes

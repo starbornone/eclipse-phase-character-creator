@@ -116,6 +116,9 @@ export interface MorphDefinition {
   morphPoints?: number;
   morphPointsSource?: { label: string; url: string };
   includedTraits?: readonly MorphTraitChoice[];
+  includedWare?: readonly string[];
+  movement?: string;
+  armor?: string;
   pools?: { insight: number; moxie: number; vigor: number; flex: number };
   source?: { label: string; url: string };
 }

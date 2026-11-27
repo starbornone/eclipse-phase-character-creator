@@ -2,6 +2,7 @@ import { activeSleeve } from '../sleeve/history.ts';
 import { traceAptitudeChecks } from '../../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../../rules/calculations/derived-stats.ts';
 import { listStartingMotivations } from '../../rules/calculations/motivations.ts';
+import { tracePools } from '../../rules/calculations/pools.ts';
 import { traceSkillSpecializations } from '../../rules/calculations/skill-specializations.ts';
 import { calculateStartingSkills } from '../../rules/calculations/starting-skills.ts';
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
@@ -31,6 +32,7 @@ export function buildPrintableDossier(
   const sleeve = activeSleeve(draft);
   const profile = morphProfileForSleeve(sleeve);
   const { morph, entries: activeMorphTraits } = profile;
+  const startingMorphBudget = startingMorphBudgetForDraft(draft);
   const skillLedger = calculateStartingSkills(draft.ego);
   const specializations = draft.ego.specializations?.length
     ? traceSkillSpecializations(skillLedger.skills, draft.ego.specializations).filter(({ missingSkill }) => !missingSkill)
@@ -50,7 +52,8 @@ export function buildPrintableDossier(
     motivations: audience === 'player' ? listStartingMotivations(draft.ego) : [],
     startingGear: audience === 'player' ? startingGearForDraft(draft) : undefined,
     startingEquipment: audience === 'player' ? traceStartingEquipment(draft.ego.startingEquipment) : [],
-    startingMorphBudget: startingMorphBudgetForDraft(draft),
+    startingMorphBudget,
+    pools: tracePools(morph, draft.ego, startingMorphBudget.temporaryFlex),
     hasSleeve: Boolean(sleeve),
     morph,
     includedMorphTraits: traceIncludedMorphTraits(morph),

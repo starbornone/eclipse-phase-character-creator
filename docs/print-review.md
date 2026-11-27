@@ -39,6 +39,8 @@ The resleeving target review on 28 November 2026 used Adaptability, Morphing Dis
 
 The Everyday Technology review on 28 November 2026 used two tool kits, a shop, a facility, and a Portable Sensor. Edge at 320 px verified search by name and category, the three tool prices, an equal-GP swap, and save and reload. The player and GM dossiers rendered to three and two A4 pages respectively from preview markup in headless Chrome. Grayscale pages and extracted text confirmed the 9 MP total and that the player layout displayed per-item prices, quantities, and the pack replacement. Both layouts kept the resleeving location private by default.
 
+The [first-character walkthrough](getting-started.md#create-a-complete-first-character) passed on 28 November 2026 in Edge at 375 px. Creation review, IndexedDB reload, JSON export and restore, and the first resleeve retained the expected values. Headless Chrome rendered the player and GM previews to four and three A4 pages. The grayscale pages and extracted text show the same pool values, built-in ware, specialization target, and source credits. The player copy includes the purchased Spider Hand and the campaign gear swap.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

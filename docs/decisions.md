@@ -180,4 +180,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The review updates during editing and is recalculated when a draft reopens. Players can use it to correct input or plan the next choices while saving partial progress.
 
+## 23. Derive starting pools from the sleeve and ego
+
+**Context.** The Quick-Start NPC profiles provide health values. The core player profiles also list pools and built-in ware, and character creation adds ego Flex and temporary Flex from unspent MP.
+
+**Decision.** Keep published pool values and built-in ware on catalogue profiles. Calculate character pools from the profile, the ego’s chosen Flex, and the temporary amount from the first-sleeve budget. List purchased gear and sleights for reference at the table.
+
+**Consequences.** Existing saves and backups get the new profile data through their saved morph IDs. Resleeving switches the active profile and expires temporary Flex. Old prototype morphs with unknown pools can still be opened. [Rules sources](rules-sources.md#source-inventory)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

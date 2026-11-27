@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status:** Early prototype. Start an ego with core aptitude templates, all core background, career, faction, and interest packages. Choose a Psi sub-strain and buy starting sleights, review skill allocations and derived stats, compare and resleeve Quick-Start morphs and core infomorphs, and print or back up your draft.
+> **Status.** The first core package-buy workflow is complete. Build and review a character with one starting sleeve, save it locally, and print or export it. The supported catalogue includes seven morphs, and the broader library and public beta work continue on the roadmap.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
@@ -10,7 +10,7 @@ A TypeScript web application for creating, validating, saving, and printing **Ec
 
 With Node.js 22.12 or later, run `npm ci` and `npm run dev`, then open the local URL printed by Vite. Run `npm test` for calculation checks and `npm run build` for a type-checked production build.
 
-The prototype includes selected Quick-Start morph health profiles, all four core infomorph profiles, and their optional starting gear pack. The library and dossier show the traits included with each core profile. The first-sleeve budget traces Morph Point costs, Resources, extra equipment, added morph traits, and temporary Flex. Full character creation is planned.
+Follow the [first-character walkthrough](docs/getting-started.md#create-a-complete-first-character) from a blank draft through Creation review and print. The supported morphs show published health, pools, built-in ware, and included traits. The first-sleeve budget traces Morph Point costs, Resources, extra equipment, added morph traits, and temporary Flex.
 
 ## Documentation
 
@@ -75,20 +75,17 @@ A dossier is a printable, shareable representation of a sleeve. It combines rele
 
 ### 1. Create an ego
 
-1. Start a new character.
-2. Use core package-buy for the first supported creation path.
-3. Enter identity and narrative anchors.
-4. Choose background, faction, aptitudes, skills, traits, motivations, and gear.
-5. Use [Creation review](docs/getting-started.md#review-creation) to find pending choices and check the budgets and skill ledger.
-6. Save the ego independently of any current morph.
+1. Select **Create ego** and enter the character’s identity and concept.
+2. Choose background, career, interest, and faction. Set aptitudes, skills, traits, languages, reputation, motivations, and gear.
+3. Use [Creation review](docs/getting-started.md#review-creation) to find pending choices and check both budgets and the skill ledger.
+4. Save the draft. You can save while the first morph is still undecided.
 
 ### 2. Assign a first morph
 
-1. Open the ego’s sleeve manager.
-2. Browse or search available morphs.
-3. Select a morph and configure permitted options, implants, and cosmetic details.
-4. Review the combined sleeve summary.
-5. Save the current sleeve and optionally create a print dossier.
+1. Browse and compare supported profiles in **Morph library**.
+2. In **Create ego** or **Edit ego**, select the first morph and any eligible sleeve traits.
+3. Review its included traits, built-in ware, character pools, and MP budget.
+4. Save the draft to assign the sleeve and open the dossier.
 
 ### 3. Resleeve
 
@@ -413,14 +410,14 @@ src/
 
 **Exit criteria:** a user can create a draft, assign a morph, reload the app, and see an accurate calculated summary.
 
-### Milestone 2 — Full creation workflow
+### Milestone 2 — First core creation workflow
 
 - Complete chosen creation method.
 - Skills, traits, motivations, reputation, and equipment.
 - Validation ledger and clear calculation explanations.
 - Searchable morph library and morph comparison.
 
-**Exit criteria:** a user can build a rules-valid first character without external spreadsheets.
+**Completed.** The [worked example](docs/getting-started.md#create-a-complete-first-character) builds a rules-valid first character without external spreadsheets. It covers core package-buy and one supported starting sleeve.
 
 ### Milestone 3 — Resleeving and export
 

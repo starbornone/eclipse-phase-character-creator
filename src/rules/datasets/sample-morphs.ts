@@ -18,8 +18,10 @@ export function quickStartPageUrl(printedPage: number) {
 
 const source = (page: number) => ({ label: `Quick-Start Rules, p. ${page}`, url: quickStartPageUrl(page) });
 
-// Adapted from the Quick-Start Rules' NPC Stats, pp. 24–25. Health values
-// describe these examples. Player MP prices and included traits use the core profiles.
+const synthWare = ['Access Jacks', 'Cortical Stack', 'Cyberbrain', 'Lidar', 'Mesh Inserts', 'Mnemonics', 'Puppet Sock'];
+
+// Core player profiles, Common Biomorphs and Synthmorphs, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
+// The Quick-Start NPC examples also use these health values.
 export const sampleMorphs: readonly MorphDefinition[] = [
   {
     id: 'bouncer',
@@ -32,6 +34,9 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     morphPoints: 4,
     morphPointsSource: { label: 'Core Bouncer profile', url: 'https://eclipsephase.github.io/en/04/22-common-biomorphs.html#bouncer' },
     includedTraits: [{ id: 'limberness', level: 1 }],
+    pools: { insight: 1, moxie: 0, vigor: 1, flex: 2 },
+    includedWare: ['Biomods', 'Cold Tolerance', 'Cortical Stack', 'Grip Pads', 'Mesh Inserts', 'Oxygen Reserve', 'Prehensile Feet'],
+    movement: 'Walker 4/12',
     source: source(24),
   },
   {
@@ -45,6 +50,10 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     morphPoints: 0,
     morphPointsSource: { label: 'Core Case profile', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#case' },
     includedTraits: [{ id: 'exotic-morphology', level: 1 }, { id: 'inherent-flaws', level: 1 }],
+    pools: { insight: 0, moxie: 0, vigor: 0, flex: 0 },
+    includedWare: synthWare,
+    movement: 'Walker 4/12',
+    armor: '6/4',
     source: source(25),
   },
   {
@@ -58,6 +67,10 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     morphPoints: 3,
     morphPointsSource: { label: 'Core Synth profile', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#synth' },
     includedTraits: [{ id: 'exotic-morphology', level: 1 }],
+    pools: { insight: 0, moxie: 0, vigor: 1, flex: 1 },
+    includedWare: synthWare,
+    movement: 'Walker 4/20',
+    armor: '6/4',
     source: source(25),
   },
   ...coreInfomorphs,

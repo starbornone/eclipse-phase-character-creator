@@ -8,6 +8,7 @@ import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
+import { tracePools } from '../rules/calculations/pools.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
 import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
@@ -27,7 +28,8 @@ import { CreationPackages } from './CreationPackages.tsx';
 import { CreationReview } from './CreationReview.tsx';
 import { EgoTraitEditor } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
-import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { IncludedMorphWare, MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { CharacterPools } from './CharacterPools.tsx';
 import { MorphTraitEditor } from './MorphTraits.tsx';
 import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
@@ -103,8 +105,11 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   );
   const skillInputs = { aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations, traits };
   const skillLedger = calculateStartingSkills(skillInputs);
+  const startingGear = deriveStartingGear(startingCampaign, packages.career?.id, startingMorph?.category, gearSwaps, useInfomorphPack);
   const reviewIssues = reviewCreation({
     aptitudeInput: parsed, reputationInput: parsedRep, morphAllowanceIssue, packages, customizationBudget,
+    ego: { languages, personalMotivations, specializations, startingCampaign, traits }, startingGear,
+    discardedGearSwaps: gearSwaps.length - startingGear.appliedSwaps.length,
     startingMorph, hasFirstSleeve: Boolean(assignedFirstSleeve || morphId), morphBudget, startingPsi, skills: skillLedger,
   });
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
@@ -157,9 +162,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       const sleeves = draft?.sleeves ?? [];
       const savedPackages = cleanFactionMotivation(packages);
       const savedTraits = startingPsi.level ? traits : traits.filter((choice) => !isUnknownHardening(choice));
-      const { appliedSwaps, usesInfomorphPack } = deriveStartingGear(
-        startingCampaign, savedPackages.career?.id, startingMorph?.category, gearSwaps, useInfomorphPack,
-      );
+      const { appliedSwaps, usesInfomorphPack } = startingGear;
       const firstSleeve: Sleeve | undefined = assignedFirstSleeve ? { ...assignedFirstSleeve } : morphId ? {
         id: crypto.randomUUID(),
         egoId,
@@ -284,7 +287,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 </label>
                 <label>
                   Languages
-                  <textarea rows={3} value={languageText} onChange={(event) => setLanguageText(event.target.value)} aria-describedby="language-note" />
+                  <textarea id="creation-languages" rows={3} value={languageText} onChange={(event) => setLanguageText(event.target.value)} aria-describedby="language-note" />
                 </label>
                 <p id="language-note" className="concept rules-note">
                   Enter one language per line. Each language above the free allowance costs {coreCustomizationRules.cpPerExtraLanguage} CP.
@@ -305,7 +308,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 fields.includes(field) ? fields.filter((item) => item !== field) : [...fields, field]
               ))}
             />
-            <StartingGearEditor campaign={startingCampaign} career={packages.career?.id}
+            <StartingGearEditor campaign={startingCampaign} gear={startingGear}
               morphCategory={startingMorph?.category} swaps={gearSwaps} useInfomorphPack={useInfomorphPack}
               onChange={setStartingCampaign} onSwapsChange={setGearSwaps} onInfomorphPackChange={setUseInfomorphPack} />
             <StartingEquipmentEditor purchases={equipment} onChange={setEquipment} />
@@ -334,7 +337,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               </>
             ) : (
               <fieldset>
-                <legend className="muted">Choose an optional sample morph.</legend>
+                <legend className="muted">Choose a starting morph. You can leave this open while drafting.</legend>
                 <label className="morph-option">
                   <input type="radio" name="morph" value="" checked={!morphId} onChange={() => setMorphId('')} />
                   <span>No morph assigned</span>
@@ -347,6 +350,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 ))}
               </fieldset>
             )}
+            {startingMorph && <IncludedMorphWare morph={startingMorph} />}
+            <CharacterPools pools={tracePools(startingMorph, { egoFlex }, morphBudget?.temporaryFlex)} />
             <MorphTraitEditor key={startingMorph?.id} morph={startingMorph} choices={morphTraits}
               aptitudes={parsed.scores} egoTraits={traits} onChange={setMorphTraits} />
             {morphBudget && <StartingMorphBudgetSummary budget={morphBudget} live />}
