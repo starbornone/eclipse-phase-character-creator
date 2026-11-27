@@ -7,14 +7,16 @@ import { MorphStats } from './MorphCatalog.tsx';
 
 const { negativeMorphTraitCap } = startingMorphBudgetRules;
 const describeMp = (mp: number) => mp > 0 ? `${mp} MP cost` : `${-mp} MP bonus`;
+const describeDurability = (points: number) => points > 0 ? `+${points}` : `−${-points}`;
 
 export function MorphTraitSummary({ entries }: { entries: ReturnType<typeof evaluateMorphTraits>['entries'] }) {
   if (!entries.length) return null;
   return (
     <ul className="morph-trait-summary">
-      {entries.map(({ id, name, level, mp, mpByLevel, effect }) => (
+      {entries.map(({ id, name, level, mp, levels, effect, durabilityChange }) => (
         <li key={id}>
-          <a href={morphTraitSource(id)}>{name}</a>{mpByLevel.length > 1 && ` · Level ${level}`} · {describeMp(mp)}
+          <a href={morphTraitSource(id)}>{name}</a>{levels.length > 1 && ` · Level ${level}`} · {describeMp(mp)}
+          {durabilityChange !== 0 && ` · ${describeDurability(durabilityChange)} Durability`}
           <p className="rules-note">{effect}</p>
         </li>
       ))}
@@ -30,6 +32,7 @@ export function MorphTraitEditor({ morph, choices, onChange }: {
   const [issue, setIssue] = useState('');
   const options = availableMorphTraits(morph);
   const { morph: configured, entries } = deriveMorphProfile(morph, choices);
+  const healthModifiers = entries.filter(({ durabilityChange }) => durabilityChange !== 0);
 
   function choose(id: string, level: number) {
     const next = choices.filter((choice) => choice.id !== id);
@@ -51,16 +54,16 @@ export function MorphTraitEditor({ morph, choices, onChange }: {
       )}
       {options.length > 0 && (
         <div className="identity-fields">
-          {options.map(({ id, name, mpByLevel, effect }) => (
+          {options.map(({ id, name, levels, eligibleLevels, effect }) => (
             <div key={id}>
               <label>
                 {name}
                 <select value={entries.find((entry) => entry.id === id)?.level ?? 0}
                   aria-describedby={`morph-trait-${id}`} onChange={(event) => choose(id, Number(event.target.value))}>
                   <option value={0}>None</option>
-                  {mpByLevel.map((mp, index) => (
-                    <option key={index} value={index + 1}>
-                      {mpByLevel.length > 1 ? `Level ${index + 1}` : 'Take'} · {describeMp(mp)}
+                  {eligibleLevels.map(({ level, mp }) => (
+                    <option key={level} value={level}>
+                      {levels.length > 1 ? `Level ${level}` : 'Take'} · {describeMp(mp)}
                     </option>
                   ))}
                 </select>
@@ -71,9 +74,12 @@ export function MorphTraitEditor({ morph, choices, onChange }: {
         </div>
       )}
       {options.length > 0 && issue && <p className="error" role="alert">{issue}</p>}
-      {configured && configured !== morph && (
+      {configured && morph && healthModifiers.length > 0 && (
         <div aria-live="polite">
           <p className="rules-note">{configured.name} health with traits</p>
+          <p className="rules-note">Durability {morph.durability} base {healthModifiers.map(({ name, durabilityChange }) => (
+            `${describeDurability(durabilityChange)} ${name}`
+          )).join(' ')} = {configured.durability}</p>
           <MorphStats morph={configured} />
         </div>
       )}

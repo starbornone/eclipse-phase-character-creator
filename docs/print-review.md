@@ -27,6 +27,8 @@ Hardening was reviewed on 27 November 2026 with all three supported stress types
 
 Derived ego stats and Composure were reviewed on 27 November 2026 with partial aptitudes and non-multiple-of-five scores. Player, GM, and incomplete-player A4 PDFs each span two pages; all six grayscale pages retain readable formulas, rounding steps, Composure's source contribution, pending values, and attribution. The 320 px editor and saved dossier have no horizontal overflow. Live edits, Composure removal, save/reload, resleeving from Bouncer to Synth, and backup restore preserve the expected values. No browser errors were reported.
 
+The Frailty review on 28 November 2026 used a Bouncer with Frailty Level 2 and Unattractiveness Level 2. The Player and GM layouts each rendered to two A4 pages from the preview markup in headless Chrome. The grayscale pages and extracted text show both levels, the 6 MP bonus, Durability 25, Wound Threshold 5, and Death Rating 38. Both Edge previews and the 390 px editor showed the same configured health. Resleeving moved the trait summary to the previous sleeve.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

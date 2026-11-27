@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T02:05:53+11:00",
+  "updatedAt": "2026-11-28T02:15:30+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -392,6 +392,13 @@
       "group": "Character creation",
       "notes": "Added all 57 core sleights with shared level gates, free-choice deduplication, a ten-purchase cap, and live CP accounting. Verified backup validation, 390 px editor, save and reload, resleeving, both print layouts, and saving after a level downgrade. All 169 tests and the production build pass.",
       "completedAt": "2026-11-28T02:05:53+11:00"
+    },
+    {
+      "id": "add-frailty-and-morph-appearance-traits",
+      "title": "Add Frailty and enforce appearance trait level restrictions",
+      "group": "Character creation",
+      "notes": "Documented the app interpretation of −5 Durability per Frailty level. Added Striking Looks and Unattractiveness with profile-specific levels shared by the editor and backup validator. Verified the MP cap, derived health, 390 px layout, save and reload, resleeving, both print previews, and two A4 layouts in grayscale. All 172 tests and the production build pass.",
+      "completedAt": "2026-11-28T02:15:30+11:00"
     }
   ]
 }

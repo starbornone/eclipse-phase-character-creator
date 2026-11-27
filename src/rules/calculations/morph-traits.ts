@@ -4,19 +4,23 @@ import { findSampleMorph } from '../datasets/sample-morphs.ts';
 
 export function availableMorphTraits(morph?: MorphDefinition) {
   if (!morph || morph.morphPoints === undefined) return [];
-  return morphTraits.filter(({ categories }) => categories.includes(morph.category));
+  return morphTraits.flatMap((trait) => {
+    const eligibleLevels = trait.levels.flatMap(({ mp, categories, morphIds }, index) => (
+      categories.includes(morph.category) && (!morphIds || morphIds.includes(morph.id)) ? [{ level: index + 1, mp }] : []
+    ));
+    return eligibleLevels.length ? [{ ...trait, eligibleLevels }] : [];
+  });
 }
 
 export function evaluateMorphTraits(morph?: MorphDefinition, choices: readonly MorphTraitChoice[] = []) {
-  const entries = availableMorphTraits(morph).flatMap((trait) => {
+  const entries = availableMorphTraits(morph).flatMap(({ eligibleLevels, durabilityPerLevel, ...trait }) => {
     const choice = choices.find(({ id }) => id === trait.id);
-    const level = choice?.level;
-    const mp = level !== undefined && Number.isInteger(level) ? trait.mpByLevel[level - 1] : undefined;
-    return level === undefined || mp === undefined ? [] : [{ ...trait, level, mp }];
+    const applied = eligibleLevels.find(({ level }) => level === choice?.level);
+    return applied ? [{ ...trait, ...applied, durabilityChange: applied.level * (durabilityPerLevel ?? 0) }] : [];
   });
   const bonus = entries.reduce((sum, { mp }) => sum + Math.max(0, -mp), 0);
   const cost = entries.reduce((sum, { mp }) => sum + Math.max(0, mp), 0);
-  const durabilityChange = entries.reduce((sum, { level, durabilityPerLevel }) => sum + level * (durabilityPerLevel ?? 0), 0);
+  const durabilityChange = entries.reduce((sum, entry) => sum + entry.durabilityChange, 0);
   return { entries, bonus, cost, durabilityChange };
 }
 

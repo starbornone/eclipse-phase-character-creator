@@ -8,6 +8,9 @@ import { evaluateStartingMorphBudget } from '../rules/calculations/starting-morp
 import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
 
 const toughness = (level) => ({ id: 'toughness', level });
+const frailty = (level) => ({ id: 'frailty', level });
+const strikingLooks = (level) => ({ id: 'striking-looks', level });
+const unattractiveness = (level) => ({ id: 'unattractiveness', level });
 const dominantLimb = { id: 'dominant-limb', level: 1 };
 const hypersensitivity = { id: 'hypersensitivity', level: 1 };
 const nausea = { id: 'zero-g-nausea', level: 1 };
@@ -32,6 +35,35 @@ test('Toughness charges 2 MP per level and derives health from the selected phys
     assert.equal(entries[0].mp, 2 * level);
     assert.equal(base.durability, expected[0] - 5 * level);
   }
+});
+
+test('Frailty grants MP and applies a traced durability reduction with the sleeve category formulas', () => {
+  for (const [id, level, expected] of [
+    ['bouncer', 1, [30, 6, 45]], ['bouncer', 2, [25, 5, 38]],
+    ['case', 2, [15, 3, 30]], ['synth', 1, [35, 7, 70]],
+  ]) {
+    const base = findSampleMorph(id);
+    const { morph, entries } = deriveMorphProfile(base, [frailty(level)]);
+    assert.deepEqual([morph.durability, morph.woundThreshold, morph.deathRating], expected);
+    assert.deepEqual([entries[0].mp, entries[0].durabilityChange], [-2 * level, -5 * level]);
+    assert.equal(base.durability, expected[0] + 5 * level);
+  }
+  const base = findSampleMorph('bouncer');
+  assert.equal(deriveMorphProfile(base, [toughness(1), frailty(1)]).morph, base);
+  const budget = evaluateStartingMorphBudget({}, base, false, [frailty(2), unattractiveness(2)]);
+  assert.deepEqual([budget.morphTraitBonus, budget.remaining, budget.temporaryFlex], [6, 8, 3]);
+});
+
+test('appearance traits preserve their published level numbers for each eligible profile', () => {
+  const levels = (morph, id) => availableMorphTraits(morph).find((trait) => trait.id === id)?.eligibleLevels;
+  const bouncer = findSampleMorph('bouncer');
+  const synth = findSampleMorph('synth');
+  assert.deepEqual(levels(bouncer, 'striking-looks'), [{ level: 1, mp: 1 }, { level: 2, mp: 2 }]);
+  assert.deepEqual(levels(synth, 'striking-looks'), [{ level: 1, mp: 1 }]);
+  assert.deepEqual(levels(bouncer, 'unattractiveness'), [{ level: 2, mp: -2 }]);
+  assert.deepEqual(levels(synth, 'unattractiveness'), [{ level: 1, mp: -1 }]);
+  assert.equal(levels({ ...bouncer, id: 'unsourced-body-type' }, 'unattractiveness'), undefined);
+  assert.deepEqual(evaluateMorphTraits(synth, [strikingLooks(2), unattractiveness(2)]).entries, []);
 });
 
 test('trait choices are scoped by profile category and use a shared negative MP cap', () => {
@@ -88,4 +120,25 @@ test('resleeving preserves traits on the previous sleeve and both print layouts 
   assert.deepEqual(print.activeMorphTraits, []);
   assert.ok(print.history[1].morphTraits.some(({ id }) => id === 'toughness'));
   assert.deepEqual([print.startingMorphBudget.morphTraitCost, print.startingMorphBudget.morphTraitBonus, print.startingMorphBudget.temporaryFlex], [4, 2, 0]);
+});
+
+test('backup and print preserve Frailty and enforce appearance level restrictions and the bonus cap', () => {
+  const first = draft([frailty(2), unattractiveness(2)]);
+  assert.deepEqual(previewBackup(encodeBackup([first])).drafts[0], first);
+  for (const [id, choices] of [
+    ['bouncer', [unattractiveness(1)]], ['synth', [unattractiveness(2)]], ['case', [strikingLooks(2)]],
+    ['operator', [frailty(1)]], ['bouncer', [frailty(2), unattractiveness(2), dominantLimb]],
+  ]) {
+    assert.throws(() => previewBackup(encodeBackup([draft(choices, id)])), /morphTraits.*must be/);
+  }
+  for (const audience of ['player', 'gm']) {
+    const print = buildPrintableDossier(first, audience, []);
+    assert.equal(print.morph.durability, 25);
+    assert.equal(print.activeMorphTraits.find(({ id }) => id === 'frailty').durabilityChange, -10);
+    assert.ok(print.activeMorphTraits.some(({ id, level }) => id === 'unattractiveness' && level === 2));
+  }
+  const next = recordResleeving(first, 'second', 'synth', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  const print = buildPrintableDossier(next, 'gm', []);
+  assert.deepEqual([print.morph.durability, print.startingMorphBudget.morphTraitBonus], [40, 6]);
+  assert.equal(print.history[1].morphTraits.find(({ id }) => id === 'frailty').level, 2);
 });

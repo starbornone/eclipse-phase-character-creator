@@ -37,9 +37,11 @@ Drafts can be saved with a pending cost or an over-budget warning. Missing and l
 
 ## Choose first sleeve traits
 
-Under **First sleeve traits**, choose a priced biomorph or synthmorph to see its options. **Toughness** costs 2 MP per level and adds 5 Durability per level. The editor recalculates Wound Threshold and Death Rating. For example, Bouncer with Toughness Level 1 has Durability 40, Wound Threshold 8, and Death Rating 60.
+Under **First sleeve traits**, choose a priced biomorph or synthmorph to see its options. **Toughness** costs 2 MP per level and adds 5 Durability per level. **Frailty** grants 2 MP per level and the app applies a 5 Durability reduction per level. The editor shows the base Durability, each adjustment, and the resulting health. For example, Bouncer with Frailty Level 2 has Durability 25, Wound Threshold 5, and Death Rating 38.
 
-Negative morph traits grant up to 6 MP in total. **Dominant Limb** and **Planned Obsolescence** each grant 1 MP on supported physical sleeves. **Hypersensitivity** grants 3 MP and **Zero-G Nausea** grants 2 MP on biomorphs. **Proprietary Tech** grants 2 MP on synthmorphs. Their situational effects are listed for use during play.
+Negative morph traits grant up to 6 MP in total. **Dominant Limb** and **Planned Obsolescence** each grant 1 MP on supported physical sleeves. **Hypersensitivity** grants 3 MP and **Zero-G Nausea** grants 2 MP on biomorphs. **Proprietary Tech** grants 2 MP on synthmorphs.
+
+**Striking Looks** costs 1 or 2 MP on Bouncer and 1 MP on Case and Synth. **Unattractiveness** grants 2 MP at Level 2 on Bouncer and 1 MP at Level 1 on Case and Synth. The editor offers the levels that apply to the selected sleeve and lists their situational effects for play.
 
 The budget includes both the cost and bonus. If a first-morph change invalidates a choice, returning to the earlier morph before saving restores it. The dossier and both print layouts show the active sleeve's adjusted health and traits. Resleeving keeps the original traits in sleeve history and the starting budget. Backups retain the individual sleeve choices.
 

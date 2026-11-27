@@ -140,4 +140,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The editor keeps ineligible selections available for restoration while editing and charges CP for eligible purchases only. Saving drops ineligible purchases. The dossier retains paid sleights across resleeving. [Starting sleight purchases](https://eclipsephase.github.io/en/04/13-step-10-customization.html#psi-sleights)
 
+## 18. Apply Frailty per level and preserve published morph trait levels
+
+**Context.** The core Frailty entry lists two MP bonus tiers and describes a 5 Durability reduction. The earlier publisher playtest specifies the reduction per level. Some appearance trait levels apply to particular profiles. [Core Frailty](https://eclipsephase.github.io/en/04/28-traits.html#frailty) · [Publisher playtest draft](https://www.scribd.com/document/363699670/EP2-MakingCharacters-May15)
+
+**Decision.** Interpret Frailty as −5 Durability at Level 1 and −10 at Level 2. Define eligible profiles for each trait level and retain the original level number when filtering options.
+
+**Consequences.** The same trait data drives the picker, MP budget, configured health, and backup validation. Saved sleeves store IDs and levels, so future clarifications can update the calculation without rewriting backups.
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

@@ -4,28 +4,43 @@ import type { MorphDefinition } from '../../types/character.ts';
 const source = 'https://eclipsephase.github.io/en/04/28-traits.html';
 type MorphCategory = MorphDefinition['category'];
 const physical: readonly MorphCategory[] = ['Biomorph', 'Synthmorph'];
+const biomorph: readonly MorphCategory[] = ['Biomorph'];
+const synthmorph: readonly MorphCategory[] = ['Synthmorph'];
+
+interface MorphTraitLevel {
+  mp: number;
+  categories: readonly MorphCategory[];
+  morphIds?: readonly string[];
+}
+
+const traitLevel = (mp: number, categories = physical): MorphTraitLevel => ({ mp, categories });
 
 interface MorphTrait {
   id: string;
   name: string;
-  mpByLevel: readonly number[];
-  categories: readonly MorphCategory[];
+  levels: readonly MorphTraitLevel[];
   effect: string;
   durabilityPerLevel?: number;
 }
 
 export const morphTraits: readonly MorphTrait[] = [
-  { id: 'toughness', name: 'Toughness', mpByLevel: [2, 4], categories: physical, durabilityPerLevel: 5,
+  { id: 'toughness', name: 'Toughness', levels: [traitLevel(2), traitLevel(4)], durabilityPerLevel: 5,
     effect: 'Add 5 Durability per level and recalculate Wound Threshold and Death Rating.' },
-  { id: 'dominant-limb', name: 'Dominant Limb', mpByLevel: [-1], categories: physical,
+  { id: 'striking-looks', name: 'Striking Looks', levels: [traitLevel(1), traitLevel(2, biomorph)],
+    effect: 'Apply +10 to Persuade and Provoke Tests when appearance matters. Synthmorphs and uplifts are limited to Level 1.' },
+  { id: 'frailty', name: 'Frailty', levels: [traitLevel(-2), traitLevel(-4)], durabilityPerLevel: -5,
+    effect: 'The app applies −5 Durability per level and recalculates Wound Threshold and Death Rating.' },
+  { id: 'unattractiveness', name: 'Unattractiveness', levels: [traitLevel(-1, synthmorph), { mp: -2, categories: biomorph, morphIds: ['bouncer'] }],
+    effect: 'Apply −10 to Persuade and Provoke Tests when appearance matters. Level 1 is for synthmorphs and uplifts. Level 2 is for humanoid biomorphs.' },
+  { id: 'dominant-limb', name: 'Dominant Limb', levels: [traitLevel(-1)],
     effect: 'Choose a dominant limb. Apply −20 to tests made with other limbs.' },
-  { id: 'hypersensitivity', name: 'Hypersensitivity', mpByLevel: [-3], categories: ['Biomorph'],
+  { id: 'hypersensitivity', name: 'Hypersensitivity', levels: [traitLevel(-3, biomorph)],
     effect: 'The sleeve can use its built-in implants only.' },
-  { id: 'planned-obsolescence', name: 'Planned Obsolescence', mpByLevel: [-1], categories: physical,
+  { id: 'planned-obsolescence', name: 'Planned Obsolescence', levels: [traitLevel(-1)],
     effect: 'Without monthly Moderate maintenance, lose one pool point of the GM’s choice. At zero pools, take a wound each missed month.' },
-  { id: 'proprietary-tech', name: 'Proprietary Tech', mpByLevel: [-2], categories: ['Synthmorph'],
+  { id: 'proprietary-tech', name: 'Proprietary Tech', levels: [traitLevel(-2, synthmorph)],
     effect: 'Fixer swarms are ineffective on this sleeve. Apply −20 to Hardware: Robotics Tests on it.' },
-  { id: 'zero-g-nausea', name: 'Zero-G Nausea', mpByLevel: [-2], categories: ['Biomorph'],
+  { id: 'zero-g-nausea', name: 'Zero-G Nausea', levels: [traitLevel(-2, biomorph)],
     effect: 'Apply −10 in microgravity. Failing the initial Somatics Check for acclimation or excessive movement incapacitates you for one hour.' },
 ];
 
