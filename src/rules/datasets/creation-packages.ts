@@ -52,12 +52,19 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'academic', name: 'Academic', page: 40, grants: [
       grant('Interface', 30), grant('Research', 60), know('know-1', 60), know('know-2', 40), know('know-3', 30),
     ] },
+    { id: 'enforcer', name: 'Enforcer', page: 40, grants: [
+      grant('Fray', 30), grant('Guns', 20), grant('Melee', 50), grant('Provoke', 30),
+      know('know-1', 60), know('know-2', 30),
+    ] },
     { id: 'explorer', name: 'Explorer', page: 40, grants: [
       grant('Athletics', 30), grant('Medicine: Paramedic', 20), pilot(20), grant('Survival', 60),
       know('know-1', 60), know('know-2', 30),
     ] },
     { id: 'face', name: 'Face', page: 40, grants: [
       grant('Deceive', 40), grant('Kinesics', 30), grant('Persuade', 60), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'soldier', name: 'Soldier', page: 41, grants: [
+      grant('Fray', 40), grant('Guns', 60), grant('Melee', 30), know('know-1', 60), know('know-2', 30),
     ] },
   ],
   interest: [

@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T16:58:50+11:00",
+  "updatedAt": "2026-11-27T17:11:00+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -252,6 +252,13 @@
       "group": "Discovery",
       "notes": "Reviewed core screens and completed the grayscale dossier review using Edge PDFs at A4 and Letter. Added missing skill totals, pending and over-cap warnings, darker preview warnings, and pagination fixes. Checked backup restore and reload, private-field selection and reset, repeated table headers, attribution, and the narrow preview. See docs/print-review.md for scope and remaining accessibility work.",
       "completedAt": "2026-11-27T16:58:50+11:00"
+    },
+    {
+      "id": "add-combat-careers-and-gear",
+      "title": "Add Enforcer and Soldier careers and gear packs",
+      "group": "Character creation",
+      "notes": "Added sourced skill grants, optional Know fields, 10-GP gear packs, Restricted labels, corrected five-dose quantities, and the Soldier synthmorph replacement. Verified combined Fray totals, transfers, save and reload, career changes, backups and restore, first-sleeve gear preservation during resleeving, narrow layouts, and grayscale player PDFs.",
+      "completedAt": "2026-11-27T17:11:00+11:00"
     }
   ]
 }

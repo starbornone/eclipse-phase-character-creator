@@ -157,6 +157,17 @@ test('round-trip a starting campaign and reject unknown campaigns', () => {
   assert.throws(() => previewBackup(encodeBackup([invalid])), /supported starting campaign/);
 });
 
+test('round-trip combat careers and their named Know fields without changing saved allocations', () => {
+  for (const id of ['enforcer', 'soldier']) {
+    const character = { ...draft, ego: { ...ego,
+      packages: { career: { id, fields: { 'know-1': 'Security Ops', 'know-2': 'Gambling' } } },
+      startingCampaign: 'firewall',
+      skillTransfers: [{ from: 'active:Melee', to: 'active:Guns', points: 5 }],
+    } };
+    assert.deepEqual(previewBackup(encodeBackup([character])).drafts[0], character);
+  }
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

@@ -49,6 +49,8 @@ In **Create ego** or **Edit ego**, pick a supported background, career, interest
 
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
+The supported careers include **Enforcer** and **Soldier**, each with two optional Know fields and a matching gear pack. Their Fray grants combine with double Reflexes, so review the total when adding another package with Fray points.
+
 Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted separately as unassigned Active or Know points. Matching fields from different packages combine in the ledger, which flags totals above the starting cap.
 
 Under **Allocate skill points**, select a source skill and destination, enter a positive number of points, and select **Add transfer**. For a new destination, choose a skill from the **New Active skill** group or select **New Know field…** and enter a name. Select **Art field (Intuition)** to use Intuition for the new field. Active package points can move to either skill type. Know package points can move to another Know skill. Destination totals must stay at or below 80.
@@ -78,6 +80,8 @@ Use the optional goal field beside a motivation to record a specific short-term 
 Under **Starting gear**, select Firewall, Criminal, or Gatecrashing. Firewall and Criminal use the same core gear pack. A supported career adds its own pack. The editor lists each pack’s items, Gear Points (GP), and restrictions along with the free muse.
 
 Choosing a synthmorph as the first sleeve applies the campaign pack’s listed alternatives. Resleeving leaves the starting loadout tied to the first sleeve. The dossier and player print preview show the packs. JSON backups preserve the campaign choice. Individual swaps and extra gear purchases are planned.
+
+The **Soldier** career pack also has a synthmorph alternative: **Fixer Swarm** replaces **Meds (5 doses)** when the first sleeve is synthetic. Both versions cost 10 GP. The Enforcer pack shows the Shredder’s Restricted label, and the Soldier pack labels the Assault Rifle Railgun as Restricted. Gear is listed for reference; its effects are not automatically applied to checks or pools.
 
 ## Choose ego traits
 

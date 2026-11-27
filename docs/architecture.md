@@ -24,7 +24,7 @@ Personal motivations use three optional ego slots with a stance and text. A name
 
 Optional goals travel with their personal slot or named faction choice. Drafts and backups can retain a goal for an unnamed personal slot. The dossier and player print layout display goals alongside their active, named motivations.
 
-Starting gear stores the chosen campaign on the ego. The loadout derives the career pack from the selected career and uses the first sleeve to resolve campaign pack synthmorph alternatives. Gear Point totals are source values. The calculation leaves the Customization Point budget independent of starting packs.
+Starting gear stores the chosen campaign on the ego. The loadout derives the career pack from the selected career and uses the first sleeve to resolve campaign and career pack synthmorph alternatives, including the Soldier pack's Meds-to-Fixer-Swarm replacement. Gear Point totals are source values. The calculation leaves the Customization Point budget independent of starting packs. Pack item effects are reference data and do not modify derived checks or pools.
 
 Ego Flex and language choices are optional ego fields in drafts and JSON backups. Older drafts default to one ego Flex and an empty language list. The CP budget derives Flex cost from the selected total and language cost from the current Cognition and Intuition scores. Flex in this calculation belongs to the ego and carries across sleeves.
 

@@ -1,4 +1,5 @@
 // Eclipse Phase Second Edition, Gear Packs, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
+// Enforcer: p. 69. Soldier and its synth alternative: p. 71, with errata 1.4 dose quantities.
 export const gearPacksSource = 'https://eclipsephase.github.io/en/04/27-gear-packs.html';
 
 interface GearItem {
@@ -60,6 +61,13 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
       gear('Neem (5 doses)', 1), archive, gear('Servitor Bot', 1), gear('Simulspace', 1),
     ],
   }],
+  ['enforcer', {
+    name: 'Enforcer', anchor: 'enforcer',
+    items: [
+      gear('Aggro (5 doses)', 1), gear('Claws', 1), gear('Flex Cutter', 1), gear('Grin (5 doses)', 1),
+      gear('Muscle Augmentation', 3), gear('Shock Glove', 1), { name: 'Shredder', gp: 2, restricted: true },
+    ],
+  }],
   ['explorer', {
     name: 'Explorer', anchor: 'explorer',
     items: [
@@ -73,5 +81,13 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
       gear('Enhanced Hearing', 1), gear('Guardian Angel', 2), gear('Medium Fabber', 2), gear('Nanodetector', 1),
       gear('Neuromodulation', 2), gear('Smart Hawk', 1), gear('Stiff (5 doses)', 1),
     ],
+  }],
+  ['soldier', {
+    name: 'Soldier', anchor: 'soldier',
+    items: [
+      { name: 'Assault Rifle Railgun', gp: 2, restricted: true }, gear('Enhanced Vision', 2),
+      gear('Grin (5 doses)', 1), replaceOnSynth('Meds (5 doses)', 2), gear('Neurachem', 3),
+    ],
+    synthAlternatives: [gear('Fixer Swarm', 2)],
   }],
 ]);

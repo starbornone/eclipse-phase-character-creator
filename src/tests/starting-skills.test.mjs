@@ -27,6 +27,29 @@ test('double the Fray and Perceive bases even without a package grant', () => {
   assert.equal(skills.find(({ name }) => name === 'Perceive').total, 40);
 });
 
+test('combat careers combine Fray grants with its doubled base and reallocate excess points', () => {
+  const inputs = {
+    aptitudes: { ref: 15, som: 15, cog: 15, int: 15, sav: 15 },
+    packages: { career: { id: 'soldier', fields: { 'know-1': 'Military Ops' } }, interest: { id: 'paramedic' } },
+  };
+  const initial = calculateStartingSkills(inputs);
+  const fray = initial.skills.find(({ name }) => name === 'Fray');
+  assert.deepEqual([fray.packagePoints, fray.base, fray.total, fray.excess], [60, 30, 90, 10]);
+  assert.equal(initial.skills.find(({ name }) => name === 'Know: Military Ops').total, 75);
+  assert.equal(initial.unassignedKnowPoints, 30);
+  const adjusted = calculateStartingSkills({ ...inputs, skillTransfers: [
+    { from: 'active:Fray', to: 'active:Guns', points: 5 },
+    { from: 'active:Fray', to: 'active:Melee', points: 5 },
+  ] });
+  assert.ok(adjusted.transferResults.every(({ issue }) => !issue));
+  assert.deepEqual(adjusted.skills.filter(({ name }) => ['Fray', 'Guns', 'Melee'].includes(name)).map(({ name, total }) => [name, total]), [
+    ['Fray', 80], ['Guns', 80], ['Melee', 50],
+  ]);
+  const enforcer = calculateStartingSkills({ ...inputs, packages: { ...inputs.packages, career: { id: 'enforcer' } } });
+  assert.equal(enforcer.skills.find(({ name }) => name === 'Fray').total, 80);
+  assert.equal(enforcer.skills.find(({ name }) => name === 'Provoke').total, 45);
+});
+
 test('merge matching Know fields and link player-classified Art fields to Intuition', () => {
   const { skills } = calculateStartingSkills({
     aptitudes: { cog: 20, int: 15 },

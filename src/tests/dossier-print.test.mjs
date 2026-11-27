@@ -189,3 +189,22 @@ test('derive campaign and career gear packs and use the first sleeve for alterna
   assert.deepEqual(deriveStartingGear('criminal', 'face'), deriveStartingGear('firewall', 'face'));
   assert.equal(deriveStartingGear(undefined, 'academic').packs[0].gp, 10);
 });
+
+test('player dossier resolves combat careers and gear while both audiences retain their skill totals', () => {
+  for (const [id, name, gunPoints, weapon] of [
+    ['enforcer', 'Enforcer', 20, 'Shredder'], ['soldier', 'Soldier', 60, 'Assault Rifle Railgun'],
+  ]) {
+    const combat = { ...draft, ego: { ...draft.ego,
+      aptitudes: { ref: 15, som: 15, cog: 15 },
+      packages: { career: { id } },
+    } };
+    const player = buildPrintableDossier(combat, 'player', []);
+    assert.equal(player.packages.career.id, id);
+    assert.equal(player.startingGear.packs[0].name, name);
+    assert.ok(player.startingGear.packs[0].items.some(({ name }) => name === weapon));
+    for (const audience of ['player', 'gm']) {
+      const row = buildPrintableDossier(combat, audience, []).skillLedger.skills.find(({ name }) => name === 'Guns');
+      assert.equal(row.total, gunPoints + 15);
+    }
+  }
+});
