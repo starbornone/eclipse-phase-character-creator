@@ -190,6 +190,25 @@ test('round-trip the remaining core careers and reject field slots outside their
   }
 });
 
+test('round-trip new backgrounds with pending or selected combat skills and validate restricted choices', () => {
+  for (const id of ['indenture', 'infolife', 'isolate', 'underclass', 'uplift']) {
+    const character = { ...draft, ego: { ...ego, packages: { background: { id } } } };
+    assert.deepEqual(previewBackup(encodeBackup([character])).drafts[0], character);
+    const fields = { 'know-1': 'Habitat Ops' };
+    if (id === 'indenture' || id === 'underclass') fields['combat-1'] = 'Melee';
+    if (id === 'indenture' || id === 'isolate') fields['hardware-1'] = 'Drone Maintenance';
+    if (id === 'isolate') fields['pilot-1'] = 'Space';
+    const selected = { ...character, ego: { ...character.ego, packages: { background: { id, fields } } } };
+    assert.deepEqual(previewBackup(encodeBackup([selected])).drafts[0], selected);
+  }
+  const choice = (id, value) => ({ ...draft, ego: { ...ego, packages: { background: { id, fields: { 'combat-1': value } } } } });
+  assert.equal(previewBackup(encodeBackup([choice('indenture', ' Fray ')])).drafts[0].ego.packages.background.fields['combat-1'], 'Fray');
+  assert.equal(previewBackup(encodeBackup([choice('underclass', '  ')])).drafts[0].ego.packages.background.fields['combat-1'], '');
+  assert.throws(() => previewBackup(encodeBackup([choice('indenture', 'Guns')])), /one of Fray, Melee or blank/);
+  assert.throws(() => previewBackup(encodeBackup([choice('underclass', 'Fray')])), /one of Guns, Melee or blank/);
+  assert.throws(() => previewBackup(encodeBackup([choice('infolife', 'Melee')])), /limited to slots/);
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

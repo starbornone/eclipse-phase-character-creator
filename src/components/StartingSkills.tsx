@@ -51,7 +51,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
       )}
       {missingExpertSkill && <p className="error">Needs review. Expert Training points to a missing skill and still costs {expertTraining.cost} CP.</p>}
       {unassignedKnowPoints > 0 && <p className="muted">{unassignedKnowPoints} Know points await a field choice.</p>}
-      {unassignedActivePoints > 0 && <p className="muted">{unassignedActivePoints} Active points await a field choice.</p>}
+      {unassignedActivePoints > 0 && <p className="muted">{unassignedActivePoints} Active points await a skill or field choice.</p>}
       {skills.length ? (
         <div className="comparison-scroll" role="region" aria-label="Starting skill totals" tabIndex={0}>
           <table>

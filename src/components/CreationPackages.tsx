@@ -56,10 +56,18 @@ export function CreationPackages({ packages, onChange }: {
                     {coreCreationPackages[kind].map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
                   </select>
                 </label>
-                {selection && choice && choice.grants.flatMap(({ skill, points, slot, suggestedFields }) => slot ? [
+                {selection && choice && choice.grants.flatMap(({ skill, points, slot, suggestedFields, skillOptions }) => slot ? [
                   <label className="concept" key={slot}>
-                    {`${label} ${skill} field (${points} points)`}
-                    <input
+                    {`${label} ${skill} ${skillOptions ? 'choice' : 'field'} (${points} points)`}
+                    {skillOptions ? (
+                      <select value={selection.fields?.[slot] ?? ''} onChange={(event) => update(kind, {
+                        ...selection,
+                        fields: { ...selection.fields, [slot]: event.target.value },
+                      })}>
+                        <option value="">Choose a skill</option>
+                        {skillOptions.map((option) => <option key={option} value={option}>{option}</option>)}
+                      </select>
+                    ) : <input
                       value={selection.fields?.[slot] ?? ''}
                       list={suggestedFields ? `${kind}-${slot}-suggestions` : undefined}
                       maxLength={100}
@@ -67,7 +75,7 @@ export function CreationPackages({ packages, onChange }: {
                         ...selection,
                         fields: { ...selection.fields, [slot]: event.target.value },
                       })}
-                    />
+                    />}
                     {suggestedFields && (
                       <datalist id={`${kind}-${slot}-suggestions`}>
                         {suggestedFields.map((field) => <option key={field} value={field} />)}
@@ -79,9 +87,9 @@ export function CreationPackages({ packages, onChange }: {
               {choice && (
                 <>
                   <ul className="package-grants">
-                    {choice.grants.map(({ skill, points, slot }) => {
+                    {choice.grants.map(({ skill, points, slot, skillOptions }) => {
                       const field = slot && selection?.fields?.[slot]?.trim();
-                      const name = slot ? `${skill}: ${field || 'field to choose'}` : skill;
+                      const name = slot ? `${skill}: ${field || (skillOptions ? skillOptions.join(' or ') : 'field to choose')}` : skill;
                       return <li key={slot ?? skill}><span>{name}</span><strong>{points}</strong></li>;
                     })}
                   </ul>
@@ -92,7 +100,7 @@ export function CreationPackages({ packages, onChange }: {
           );
         })}
       </div>
-      <p className="rules-note">Skill fields can be filled in later.</p>
+      <p className="rules-note">Skill and field choices can be filled in later.</p>
       <CorePackageCredit />
     </Card>
   );

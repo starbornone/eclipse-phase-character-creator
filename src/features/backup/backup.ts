@@ -72,10 +72,19 @@ function readCreationPackages(value: unknown, path: string): CreationPackages {
     const fields = selection.fields === undefined
       ? undefined
       : Object.fromEntries(Object.entries(object(selection.fields, `${selectionPath}.fields`)).map(([slot, field]) => {
-        if (!option.grants.some((grant) => grant.slot === slot)) {
+        const grant = option.grants.find((grant) => grant.slot === slot);
+        if (!grant) {
           badField(`${selectionPath}.fields`, 'limited to slots in the selected package');
         }
-        return [slot, string(field, `${selectionPath}.fields.${slot}`)];
+        const text = string(field, `${selectionPath}.fields.${slot}`);
+        if (grant.skillOptions) {
+          const skill = text.trim();
+          if (skill && !grant.skillOptions.includes(skill)) {
+            badField(`${selectionPath}.fields.${slot}`, `one of ${grant.skillOptions.join(', ')} or blank`);
+          }
+          return [slot, skill];
+        }
+        return [slot, text];
       }));
     if (selection.motivation !== undefined && kind !== 'faction') {
       badField(`${selectionPath}.motivation`, 'absent outside the faction choice');

@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-27T17:33:26+11:00",
+  "updatedAt": "2026-11-27T18:00:14+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -13,7 +13,7 @@
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
       "group": "Character creation",
-      "notes": "Core aptitude templates, all 14 core careers with matching gear packs, starter background, interest, and faction packages, skill totals and transfers, custom Active fields, starting motivations and goals, campaign gear packs, and shared CP spending on aptitudes, skills, ego Flex, languages, reputation, and specializations are implemented. Career gear includes Covert Operative and Soldier synthmorph alternatives, errata corrections, and the Genehacker payload cost qualifier. The starter ego traits apply costs and capped bonuses, and Expert Training raises one skill cap. Add broader trait coverage and exceptions, Psi, remaining backgrounds, interests and factions, gear swaps, the infomorph pack, and extra equipment purchases."
+      "notes": "Core aptitude templates, nine core backgrounds with restricted combat-skill choices, all 14 core careers and matching gear packs, starter interest and faction packages, skill totals and transfers, custom Active fields, starting motivations and goals, campaign gear packs, and shared CP spending on aptitudes, skills, ego Flex, languages, reputation, and specializations are implemented. Career gear includes Covert Operative and Soldier synthmorph alternatives, errata corrections, and the Genehacker payload cost qualifier. The starter ego traits apply costs and capped bonuses, and Expert Training raises one skill cap. Add broader trait coverage and exceptions, Psi and the Lost background, remaining interests and factions, gear swaps, the infomorph pack, and extra equipment purchases."
     },
     {
       "id": "browse-and-compare-morphs",

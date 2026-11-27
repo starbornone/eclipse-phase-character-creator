@@ -13,6 +13,26 @@ test('starter package grants match the core category totals', () => {
   assert.deepEqual(findCreationPackage('faction', 'factionless').grants, [{ skill: 'Know', points: 30, slot: 'know-1' }]);
 });
 
+test('support every core background except Lost with the sourced grants and combat choices', () => {
+  assert.deepEqual(coreCreationPackages.background.map(({ id }) => id), [
+    'colonist', 'enclaver', 'freelancer', 'hyperelite', 'indenture', 'infolife', 'isolate', 'underclass', 'uplift',
+  ]);
+  for (const [id, fixed, slots] of [
+    ['indenture', [['Free Fall', 40], ['Interface', 40], ['Perceive', 20]], [['combat-1', 20], ['hardware-1', 50], ['know-1', 60], ['know-2', 30]]],
+    ['infolife', [['Infosec', 50], ['Interface', 50], ['Program', 50], ['Research', 20]], [['know-1', 60], ['know-2', 30]]],
+    ['isolate', [['Free Fall', 40], ['Guns', 20], ['Medicine: Paramedic', 20], ['Survival', 20]], [['hardware-1', 40], ['pilot-1', 30], ['know-1', 60], ['know-2', 30]]],
+    ['underclass', [['Deceive', 30], ['Fray', 20], ['Kinesics', 40], ['Perceive', 20], ['Persuade', 20]], [['combat-1', 40], ['know-1', 60], ['know-2', 30]]],
+    ['uplift', [['Athletics', 40], ['Fray', 20], ['Kinesics', 30], ['Perceive', 40], ['Provoke', 20], ['Survival', 20]], [['know-1', 60], ['know-2', 30]]],
+  ]) {
+    const background = findCreationPackage('background', id);
+    assert.equal(background.page, 39);
+    assert.deepEqual(background.grants.filter(({ slot }) => !slot).map(({ skill, points }) => [skill, points]), fixed);
+    assert.deepEqual(background.grants.filter(({ slot }) => slot).map(({ slot, points }) => [slot, points]), slots);
+  }
+  assert.deepEqual(findCreationPackage('background', 'indenture').grants.find(({ skillOptions }) => skillOptions).skillOptions, ['Fray', 'Melee']);
+  assert.deepEqual(findCreationPackage('background', 'underclass').grants.find(({ skillOptions }) => skillOptions).skillOptions, ['Guns', 'Melee']);
+});
+
 test('summarize partially selected packages in core creation order', () => {
   assert.deepEqual(creationPackageNames({ faction: { id: 'argonaut' }, career: { id: 'academic' }, background: { id: 'freelancer' } }), [
     { kind: 'background', label: 'Background', name: 'Freelancer' },

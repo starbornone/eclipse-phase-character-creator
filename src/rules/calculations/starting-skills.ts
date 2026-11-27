@@ -47,7 +47,19 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     const selection = packages?.[kind];
     const chosen = findCreationPackage(kind, selection?.id);
     if (!chosen) continue;
-    for (const { skill, points, slot, activeField } of chosen.grants) {
+    for (const { skill, points, slot, activeField, skillOptions } of chosen.grants) {
+      if (skillOptions) {
+        const selectedSkill = slot && selection?.fields?.[slot]?.trim();
+        if (!selectedSkill || !skillOptions.includes(selectedSkill)) {
+          unassignedActivePoints += points;
+          continue;
+        }
+        const id = `active:${selectedSkill}`;
+        const row = rows.get(id) ?? { name: selectedSkill, activeSkill: selectedSkill, grants: [] };
+        row.grants.push({ source: chosen.name, points });
+        rows.set(id, row);
+        continue;
+      }
       const field = slot ? selection?.fields?.[slot]?.trim() : skill.startsWith('Know: ') ? skill.slice(6) : undefined;
       if (activeField) {
         const selected = field && resolveFixedActiveField(activeField, field);

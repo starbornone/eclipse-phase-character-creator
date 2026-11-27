@@ -49,6 +49,8 @@ Saved scores appear in the dossier, both print layouts, and JSON backups.
 
 In **Create ego** or **Edit ego**, pick a supported background, career, interest, or faction under **Core creation packages**. Each card lists the package’s skill points and source page. When a package asks for a Hardware or Pilot field, choose a suggested name or enter your own. You can leave Active and Know fields blank while you draft. Choose **Factionless** to enter a Know field of your choice.
 
+Nine core backgrounds are available, including **Indenture**, **Infolife**, **Isolate**, **Underclass**, and **Uplift**. **Lost** is deferred until its required Psi trait and skill are supported. Indenture asks you to choose **Fray** or **Melee** for 20 points; Underclass offers **Guns** or **Melee** for 40 points. Leave **Choose a skill** selected to keep those points pending. Changing that choice updates the ledger and rechecks existing transfers. Save the draft to retain it in backups and print output.
+
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
 All 14 core careers are available, each with its sourced skill grants and matching gear pack. Most have two optional Know fields; Academic has three. Enforcer and Soldier's Fray grants combine with double Reflexes, so review the total when adding another package with Fray points. Investigator's Perceive grant similarly combines with double Intuition.

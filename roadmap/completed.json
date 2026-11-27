@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T17:33:26+11:00",
+  "updatedAt": "2026-11-27T18:00:14+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -280,6 +280,13 @@
       "group": "Character creation",
       "notes": "Added Covert Operative, Genehacker, Investigator, Medic, and Mindhacker, completing all 14 core careers. Included source grants, optional Know fields, Covert Operative's synthmorph swap, Medic and Mindhacker errata, and Genehacker's unresolved payload cost qualifier. Verified partial drafts, skill caps and transfers, save and reload, backups and restore, first-sleeve preservation during resleeving, mobile previews, and grayscale player PDFs.",
       "completedAt": "2026-11-27T17:33:26+11:00"
+    },
+    {
+      "id": "add-non-psi-backgrounds",
+      "title": "Add the remaining non-Psi backgrounds and combat skill choices",
+      "group": "Character creation",
+      "notes": "Added Indenture, Infolife, Isolate, Underclass, and Uplift with sourced skill grants, open fields, and restricted Fray/Melee or Guns/Melee choices. Verified pending drafts, linked aptitudes and doubled bases, transfer revalidation, backup validation and restore, save and reload, keyboard controls, narrow layouts, and player/GM PDF output. Lost remains tied to the outstanding Psi work.",
+      "completedAt": "2026-11-27T18:00:14+11:00"
     }
   ]
 }

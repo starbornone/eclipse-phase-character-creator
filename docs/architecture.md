@@ -22,6 +22,8 @@ Allocations to custom Active fields carry their category, display name, and link
 
 Package Active field slots use the same skill IDs as transfers and purchases. A named Hardware or Pilot field resolves to a sample ID when one matches, or to a custom ID with the same category’s aptitude. Blank Active slots track pending points separately from blank Know slots.
 
+Nine core backgrounds are supported; Lost awaits its required Psi trait and skill support. Indenture and Underclass use a restricted combat-skill slot stored in the existing package `fields` map. The dataset supplies the allowed skills, the editor renders a native select, and the ledger assigns the grant only to a valid choice. Blank or unsupported choices stay pending as Active points. Backup import accepts blank choices, trims selected values, and rejects selections outside the package's allowed list. Changing a choice replays the saved transfers and purchases against the updated ledger. No draft schema change is needed.
+
 Personal motivations use three optional ego slots with a stance and text. A named faction supplies the first displayed motivation from its stored override or the default interests label. It reserves the third personal slot for use without a faction. Legacy Factionless text is read into the third slot and moves there when the draft is saved. The player print layout shows the currently active choices.
 
 Optional goals travel with their personal slot or named faction choice. Drafts and backups can retain a goal for an unnamed personal slot. The dossier and player print layout display goals alongside their active, named motivations.

@@ -102,6 +102,64 @@ test('medical grants stay pending without Cognition and excess Paramedic points 
   assert.equal(adjusted.skills.find(({ name }) => name === 'Research').total, 60);
 });
 
+test('Indenture combat and Hardware choices remain pending until selected and use the chosen skill aptitude', () => {
+  const aptitudes = { cog: 20, int: 15, ref: 15, som: 20 };
+  const pending = calculateStartingSkills({ aptitudes, packages: { background: { id: 'indenture' } } });
+  assert.equal(pending.unassignedActivePoints, 70);
+  assert.equal(pending.unassignedKnowPoints, 90);
+  assert.equal(pending.skills.find(({ name }) => name === 'Fray').total, 30);
+  assert.ok(!pending.skills.some(({ name }) => name === 'Melee'));
+  for (const [choice, total] of [['Fray', 50], ['Melee', 40]]) {
+    const ledger = calculateStartingSkills({ aptitudes, packages: { background: { id: 'indenture', fields: {
+      'combat-1': choice, 'hardware-1': 'Industrial',
+    } } } });
+    assert.equal(ledger.unassignedActivePoints, 0);
+    assert.equal(ledger.skills.find(({ name }) => name === choice).total, total);
+    assert.equal(ledger.skills.find(({ name }) => name === 'Hardware: Industrial').total, 70);
+    assert.deepEqual(ledger.skills.find(({ name }) => name === choice).grants, [{ source: 'Indenture', points: 20 }]);
+  }
+});
+
+test('combat choice changes replay transfers and unsupported choices do not become skill grants', () => {
+  const input = { aptitudes: { ref: 15, som: 20, int: 15 },
+    packages: { background: { id: 'indenture', fields: { 'combat-1': 'Fray' } } },
+    skillTransfers: [{ from: 'active:Fray', to: 'active:Guns', points: 10 }],
+  };
+  const first = calculateStartingSkills(input);
+  assert.equal(first.transferResults[0].issue, undefined);
+  assert.equal(first.skills.find(({ name }) => name === 'Guns').total, 25);
+  const switched = calculateStartingSkills({ ...input, packages: { background: { id: 'indenture', fields: { 'combat-1': 'Melee' } } } });
+  assert.match(switched.transferResults[0].issue, /only 0 package points/);
+  assert.ok(!switched.skills.some(({ name }) => name === 'Guns'));
+  assert.equal(switched.skills.find(({ name }) => name === 'Melee').total, 40);
+  for (const value of ['', 'Fray', 'Psi']) {
+    const invalid = calculateStartingSkills({ aptitudes: { ref: 15 }, packages: { background: { id: 'underclass', fields: { 'combat-1': value } } } });
+    assert.equal(invalid.unassignedActivePoints, 40);
+    assert.equal(invalid.unassignedKnowPoints, 90);
+    assert.equal(invalid.skills.find(({ name }) => name === 'Fray').total, 50);
+    assert.ok(!invalid.skills.some(({ name }) => name === 'Psi' || name === 'Know: Psi'));
+  }
+});
+
+test('new background skill totals preserve partial aptitudes, open Active fields, and doubled bases', () => {
+  const partial = calculateStartingSkills({ aptitudes: { int: 15 }, packages: { background: { id: 'infolife' } } });
+  assert.equal(partial.skills.find(({ name }) => name === 'Infosec').total, undefined);
+  assert.equal(partial.skills.find(({ name }) => name === 'Research').total, 35);
+  const isolate = calculateStartingSkills({ aptitudes: { cog: 20, ref: 15 }, packages: { background: { id: 'isolate', fields: {
+    'hardware-1': 'Drone Maintenance', 'pilot-1': 'Space',
+  } } } });
+  assert.equal(isolate.unassignedActivePoints, 0);
+  assert.equal(isolate.skills.find(({ name }) => name === 'Hardware: Drone Maintenance').total, 60);
+  assert.equal(isolate.skills.find(({ name }) => name === 'Pilot: Space').total, 45);
+  const uplift = calculateStartingSkills({ aptitudes: { int: 20, ref: 15 }, packages: { background: { id: 'uplift' } } });
+  assert.equal(uplift.skills.find(({ name }) => name === 'Perceive').total, 80);
+  assert.equal(uplift.skills.find(({ name }) => name === 'Fray').total, 50);
+  for (const [choice, total] of [['Guns', 55], ['Melee', 60]]) {
+    const ledger = calculateStartingSkills({ aptitudes: { ref: 15, som: 20 }, packages: { background: { id: 'underclass', fields: { 'combat-1': choice } } } });
+    assert.equal(ledger.skills.find(({ name }) => name === choice).total, total);
+  }
+});
+
 test('merge matching Know fields and link player-classified Art fields to Intuition', () => {
   const { skills } = calculateStartingSkills({
     aptitudes: { cog: 20, int: 15 },

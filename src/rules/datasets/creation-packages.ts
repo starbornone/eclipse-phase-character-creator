@@ -7,6 +7,7 @@ interface SkillGrant {
   slot?: string;
   activeField?: 'hardware' | 'pilot';
   suggestedFields?: readonly string[];
+  skillOptions?: readonly string[];
 }
 
 interface CreationPackage {
@@ -26,6 +27,8 @@ const hardware = (points: number, suggestedFields: readonly string[]): SkillGran
   ({ skill: 'Hardware', activeField: 'hardware', slot: 'hardware-1', points, suggestedFields });
 const pilot = (points: number): SkillGrant =>
   ({ skill: 'Pilot', activeField: 'pilot', slot: 'pilot-1', points, suggestedFields: ['Air', 'Ground', 'Nautical', 'Space'] });
+const combatChoice = (points: number, skillOptions: readonly string[]): SkillGrant =>
+  ({ skill: 'Combat skill', slot: 'combat-1', points, skillOptions });
 
 // Adapted from Eclipse Phase Second Edition, pp. 38–44, Posthuman Studios, LLC.
 // CC BY-NC-SA 4.0. Faction Know grants follow the April 2025 errata.
@@ -46,6 +49,26 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'hyperelite', name: 'Hyperelite', page: 39, grants: [
       grant('Athletics', 30), grant('Deceive', 30), grant('Kinesics', 50), grant('Persuade', 30),
       grant('Provoke', 30), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'indenture', name: 'Indenture', page: 39, grants: [
+      combatChoice(20, ['Fray', 'Melee']), grant('Free Fall', 40), hardware(50, ['Groundcraft', 'Industrial', 'Robotics']),
+      grant('Interface', 40), grant('Perceive', 20), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'infolife', name: 'Infolife', page: 39, grants: [
+      grant('Infosec', 50), grant('Interface', 50), grant('Program', 50), grant('Research', 20),
+      know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'isolate', name: 'Isolate', page: 39, grants: [
+      grant('Free Fall', 40), grant('Guns', 20), hardware(40, ['Aerospace', 'Electronics', 'Robotics']),
+      grant('Medicine: Paramedic', 20), pilot(30), grant('Survival', 20), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'underclass', name: 'Underclass', page: 39, grants: [
+      grant('Deceive', 30), grant('Fray', 20), combatChoice(40, ['Guns', 'Melee']), grant('Kinesics', 40),
+      grant('Perceive', 20), grant('Persuade', 20), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'uplift', name: 'Uplift', page: 39, grants: [
+      grant('Athletics', 40), grant('Fray', 20), grant('Kinesics', 30), grant('Perceive', 40),
+      grant('Provoke', 20), grant('Survival', 20), know('know-1', 60), know('know-2', 30),
     ] },
   ],
   career: [
