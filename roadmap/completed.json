@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T08:34:13+11:00",
+  "updatedAt": "2026-11-28T08:39:50+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -434,6 +434,13 @@
       "group": "Character creation",
       "notes": "Reused the editor parsing, budgets, skill ledger, and Psi trace. Distinguished malformed input from advisory findings on pending choices and rules. Verified keyboard focus, live updates, saving and reopening an over-budget draft, and passing checks on the 320 px editor. All 190 tests and the production build pass.",
       "completedAt": "2026-11-28T08:34:13+11:00"
+    },
+    {
+      "id": "expand-everyday-technology-and-search",
+      "title": "Complete Everyday Technology and add an equipment search",
+      "group": "Character creation",
+      "notes": "Added the missing fourteen catalogue entries, including priced kit, shop, and facility variants. Added live name and category search and verified visible purchase selection and Enter handling at 320 px. Verified equal-GP swaps, MP and temporary Flex, backups, save and reload, resleeving, and both A4 dossier layouts. All 192 tests and the production build pass.",
+      "completedAt": "2026-11-28T08:39:50+11:00"
     }
   ]
 }

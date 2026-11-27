@@ -119,6 +119,22 @@ test('field gear replacements match the selected size and GP and deduplicate pac
   assert.equal(radioBoosters.length, 1);
 });
 
+test('Everyday Technology swaps preserve GP and offer each tool size in the correct tier', () => {
+  const replacements = startingGearReplacements('Biomorph');
+  for (const [name, gp] of [['Tools (Kit)', 1], ['Tools (Shop)', 2], ['Tools (Facility)', 3]]) {
+    const matches = replacements.filter((item) => item.name === name);
+    assert.deepEqual(matches.map((item) => item.gp), [gp]);
+  }
+  const shop = { ...swapTacNet, replacement: 'Tools (Shop)' };
+  const { packs, appliedSwaps } = deriveStartingGear('firewall', undefined, 'Biomorph', [shop]);
+  assert.deepEqual(appliedSwaps, [shop]);
+  assert.equal(packs[0].gp, 10);
+  assert.ok(packs[0].items.find(({ name }) => name === shop.replacement).replacementSource.endsWith('#everyday-technology'));
+  for (const wrongSize of ['Tools (Kit)', 'Tools (Facility)']) {
+    assert.deepEqual(deriveStartingGear('firewall', undefined, 'Biomorph', [{ ...shop, replacement: wrongSize }]).appliedSwaps, []);
+  }
+});
+
 test('equal-GP replacements retain their own source and restrictions and preserve pack totals', () => {
   const { packs, appliedSwaps } = deriveStartingGear('firewall', 'soldier', 'Biomorph', [swapTacNet, swapMeds]);
   assert.deepEqual(appliedSwaps, [swapTacNet, swapMeds]);

@@ -37,6 +37,8 @@ The sleeve aptitude review on 28 November 2026 used ego and sleeve Resolve, a sl
 
 The resleeving target review on 28 November 2026 used Adaptability, Morphing Disorder, and Morph Familiarity. Edge at 320 px verified the SOM and WIL targets, a zero target, the Exotic Morphology override reset, and the Integration waiver for a familiar Case. A later save assigned an Operator and kept the previous Bouncer's Fitness in history. Player and GM dossiers each rendered to two A4 pages from preview markup in headless Chrome. Grayscale pages and extracted text confirmed the new trait and the active checks. Both layouts kept the event location private by default.
 
+The Everyday Technology review on 28 November 2026 used two tool kits, a shop, a facility, and a Portable Sensor. Edge at 320 px verified search by name and category, the three tool prices, an equal-GP swap, and save and reload. The player and GM dossiers rendered to three and two A4 pages respectively from preview markup in headless Chrome. Grayscale pages and extracted text confirmed the 9 MP total and that the player layout displayed per-item prices, quantities, and the pack replacement. Both layouts kept the resleeving location private by default.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

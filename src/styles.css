@@ -294,6 +294,7 @@ section.comparison { padding: 1.25rem; }
 :is(.gear-swaps, .morph-aptitude-options) summary { cursor: pointer; font-weight: 600; }
 .starting-equipment-items li { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; padding-block: .45rem; border-top: 1px solid var(--line); }
 .starting-equipment-items a { text-decoration: underline; text-underline-offset: .15em; }
+.starting-equipment-items .text-button { flex-shrink: 0; }
 .starting-skills { min-width: 0; }
 .starting-skills table { width: 100%; border-collapse: collapse; font-size: .875rem; font-variant-numeric: tabular-nums; }
 .starting-skills th, .starting-skills td { padding: .45rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }

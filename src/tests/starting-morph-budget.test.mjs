@@ -120,6 +120,14 @@ test('the expanded equipment catalogue uses the listed section, complexity, and 
       ['breadcrumb-system', 'Minor', 1], ['laser-microwave-link-micro', 'Minor', 1], ['laser-microwave-link-small', 'Moderate', 2],
       ['radio-booster', 'Minor', 1], ['satnet-in-a-can', 'Major', 3],
     ]],
+    ['Everyday technology', 'everyday-technology', [
+      ['breather', 'Minor', 1], ['cold-suit', 'Minor', 1], ['ecto', 'Minor', 1], ['grip-tape', 'Minor', 1],
+      ['holographic-projector', 'Minor', 1], ['micrograv-shoes', 'Minor', 1], ['nuclear-battery', 'Minor', 1],
+      ['portable-sensor', 'Moderate', 2], ['smart-clothing', 'Minor', 1], ['solar-charger', 'Minor', 1],
+      ['specs', 'Moderate', 2], ['standard-battery', 'Minor', 1], ['tools-kit', 'Minor', 1],
+      ['tools-shop', 'Moderate', 2], ['tools-facility', 'Major', 3], ['utilitool', 'Minor', 1],
+      ['viewers', 'Moderate', 2], ['wireless-energy-transmitter', 'Minor', 1],
+    ]],
     ['Science tools', 'science-tools', [
       ['adaptive-interface', 'Major', 3], ['fractal-gloves', 'Moderate', 2], ['pocket-lab', 'Moderate', 2],
       ['portable-solarchive', 'Minor', 1], ['specimen-container', 'Minor', 1],
@@ -152,4 +160,20 @@ test('field gear sizes and quantities keep their prices across backup, resleevin
     ['Laser/Microwave Link (Small)', 1, 2], ['Spindle Climber', 2, 2],
   ]);
   assert.deepEqual([gm.startingMorphBudget.equipmentCost, gm.startingMorphBudget.remaining, gm.startingMorphBudget.temporaryFlex], [8, 4, 0]);
+});
+
+test('tool sizes are distinct purchases and preserve their pricing across backup, resleeving, and print', () => {
+  const purchases = ['tools-kit', 'tools-kit', 'tools-shop', 'tools-facility', 'portable-sensor'];
+  const character = { ...draft, ego: { ...draft.ego, startingMorphPoints: 15, startingEquipment: purchases } };
+  const budget = startingMorphBudgetForDraft(character);
+  assert.deepEqual([budget.equipmentCost, budget.remaining, budget.temporaryFlex], [9, 3, 1]);
+  const next = recordResleeving(character, 'second', 'case', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  const restored = previewBackup(encodeBackup([next])).drafts[0];
+  assert.deepEqual(restored, next);
+  const player = buildPrintableDossier(restored, 'player', []);
+  const gm = buildPrintableDossier(restored, 'gm', []);
+  assert.deepEqual(player.startingEquipment.map(({ name, quantity, mpPerItem }) => [name, quantity, mpPerItem]), [
+    ['Portable Sensor', 1, 2], ['Tools (Facility)', 1, 3], ['Tools (Kit)', 2, 1], ['Tools (Shop)', 1, 2],
+  ]);
+  assert.deepEqual([gm.startingMorphBudget.equipmentCost, gm.startingMorphBudget.remaining, gm.startingMorphBudget.temporaryFlex], [9, 3, 0]);
 });
