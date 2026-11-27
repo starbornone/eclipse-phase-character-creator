@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:16:31+11:00",
+  "updatedAt": "2026-11-28T01:20:46+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -336,6 +336,13 @@
       "group": "Character creation",
       "notes": "Added both levels, the shared CP bonus, and signed Lucidity penalties that flow into Trauma Threshold and Insanity Rating. Verified the shared cap, pending values, stacking with Composure, removal, backup validation, first-sleeve save and reload, and both Edge previews with print CSS. All 139 tests and the production build pass.",
       "completedAt": "2026-11-28T01:16:31+11:00"
+    },
+    {
+      "id": "apply-negative-aptitude-check-ego-traits",
+      "title": "Apply the six negative aptitude check ego traits",
+      "group": "Character creation",
+      "notes": "Added all three levels of Feebleness, Indifference, Obtuseness, Poor Coordination, Poor Instincts, and Timidity, including the corrected Timidity CP bonus. Verified all levels, the shared negative trait cap, stacking with Resolve and Hardening, backup validation, save and reload, removal, and both Edge print previews. Attribution remains visible when modifiers cancel. All 142 tests and the production build pass.",
+      "completedAt": "2026-11-28T01:20:46+11:00"
     }
   ]
 }

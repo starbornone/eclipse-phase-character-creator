@@ -119,7 +119,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             </dl>
           )}
           <p className="rules-note"><a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
-          {dossier.checks.some(({ modifier }) => modifier !== 0) && <p className="rules-note">Check modifiers: <a href={egoTraitsSource}>Core ego trait rules</a>.</p>}
+          {dossier.checks.some(({ modifiers }) => modifiers.length > 0) && <p className="rules-note">Check modifiers: <a href={egoTraitsSource}>Core ego trait rules</a>.</p>}
         </section>
         <EgoDerivedStats stats={dossier.derivedStats} headingLevel={3} />
         <section>

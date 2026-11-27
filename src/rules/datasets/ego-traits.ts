@@ -1,6 +1,6 @@
 import type { Aptitude } from '../../types/character.ts';
 
-// Eclipse Phase Second Edition, Traits, pp. 72–75, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
+// Eclipse Phase Second Edition, Traits, pp. 72–80, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 export const egoTraitsSource = 'https://eclipsephase.github.io/en/04/28-traits.html';
 export const expertTraining = { id: 'expert-training', cap: 90, cost: 2 } as const;
 
@@ -18,9 +18,10 @@ type EgoTrait = {
 // Hardening's Unknown option requires Psi (errata 1.4); defer it with Psi support.
 export const supportedHardeningStressTypes = ['Alienation', 'Helplessness', 'Violence'] as const;
 
-const checkTrait = (id: string, name: string, aptitude: Aptitude): EgoTrait => ({
-  id, name, cpByLevel: [1, 2, 3], effect: `+5 per level to ${aptitude.toUpperCase()} Checks.`,
-  checkModifier: { aptitude, perLevel: 5 },
+const checkTrait = (id: string, name: string, aptitude: Aptitude, perLevel: 5 | -5 = 5): EgoTrait => ({
+  id, name, cpByLevel: perLevel > 0 ? [1, 2, 3] : [-1, -2, -3],
+  effect: `${perLevel > 0 ? '+5' : '−5'} per level to ${aptitude.toUpperCase()} Checks.`,
+  checkModifier: { aptitude, perLevel },
 });
 
 export const egoTraits: readonly EgoTrait[] = [
@@ -42,8 +43,15 @@ export const egoTraits: readonly EgoTrait[] = [
   checkTrait('resolve', 'Resolve', 'wil'),
   { id: 'bad-luck', name: 'Bad Luck', cpByLevel: [-6], effect: 'You cannot spend pool points to reverse the digits of a roll.' },
   { id: 'enemy', name: 'Enemy', cpByLevel: [-2], effect: 'Work with the GM to define a recurring adversary.' },
+  checkTrait('feebleness', 'Feebleness', 'som', -5),
   { id: 'identity-crisis', name: 'Identity Crisis', cpByLevel: [-1], effect: 'Unfamiliar morph physiology can impose a −10 penalty.' },
+  checkTrait('indifference', 'Indifference', 'sav', -5),
   { id: 'instability', name: 'Instability', cpByLevel: [-2, -4], lucidityModifier: -5, effect: 'Per level, lose 5 Lucidity, 1 Trauma Threshold, and 10 Insanity Rating.' },
+  checkTrait('obtuseness', 'Obtuseness', 'cog', -5),
+  checkTrait('poor-coordination', 'Poor Coordination', 'ref', -5),
+  checkTrait('poor-instincts', 'Poor Instincts', 'int', -5),
+  // Errata 1.4 confirms the 1/2/3 CP bonus for ego Timidity.
+  checkTrait('timidity', 'Timidity', 'wil', -5),
 ];
 
 export function findEgoTrait(id: string) {
