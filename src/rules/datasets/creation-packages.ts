@@ -15,6 +15,7 @@ interface CreationPackage {
   name: string;
   page: number;
   grants: readonly SkillGrant[];
+  group?: string;
 }
 
 export const packageLabels: Record<CreationPackageKind, string> = {
@@ -138,7 +139,26 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
   faction: [
     { id: 'anarchist', name: 'Anarchist', page: 44, grants: [grant('Know: Anarchists', 30)] },
     { id: 'argonaut', name: 'Argonaut', page: 44, grants: [grant('Know: Argonauts', 30)] },
+    { id: 'barsoomian', name: 'Barsoomian', page: 44, grants: [grant('Know: Barsoomians', 30)] },
+    { id: 'brinker', name: 'Brinker', page: 44, grants: [grant('Know: Brinkers', 30)] },
+    { id: 'criminal', name: 'Criminal', page: 44, grants: [grant('Know: Criminals', 30)] },
+    { id: 'extropian', name: 'Extropian', page: 44, grants: [grant('Know: Extropians', 30)] },
+    { id: 'hypercorp', name: 'Hypercorp', page: 44, grants: [grant('Know: Hypercorps', 30)] },
+    { id: 'jovian', name: 'Jovian', page: 44, grants: [grant('Know: Jovians', 30)] },
+    { id: 'lunar-orbital', name: 'Lunar/Orbital', page: 44, grants: [grant('Know: Lunar/Orbital', 30)] },
+    { id: 'mercurial', name: 'Mercurial', page: 44, grants: [grant('Know: Mercurials', 30)] },
+    { id: 'reclaimer', name: 'Reclaimer', page: 44, grants: [grant('Know: Reclaimers', 30)] },
+    { id: 'scum', name: 'Scum', page: 44, grants: [grant('Know: Scum', 30)] },
+    { id: 'socialite', name: 'Socialite', page: 44, grants: [grant('Know: Socialites', 30)] },
+    { id: 'titanian', name: 'Titanian', page: 44, grants: [grant('Know: Titanians', 30)] },
+    { id: 'venusian', name: 'Venusian', page: 44, grants: [grant('Know: Venusians', 30)] },
     { id: 'factionless', name: 'Factionless', page: 44, grants: [know('know-1', 30)] },
+    { id: 'solarian', name: 'Solarian', group: 'Regional', page: 44, grants: [grant('Know: Solarians', 30)] },
+    { id: 'sifter', name: 'Sifter', group: 'Regional', page: 44, grants: [grant('Know: Sifters', 30)] },
+    { id: 'belter', name: 'Belter', group: 'Regional', page: 44, grants: [grant('Know: Belters', 30)] },
+    { id: 'europan', name: 'Europan', group: 'Regional', page: 44, grants: [grant('Know: Europans', 30)] },
+    { id: 'ringer', name: 'Ringer', group: 'Regional', page: 44, grants: [grant('Know: Ringers', 30)] },
+    { id: 'skimmer', name: 'Skimmer', group: 'Regional', page: 44, grants: [grant('Know: Skimmers', 30)] },
   ],
 };
 

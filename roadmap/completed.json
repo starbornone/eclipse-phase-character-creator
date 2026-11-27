@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T18:00:14+11:00",
+  "updatedAt": "2026-11-27T18:09:27+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -287,6 +287,13 @@
       "group": "Character creation",
       "notes": "Added Indenture, Infolife, Isolate, Underclass, and Uplift with sourced skill grants, open fields, and restricted Fray/Melee or Guns/Melee choices. Verified pending drafts, linked aptitudes and doubled bases, transfer revalidation, backup validation and restore, save and reload, keyboard controls, narrow layouts, and player/GM PDF output. Lost remains tied to the outstanding Psi work.",
       "completedAt": "2026-11-27T18:00:14+11:00"
+    },
+    {
+      "id": "complete-core-faction-catalogue",
+      "title": "Complete core faction choices and regional affiliations",
+      "group": "Character creation",
+      "notes": "Added the remaining core factions and six concrete regional affiliations under a native Regional group, for 21 named choices plus Factionless. Preserved existing ids, 30-point Know grants, custom motivation text and goals, and the inactive third personal slot. Verified all named choices, missing aptitudes, grant merging and caps, old-faction Know transfers, save and reload, backup restore, keyboard access, mobile layout, and player/GM PDF output.",
+      "completedAt": "2026-11-27T18:09:27+11:00"
     }
   ]
 }

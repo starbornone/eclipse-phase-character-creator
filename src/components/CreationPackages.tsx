@@ -45,6 +45,8 @@ export function CreationPackages({ packages, onChange }: {
           const selection = packages[kind];
           const choice = findCreationPackage(kind, selection?.id);
           const label = packageLabels[kind];
+          const options = coreCreationPackages[kind];
+          const groups = [...new Set(options.map(({ group }) => group))];
           return (
             <fieldset key={kind}>
               <legend>{label}</legend>
@@ -53,7 +55,11 @@ export function CreationPackages({ packages, onChange }: {
                   {label} package
                   <select value={selection?.id ?? ''} onChange={(event) => update(kind, event.target.value ? { id: event.target.value } : undefined)}>
                     <option value="">Choose {label.toLowerCase()}</option>
-                    {coreCreationPackages[kind].map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
+                    {groups.map((group) => {
+                      const entries = options.filter((option) => option.group === group)
+                        .map(({ id, name }) => <option key={id} value={id}>{name}</option>);
+                      return group ? <optgroup key={group} label={group}>{entries}</optgroup> : entries;
+                    })}
                   </select>
                 </label>
                 {selection && choice && choice.grants.flatMap(({ skill, points, slot, suggestedFields, skillOptions }) => slot ? [
