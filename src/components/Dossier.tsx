@@ -72,8 +72,9 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
 export function Dossier({ draft }: { draft: CharacterDraft }) {
   const egoId = draft.ego.id;
   const sleeve = activeSleeve(draft);
-  const { morph, entries: activeMorphTraits } = morphProfileForSleeve(sleeve);
-  const values = traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits);
+  const profile = morphProfileForSleeve(sleeve);
+  const { morph, entries: activeMorphTraits } = profile;
+  const values = traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits, profile);
 
   return (
     <article className="dossier">
@@ -128,7 +129,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
       </div>
       <Card className="editor-panel dossier-stats">
         <h2>Aptitude checks</h2>
-        <p className="muted">Aptitude checks multiply the ego’s score by 3, then add applicable trait modifiers. <a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
+        <p className="muted">Aptitude checks multiply the ego’s score by 3, then add modifiers from the ego and active sleeve. <a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
         <table>
           <thead><tr><th scope="col">Aptitude</th><th scope="col">Ego score</th><th scope="col">Calculation</th><th scope="col">Check</th></tr></thead>
           <tbody>

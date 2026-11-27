@@ -33,6 +33,8 @@ The included morph trait review on 28 November 2026 resleeved a Case with added 
 
 The field equipment review on 28 November 2026 used both Laser/Microwave Link sizes, two Spindle Climbers, a Pocket Lab, and a 2 GP pack swap. The player layout rendered to three A4 pages and the GM layout to two from preview markup in headless Chrome. Grayscale pages and extracted text kept the pack swap, purchased quantities, and per-item MP prices legible. Both layouts showed 7 MP spent on equipment and a 1 MP deficit. The skill table repeated its headers across the player page break, and both PDFs omitted the private resleeving location. Edge at 320 px verified the category picker, changes to temporary Flex, save and reload, and preserved equipment after resleeving.
 
+The sleeve aptitude review on 28 November 2026 used ego and sleeve Resolve, a sleeve Timidity penalty, and two pending checks with sleeve penalties. Both layouts rendered to three A4 pages from preview markup in headless Chrome. All six grayscale pages were reviewed, and extracted text confirmed the separate trait contributions, the 6 MP bonus, and the original WIL 15 skill base. The player table repeated its headers at the page break. Edge at 320 px showed Willpower 60 in the configured Bouncer and 50 after resleeving to a Case. The GM preview kept the first sleeve's traits in history and excluded the private location by default.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

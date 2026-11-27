@@ -101,7 +101,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
         </section>
         <StartingMorphBudgetSummary budget={dossier.startingMorphBudget} />
         <section>
-          <h3>Ego aptitude checks</h3>
+          <h3>Aptitude checks</h3>
           {isPlayer ? (
             <table>
               <thead><tr><th scope="col">Aptitude</th><th scope="col">Score</th><th scope="col">Calculation</th><th scope="col">Check</th></tr></thead>
@@ -121,13 +121,13 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
               {dossier.checks.map((check) => (
                 <div key={check.id}>
                   <dt>{check.label}</dt>
-                  <dd>{check.target ?? '—'}{check.modifiers.length > 0 && <span className="skill-grant muted"><AptitudeCheckCalculation check={check} /></span>}</dd>
+                  <dd>{check.target ?? '—'}{check.modifiers.length > 0 && <span className="skill-grant muted"><AptitudeCheckCalculation check={check} missingBase="" /></span>}</dd>
                 </div>
               ))}
             </dl>
           )}
           <p className="rules-note"><a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
-          {dossier.checks.some(({ modifiers }) => modifiers.length > 0) && <p className="rules-note">Check modifiers: <a href={egoTraitsSource}>Core ego trait rules</a>.</p>}
+          {dossier.checks.some(({ modifiers }) => modifiers.length > 0) && <p className="rules-note"><a href={egoTraitsSource}>Core trait rules for check modifiers</a></p>}
         </section>
         <EgoDerivedStats stats={dossier.derivedStats} headingLevel={3} />
         <section>

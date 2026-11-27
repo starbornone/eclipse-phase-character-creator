@@ -340,7 +340,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 ))}
               </fieldset>
             )}
-            <MorphTraitEditor key={startingMorph?.id} morph={startingMorph} choices={morphTraits} onChange={setMorphTraits} />
+            <MorphTraitEditor key={startingMorph?.id} morph={startingMorph} choices={morphTraits}
+              aptitudes={parsed.scores} egoTraits={traits} onChange={setMorphTraits} />
             {!morphAllowanceIssue && (
               <StartingMorphBudgetSummary
                 budget={evaluateStartingMorphBudget(

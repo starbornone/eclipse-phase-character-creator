@@ -45,7 +45,9 @@ Negative morph traits grant up to 6 MP in total. **Dominant Limb** and **Planned
 
 **Striking Looks** costs 1 or 2 MP on Bouncer and 1 MP on Case and Synth. **Unattractiveness** grants 2 MP at Level 2 on Bouncer and 1 MP at Level 1 on Case and Synth. The editor offers the levels that apply to the selected sleeve and lists their situational effects for play.
 
-The budget includes both the cost and bonus. If a first-morph change invalidates a choice, returning to the earlier morph before saving restores it. The dossier and both print layouts show the active sleeve's adjusted health and traits. Resleeving keeps the original traits in sleeve history and the starting budget. Backups retain the individual sleeve choices.
+Open **Aptitude check traits** for the twelve sleeve versions of the aptitude traits. A positive trait costs 1 MP per level and adds 5 per level to its linked check. A negative trait grants 1 MP per level within the shared 6 MP cap and subtracts 5 per level from its linked check. The editor shows the affected checks as you edit. For example, a Willpower score of 15 with ego Resolve Level 1 and sleeve Resolve Level 2 gives a WIL Check of 60. Skill ratings still use the base aptitude scores.
+
+If a first-morph change invalidates a choice, returning to the earlier morph before saving restores it. The dossier and both print layouts show the active sleeve's adjusted health, traits, and check modifiers. On resleeving, aptitude checks use the new active sleeve and the previous traits stay in history and in the starting budget. Backups retain the individual sleeve choices.
 
 ## Apply an aptitude template
 

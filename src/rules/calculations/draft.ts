@@ -1,6 +1,7 @@
 import { aptitudes } from '../../types/character.ts';
 import type { AptitudeInputs, AptitudeScores, EgoTraitChoice } from '../../types/character.ts';
 import { traceEgoTraits } from './ego-traits.ts';
+import { traceIncludedMorphTraits, type deriveMorphProfile } from './morph-traits.ts';
 
 const aptitudeCheckMultiplier = 3;
 
@@ -21,12 +22,23 @@ export function parseAptitudes(inputs: AptitudeInputs) {
   return { scores } as const;
 }
 
-export function traceAptitudeChecks(scores: AptitudeScores, choices?: readonly EgoTraitChoice[]) {
-  const traits = traceEgoTraits(choices);
+export function traceAptitudeChecks(
+  scores: AptitudeScores,
+  choices?: readonly EgoTraitChoice[],
+  profile?: ReturnType<typeof deriveMorphProfile>,
+) {
+  const morphTraits = [...traceIncludedMorphTraits(profile?.morph), ...(profile?.entries ?? [])];
+  const traits = [
+    ...traceEgoTraits(choices).map(({ name, detail, level, checkModifier }) => ({
+      source: detail ? `${name} (${detail})` : name, level, checkModifier,
+    })),
+    ...morphTraits.flatMap(({ name, level, checkModifier }) => level !== undefined && checkModifier
+      ? [{ source: `${name} (morph)`, level, checkModifier }] : []),
+  ];
   return aptitudes.map(({ id, label }) => {
     const base = scores[id];
-    const modifiers = traits.flatMap(({ name, detail, level, checkModifier }) => checkModifier?.aptitude === id
-      ? [{ source: detail ? `${name} (${detail})` : name, level, points: checkModifier.perLevel * level }] : []);
+    const modifiers = traits.flatMap(({ source, level, checkModifier }) => checkModifier?.aptitude === id
+      ? [{ source, level, points: checkModifier.perLevel * level }] : []);
     const modifier = modifiers.reduce((sum, { points }) => sum + points, 0);
     return {
       id,

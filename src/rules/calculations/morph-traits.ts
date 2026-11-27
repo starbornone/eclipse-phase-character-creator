@@ -17,8 +17,8 @@ export function traceIncludedMorphTraits(morph?: MorphDefinition) {
   return (morph?.includedTraits ?? []).flatMap(({ id, level }) => {
     const trait = morphTraits.find((entry) => entry.id === id);
     if (!trait?.levels[level - 1]) return [];
-    const { name, effect, levels } = trait;
-    return [{ id, name, effect, ...(levels.length > 1 ? { level } : {}) }];
+    const { name, effect, levels, checkModifier } = trait;
+    return [{ id, name, effect, ...(levels.length > 1 ? { level } : {}), ...(checkModifier ? { checkModifier } : {}) }];
   });
 }
 

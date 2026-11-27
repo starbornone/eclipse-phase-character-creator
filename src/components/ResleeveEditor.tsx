@@ -75,7 +75,7 @@ export function ResleeveEditor({ draft, onCancel, onSaved, onDirty, onSaving }: 
           {target && (
             <section className="panel comparison" aria-labelledby="resleeve-comparison-title">
               <div className="comparison-heading"><h2 id="resleeve-comparison-title">Current and proposed sleeves</h2></div>
-              <p className="muted" id="resleeve-comparison-note">Health values follow the morph. Aptitude checks stay with the ego.</p>
+              <p className="muted" id="resleeve-comparison-note">Health and morph trait modifiers follow the sleeve. Aptitude scores follow the ego.</p>
               <MorphProfileTable
                 columns={[
                   { id: 'current', label: `Current · ${current?.name ?? 'Unknown morph'}`, morph: current },

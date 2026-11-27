@@ -74,7 +74,9 @@ test('trait choices are scoped by profile category and use a shared negative MP 
   assert.equal(evaluateMorphTraits(synth, [...bioChoices, proprietary]).bonus, 3);
   assert.equal(evaluateMorphTraits(bouncer, [...bioChoices, obsolescence]).bonus, 7);
   assert.equal(evaluateStartingMorphBudget({}, bouncer, false, [...bioChoices, obsolescence]).morphTraitBonus, 6);
-  assert.deepEqual(availableMorphTraits(findSampleMorph('operator')), []);
+  const operatorTraits = availableMorphTraits(findSampleMorph('operator'));
+  assert.equal(operatorTraits.length, 12);
+  assert.ok(operatorTraits.every(({ checkModifier }) => checkModifier));
   assert.deepEqual(availableMorphTraits(findSampleMorph('survey-sleeve')), []);
   assert.deepEqual(availableMorphTraits(), []);
 });

@@ -6,6 +6,10 @@ import { calculateStartingSkills } from '../rules/calculations/starting-skills.t
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { buildPrintableDossier } from '../features/dossier/print.ts';
 import { encodeBackup, previewBackup } from '../features/backup/backup.ts';
+import { recordResleeving } from '../features/sleeve/history.ts';
+import { deriveMorphProfile, evaluateMorphTraits } from '../rules/calculations/morph-traits.ts';
+import { evaluateStartingMorphBudget } from '../rules/calculations/starting-morph-budget.ts';
+import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
 
 const entries = [
   ['acumen', 'Acumen', 'cog'], ['empathy', 'Empathy', 'sav'], ['fitness', 'Fitness', 'som'],
@@ -146,4 +150,76 @@ test('Timidity stacks with Resolve and Hardening in both print audiences without
     const pending = buildPrintableDossier(draft(traits, {}), audience, []).checks.find(({ id }) => id === 'wil');
     assert.deepEqual([pending.target, pending.modifiers], [undefined, sources]);
   }
+});
+
+test('morph aptitude traits use their signed MP levels and modify only the linked check on each morph category', () => {
+  for (const morphId of ['bouncer', 'case', 'operator']) {
+    const morph = findSampleMorph(morphId);
+    for (const [id, name, aptitude] of [...entries, ...penalties]) {
+      const perLevel = entries.some(([traitId]) => traitId === id) ? 5 : -5;
+      for (const level of [1, 2, 3]) {
+        const choices = [{ id, level }];
+        const profile = deriveMorphProfile(morph, choices);
+        assert.equal(profile.entries[0].mp, perLevel > 0 ? level : -level);
+        const checks = traceAptitudeChecks(scores, [], profile);
+        for (const check of checks) {
+          const linked = check.id === aptitude;
+          assert.equal(check.target, linked ? 45 + perLevel * level : 45);
+          assert.deepEqual(check.modifiers, linked ? [{ source: `${name} (morph)`, level, points: perLevel * level }] : []);
+        }
+      }
+    }
+  }
+});
+
+test('morph check traces handle incomplete scores and included choices without charging MP', () => {
+  const morph = { ...findSampleMorph('case'), includedTraits: [{ id: 'acumen', level: 2 }] };
+  const profile = deriveMorphProfile(morph, [{ id: 'acumen', level: 3 }]);
+  const cognition = ({ id }) => id === 'cog';
+  const pending = traceAptitudeChecks({}, [], profile).find(cognition);
+  assert.equal(pending.target, undefined);
+  assert.deepEqual(pending.modifiers, [{ source: 'Acumen (morph)', level: 2, points: 10 }]);
+  assert.equal(traceAptitudeChecks({ cog: 0 }, [], profile).find(cognition).target, 10);
+  assert.equal(evaluateMorphTraits(morph, [{ id: 'acumen', level: 3 }]).cost, 0);
+});
+
+test('morph aptitude traits use the existing MP cap and backup eligibility', () => {
+  const character = draft([]);
+  const choices = [{ id: 'feebleness', level: 3 }, { id: 'timidity', level: 3 }, { id: 'acumen', level: 2 }];
+  const withChoices = (morphTraits) => ({
+    ...character, sleeves: [{ id: 'first', egoId: character.ego.id, morphDefinitionId: 'operator', assignedAt: character.updatedAt, morphTraits }],
+  });
+  const valid = withChoices(choices);
+  assert.deepEqual(previewBackup(encodeBackup([valid])).drafts[0], valid);
+  const budget = evaluateStartingMorphBudget({}, findSampleMorph('operator'), false, choices);
+  assert.deepEqual([budget.morphTraitCost, budget.morphTraitBonus, budget.remaining], [2, 6, 8]);
+  for (const invalid of [
+    [...choices, { id: 'obtuseness', level: 1 }], [...choices, { id: 'acumen', level: 1 }], [{ id: 'acumen', level: 4 }],
+  ]) {
+    assert.throws(() => previewBackup(encodeBackup([withChoices(invalid)])), /morphTraits.*must be/);
+  }
+});
+
+test('ego and sleeve modifiers stack in both print layouts and only the ego contribution survives resleeving', () => {
+  const character = draft([{ id: 'resolve', level: 1 }, { id: 'hardening', level: 1, detail: 'Violence' }]);
+  character.ego.packages = { career: { id: 'investigator' } };
+  character.sleeves = [{ id: 'first', egoId: character.ego.id, morphDefinitionId: 'bouncer', assignedAt: character.updatedAt,
+    morphTraits: [{ id: 'resolve', level: 3 }, { id: 'timidity', level: 1 }] }];
+  const next = recordResleeving(character, 'second', 'case', { date: '', location: '', cause: '', notes: '' }, character.updatedAt);
+  for (const audience of ['player', 'gm']) {
+    const first = buildPrintableDossier(character, audience, []);
+    const second = buildPrintableDossier(next, audience, []);
+    const willpower = ({ id }) => id === 'wil';
+    const check = first.checks.find(willpower);
+    assert.deepEqual([check.base, check.target], [15, 50]);
+    assert.deepEqual(check.modifiers, [
+      { source: 'Resolve', level: 1, points: 5 }, { source: 'Hardening (Violence)', level: 1, points: -10 },
+      { source: 'Resolve (morph)', level: 3, points: 15 }, { source: 'Timidity (morph)', level: 1, points: -5 },
+    ]);
+    assert.deepEqual(second.checks.find(willpower).modifiers, check.modifiers.slice(0, 2));
+    assert.equal(second.checks.find(willpower).target, 40);
+    assert.deepEqual(second.skillLedger, first.skillLedger);
+    assert.deepEqual(second.derivedStats, first.derivedStats);
+  }
+  assert.deepEqual(next.sleeves[0].morphTraits, character.sleeves[0].morphTraits);
 });

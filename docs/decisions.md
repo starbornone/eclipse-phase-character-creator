@@ -156,4 +156,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Existing saves and backups show included traits from their catalogue entry. The editor and importer prevent duplicate purchases, and resleeving displays the new profile's included traits alongside the previous sleeve's history.
 
+## 20. Combine ego and sleeve aptitude check modifiers
+
+**Context.** The core trait listings provide both ego and morph versions of the general aptitude check traits. The publisher confirms that their effects apply to aptitude checks. [Core trait rules](https://eclipsephase.github.io/en/04/28-traits.html) · [Publisher FAQ](https://eclipsephase.com/faq/)
+
+**Decision.** Apply the one-choice rule separately to the ego and each sleeve. When both have the same aptitude trait, apply the usual stacking rule and label the sleeve contribution in the trace. Use the listed MP levels for the sleeve purchase.
+
+**Consequences.** Resleeving switches the morph part of the calculation. The first sleeve retains its choices and MP budget, and both print layouts reconstruct checks from the active sleeve. Skill bases continue to use the ego's aptitude scores.
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

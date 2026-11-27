@@ -283,8 +283,8 @@ section.comparison { padding: 1.25rem; }
 .starting-morph-traits .included-morph-traits li { display: block; padding: 0; border: 0; }
 .starting-gear-pack a { text-decoration: underline; text-underline-offset: .15em; }
 .gear-swap-source { display: block; color: var(--muted); }
-.gear-swaps { margin-top: .65rem; }
-.gear-swaps summary { cursor: pointer; font-weight: 600; }
+.gear-swaps, .morph-aptitude-options { margin-top: .65rem; }
+:is(.gear-swaps, .morph-aptitude-options) summary { cursor: pointer; font-weight: 600; }
 .starting-equipment-items li { display: flex; justify-content: space-between; align-items: baseline; gap: .6rem; padding-block: .45rem; border-top: 1px solid var(--line); }
 .starting-equipment-items a { text-decoration: underline; text-underline-offset: .15em; }
 .starting-skills { min-width: 0; }

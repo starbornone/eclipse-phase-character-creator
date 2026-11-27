@@ -29,7 +29,8 @@ export function buildPrintableDossier(
   includedFields: readonly PrivatePrintField[],
 ) {
   const sleeve = activeSleeve(draft);
-  const { morph, entries: activeMorphTraits } = morphProfileForSleeve(sleeve);
+  const profile = morphProfileForSleeve(sleeve);
+  const { morph, entries: activeMorphTraits } = profile;
   const skillLedger = calculateStartingSkills(draft.ego);
   const specializations = draft.ego.specializations?.length
     ? traceSkillSpecializations(skillLedger.skills, draft.ego.specializations).filter(({ missingSkill }) => !missingSkill)
@@ -54,7 +55,7 @@ export function buildPrintableDossier(
     morph,
     includedMorphTraits: traceIncludedMorphTraits(morph),
     activeMorphTraits,
-    checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits),
+    checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits, profile),
     derivedStats: traceDerivedEgoStats(draft.ego),
     history: audience === 'gm'
       ? [...draft.sleeves].reverse().map((entry, index) => {

@@ -1,4 +1,6 @@
 import type { MorphDefinition } from '../../types/character.ts';
+import { aptitudeCheckTraits } from './aptitude-check-traits.ts';
+import type { AptitudeCheckModifier } from './aptitude-check-traits.ts';
 
 // Eclipse Phase Second Edition, core Traits, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 const source = 'https://eclipsephase.github.io/en/04/28-traits.html';
@@ -7,6 +9,7 @@ const physical: readonly MorphCategory[] = ['Biomorph', 'Synthmorph'];
 const biomorph: readonly MorphCategory[] = ['Biomorph'];
 const synthmorph: readonly MorphCategory[] = ['Synthmorph'];
 const infomorph: readonly MorphCategory[] = ['Infomorph'];
+const allCategories = [...physical, ...infomorph];
 
 interface MorphTraitLevel {
   mp: number;
@@ -23,6 +26,7 @@ interface MorphTrait {
   levels: readonly MorphTraitLevel[];
   effect: string;
   durabilityPerLevel?: number;
+  checkModifier?: AptitudeCheckModifier;
 }
 
 export const morphTraits: readonly MorphTrait[] = [
@@ -52,6 +56,9 @@ export const morphTraits: readonly MorphTrait[] = [
     effect: 'Fixer swarms are ineffective on this sleeve. Apply −20 to Hardware: Robotics Tests on it.' },
   { id: 'zero-g-nausea', name: 'Zero-G Nausea', levels: [traitLevel(-2, biomorph)],
     effect: 'Apply −10 in microgravity. Failing the initial Somatics Check for acclimation or excessive movement incapacitates you for one hour.' },
+  ...Object.values(aptitudeCheckTraits).map(({ costByLevel, ...trait }) => ({
+    ...trait, levels: costByLevel.map((mp) => traitLevel(mp, allCategories)),
+  })),
 ];
 
 export const morphTraitSource = (id: string) => `${source}#${id}`;
