@@ -81,6 +81,27 @@ test('technical careers use linked aptitudes and custom Hardware fields in their
   }
 });
 
+test('Investigator adds its Perceive grant to twice Intuition and flags excess totals', () => {
+  const input = { aptitudes: { int: 20, sav: 15 }, packages: { career: { id: 'investigator' } } };
+  const row = calculateStartingSkills(input).skills.find(({ name }) => name === 'Perceive');
+  assert.deepEqual([row.packagePoints, row.base, row.total, row.excess], [40, 40, 80, 0]);
+  const raised = calculateStartingSkills({ ...input, aptitudes: { int: 25 } }).skills.find(({ name }) => name === 'Perceive');
+  assert.deepEqual([raised.total, raised.excess], [90, 10]);
+});
+
+test('medical grants stay pending without Cognition and excess Paramedic points can be transferred', () => {
+  const packages = { career: { id: 'medic' }, interest: { id: 'paramedic' } };
+  const pending = calculateStartingSkills({ aptitudes: {}, packages });
+  assert.equal(pending.skills.find(({ name }) => name === 'Medicine: Paramedic').total, undefined);
+  assert.equal(pending.unassignedKnowPoints, 90);
+  const adjusted = calculateStartingSkills({ aptitudes: { cog: 20, int: 20 }, packages,
+    skillTransfers: [{ from: 'active:Medicine: Paramedic', to: 'active:Research', points: 40 }],
+  });
+  assert.equal(adjusted.transferResults[0].issue, undefined);
+  assert.equal(adjusted.skills.find(({ name }) => name === 'Medicine: Paramedic').total, 80);
+  assert.equal(adjusted.skills.find(({ name }) => name === 'Research').total, 60);
+});
+
 test('merge matching Know fields and link player-classified Art fields to Intuition', () => {
   const { skills } = calculateStartingSkills({
     aptitudes: { cog: 20, int: 15 },

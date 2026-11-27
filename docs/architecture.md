@@ -28,6 +28,8 @@ Optional goals travel with their personal slot or named faction choice. Drafts a
 
 Starting gear stores the chosen campaign on the ego. The loadout derives the career pack from the selected career and uses the first sleeve to resolve campaign and career pack synthmorph alternatives, including the Soldier pack's Meds-to-Fixer-Swarm replacement. Gear Point totals are source values. The calculation leaves the Customization Point budget independent of starting packs. Pack item effects are reference data and do not modify derived checks or pools.
 
+The career dataset contains all 14 core careers with matching gear packs. Covert Operative uses the same first-sleeve alternative mechanism to replace Skinflex with Synthetic Mask. Gear items can carry a source cost qualifier, currently the Genehacker Pusher Swarm's additional drug/toxin cost. The derived pack flags that qualifier so the editor, dossier, and player print view label the sum as base GP and retain the unresolved cost text. Payload selections and prices are not inferred. Gear remains derived data, so these additions require no draft or backup schema change.
+
 Ego Flex and language choices are optional ego fields in drafts and JSON backups. Older drafts default to one ego Flex and an empty language list. The CP budget derives Flex cost from the selected total and language cost from the current Cognition and Intuition scores. Flex in this calculation belongs to the ego and carries across sleeves.
 
 Reputation is an optional map from supported network IDs to starting scores. Drafts preserve explicit zeroes and omitted networks. The editor and backup validation share the 0–80 range. The CP budget derives cost from the total above the 100 free points and shows the balance of each five-point purchase.

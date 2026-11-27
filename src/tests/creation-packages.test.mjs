@@ -50,3 +50,22 @@ test('technical careers retain fixed grants and optional Active and Know field s
     assert.deepEqual(career.grants.filter(({ skill }) => skill === 'Know').map(({ slot, points }) => [slot, points]), [['know-1', 60], ['know-2', 30]]);
   }
 });
+
+test('complete the core career catalogue with the remaining sourced grants', () => {
+  assert.deepEqual(coreCreationPackages.career.map(({ id }) => id), [
+    'academic', 'covert-operative', 'enforcer', 'explorer', 'face', 'genehacker', 'hacker',
+    'investigator', 'medic', 'mindhacker', 'scavenger', 'scientist', 'soldier', 'techie',
+  ]);
+  for (const [id, page, expected] of [
+    ['covert-operative', 40, [['Deceive', 40], ['Infiltrate', 60], ['Infosec', 30]]],
+    ['genehacker', 40, [['Medicine: Biotech', 60], ['Medicine: Pharmacology', 40], ['Program', 30]]],
+    ['investigator', 40, [['Kinesics', 30], ['Perceive', 40], ['Research', 60]]],
+    ['medic', 40, [['Kinesics', 30], ['Medicine: Biotech', 40], ['Medicine: Paramedic', 60]]],
+    ['mindhacker', 41, [['Infosec', 30], ['Medicine: Pharmacology', 40], ['Medicine: Psychosurgery', 60]]],
+  ]) {
+    const career = findCreationPackage('career', id);
+    assert.equal(career.page, page);
+    assert.deepEqual(career.grants.filter(({ slot }) => !slot).map(({ skill, points }) => [skill, points]), expected);
+    assert.deepEqual(career.grants.filter(({ slot }) => slot).map(({ slot, points }) => [slot, points]), [['know-1', 60], ['know-2', 30]]);
+  }
+});

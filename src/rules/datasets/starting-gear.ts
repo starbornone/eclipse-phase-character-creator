@@ -1,6 +1,7 @@
 // Eclipse Phase Second Edition, Gear Packs, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 // Enforcer: p. 69. Soldier and its synth alternative: p. 71, with errata 1.4 dose quantities.
 // Hacker: p. 70. Scavenger, Scientist, and Techie: p. 71, checked against errata 1.4.
+// Covert Operative: p. 69. Genehacker, Investigator, and Medic: p. 70. Mindhacker: p. 71 with errata 1.4.
 export const gearPacksSource = 'https://eclipsephase.github.io/en/04/27-gear-packs.html';
 
 interface GearItem {
@@ -8,6 +9,7 @@ interface GearItem {
   gp: number;
   restricted?: boolean;
   replacedOnSynth?: boolean;
+  additionalGpCost?: string;
 }
 
 interface GearPack {
@@ -62,6 +64,14 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
       gear('Neem (5 doses)', 1), archive, gear('Servitor Bot', 1), gear('Simulspace', 1),
     ],
   }],
+  ['covert-operative', {
+    name: 'Covert Operative', anchor: 'covert-operative',
+    items: [
+      gear('Chameleon Cloak', 2), gear('Cleaner Swarm', 1), { name: 'Covert Operations Tool', gp: 3, restricted: true },
+      gear('Microbug', 1), replaceOnSynth('Skinflex', 2), gear('Spy Nanoswarm', 1),
+    ],
+    synthAlternatives: [gear('Synthetic Mask', 2)],
+  }],
   ['enforcer', {
     name: 'Enforcer', anchor: 'enforcer',
     items: [
@@ -83,11 +93,39 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
       gear('Neuromodulation', 2), gear('Smart Hawk', 1), gear('Stiff (5 doses)', 1),
     ],
   }],
+  ['genehacker', {
+    name: 'Genehacker', anchor: 'genehacker',
+    items: [
+      gear('Archive', 1), gear('Dino Pet', 1), gear('Fokus (5 doses)', 1), gear('Medichines', 3),
+      { name: 'Pusher Swarm', gp: 1, restricted: true, additionalGpCost: 'drug/toxin' },
+      gear('Specimen Container', 1), gear('Tools (Kit)', 1), { name: 'Twitch (5 doses)', gp: 1, restricted: true },
+    ],
+  }],
   ['hacker', {
     name: 'Hacker', anchor: 'hacker',
     items: [
       { name: 'Exploit App', gp: 2, restricted: true }, gear('Gray Box', 1), gear('Radio Booster', 1),
       gear('Sniffer App', 2), { name: 'Spoofer App', gp: 2, restricted: true }, gear('Tracker App', 2),
+    ],
+  }],
+  ['investigator', {
+    name: 'Investigator', anchor: 'investigator',
+    items: [
+      gear('Biometric Matcher App', 1), gear('Brainprint Scanner', 1), gear('Cuffband', 1), gear('Klar (5 doses)', 1),
+      gear('Microbug', 1), gear('Oracles', 2), gear('Scout Nanoswarm', 1), gear('Speck', 1), gear('Spy Nanoswarm', 1),
+    ],
+  }],
+  ['medic', {
+    name: 'Medic', anchor: 'medic',
+    items: [
+      gear('Docbot', 3), gear('Healing Spray', 1), gear('Healing Vat', 3), gear('Med Scanner', 1), gear('Meds (5 doses)', 2),
+    ],
+  }],
+  ['mindhacker', {
+    name: 'Mindhacker', anchor: 'mindhacker',
+    items: [
+      gear('Comfurt (5 doses)', 1), gear('Eelware', 1), gear('Ego Bridge', 2), gear('Multi-Tasking', 2),
+      gear('Private Server', 2), gear('Psychosurgery App', 2),
     ],
   }],
   ['scavenger', {

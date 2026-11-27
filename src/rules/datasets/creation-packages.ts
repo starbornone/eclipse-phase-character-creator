@@ -52,6 +52,9 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'academic', name: 'Academic', page: 40, grants: [
       grant('Interface', 30), grant('Research', 60), know('know-1', 60), know('know-2', 40), know('know-3', 30),
     ] },
+    { id: 'covert-operative', name: 'Covert Operative', page: 40, grants: [
+      grant('Deceive', 40), grant('Infiltrate', 60), grant('Infosec', 30), know('know-1', 60), know('know-2', 30),
+    ] },
     { id: 'enforcer', name: 'Enforcer', page: 40, grants: [
       grant('Fray', 30), grant('Guns', 20), grant('Melee', 50), grant('Provoke', 30),
       know('know-1', 60), know('know-2', 30),
@@ -63,8 +66,23 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'face', name: 'Face', page: 40, grants: [
       grant('Deceive', 40), grant('Kinesics', 30), grant('Persuade', 60), know('know-1', 60), know('know-2', 30),
     ] },
+    { id: 'genehacker', name: 'Genehacker', page: 40, grants: [
+      grant('Medicine: Biotech', 60), grant('Medicine: Pharmacology', 40), grant('Program', 30),
+      know('know-1', 60), know('know-2', 30),
+    ] },
     { id: 'hacker', name: 'Hacker', page: 40, grants: [
       grant('Infosec', 60), grant('Interface', 40), grant('Program', 30), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'investigator', name: 'Investigator', page: 40, grants: [
+      grant('Kinesics', 30), grant('Perceive', 40), grant('Research', 60), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'medic', name: 'Medic', page: 40, grants: [
+      grant('Kinesics', 30), grant('Medicine: Biotech', 40), grant('Medicine: Paramedic', 60),
+      know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'mindhacker', name: 'Mindhacker', page: 41, grants: [
+      grant('Infosec', 30), grant('Medicine: Pharmacology', 40), grant('Medicine: Psychosurgery', 60),
+      know('know-1', 60), know('know-2', 30),
     ] },
     { id: 'scavenger', name: 'Scavenger', page: 41, grants: [
       hardware(60, ['Electronics', 'Industrial', 'Robotics']), grant('Hardware: Demolitions', 40),

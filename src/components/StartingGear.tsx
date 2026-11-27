@@ -10,15 +10,16 @@ function GearContents({ packs }: StartingGear) {
   return (
     <>
       <p className="muted">Free starting gear <strong>Muse ALI</strong></p>
-      {packs.map(({ name, source, items, gp, usesSynthAlternatives }) => (
+      {packs.map(({ name, source, items, gp, usesSynthAlternatives, hasAdditionalGpCosts }) => (
         <section className="starting-gear-pack" key={source}>
-          <h4><a href={source}>{name}</a> · {gp} GP</h4>
+          <h4><a href={source}>{name}</a> · {gp} GP{hasAdditionalGpCosts && ' base'}</h4>
           {usesSynthAlternatives && <p className="muted">Includes synthmorph alternatives.</p>}
           <dl className="print-checks">
-            {items.map(({ name: item, gp: value, restricted }) => (
-              <div key={item}><dt>{item}</dt><dd>{value} GP{restricted && ' · Restricted'}</dd></div>
+            {items.map(({ name: item, gp: value, restricted, additionalGpCost }) => (
+              <div key={item}><dt>{item}</dt><dd>{value} GP{additionalGpCost && ` + ${additionalGpCost}`}{restricted && ' · Restricted'}</dd></div>
             ))}
           </dl>
+          {hasAdditionalGpCosts && <p className="rules-note">The total sums listed base GP. Swarm payload costs depend on the selected drug or toxin.</p>}
         </section>
       ))}
       <p className="rules-note">

@@ -180,6 +180,16 @@ test('round-trip technical careers and validate each career field slot', () => {
   }
 });
 
+test('round-trip the remaining core careers and reject field slots outside their source packages', () => {
+  for (const id of ['covert-operative', 'genehacker', 'investigator', 'medic', 'mindhacker']) {
+    const fields = { 'know-1': 'Biology', 'know-2': 'Security Ops' };
+    const character = { ...draft, ego: { ...ego, startingCampaign: 'firewall', packages: { career: { id, fields } } } };
+    assert.deepEqual(previewBackup(encodeBackup([character])).drafts[0], character);
+    const invalid = { ...character, ego: { ...character.ego, packages: { career: { id, fields: { ...fields, 'know-3': 'Extra' } } } } };
+    assert.throws(() => previewBackup(encodeBackup([invalid])), /limited to slots/);
+  }
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

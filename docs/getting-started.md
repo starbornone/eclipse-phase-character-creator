@@ -51,7 +51,7 @@ In **Create ego** or **Edit ego**, pick a supported background, career, interest
 
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
-The supported careers include **Enforcer** and **Soldier**, each with two optional Know fields and a matching gear pack. Their Fray grants combine with double Reflexes, so review the total when adding another package with Fray points.
+All 14 core careers are available, each with its sourced skill grants and matching gear pack. Most have two optional Know fields; Academic has three. Enforcer and Soldier's Fray grants combine with double Reflexes, so review the total when adding another package with Fray points. Investigator's Perceive grant similarly combines with double Intuition.
 
 **Hacker**, **Scavenger**, **Scientist**, and **Techie** also have matching gear packs and two optional Know fields. The last three offer a Hardware field; Scavenger also offers a Pilot field. Use a suggested field or enter a custom one. Leaving a field blank keeps those points pending. Choosing Demolitions for Scavenger's open Hardware field combines it with the package's fixed Demolitions grant; review the cap before play.
 
@@ -86,6 +86,10 @@ Under **Starting gear**, select Firewall, Criminal, or Gatecrashing. Firewall an
 Choosing a synthmorph as the first sleeve applies the campaign pack’s listed alternatives. Resleeving leaves the starting loadout tied to the first sleeve. The dossier and player print preview show the packs. JSON backups preserve the campaign choice. Individual swaps and extra gear purchases are planned.
 
 The **Soldier** career pack also has a synthmorph alternative: **Fixer Swarm** replaces **Meds (5 doses)** when the first sleeve is synthetic. Both versions cost 10 GP. The Enforcer pack shows the Shredder’s Restricted label, and the Soldier pack labels the Assault Rifle Railgun as Restricted. Gear is listed for reference; its effects are not automatically applied to checks or pools.
+
+**Covert Operative** replaces **Skinflex** with **Synthetic Mask** for a synthetic first sleeve. Resleeving preserves that starting choice. The **Mindhacker** pack follows errata 1.4: it includes Psychosurgery App, with Fokus and Servitor removed. **Medic** includes five doses of Meds.
+
+**Genehacker** lists the Pusher Swarm's price as **1 GP + drug/toxin**. Its pack total is labelled **10 GP base**, summing the listed base values. The app does not assign a swarm payload or calculate its cost. Review the payload against the source when finalizing gear.
 
 ## Choose ego traits
 

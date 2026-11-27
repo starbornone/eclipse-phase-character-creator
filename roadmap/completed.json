@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T17:21:53+11:00",
+  "updatedAt": "2026-11-27T17:33:26+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -273,6 +273,13 @@
       "group": "Workspace",
       "notes": "Moved the brand, My egos, Morph library, Create ego, Import JSON, and local workspace indicator into one shared top navbar. Removed the separate status bar and visible Prototype wording. Checked layouts from 280 to 1440 pixels, active links, keyboard focus, skip navigation, unsaved-edit prompts, and print hiding. Recorded the navigation decision and updated contributor and user docs.",
       "completedAt": "2026-11-27T17:21:53+11:00"
+    },
+    {
+      "id": "complete-core-career-catalogue",
+      "title": "Complete the core career catalogue and matching gear packs",
+      "group": "Character creation",
+      "notes": "Added Covert Operative, Genehacker, Investigator, Medic, and Mindhacker, completing all 14 core careers. Included source grants, optional Know fields, Covert Operative's synthmorph swap, Medic and Mindhacker errata, and Genehacker's unresolved payload cost qualifier. Verified partial drafts, skill caps and transfers, save and reload, backups and restore, first-sleeve preservation during resleeving, mobile previews, and grayscale player PDFs.",
+      "completedAt": "2026-11-27T17:33:26+11:00"
     }
   ]
 }

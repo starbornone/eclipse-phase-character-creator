@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { deriveStartingGear, startingGearForDraft } from '../rules/calculations/starting-gear.ts';
+import { coreCreationPackages } from '../rules/datasets/creation-packages.ts';
+import { careerGearPacks } from '../rules/datasets/starting-gear.ts';
 
 test('combat gear packs retain item costs, restrictions, and corrected dose quantities', () => {
   for (const [career, items] of [
@@ -57,4 +59,42 @@ test('technical career gear retains sourced items, GP totals, and Hacker restric
       assert.ok(pack.source.endsWith(`#${career}`));
     }
   }
+});
+
+test('every core career has a gear pack and the remaining packs preserve source costs and errata', () => {
+  assert.deepEqual([...careerGearPacks.keys()], coreCreationPackages.career.map(({ id }) => id));
+  for (const [career, expected, restricted] of [
+    ['covert-operative', [['Chameleon Cloak', 2], ['Cleaner Swarm', 1], ['Covert Operations Tool', 3], ['Microbug', 1], ['Skinflex', 2], ['Spy Nanoswarm', 1]], ['Covert Operations Tool']],
+    ['genehacker', [['Archive', 1], ['Dino Pet', 1], ['Fokus (5 doses)', 1], ['Medichines', 3], ['Pusher Swarm', 1], ['Specimen Container', 1], ['Tools (Kit)', 1], ['Twitch (5 doses)', 1]], ['Pusher Swarm', 'Twitch (5 doses)']],
+    ['investigator', [['Biometric Matcher App', 1], ['Brainprint Scanner', 1], ['Cuffband', 1], ['Klar (5 doses)', 1], ['Microbug', 1], ['Oracles', 2], ['Scout Nanoswarm', 1], ['Speck', 1], ['Spy Nanoswarm', 1]], []],
+    ['medic', [['Docbot', 3], ['Healing Spray', 1], ['Healing Vat', 3], ['Med Scanner', 1], ['Meds (5 doses)', 2]], []],
+    ['mindhacker', [['Comfurt (5 doses)', 1], ['Eelware', 1], ['Ego Bridge', 2], ['Multi-Tasking', 2], ['Private Server', 2], ['Psychosurgery App', 2]], []],
+  ]) {
+    const [pack] = deriveStartingGear(undefined, career, 'Biomorph').packs;
+    assert.equal(pack.gp, 10);
+    assert.deepEqual(pack.items.map(({ name, gp }) => [name, gp]), expected);
+    assert.deepEqual(pack.items.filter(({ restricted }) => restricted).map(({ name }) => name), restricted);
+    assert.ok(pack.source.endsWith(`#${career}`));
+  }
+});
+
+test('Covert Operative uses Synthetic Mask for a synthetic first sleeve and retains it after resleeving', () => {
+  const ego = { packages: { career: { id: 'covert-operative' } } };
+  const synthetic = startingGearForDraft({ ego, sleeves: [{ morphDefinitionId: 'synth' }, { morphDefinitionId: 'bouncer' }] }).packs[0];
+  assert.equal(synthetic.gp, 10);
+  assert.equal(synthetic.usesSynthAlternatives, true);
+  assert.ok(synthetic.items.some(({ name, gp }) => name === 'Synthetic Mask' && gp === 2));
+  assert.ok(!synthetic.items.some(({ name }) => name === 'Skinflex'));
+  const biological = startingGearForDraft({ ego, sleeves: [{ morphDefinitionId: 'bouncer' }, { morphDefinitionId: 'synth' }] }).packs[0];
+  assert.equal(biological.usesSynthAlternatives, false);
+  assert.ok(biological.items.some(({ name }) => name === 'Skinflex'));
+});
+
+test('Genehacker lists payload cost separately without inventing a GP value', () => {
+  const [pack] = deriveStartingGear(undefined, 'genehacker').packs;
+  assert.equal(pack.gp, 10);
+  assert.equal(pack.hasAdditionalGpCosts, true);
+  const payloadItems = pack.items.filter(({ additionalGpCost }) => additionalGpCost);
+  assert.deepEqual(payloadItems.map(({ name, gp, additionalGpCost }) => [name, gp, additionalGpCost]), [['Pusher Swarm', 1, 'drug/toxin']]);
+  assert.equal(deriveStartingGear(undefined, 'mindhacker').packs[0].hasAdditionalGpCosts, false);
 });

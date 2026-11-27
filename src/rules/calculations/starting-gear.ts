@@ -17,6 +17,7 @@ export function deriveStartingGear(campaignId?: string, careerId?: string, morph
       items,
       usesSynthAlternatives,
       gp: items.reduce((sum, { gp }) => sum + gp, 0),
+      hasAdditionalGpCosts: items.some(({ additionalGpCost }) => Boolean(additionalGpCost)),
     }];
   });
   return { packs };
