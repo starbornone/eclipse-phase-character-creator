@@ -145,13 +145,16 @@ test('backup and print preserve Frailty and enforce appearance level restriction
   assert.equal(print.history[1].morphTraits.find(({ id }) => id === 'frailty').level, 2);
 });
 
-test('the seven supported base profiles supply their sourced traits independently of starting MP', () => {
+test('supported base profiles supply their sourced traits independently of starting MP', () => {
   const infomorphTraits = [['digital-speed', undefined], ['exotic-morphology', 3]];
   const expected = {
     bouncer: [['limberness', 1]],
     case: [['exotic-morphology', 1], ['inherent-flaws', undefined]],
     synth: [['exotic-morphology', 1]],
     digimorph: infomorphTraits, ikon: infomorphTraits, agent: infomorphTraits, operator: infomorphTraits,
+    flat: [], splicer: [], ruster: [], futura: [], hibernoid: [],
+    spare: [['exotic-morphology', 3]], dragonfly: [['exotic-morphology', 3]],
+    slitheroid: [['exotic-morphology', 2]], arachnoid: [['exotic-morphology', 3]],
   };
   for (const morph of sampleMorphs) {
     const included = traceIncludedMorphTraits(morph);
@@ -163,6 +166,17 @@ test('the seven supported base profiles supply their sourced traits independentl
   }
   assert.deepEqual(traceIncludedMorphTraits(findSampleMorph('survey-sleeve')), []);
   assert.deepEqual(traceIncludedMorphTraits(), []);
+});
+
+test('Aged is priced and permitted only for Flat and Splicer, including in backups', () => {
+  const aged = { id: 'aged', level: 1 };
+  for (const id of ['flat', 'splicer']) {
+    const eligible = draft([aged], id);
+    assert.deepEqual(previewBackup(encodeBackup([eligible])).drafts[0], eligible);
+    assert.equal(evaluateMorphTraits(findSampleMorph(id), [aged]).bonus, 4);
+  }
+  assert.throws(() => previewBackup(encodeBackup([draft([aged], 'ruster')])), /morphTraits.*must be/);
+  assert.equal(evaluateMorphTraits(findSampleMorph('ruster'), [unattractiveness(2)]).bonus, 2);
 });
 
 test('included traits and Exotic Morphology cannot enter the elective ledger or a backup purchase', () => {

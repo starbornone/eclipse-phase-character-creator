@@ -1,4 +1,5 @@
 import type { MorphDefinition } from '../../types/character.ts';
+import { corePhysicalMorphs, corePhysicalMorphSource, slowWalk, standardSynthWare, standardWalk } from './core-physical-morphs.ts';
 import { coreInfomorphs } from './infomorphs.ts';
 
 export const quickStartRules = {
@@ -18,8 +19,6 @@ export function quickStartPageUrl(printedPage: number) {
 
 const source = (page: number) => ({ label: `Quick-Start Rules, p. ${page}`, url: quickStartPageUrl(page) });
 
-const synthWare = ['Access Jacks', 'Cortical Stack', 'Cyberbrain', 'Lidar', 'Mesh Inserts', 'Mnemonics', 'Puppet Sock'];
-
 // Core player profiles, Common Biomorphs and Synthmorphs, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 // The Quick-Start NPC examples also use these health values.
 export const sampleMorphs: readonly MorphDefinition[] = [
@@ -32,11 +31,12 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     woundThreshold: 7,
     deathRating: 53,
     morphPoints: 4,
-    morphPointsSource: { label: 'Core Bouncer profile', url: 'https://eclipsephase.github.io/en/04/22-common-biomorphs.html#bouncer' },
+    availability: 60,
+    morphPointsSource: corePhysicalMorphSource('Biomorph', 'bouncer'),
     includedTraits: [{ id: 'limberness', level: 1 }],
     pools: { insight: 1, moxie: 0, vigor: 1, flex: 2 },
     includedWare: ['Biomods', 'Cold Tolerance', 'Cortical Stack', 'Grip Pads', 'Mesh Inserts', 'Oxygen Reserve', 'Prehensile Feet'],
-    movement: 'Walker 4/12',
+    movement: [slowWalk],
     source: source(24),
   },
   {
@@ -48,11 +48,12 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     woundThreshold: 5,
     deathRating: 50,
     morphPoints: 0,
-    morphPointsSource: { label: 'Core Case profile', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#case' },
+    availability: 100,
+    morphPointsSource: corePhysicalMorphSource('Synthmorph', 'case'),
     includedTraits: [{ id: 'exotic-morphology', level: 1 }, { id: 'inherent-flaws', level: 1 }],
     pools: { insight: 0, moxie: 0, vigor: 0, flex: 0 },
-    includedWare: synthWare,
-    movement: 'Walker 4/12',
+    includedWare: standardSynthWare,
+    movement: [slowWalk],
     armor: '6/4',
     source: source(25),
   },
@@ -65,15 +66,17 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     woundThreshold: 8,
     deathRating: 80,
     morphPoints: 3,
-    morphPointsSource: { label: 'Core Synth profile', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#synth' },
+    availability: 80,
+    morphPointsSource: corePhysicalMorphSource('Synthmorph', 'synth'),
     includedTraits: [{ id: 'exotic-morphology', level: 1 }],
     pools: { insight: 0, moxie: 0, vigor: 1, flex: 1 },
-    includedWare: synthWare,
-    movement: 'Walker 4/20',
+    includedWare: standardSynthWare,
+    movement: [standardWalk],
     armor: '6/4',
     source: source(25),
   },
   ...coreInfomorphs,
+  ...corePhysicalMorphs,
 ];
 
 // Preserve names and health values from existing prototype sleeve records.

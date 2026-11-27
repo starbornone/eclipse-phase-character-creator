@@ -9,7 +9,7 @@ import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
-import { IncludedMorphWare, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { IncludedMorphWare, MorphSource, MorphStats, QuickStartCredit } from './MorphProfile.tsx';
 import { CharacterPools } from './CharacterPools.tsx';
 import { MorphTraitSummary } from './MorphTraits.tsx';
 import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';

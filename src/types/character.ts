@@ -105,6 +105,13 @@ export interface Ego {
   psiSleightPurchases?: string[];
 }
 
+export interface MorphMovement {
+  mode: string;
+  base: number;
+  full: number;
+  variant?: string;
+}
+
 export interface MorphDefinition {
   id: string;
   name: string;
@@ -114,11 +121,15 @@ export interface MorphDefinition {
   woundThreshold?: number;
   deathRating?: number;
   morphPoints?: number;
+  availability?: number;
   morphPointsSource?: { label: string; url: string };
   includedTraits?: readonly MorphTraitChoice[];
   includedWare?: readonly string[];
-  movement?: string;
+  movement?: readonly MorphMovement[];
   armor?: string;
+  size?: 'Small';
+  limitations?: readonly string[];
+  commonExtras?: readonly string[];
   pools?: { insight: number; moxie: number; vigor: number; flex: number };
   source?: { label: string; url: string };
 }

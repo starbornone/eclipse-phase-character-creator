@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-28T08:55:16+11:00",
+  "updatedAt": "2026-11-28T09:11:10+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -9,12 +9,6 @@
     "summary": "A local-first web tool for creating, validating, saving, resleeving, and printing Eclipse Phase Second Edition characters."
   },
   "items": [
-    {
-      "id": "browse-and-compare-morphs",
-      "title": "Browse, filter, and compare supported morphs",
-      "group": "Character creation",
-      "notes": "Search, category filters, and a comparison of up to three profiles cover seven core player morphs. All profiles show sourced MP costs, pools, traits, and built-in ware. Expand verified player profiles and restrictions and add the planned price, movement, durability, and capability filters."
-    },
     {
       "id": "verify-accessibility-and-layouts",
       "title": "Verify keyboard access, mobile layouts, and print",

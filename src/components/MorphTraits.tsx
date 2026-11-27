@@ -6,7 +6,7 @@ import { startingMorphBudgetRules } from '../rules/datasets/starting-morph-budge
 import type { AptitudeScores, EgoTraitChoice, MorphDefinition, MorphTraitChoice } from '../types/character.ts';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
 import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
-import { MorphStats } from './MorphCatalog.tsx';
+import { MorphStats } from './MorphProfile.tsx';
 
 const { negativeMorphTraitCap } = startingMorphBudgetRules;
 const describeMp = (mp: number) => mp > 0 ? `${mp} MP cost` : `${-mp} MP bonus`;

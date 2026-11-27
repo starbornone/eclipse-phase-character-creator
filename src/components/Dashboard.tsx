@@ -5,7 +5,7 @@ import { downloadBackup } from '../features/backup/backup.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
-import { MorphIcon } from './MorphCatalog.tsx';
+import { MorphIcon } from './MorphProfile.tsx';
 import { Card } from './ui/card.tsx';
 
 interface DashboardProps {
@@ -87,7 +87,7 @@ export function Dashboard({ drafts, loading, loadError, onRetry }: DashboardProp
           </div>
           <Card>
             <ul className="morph-list">
-              {sampleMorphs.map((morph) => (
+              {sampleMorphs.slice(0, 7).map((morph) => (
                 <li key={morph.id}>
                   <MorphIcon morph={morph} />
                   <span><strong>{morph.name}</strong><span className="record-meta">{morph.category}</span></span>

@@ -1,168 +1,93 @@
-import { Atom, Bot, Dna, Monitor } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { traceIncludedMorphTraits } from '../rules/calculations/morph-traits.ts';
-import { quickStartRules, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
+import type { RefObject } from 'react';
+import { useOutletContext } from 'react-router';
+import type { Workspace } from '../app/App.tsx';
+import { filterMorphs, morphFilterOptions } from '../rules/calculations/morph-catalog.ts';
+import type { MorphFilters } from '../rules/calculations/morph-catalog.ts';
+import { sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { MorphDefinition } from '../types/character.ts';
-import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
+import { MorphDetailsDrawer } from './MorphDetailsDrawer.tsx';
+import { MorphIcon, MorphStats } from './MorphProfile.tsx';
+import { MorphProfileTable } from './MorphProfileTable.tsx';
 import { Card } from './ui/card.tsx';
 
-const poolFields = [
-  ['insight', 'Insight'],
-  ['moxie', 'Moxie'],
-  ['vigor', 'Vigor'],
-  ['flex', 'Morph Flex'],
-] as const;
-
-export function MorphIcon({ morph }: { morph: MorphDefinition }) {
-  const Icon = morph.category === 'Infomorph' ? Monitor
-    : morph.category === 'Biomorph' ? Dna
-    : morph.id === 'case' || morph.id === 'vector-frame' ? Atom : Bot;
-  return <span aria-hidden="true" className={`morph-icon ${morph.id}`}><Icon size={20} /></span>;
-}
-
-export function MorphStats({ morph, showPools = true }: { morph: MorphDefinition; showPools?: boolean }) {
-  const { pools, movement, armor } = morph;
-  return (
-    <span className="morph-stats">
-      <span>Durability <strong>{morph.durability}</strong></span>
-      {morph.woundThreshold !== undefined && <span>Wound threshold <strong>{morph.woundThreshold}</strong></span>}
-      {morph.deathRating !== undefined && <span>Death rating <strong>{morph.deathRating}</strong></span>}
-      {morph.morphPoints !== undefined && <span>Cost <strong>{morph.morphPoints} MP</strong></span>}
-      {movement && <span>Movement <strong>{movement}</strong></span>}
-      {armor && <span>Frame armor <strong>{armor}</strong></span>}
-      {showPools && pools && poolFields.map(([id, label]) => (
-        <span key={id}>{label} <strong>{pools[id]}</strong></span>
-      ))}
-    </span>
-  );
-}
-
-export function IncludedMorphWare({ morph }: { morph: MorphDefinition }) {
-  return morph.includedWare?.length ? <p className="concept-text">Built-in ware <strong>{morph.includedWare.join(', ')}</strong></p> : null;
-}
-
-export function MorphSource({ morph }: { morph: MorphDefinition }) {
-  if (!morph.source) return <p className="rules-note">Legacy morph profile. Its durability is illustrative.</p>;
-  return (
-    <p className="rules-note">
-      <a href={morph.source.url}>{morph.source.label}</a>
-      {morph.morphPointsSource && <> · <a href={morph.morphPointsSource.url}>{morph.morphPointsSource.label}</a></>}
-      {(morph.category === 'Infomorph' || morph.morphPointsSource) && <> · <a href={quickStartRules.publisherUrl}>{quickStartRules.publisher}</a> ·{' '}
-        <a href={quickStartRules.licenseUrl}>{quickStartRules.license}</a></>}
-    </p>
-  );
-}
-
-export function QuickStartCredit() {
-  return (
-    <>
-      Game data and calculations adapted from <a href={quickStartRules.url}>{quickStartRules.title} v{quickStartRules.version}</a> by{' '}
-      <a href={quickStartRules.publisherUrl}>{quickStartRules.publisher} (eclipsephase.com)</a>, licensed{' '}
-      <a href={quickStartRules.licenseUrl}>{quickStartRules.license}</a>.
-    </>
-  );
-}
-
 const comparisonLimit = 3;
-const categories = [...new Set(sampleMorphs.map((morph) => morph.category))].sort();
-const healthFields = [
-  ['durability', 'Durability'],
-  ['woundThreshold', 'Wound threshold'],
-  ['deathRating', 'Death rating'],
-] as const;
+const filterOptions = morphFilterOptions(sampleMorphs);
 
-interface ProfileColumn {
-  id: string;
-  label: string;
-  morph?: MorphDefinition;
-}
-
-export function MorphProfileTable({ columns, titleId, noteId }: {
-  columns: ProfileColumn[];
-  titleId: string;
-  noteId: string;
+function CatalogFilters({ filters, onChange, searchInput }: {
+  filters: MorphFilters;
+  onChange: (filters: MorphFilters) => void;
+  searchInput: RefObject<HTMLInputElement | null>;
 }) {
+  const { categories, costs, durability, movement, capabilities } = filterOptions;
   return (
-    <div className="comparison-scroll" role="region" aria-labelledby={titleId} tabIndex={0}>
-      <table aria-describedby={noteId}>
-        <thead>
-          <tr>
-            <th scope="col">Profile</th>
-            {columns.map(({ id, label }) => <th scope="col" key={id}>{label}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">Category</th>
-            {columns.map(({ id, morph }) => <td key={id}>{morph?.category ?? 'Unverified'}</td>)}
-          </tr>
-          {healthFields.map(([field, label]) => (
-            <tr key={field}>
-              <th scope="row">{label}</th>
-              {columns.map(({ id, morph }) => <td key={id}>{morph?.[field] ?? 'Unverified'}</td>)}
-            </tr>
-          ))}
-          {columns.some(({ morph }) => morph?.morphPoints !== undefined) && (
-            <tr>
-              <th scope="row">Cost (MP)</th>
-              {columns.map(({ id, morph }) => <td key={id}>{morph?.morphPoints ?? 'Unverified'}</td>)}
-            </tr>
-          )}
-          {columns.some(({ morph }) => morph?.pools) && poolFields.map(([field, label]) => (
-            <tr key={field}>
-              <th scope="row">{label}</th>
-              {columns.map(({ id, morph }) => <td key={id}>{morph?.pools?.[field] ?? 'Unverified'}</td>)}
-            </tr>
-          ))}
-          {columns.some(({ morph }) => morph?.includedTraits?.length) && (
-            <tr>
-              <th scope="row">Included traits</th>
-              {columns.map(({ id, morph }) => {
-                const entries = traceIncludedMorphTraits(morph);
-                return <td key={id}>{entries.length ? <IncludedMorphTraits entries={entries} compact /> : 'Unverified'}</td>;
-              })}
-            </tr>
-          )}
-          <tr>
-            <th scope="row">Source</th>
-            {columns.map(({ id, morph }) => <td key={id}>{morph ? <MorphSource morph={morph} /> : 'Unavailable'}</td>)}
-          </tr>
-        </tbody>
-      </table>
+    <div className="catalog-filters">
+      <label className="catalog-search">
+        Search morphs
+        <input ref={searchInput} type="search" value={filters.query ?? ''} onChange={(event) => onChange({ ...filters, query: event.target.value })} />
+      </label>
+      <label>
+        Category
+        <select value={filters.category ?? ''} onChange={(event) => onChange({ ...filters, category: event.target.value })}>
+          <option value="">All categories</option>
+          {categories.map((option) => <option key={option}>{option}</option>)}
+        </select>
+      </label>
+      <label>
+        Maximum cost
+        <select value={filters.maximumMp ?? ''} onChange={(event) => onChange({
+          ...filters, maximumMp: event.target.value === '' ? undefined : Number(event.target.value),
+        })}>
+          <option value="">Any cost</option>
+          {costs.map((option) => <option key={option} value={option}>{option} MP</option>)}
+        </select>
+      </label>
+      <label>
+        Minimum durability
+        <select value={filters.minimumDurability ?? ''} onChange={(event) => onChange({
+          ...filters, minimumDurability: event.target.value === '' ? undefined : Number(event.target.value),
+        })}>
+          <option value="">Any durability</option>
+          {durability.map((option) => <option key={option} value={option}>{option} DUR</option>)}
+        </select>
+      </label>
+      <label>
+        Movement
+        <select value={filters.movement ?? ''} onChange={(event) => onChange({ ...filters, movement: event.target.value })}>
+          <option value="">Any movement</option>
+          {movement.map((option) => <option key={option}>{option}</option>)}
+        </select>
+      </label>
+      <label>
+        Capability
+        <select value={filters.capability ?? ''} onChange={(event) => onChange({ ...filters, capability: event.target.value })}>
+          <option value="">Any capability</option>
+          {capabilities.map((option) => <option key={option}>{option}</option>)}
+        </select>
+      </label>
+      <label>
+        Sort by
+        <select value={filters.sort ?? ''} onChange={(event) => onChange({ ...filters, sort: event.target.value })}>
+          <option value="">Name</option>
+          <option value="cost">Lowest cost</option>
+          <option value="durability">Highest durability</option>
+        </select>
+      </label>
     </div>
   );
 }
 
-function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onClear: () => void }) {
-  return (
-    <section className="panel comparison" aria-labelledby="comparison-title">
-      <div className="comparison-heading">
-        <h2 id="comparison-title">Morph comparison</h2>
-        <button type="button" className="button secondary" onClick={onClear}>Clear comparison</button>
-      </div>
-      <p className="muted" id="comparison-note">
-        Compare health, pools, Morph Point costs, and included traits.
-      </p>
-      <MorphProfileTable
-        columns={morphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}
-        titleId="comparison-title"
-        noteId="comparison-note"
-      />
-    </section>
-  );
-}
-
 export function MorphCatalog() {
-  const [query, setQuery] = useState('');
-  const [category, setCategory] = useState('');
+  const { drafts } = useOutletContext<Workspace>();
+  const [filters, setFilters] = useState<MorphFilters>({});
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [detail, setDetail] = useState<MorphDefinition>();
   const searchInput = useRef<HTMLInputElement>(null);
-  const search = query.trim().toLowerCase();
-  const matches = sampleMorphs.filter((morph) => (
-    (!category || morph.category === category)
-    && (morph.name.toLowerCase().includes(search) || morph.description.toLowerCase().includes(search))
-  ));
-  const selectedMorphs = sampleMorphs.filter((morph) => selectedIds.includes(morph.id));
+  const comparisonTitle = useRef<HTMLHeadingElement>(null);
+  const clearComparisonButton = useRef<HTMLButtonElement>(null);
+  const matches = filterMorphs(sampleMorphs, filters);
+  const selectedMorphs = selectedIds.flatMap((id) => sampleMorphs.find((morph) => morph.id === id) ?? []);
+  const hasFilters = Object.values(filters).some((value) => value !== undefined && value !== '');
 
   function toggleComparison(id: string) {
     setSelectedIds((ids) => {
@@ -176,41 +101,59 @@ export function MorphCatalog() {
     searchInput.current?.focus();
   }
 
-  function resetFilters() {
-    setQuery('');
-    setCategory('');
-    searchInput.current?.focus();
+  function removeFromComparison(id: string) {
+    if (selectedIds.length === 1) {
+      clearComparison();
+      return;
+    }
+    clearComparisonButton.current?.focus();
+    toggleComparison(id);
   }
 
   return (
     <>
       <header className="page-heading">
         <h1 tabIndex={-1}>Morph library</h1>
-        <p>Browse Quick-Start morphs and core infomorphs for your first sleeve.</p>
+        <p>Browse core morphs for character creation and resleeving.</p>
       </header>
-      <div className="catalog-filters">
-        <label>
-          Search morphs
-          <input ref={searchInput} type="search" value={query} onChange={(event) => setQuery(event.target.value)} />
-        </label>
-        <label>
-          Category
-          <select value={category} onChange={(event) => setCategory(event.target.value)}>
-            <option value="">All categories</option>
-            {categories.map((option) => <option key={option}>{option}</option>)}
-          </select>
-        </label>
+      <CatalogFilters filters={filters} onChange={setFilters} searchInput={searchInput} />
+      <div className="catalog-status">
+        <p className="muted" role="status">
+          {matches.length} {matches.length === 1 ? 'morph' : 'morphs'} · {selectedIds.length} of {comparisonLimit} selected
+          {selectedIds.length < 2 && ' for comparison. Select at least two to compare.'}
+        </p>
+        {hasFilters && <button type="button" className="text-button" onClick={() => {
+          setFilters({});
+          searchInput.current?.focus();
+        }}>Reset filters</button>}
       </div>
-      <p className="catalog-status muted" role="status">
-        {matches.length} {matches.length === 1 ? 'morph' : 'morphs'} · {selectedIds.length} of {comparisonLimit} selected
-        {selectedIds.length < 2 && ' for comparison. Select at least two to compare.'}
-      </p>
-      {matches.length === 0 && (
-        <Card className="catalog-empty">
-          <p>No morphs match these filters.</p>
-          <button type="button" className="text-button" onClick={resetFilters}>Reset filters</button>
-        </Card>
+      {selectedMorphs.length > 0 && (
+        <section className="panel comparison catalog-comparison" aria-labelledby="comparison-title">
+          <div className="comparison-heading">
+            <h2 ref={comparisonTitle} id="comparison-title" tabIndex={-1}>Morph comparison</h2>
+            <button ref={clearComparisonButton} type="button" className="button secondary" onClick={clearComparison}>Clear comparison</button>
+          </div>
+          <ul className="comparison-selected" aria-label="Selected morphs">
+            {selectedMorphs.map(({ id, name }) => (
+              <li key={id}>
+                {name}
+                <button type="button" className="text-button" aria-label={`Remove ${name} from comparison`} onClick={() => removeFromComparison(id)}>Remove</button>
+              </li>
+            ))}
+          </ul>
+          {selectedMorphs.length >= 2 && (
+            <>
+              <p className="muted" id="comparison-note">Base profiles. Availability applies during play. Scroll the table on narrow screens to see all selected morphs.</p>
+              <MorphProfileTable
+                columns={selectedMorphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}
+                titleId="comparison-title"
+                noteId="comparison-note"
+              />
+            </>
+          )}
+        </section>
       )}
+      {matches.length === 0 && <Card className="catalog-empty"><p>No morphs match these filters.</p></Card>}
       <div className="catalog-grid">
         {matches.map((morph) => (
           <Card key={morph.id} className="catalog-card">
@@ -219,27 +162,28 @@ export function MorphCatalog() {
             <h2>{morph.name}</h2>
             <p>{morph.description}</p>
             <MorphStats morph={morph} />
-            <IncludedMorphWare morph={morph} />
-            <IncludedMorphTraits entries={traceIncludedMorphTraits(morph)} />
-            <MorphSource morph={morph} />
-            <label className="compare-toggle">
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(morph.id)}
-                disabled={selectedIds.length === comparisonLimit && !selectedIds.includes(morph.id)}
-                onChange={() => toggleComparison(morph.id)}
-              />
-              <span>Compare {morph.name}</span>
-            </label>
+            <div className="catalog-card-actions">
+              <button type="button" className="text-button" aria-label={`View details for ${morph.name}`} onClick={() => setDetail(morph)}>View details</button>
+              <label className="compare-toggle">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.includes(morph.id)}
+                  disabled={selectedIds.length === comparisonLimit && !selectedIds.includes(morph.id)}
+                  onChange={() => toggleComparison(morph.id)}
+                />
+                <span>Compare {morph.name}</span>
+              </label>
+              {selectedIds.length >= 2 && selectedIds.includes(morph.id) && (
+                <button type="button" className="text-button" onClick={() => {
+                  comparisonTitle.current?.focus({ preventScroll: true });
+                  comparisonTitle.current?.scrollIntoView({ block: 'start' });
+                }}>View comparison</button>
+              )}
+            </div>
           </Card>
         ))}
       </div>
-      {selectedMorphs.length > 0 && (
-        selectedMorphs.length >= 2
-          ? <MorphComparison morphs={selectedMorphs} onClear={clearComparison} />
-          : <button type="button" className="button secondary comparison" onClick={clearComparison}>Clear comparison</button>
-      )}
-      <p className="muted catalog-note">To assign a morph, open or create an ego from My egos.</p>
+      <MorphDetailsDrawer morph={detail} drafts={drafts} onClose={() => setDetail(undefined)} />
     </>
   );
 }

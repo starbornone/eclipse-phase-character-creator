@@ -9,19 +9,20 @@ import { sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { morphProfileForSleeve } from '../rules/calculations/morph-traits.ts';
 import type { CharacterDraft, ResleevingEvent } from '../types/character.ts';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
-import { MorphProfileTable } from './MorphCatalog.tsx';
+import { MorphProfileTable } from './MorphProfileTable.tsx';
 import { Card } from './ui/card.tsx';
 
 interface ResleeveEditorProps {
   draft: CharacterDraft;
+  initialMorphId?: string;
   onCancel: () => void;
   onSaved: (draft: CharacterDraft) => void;
   onDirty: (dirty: boolean) => void;
   onSaving: (saving: boolean) => void;
 }
 
-export function ResleeveEditor({ draft, onCancel, onSaved, onDirty, onSaving }: ResleeveEditorProps) {
-  const [targetId, setTargetId] = useState('');
+export function ResleeveEditor({ draft, initialMorphId = '', onCancel, onSaved, onDirty, onSaving }: ResleeveEditorProps) {
+  const [targetId, setTargetId] = useState(initialMorphId);
   const [waiveExoticMorphology, setWaiveExoticMorphology] = useState(false);
   const [details, setDetails] = useState<ResleevingEvent>({ date: '', location: '', cause: '', notes: '' });
   const [saving, setSaving] = useState(false);

@@ -10,6 +10,7 @@ const biomorph: readonly MorphCategory[] = ['Biomorph'];
 const synthmorph: readonly MorphCategory[] = ['Synthmorph'];
 const infomorph: readonly MorphCategory[] = ['Infomorph'];
 const allCategories = [...physical, ...infomorph];
+const humanoidBiomorphIds = ['bouncer', 'flat', 'splicer', 'ruster', 'futura', 'hibernoid'];
 export const exoticMorphology = { id: 'exotic-morphology', integrationPerLevel: -10 } as const;
 
 interface MorphTraitLevel {
@@ -43,9 +44,11 @@ export const morphTraits: readonly MorphTrait[] = [
     effect: 'Add +10 per level to tests to resist chemicals, disease, drugs, and toxins.' },
   { id: 'rapid-healing', name: 'Rapid Healing', levels: [traitLevel(1, biomorph)],
     effect: 'Halve natural healing times. Healing aids keep their usual rates.' },
+  { id: 'aged', name: 'Aged', levels: [{ mp: -4, categories: biomorph, morphIds: ['flat', 'splicer'] }],
+    effect: 'Apply −10 to physical actions. Available for Flat and Splicer sleeves.' },
   { id: 'frailty', name: 'Frailty', levels: [traitLevel(-2), traitLevel(-4)], durabilityPerLevel: -5,
     effect: 'The app applies −5 Durability per level and recalculates Wound Threshold and Death Rating.' },
-  { id: 'unattractiveness', name: 'Unattractiveness', levels: [traitLevel(-1, synthmorph), { mp: -2, categories: biomorph, morphIds: ['bouncer'] }],
+  { id: 'unattractiveness', name: 'Unattractiveness', levels: [traitLevel(-1, synthmorph), { mp: -2, categories: biomorph, morphIds: humanoidBiomorphIds }],
     effect: 'Apply −10 to Persuade and Provoke Tests when appearance matters. Level 1 is for synthmorphs and uplifts. Level 2 is for humanoid biomorphs.' },
   { id: 'dominant-limb', name: 'Dominant Limb', levels: [traitLevel(-1)],
     effect: 'Choose a dominant limb. Apply −20 to tests made with other limbs.' },

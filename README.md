@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status.** The first core package-buy workflow is complete. Build and review a character with one starting sleeve, save it locally, and print or export it. The supported catalogue includes seven morphs, and the broader library and public beta work continue on the roadmap.
+> **Status.** The first core package-buy workflow and morph library are complete. Build and review a character with one starting sleeve, save it locally, and print or export it. Browse and compare 16 supported core morphs. Public beta work continues on the roadmap.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
@@ -159,15 +159,11 @@ A step-based workspace with a persistent summary panel. It should allow non-line
 
 ### Morph library and comparison
 
-A searchable collection of morph records, presented as cards on small screens and a comparison table on larger screens.
+A searchable collection of 16 sourced core biomorphs, synthmorphs, and infomorphs. Browse profile cards and compare up to three morphs in a scrollable table.
 
-**Required UI elements**
-
-- Search and filters for category, price, movement, durability, and capabilities
-- Compare up to three morphs
-- “Assign to ego” action
-- Detail drawer with rules source, features, and restrictions
-- Clear distinction between base morph data and user customisation
+- Combine search with category, maximum MP cost, minimum durability, movement, and capability filters. Sort by name, cost, or durability.
+- Compare base health, pools, availability, movement, armor, traits, capabilities, and sources. Filtered-out selections stay in the comparison.
+- Open a profile’s details to review built-in ware, optional extras, and restrictions. Use **Assign to ego** to open creation, first assignment, or resleeving with the morph selected. Saving applies the assignment.
 
 ### Sleeve overview
 

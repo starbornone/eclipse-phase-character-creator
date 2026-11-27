@@ -27,7 +27,7 @@ Vite dev and preview serve the app shell for direct visits to workspace paths. W
 | Layer | Scenarios to cover |
 | --- | --- |
 | Rules and data | Test aptitude checks and sourced morph values, then add coverage for core package-buy, skills, budgets, pools, incomplete drafts, import parsing, and migrations as those workflows land. |
-| Components | Verify builder completion cues, validation links and announcements, keyboard navigation, morph filter/sort/compare, and dossier visibility controls for private notes. |
+| Components | Verify builder completion cues, validation links and announcements, keyboard navigation, and dossier visibility controls for private notes. For the library, check zero-MP and joined filters, selections hidden by filters, keyboard scrolling and drawer focus, and the [assignment handoff](getting-started.md#compare-morph-profiles). |
 | End to end | Create and save an ego and sleeve, reload an incomplete draft, resleeve and inspect history, export and re-import, and print a complete dossier. Verify that malformed imports preserve existing local characters. |
 
 The README calls for calculation and character-creation constraint coverage before UI code depends on those rules. For UI work, include visible focus, error cues that are understandable without colour, and layouts that remain legible on phones and in print. See [Contributing](contributing.md) for review expectations.

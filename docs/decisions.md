@@ -188,4 +188,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Existing saves and backups get the new profile data through their saved morph IDs. Resleeving switches the active profile and expires temporary Flex. Old prototype morphs with unknown pools can still be opened. [Rules sources](rules-sources.md#source-inventory)
 
+## 24. Keep base morph browsing and sleeve assignment separate
+
+**Context.** A player may compare a published morph before they have an ego draft or when they already have sleeve history. The core rules use Availability during play and provide separate starting MP rules. Some profiles list optional or common extras.
+
+**Decision.** Keep filters and comparison on base profiles. Store movement by mode and rate. Match capabilities against built-in ware and the environmental capabilities granted to synthmorphs. Show optional extras and situational restrictions in the detail drawer. A library assignment opens the existing editor with a supported morph selected for review.
+
+**Consequences.** Filters remain independent of comparison selections. Browsing has no effect on local drafts until the player saves from the destination editor. The same profile IDs resolve in character creation, resleeving, and backup restore. [Rules sources](rules-sources.md#source-inventory)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

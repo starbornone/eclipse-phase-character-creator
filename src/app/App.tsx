@@ -1,7 +1,7 @@
 import { Boxes, HardDrive, LayoutGrid, Plus, Upload } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useBlocker, useLocation, useNavigate } from 'react-router';
-import { QuickStartCredit } from '../components/MorphCatalog.tsx';
+import { QuickStartCredit } from '../components/MorphProfile.tsx';
 import { loadDrafts } from '../lib/storage/drafts.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { egoPath } from './paths.ts';

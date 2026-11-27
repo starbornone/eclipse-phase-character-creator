@@ -1,12 +1,12 @@
-import { Link, Outlet, createBrowserRouter, useNavigate, useOutletContext, useParams } from 'react-router';
+import { Link, Outlet, createBrowserRouter, useNavigate, useOutletContext, useParams, useSearchParams } from 'react-router';
 import { BackupRestore } from '../components/BackupRestore.tsx';
 import { Dashboard } from '../components/Dashboard.tsx';
 import { Dossier } from '../components/Dossier.tsx';
 import { DossierPrintPreview } from '../components/DossierPrintPreview.tsx';
 import { DraftEditor } from '../components/DraftEditor.tsx';
-import { MorphCatalog } from '../components/MorphCatalog.tsx';
 import { ResleeveEditor } from '../components/ResleeveEditor.tsx';
 import { activeSleeve } from '../features/sleeve/history.ts';
+import { sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import App from './App.tsx';
 import type { Workspace } from './App.tsx';
@@ -41,11 +41,22 @@ function DashboardRoute() {
   return <Dashboard drafts={workspace.drafts} loading={workspace.loadState === 'loading'} loadError={workspace.loadState === 'error'} onRetry={workspace.retry} />;
 }
 
+function MorphCatalogFallback() {
+  return <p className="panel-message" role="status">Loading morph library…</p>;
+}
+
+function useRequestedMorphId() {
+  const [params] = useSearchParams();
+  const requested = params.get('morph');
+  return sampleMorphs.find(({ id }) => id === requested)?.id;
+}
+
 function NewEgoRoute() {
   const workspace = useOutletContext<Workspace>();
   const navigate = useNavigate();
+  const initialMorphId = useRequestedMorphId();
   if (workspace.loadState !== 'ready') return <WorkspaceUnavailable workspace={workspace} />;
-  return <DraftEditor onDirty={workspace.setDirty} onSaving={workspace.setSaving} onSaved={workspace.handleSaved} onCancel={() => void navigate('/')} />;
+  return <DraftEditor initialMorphId={initialMorphId} onDirty={workspace.setDirty} onSaving={workspace.setSaving} onSaved={workspace.handleSaved} onCancel={() => void navigate('/')} />;
 }
 
 function RestoreRoute() {
@@ -79,10 +90,12 @@ function EditEgoRoute() {
   const workspace = useOutletContext<EgoWorkspace>();
   const navigate = useNavigate();
   const { draft } = workspace;
+  const initialMorphId = useRequestedMorphId();
   return (
     <DraftEditor
       key={draft.ego.id}
       draft={draft}
+      initialMorphId={initialMorphId}
       onDirty={workspace.setDirty}
       onSaving={workspace.setSaving}
       onSaved={workspace.handleSaved}
@@ -95,6 +108,7 @@ function ResleeveRoute() {
   const workspace = useOutletContext<EgoWorkspace>();
   const navigate = useNavigate();
   const { draft } = workspace;
+  const initialMorphId = useRequestedMorphId();
   if (!activeSleeve(draft)) {
     return <RouteMessage title="Assign a morph first" message="Use Edit ego in the dossier to choose the first morph." back={egoPath(draft.ego.id)} />;
   }
@@ -102,6 +116,7 @@ function ResleeveRoute() {
     <ResleeveEditor
       key={draft.ego.id}
       draft={draft}
+      initialMorphId={initialMorphId}
       onDirty={workspace.setDirty}
       onSaving={workspace.setSaving}
       onSaved={workspace.handleSaved}
@@ -123,7 +138,11 @@ function NotFoundRoute() {
 export const router = createBrowserRouter([
   { path: '/', Component: App, children: [
     { index: true, Component: DashboardRoute },
-    { path: 'morphs', Component: MorphCatalog },
+    {
+      path: 'morphs',
+      HydrateFallback: MorphCatalogFallback,
+      lazy: async () => ({ Component: (await import('../components/MorphCatalog.tsx')).MorphCatalog }),
+    },
     { path: 'backups/import', Component: RestoreRoute },
     { path: 'egos/new', Component: NewEgoRoute },
     { path: 'egos/:egoId', Component: EgoRoute, children: [

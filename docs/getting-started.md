@@ -57,13 +57,13 @@ Drafts can be saved with a pending cost or an over-budget warning. Missing and l
 
 ## Choose first sleeve traits
 
-Under **First sleeve traits**, the **Included** label identifies traits supplied by the morph profile. The library and resleeving comparison show these traits before you choose a sleeve. Included traits are part of the listed morph price. For example, Case already has Inherent Flaws, so the editor offers that 2 MP bonus on Synth only. Synth and Case can add Limberness for 1 or 2 MP. Bouncer comes with Limberness Level 1. The four core infomorphs come with Digital Speed and Exotic Morphology Level 3.
+Under **First sleeve traits**, the **Included** label identifies traits supplied by the morph profile. The library and resleeving comparison show these traits before you choose a sleeve. Included traits are part of the listed morph price. Case comes with Inherent Flaws. Other supported synthmorphs can take it for a 2 MP bonus. Synth and Case can add Limberness for 1 or 2 MP. Bouncer comes with Limberness Level 1. The four core infomorphs come with Digital Speed and Exotic Morphology Level 3.
 
 On a supported physical sleeve, **Toughness** costs 2 MP per level and adds 5 Durability per level. **Frailty** grants 2 MP per level and the app applies a 5 Durability reduction per level. The editor shows the base Durability, each adjustment, and the resulting health. For example, Bouncer with Frailty Level 2 has Durability 25, Wound Threshold 5, and Death Rating 38.
 
 Negative morph traits grant up to 6 MP in total. **Dominant Limb** and **Planned Obsolescence** each grant 1 MP on supported physical sleeves. **Hypersensitivity** grants 3 MP and **Zero-G Nausea** grants 2 MP on biomorphs. **Proprietary Tech** grants 2 MP on synthmorphs.
 
-**Striking Looks** costs 1 or 2 MP on Bouncer and 1 MP on Case and Synth. **Unattractiveness** grants 2 MP at Level 2 on Bouncer and 1 MP at Level 1 on Case and Synth. The editor offers the levels that apply to the selected sleeve and lists their situational effects for play.
+**Striking Looks** costs 1 or 2 MP on supported humanoid biomorphs and 1 MP on supported synthmorphs. **Unattractiveness** grants 2 MP at Level 2 on those biomorphs and 1 MP at Level 1 on synthmorphs. **Aged** grants 4 MP on Flat and Splicer and applies a situational penalty to physical actions. The editor offers the levels that apply to the selected sleeve.
 
 Open **Aptitude check traits** for the twelve sleeve versions of the aptitude traits. A positive trait costs 1 MP per level and adds 5 per level to its linked check. A negative trait grants 1 MP per level within the shared 6 MP cap and subtracts 5 per level from its linked check. The editor shows the affected checks as you edit. For example, a Willpower score of 15 with ego Resolve Level 1 and sleeve Resolve Level 2 gives a WIL Check of 60. Skill ratings still use the base aptitude scores.
 
@@ -202,7 +202,10 @@ These values use aptitude scores. Resolve, Quickness, Good Instincts, and Harden
 
 ## Compare morph profiles
 
-Open **Morph library**. Search by name or description, or choose a category such as **Infomorph**. Select two or three **Compare** checkboxes to see health values, pools, Morph Point costs, and source links side by side. The individual cards also list built-in ware. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
+1. Open **Morph library**. Search by name, description, movement, or capability. Combine **Category**, **Maximum cost**, **Minimum durability**, **Movement**, and **Capability** to narrow the 16 profiles. For example, **Winged**, **Vacuum Sealing**, and a maximum of **1 MP** find Dragonfly. Its shell is vacuum-sealed and its wings require an atmosphere.
+2. Select two or three **Compare** checkboxes. Select **View comparison** from a selected card to jump to the table. Compare health, MP price, availability, pools, movement, armor, traits, capabilities, limits, and source links. On a narrow screen, scroll inside the table. A filtered-out selection stays in the table and can be removed from the selected list. **Reset filters** restores the full list, and **Clear comparison** clears the selection.
+3. Select **View details** for a morph to see its published base profile, built-in ware, optional extras, and restrictions. Availability is used when seeking a new morph during play. Character creation uses the GM’s MP allowance. [Acquiring morphs](https://eclipsephase.github.io/en/15/03-acquiring-morphs.html#morph-availability) · [Starting morphs](https://eclipsephase.github.io/en/04/15-step-12-starting-morph-gear.html#starting-morphs)
+4. Under **Assign to ego**, choose **New ego** or a saved character. A draft without a sleeve opens the ego editor with the morph selected. An assigned draft opens a resleeve preview. Save from the destination editor to record the sleeve.
 
 ## Resleeve an ego
 

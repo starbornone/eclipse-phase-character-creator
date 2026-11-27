@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { parseAptitudes, traceAptitudeChecks } from '../rules/calculations/draft.ts';
+import { describeMovement } from '../rules/calculations/morph-catalog.ts';
 import { findSampleMorph, quickStartPageUrl, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 
 const blank = { cog: '', int: '', ref: '', sav: '', som: '', wil: '' };
@@ -27,7 +28,7 @@ test('trace an aptitude check using the Quick-Start example and preserve missing
 });
 
 test('offer sourced morph health profiles and retain legacy sleeves for existing drafts', () => {
-  const quickStartProfiles = sampleMorphs.filter(({ category }) => category !== 'Infomorph');
+  const quickStartProfiles = sampleMorphs.filter(({ source }) => source.url === quickStartPageUrl(24) || source.url === quickStartPageUrl(25));
   assert.deepEqual(quickStartProfiles.map(({ id, durability, woundThreshold, deathRating, source }) => (
     [id, durability, woundThreshold, deathRating, source.url]
   )), [
@@ -45,7 +46,7 @@ test('supported physical morphs use the published player pools, built-in ware, m
   assert.deepEqual(findSampleMorph('synth').pools, { insight: 0, moxie: 0, vigor: 1, flex: 1 });
   assert.ok(findSampleMorph('bouncer').includedWare.includes('Oxygen Reserve'));
   assert.ok(findSampleMorph('case').includedWare.includes('Cyberbrain'));
-  assert.equal(findSampleMorph('synth').movement, 'Walker 4/20');
+  assert.equal(describeMovement(findSampleMorph('synth')), 'Walker 4/20');
   assert.equal(findSampleMorph('synth').armor, '6/4');
 });
 

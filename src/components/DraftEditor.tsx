@@ -28,7 +28,7 @@ import { CreationPackages } from './CreationPackages.tsx';
 import { CreationReview } from './CreationReview.tsx';
 import { EgoTraitEditor } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
-import { IncludedMorphWare, MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { IncludedMorphWare, MorphIcon, MorphSource, MorphStats } from './MorphProfile.tsx';
 import { CharacterPools } from './CharacterPools.tsx';
 import { MorphTraitEditor } from './MorphTraits.tsx';
 import { MotivationEditor } from './Motivations.tsx';
@@ -49,13 +49,14 @@ const flexOptions = Array.from({ length: maximumEgoFlex - startingEgoFlex + 1 },
 
 interface DraftEditorProps {
   draft?: CharacterDraft;
+  initialMorphId?: string;
   onCancel: () => void;
   onSaved: (draft: CharacterDraft) => void;
   onDirty: (dirty: boolean) => void;
   onSaving: (saving: boolean) => void;
 }
 
-export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: DraftEditorProps) {
+export function DraftEditor({ draft, initialMorphId, onCancel, onSaved, onDirty, onSaving }: DraftEditorProps) {
   const currentSleeve = activeSleeve(draft);
   const assignedFirstSleeve = draft?.sleeves[0];
   const [name, setName] = useState(draft?.ego.name ?? '');
@@ -79,7 +80,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
   const [repInputs, setRepInputs] = useState<ReputationInputs>(() =>
     Object.fromEntries(traceReputation(draft?.ego.reputation).map(({ id, score }) => [id, String(score)])));
-  const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
+  const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? initialMorphId ?? '');
   const [morphTraits, setMorphTraits] = useState(assignedFirstSleeve?.morphTraits ?? []);
   const [morphAllowance, setMorphAllowance] = useState(draft?.ego.startingMorphPoints?.toString() ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
