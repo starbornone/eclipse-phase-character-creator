@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:20:46+11:00",
+  "updatedAt": "2026-11-28T01:26:51+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -343,6 +343,13 @@
       "group": "Character creation",
       "notes": "Added all three levels of Feebleness, Indifference, Obtuseness, Poor Coordination, Poor Instincts, and Timidity, including the corrected Timidity CP bonus. Verified all levels, the shared negative trait cap, stacking with Resolve and Hardening, backup validation, save and reload, removal, and both Edge print previews. Attribution remains visible when modifiers cancel. All 142 tests and the production build pass.",
       "completedAt": "2026-11-28T01:20:46+11:00"
+    },
+    {
+      "id": "swap-equal-gp-starting-gear",
+      "title": "Swap fixed-cost starting gear between supported pack items",
+      "group": "Character creation",
+      "notes": "Added equal-GP replacements with source links and Restricted labels. Verified first-sleeve alternatives, payload-cost exclusions, backup round-trip and rejection of invalid or duplicate swaps, original-item restoration, stale choices, save and reload, resleeving, 390 px layout, and the player print preview with print styling. All 145 tests and the production build pass.",
+      "completedAt": "2026-11-28T01:26:51+11:00"
     }
   ]
 }

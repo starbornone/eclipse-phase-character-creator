@@ -1,25 +1,55 @@
-import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
+import { deriveStartingGear, startingGearReplacements } from '../rules/calculations/starting-gear.ts';
 import { findGearCampaign, gearCampaigns, gearPacksSource } from '../rules/datasets/starting-gear.ts';
 import type { GearCampaign } from '../rules/datasets/starting-gear.ts';
-import type { MorphDefinition } from '../types/character.ts';
+import type { MorphDefinition, StartingGearSwap } from '../types/character.ts';
 import { Card } from './ui/card.tsx';
 
 type StartingGear = ReturnType<typeof deriveStartingGear>;
 
-function GearContents({ packs }: StartingGear) {
+function GearContents({ packs, replacements, onSwap }: {
+  packs: StartingGear['packs'];
+  replacements?: ReturnType<typeof startingGearReplacements>;
+  onSwap?: (swap: StartingGearSwap) => void;
+}) {
   return (
     <>
       <p className="muted">Free starting gear <strong>Muse ALI</strong></p>
-      {packs.map(({ name, source, items, gp, usesSynthAlternatives, hasAdditionalGpCosts }) => (
+      {packs.map(({ id, name, source, items, gp, usesSynthAlternatives, hasAdditionalGpCosts }) => (
         <section className="starting-gear-pack" key={source}>
           <h4><a href={source}>{name}</a> · {gp} GP{hasAdditionalGpCosts && ' base'}</h4>
           {usesSynthAlternatives && <p className="muted">Includes synthmorph alternatives.</p>}
           <dl className="print-checks">
-            {items.map(({ name: item, gp: value, restricted, additionalGpCost }) => (
-              <div key={item}><dt>{item}</dt><dd>{value} GP{additionalGpCost && ` + ${additionalGpCost}`}{restricted && ' · Restricted'}</dd></div>
+            {items.map(({ name: item, originalName, replacementSource, gp: value, restricted, additionalGpCost }) => (
+              <div key={originalName}>
+                <dt>
+                  {replacementSource ? <a href={replacementSource}>{item}</a> : item}
+                  {replacementSource && <small className="gear-swap-source">Replaces {originalName}</small>}
+                </dt>
+                <dd>{value} GP{additionalGpCost && ` + ${additionalGpCost}`}{restricted && ' · Restricted'}</dd>
+              </div>
             ))}
           </dl>
           {hasAdditionalGpCosts && <p className="rules-note">The total sums listed base GP. Swarm payload costs depend on the selected drug or toxin.</p>}
+          {onSwap && replacements && (
+            <details className="gear-swaps">
+              <summary>Swap {name} gear</summary>
+              <div className="identity-fields">
+                {items.filter(({ additionalGpCost }) => !additionalGpCost).map(({ name: item, originalName, gp: value, replacementSource }) => (
+                  <label key={originalName}>
+                    Replace {originalName} ({value} GP)
+                    <select value={replacementSource ? item : ''} onChange={(event) => (
+                      onSwap({ packId: id, item: originalName, replacement: event.target.value })
+                    )}>
+                      <option value="">Keep {originalName}</option>
+                      {replacements.filter(({ name, gp }) => name !== originalName && gp === value).map(({ name, restricted }) => (
+                        <option key={name} value={name}>{name}{restricted && ' · Restricted'}</option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+              </div>
+            </details>
+          )}
         </section>
       ))}
       <p className="rules-note">
@@ -31,13 +61,21 @@ function GearContents({ packs }: StartingGear) {
   );
 }
 
-export function StartingGearEditor({ campaign, career, morphCategory, onChange }: {
+export function StartingGearEditor({ campaign, career, morphCategory, swaps, onChange, onSwapsChange }: {
   campaign?: GearCampaign;
   career?: string;
   morphCategory?: MorphDefinition['category'];
+  swaps: StartingGearSwap[];
   onChange: (value?: GearCampaign) => void;
+  onSwapsChange: (swaps: StartingGearSwap[]) => void;
 }) {
-  const { packs } = deriveStartingGear(campaign, career, morphCategory);
+  const { packs, appliedSwaps } = deriveStartingGear(campaign, career, morphCategory, swaps);
+  function updateSwap(swap: StartingGearSwap) {
+    const next = swaps.filter(({ packId, item }) => packId !== swap.packId || item !== swap.item);
+    if (swap.replacement) next.push(swap);
+    onSwapsChange(next);
+  }
+
   return (
     <Card className="editor-panel">
       <h2>Starting gear</h2>
@@ -50,9 +88,12 @@ export function StartingGearEditor({ campaign, career, morphCategory, onChange }
           </select>
         </label>
       </div>
-      <p className="rules-note">Your career adds a second pack. Gear Point (GP) values describe the items.</p>
+      <p className="rules-note">Your career adds a second pack. Swap fixed-cost items for gear of the same GP from the supported packs.</p>
       {campaign && !morphCategory && <p className="rules-note">Choose a first morph to apply any synthmorph alternatives.</p>}
-      <GearContents packs={packs} />
+      <div role="status">
+        {appliedSwaps.length < swaps.length && <p className="rules-note">Some swaps no longer fit these packs or the first morph. Saving will remove those swaps.</p>}
+      </div>
+      <GearContents packs={packs} replacements={packs.length ? startingGearReplacements(morphCategory) : undefined} onSwap={updateSwap} />
     </Card>
   );
 }

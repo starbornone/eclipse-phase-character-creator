@@ -84,4 +84,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Removing Hardening changes test targets and CP costs while preserving skill allocations. Pending aptitudes stay pending. Existing drafts and backups require no new fields or version changes. [Rules sources](rules-sources.md#source-inventory)
 
+## 11. Store starting gear swaps by original pack item
+
+**Context.** The core rules allow equal-GP swaps. A draft can change campaign, career, or its first morph before the initial sleeve is assigned, and some gear has an unresolved additional cost.
+
+**Decision.** Store each swap against a pack and original item. Resolve its replacement from the supported pack catalogue after applying first-sleeve alternatives. Allow fixed-cost swaps at equal GP and use the replacement's source and restriction.
+
+**Consequences.** Swaps preserve pack totals. Inactive choices can return if the player restores the earlier selection before saving. A save keeps applicable swaps, and an import validates every supplied swap before restore. Resleeving preserves the original first-sleeve context. [Core gear pack rules](https://eclipsephase.github.io/en/04/27-gear-packs.html#gear-packs)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

@@ -8,6 +8,7 @@ import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
+import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { reputationNetworks } from '../rules/datasets/reputation.ts';
@@ -47,6 +48,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
   const [packages, setPackages] = useState<PackageSelections>(draft?.ego.packages ?? {});
   const [startingCampaign, setStartingCampaign] = useState(draft?.ego.startingCampaign);
+  const [gearSwaps, setGearSwaps] = useState(draft?.ego.startingGearSwaps ?? []);
   const [motivations, setMotivations] = useState(() => personalMotivationChoices(draft?.ego));
   const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
@@ -73,6 +75,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
     || startingCampaign !== draft?.ego.startingCampaign
+    || JSON.stringify(gearSwaps) !== JSON.stringify(draft?.ego.startingGearSwaps ?? [])
     || JSON.stringify(personalMotivations) !== JSON.stringify(cleanPersonalMotivations(personalMotivationChoices(draft?.ego)))
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
@@ -108,6 +111,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       const updatedAt = new Date().toISOString();
       const sleeves = draft?.sleeves ?? [];
       const savedPackages = cleanFactionMotivation(packages);
+      const { appliedSwaps } = deriveStartingGear(startingCampaign, savedPackages.career?.id, startingMorph?.category, gearSwaps);
       const firstSleeve = !currentSleeve && morphId ? {
         id: crypto.randomUUID(),
         egoId,
@@ -130,6 +134,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(Object.keys(parsedRep.scores).length ? { reputation: parsedRep.scores } : {}),
           ...(Object.keys(savedPackages).length ? { packages: savedPackages } : {}),
           ...(startingCampaign ? { startingCampaign } : {}),
+          ...(appliedSwaps.length ? { startingGearSwaps: appliedSwaps } : {}),
           ...(Object.keys(personalMotivations).length ? { personalMotivations } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
@@ -243,7 +248,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               ))}
             />
             <StartingGearEditor campaign={startingCampaign} career={packages.career?.id}
-              morphCategory={startingMorph?.category} onChange={setStartingCampaign} />
+              morphCategory={startingMorph?.category} swaps={gearSwaps}
+              onChange={setStartingCampaign} onSwapsChange={setGearSwaps} />
           </div>
           <Card className="editor-panel morph-picker">
             <h2>First morph</h2>

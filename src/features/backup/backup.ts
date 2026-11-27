@@ -7,13 +7,14 @@ import { personalMotivationSlots } from '../../rules/calculations/motivations.ts
 import { resolveCustomActiveField } from '../../rules/calculations/active-fields.ts';
 import { egoTraitChoiceKey, evaluateEgoTraitBudget, normalizeTraitDetail, scopedEgoTraitIssue } from '../../rules/calculations/ego-traits.ts';
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
+import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
 import { findGearCampaign } from '../../rules/datasets/starting-gear.ts';
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
-import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, EgoTraitChoice, PersonalMotivations, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
+import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, EgoTraitChoice, PersonalMotivations, ReputationScores, ResleevingEvent, Sleeve, StartingGearSwap } from '../../types/character.ts';
 
 const format = 'eclipse-phase-character-backup';
 const backupVersion = 1;
@@ -57,6 +58,18 @@ function timestamp(value: unknown, path: string): string {
 
 function ensureUnique(ids: string[], path: string) {
   if (new Set(ids).size !== ids.length) badField(path, 'unique');
+}
+
+function readStartingGearSwaps(value: unknown, path: string): StartingGearSwap[] {
+  return list(value, path).map((value, index) => {
+    const entryPath = `${path}[${index}]`;
+    const swap = object(value, entryPath);
+    return {
+      packId: string(swap.packId, `${entryPath}.packId`, true),
+      item: string(swap.item, `${entryPath}.item`, true),
+      replacement: string(swap.replacement, `${entryPath}.replacement`, true),
+    };
+  });
 }
 
 function readCreationPackages(value: unknown, path: string): CreationPackages {
@@ -266,6 +279,9 @@ function readEgo(value: unknown, path: string): Ego {
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(ego.personalMotivations === undefined ? {} : { personalMotivations: readPersonalMotivations(ego.personalMotivations, `${path}.personalMotivations`) }),
     ...(campaign ? { startingCampaign: campaign.id } : {}),
+    ...(ego.startingGearSwaps === undefined ? {} : {
+      startingGearSwaps: readStartingGearSwaps(ego.startingGearSwaps, `${path}.startingGearSwaps`),
+    }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),
@@ -352,6 +368,12 @@ export function previewBackup(text: string): BackupPreview {
   if (!records.length) throw new Error('This backup contains zero drafts.');
   const parsed = records.map(readDraft);
   const drafts = parsed.map(({ draft }) => draft);
+  drafts.forEach((draft, index) => {
+    const swaps = draft.ego.startingGearSwaps;
+    if (swaps?.length && startingGearForDraft(draft).appliedSwaps.length !== swaps.length) {
+      badField(`Draft ${index + 1}.ego.startingGearSwaps`, 'unique equal-GP replacements for active starting pack items');
+    }
+  });
   ensureUnique(drafts.map(({ ego }) => ego.id), 'Backup ego ids');
   return { drafts, migratedCount: parsed.filter(({ migrated }) => migrated).length };
 }

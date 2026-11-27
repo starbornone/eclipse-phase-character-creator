@@ -12,7 +12,7 @@ interface GearItem {
   additionalGpCost?: string;
 }
 
-interface GearPack {
+export interface GearPack {
   name: string;
   anchor: string;
   items: readonly GearItem[];

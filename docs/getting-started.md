@@ -93,7 +93,11 @@ Use the optional goal field beside a motivation to record a specific short-term 
 
 Under **Starting gear**, select Firewall, Criminal, or Gatecrashing. Firewall and Criminal use the same core gear pack. A supported career adds its own pack. The editor lists each pack’s items, Gear Points (GP), and restrictions along with the free muse.
 
-Choosing a synthmorph as the first sleeve applies the campaign pack’s listed alternatives. Resleeving leaves the starting loadout tied to the first sleeve. The dossier and player print preview show the packs. JSON backups preserve the campaign choice. Individual swaps and extra gear purchases are planned.
+Choosing a synthmorph as the first sleeve applies the listed campaign and career alternatives. Resleeving leaves starting gear tied to the first sleeve.
+
+Expand **Swap [pack name] gear** and choose a replacement for a fixed-cost item. The list offers gear of the same GP from the supported campaign and career packs and labels Restricted entries. Select **Keep [item name]** to restore the original. If a pack or first-morph change invalidates a swap, the editor displays a notice. Return to the earlier choice before saving to recover the swap.
+
+The dossier and player print preview show the replacement, its source, and which item it replaced. JSON backups preserve the campaign and the applied swaps. Gear chapter choices, the optional infomorph pack, and extra gear purchases are planned.
 
 The **Soldier** career pack also has a synthmorph alternative: **Fixer Swarm** replaces **Meds (5 doses)** when the first sleeve is synthetic. Both versions cost 10 GP. The Enforcer pack shows the Shredder’s Restricted label, and the Soldier pack labels the Assault Rifle Railgun as Restricted. Gear is listed for reference; its effects are not automatically applied to checks or pools.
 

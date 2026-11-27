@@ -3,6 +3,9 @@ import { test } from 'node:test';
 import { deriveStartingGear, startingGearForDraft } from '../rules/calculations/starting-gear.ts';
 import { coreCreationPackages } from '../rules/datasets/creation-packages.ts';
 import { careerGearPacks } from '../rules/datasets/starting-gear.ts';
+import { encodeBackup, previewBackup } from '../features/backup/backup.ts';
+import { buildPrintableDossier } from '../features/dossier/print.ts';
+import { recordResleeving } from '../features/sleeve/history.ts';
 
 test('combat gear packs retain item costs, restrictions, and corrected dose quantities', () => {
   for (const [career, items] of [
@@ -97,4 +100,53 @@ test('Genehacker lists payload cost separately without inventing a GP value', ()
   const payloadItems = pack.items.filter(({ additionalGpCost }) => additionalGpCost);
   assert.deepEqual(payloadItems.map(({ name, gp, additionalGpCost }) => [name, gp, additionalGpCost]), [['Pusher Swarm', 1, 'drug/toxin']]);
   assert.equal(deriveStartingGear(undefined, 'mindhacker').packs[0].hasAdditionalGpCosts, false);
+});
+
+const swapTacNet = { packId: 'firewall-agentcriminal', item: 'TacNet App', replacement: 'Exploit App' };
+const swapMeds = { packId: 'soldier', item: 'Meds (5 doses)', replacement: 'Ego Bridge' };
+
+test('equal-GP replacements retain their own source and restrictions and preserve pack totals', () => {
+  const { packs, appliedSwaps } = deriveStartingGear('firewall', 'soldier', 'Biomorph', [swapTacNet, swapMeds]);
+  assert.deepEqual(appliedSwaps, [swapTacNet, swapMeds]);
+  assert.deepEqual(packs.map(({ gp }) => gp), [10, 10]);
+  const app = packs[0].items.find(({ originalName }) => originalName === 'TacNet App');
+  assert.equal(app.name, 'Exploit App');
+  assert.equal(app.restricted, true);
+  assert.ok(app.replacementSource.endsWith('#hacker'));
+  assert.equal(packs[1].items.find(({ originalName }) => originalName === 'Meds (5 doses)').name, 'Ego Bridge');
+  assert.deepEqual(deriveStartingGear('criminal', 'soldier', 'Biomorph', [swapTacNet]).appliedSwaps, [swapTacNet]);
+  assert.deepEqual(deriveStartingGear('firewall', 'soldier', 'Synthmorph', [swapTacNet, swapMeds]).appliedSwaps, [swapTacNet]);
+});
+
+test('inactive slots, self-swaps, unequal costs, and conditional payload costs cannot change gear', () => {
+  const swaps = [
+    { ...swapTacNet, packId: 'gatecrashing' },
+    { ...swapTacNet, replacement: 'TacNet App' },
+    { ...swapTacNet, replacement: 'Anonymizer' },
+    { ...swapTacNet, replacement: 'Unknown Requisition' },
+    { ...swapTacNet, item: 'Anonymizer', replacement: 'Pusher Swarm' },
+    { packId: 'genehacker', item: 'Pusher Swarm', replacement: 'Anonymizer' },
+  ];
+  const baseline = deriveStartingGear('firewall', 'genehacker', 'Biomorph');
+  for (const swap of swaps) {
+    assert.deepEqual(deriveStartingGear('firewall', 'genehacker', 'Biomorph', [swap]), baseline);
+  }
+});
+
+test('backups and player print retain swaps tied to the first sleeve and reject stale or duplicate choices', () => {
+  const updatedAt = '2026-11-28T00:00:00.000Z';
+  const draft = {
+    schemaVersion: 2, rulesVersion: 'ep2-quick-start-2.4', revision: 1, updatedAt,
+    ego: { id: 'gear-test', name: 'Gear test', pronouns: '', concept: '', aptitudes: {}, startingCampaign: 'firewall',
+      packages: { career: { id: 'soldier' } }, startingGearSwaps: [swapTacNet, swapMeds] },
+    sleeves: [{ id: 'first', egoId: 'gear-test', morphDefinitionId: 'bouncer', assignedAt: updatedAt }],
+  };
+  const next = recordResleeving(draft, 'second', 'synth', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  assert.deepEqual(previewBackup(encodeBackup([next])).drafts[0], next);
+  assert.deepEqual(buildPrintableDossier(next, 'player', []).startingGear, startingGearForDraft(draft));
+  const incomplete = { ...draft, sleeves: [] };
+  assert.deepEqual(previewBackup(encodeBackup([incomplete])).drafts[0], incomplete);
+  assert.throws(() => previewBackup(encodeBackup([{ ...next, sleeves: [...next.sleeves].reverse() }])), /equal-GP replacements/);
+  const duplicate = { ...draft, ego: { ...draft.ego, startingGearSwaps: [swapTacNet, { ...swapTacNet, replacement: 'Tracker App' }] } };
+  assert.throws(() => previewBackup(encodeBackup([duplicate])), /unique equal-GP replacements/);
 });

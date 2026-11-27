@@ -68,6 +68,12 @@ export interface EgoTraitChoice {
   network?: ReputationNetwork;
 }
 
+export interface StartingGearSwap {
+  packId: string;
+  item: string;
+  replacement: string;
+}
+
 export interface Ego {
   id: string;
   name: string;
@@ -80,6 +86,7 @@ export interface Ego {
   packages?: CreationPackages;
   personalMotivations?: PersonalMotivations;
   startingCampaign?: GearCampaign;
+  startingGearSwaps?: StartingGearSwap[];
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
   skillPurchases?: SkillPointPurchase[];

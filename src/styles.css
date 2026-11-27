@@ -278,6 +278,9 @@ section.comparison { padding: 1.25rem; }
 .dossier > .starting-gear { margin-top: 1rem; }
 .starting-gear-pack { margin-top: .85rem; }
 .starting-gear-pack a { text-decoration: underline; text-underline-offset: .15em; }
+.gear-swap-source { display: block; color: var(--muted); }
+.gear-swaps { margin-top: .65rem; }
+.gear-swaps summary { cursor: pointer; font-weight: 600; }
 .starting-skills { min-width: 0; }
 .starting-skills table { width: 100%; border-collapse: collapse; font-size: .875rem; font-variant-numeric: tabular-nums; }
 .starting-skills th, .starting-skills td { padding: .45rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
