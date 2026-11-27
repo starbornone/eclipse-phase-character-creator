@@ -1,4 +1,5 @@
 import type { Aptitude } from '../../types/character.ts';
+import { psiTrait } from './psi.ts';
 
 // Eclipse Phase Second Edition, Traits, pp. 72–80, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 export const egoTraitsSource = 'https://eclipsephase.github.io/en/04/28-traits.html';
@@ -19,8 +20,8 @@ type EgoTrait = {
   lucidityModifier?: number;
 };
 
-// Hardening's Unknown option requires Psi (errata 1.4); defer it with Psi support.
 export const supportedHardeningStressTypes = ['Alienation', 'Helplessness', 'Violence'] as const;
+export const unknownHardeningStressType = 'Unknown';
 
 const checkTrait = (id: string, name: string, aptitude: Aptitude, perLevel: 5 | -5 = 5): EgoTrait => ({
   id, name, cpByLevel: perLevel > 0 ? [1, 2, 3] : [-1, -2, -3],
@@ -43,6 +44,7 @@ export const egoTraits: readonly EgoTrait[] = [
     effect: 'Immune to stress from the chosen type. Each purchase applies −10 to WIL Checks and Persuade Tests; penalties accumulate.',
     checkModifier: { aptitude: 'wil', perLevel: -10 }, skillTestModifier: { skill: 'Persuade', perLevel: -10 } },
   { id: 'morph-familiarity', name: 'Morph Familiarity', cpByLevel: [1], selection: 'morph', effect: 'Skip Integration Tests when sleeving this morph type.' },
+  psiTrait,
   checkTrait('quickness', 'Quickness', 'ref'),
   checkTrait('resolve', 'Resolve', 'wil'),
   resourcesTrait,

@@ -67,7 +67,7 @@ In **Create ego** or **Edit ego**, pick a supported background, career, interest
 
 The faction selector covers the 15 broad affiliations in the core book and lists **Solarian**, **Sifter**, **Belter**, **Europan**, **Ringer**, and **Skimmer** under **Regional**. Each named choice adds 30 points to its faction Know skill. You can also leave the faction undecided or select **Factionless**.
 
-Nine core backgrounds are available, including **Indenture**, **Infolife**, **Isolate**, **Underclass**, and **Uplift**. **Lost** is deferred until its required Psi trait and skill are supported. Indenture asks you to choose **Fray** or **Melee** for 20 points; Underclass offers **Guns** or **Melee** for 40 points. Leave **Choose a skill** selected to keep those points pending. Changing that choice updates the ledger and rechecks existing transfers. Save the draft to retain it in backups and print output.
+All ten core backgrounds are available. **Lost** requires the Psi trait. Indenture asks you to choose **Fray** or **Melee** for 20 points; Underclass offers **Guns** or **Melee** for 40 points. Leave **Choose a skill** selected to keep those points pending. Changing that choice updates the ledger and rechecks existing transfers. Save the draft to retain it in backups and print output.
 
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
@@ -75,7 +75,7 @@ All 14 core careers are available, each with its sourced skill grants and matchi
 
 **Hacker**, **Scavenger**, **Scientist**, and **Techie** also have matching gear packs and two optional Know fields. The last three offer a Hardware field; Scavenger also offers a Pilot field. Use a suggested field or enter a custom one. Leaving a field blank keeps those points pending. Choosing Demolitions for Scavenger's open Hardware field combines it with the package's fixed Demolitions grant; review the cap before play.
 
-All 15 core interests that do not require Psi are available, from **Animal Handler** to **Survivalist**. **Async** awaits Psi trait and skill support. **Pilot** offers a 30-point Hardware field and two separate Pilot fields worth 30 and 40 points. Fill them independently; matching fields combine and can exceed the cap. **Jammer** has one 40-point Pilot field. **Animal Handler** and **Forensics Specialist** supply their fixed Active fields directly. **Jack-of-All-Trades** splits its Active points into four 25-point grants.
+All 16 core interests are available. **Async** requires the Psi trait. **Pilot** offers a 30-point Hardware field and two separate Pilot fields worth 30 and 40 points. Fill them independently; matching fields combine and can exceed the cap. **Jammer** has one 40-point Pilot field. **Animal Handler** and **Forensics Specialist** supply their fixed Active fields directly. **Jack-of-All-Trades** splits its Active points into four 25-point grants.
 
 For **Artist/Icon**, enter an artistic Know field such as Music and choose **Art field** in the ledger to link it to Intuition. Other interests with an open Know field use the same control. Changing interest clears the previous package's field selections and rechecks saved allocations; save the draft to retain the new selection.
 
@@ -85,7 +85,7 @@ Under **Allocate skill points**, select a source skill and destination, enter a 
 
 To buy points, choose **Customization Points (CP)** as the **Point source**, then select **Add purchase**. Each CP buys up to five points across skills. The budget shows any points still available from a partly allocated batch. **Remove** reverses a transfer or purchase and recalculates the ledger and budget. Save the draft to keep your allocations.
 
-If an edit makes an allocation invalid, the ledger labels it **Needs review** and skips it. Purchases awaiting review still count toward CP spent. Remove the entry or revise the underlying choices. Psi and trait exceptions are planned.
+If an edit makes an allocation invalid, the ledger labels it **Needs review** and skips it. Purchases awaiting review still count toward CP spent. Remove the entry or revise the underlying choices.
 
 For a field beyond the rulebook samples, choose **Custom Active field…** as the destination. Choose Hardware, Medicine, Pilot, or Exotic Skill and enter a field name. Hardware and Medicine use Cognition, Pilot uses Reflexes, and Exotic Skill uses the aptitude agreed with the GM. You can create the field with a transfer of Active package points or a CP purchase, then specialize in it from the ledger.
 
@@ -145,7 +145,13 @@ Under **Repeatable ego traits**, choose **Contact**, enter a contact name, selec
 
 Choose **Morph Familiarity**, enter a morph type, and select **Add Morph Familiarity** for another 1 CP. You can buy it for multiple distinct morph types. It exempts Integration Tests when sleeving that type. Naming a type here does not add a morph to the library. Use **Remove** to release a purchase's CP; remove and add a replacement to correct its details. Select **Add** before saving the draft. These choices follow the ego through resleeving, appear in both print layouts, and round-trip in backups.
 
-Choose **Hardening**, select **Alienation**, **Helplessness**, or **Violence**, and select **Add Hardening**. Each distinct stress type costs 1 CP and grants immunity to stress of that type. Each purchase also applies −10 to WIL Checks and Persuade Tests, cumulatively. **Unknown** awaits its required Psi support. The ledger shows the Persuade rating and a separate **Test target** with penalty sources. The rating still determines the starting cap: a penalty does not free skill points or permit an over-cap purchase. Persuade specialization targets include both Hardening and the specialization's +10. Remove an entry to release its CP and penalty. On phones, scroll within **Starting skill totals** to read the expanded calculation.
+Choose **Hardening**, select **Alienation**, **Helplessness**, or **Violence**, and select **Add Hardening**. Each distinct stress type costs 1 CP and grants immunity to stress of that type. Each purchase also applies −10 to WIL Checks and Persuade Tests, cumulatively. Characters with the Psi trait can also choose **Unknown**. The ledger shows the Persuade rating and a separate **Test target** with penalty sources. The rating still determines the starting cap: a penalty does not free skill points or permit an over-cap purchase. Persuade specialization targets include both Hardening and the specialization's +10. Remove an entry to release its CP and penalty. On phones, scroll within **Starting skill totals** to read the expanded calculation.
+
+## Set up starting Psi
+
+Under **Ego traits**, choose **Psi** Level 1 for 2 CP or Level 2 for 4 CP. This unlocks the Willpower-linked Psi skill and activates the 50 Psi points from **Lost** or the 40 from **Async**. If you choose a package first, its Psi grant waits for the trait. Losing the prerequisite sends saved Psi allocations to **Needs review**.
+
+Under **Starting Psi**, choose one of the five sub-strains, its required drawback, and one free sleight. The drawback grants 0 CP. Level 1 offers psi-chi sleights. Level 2 also offers the sub-strain’s psi-gamma choices. The selected drawback and sleight are references for play. Extra sleight purchases are planned. The editor, dossier, and both print layouts derive Infection Rating as 10 times the Psi level.
 
 ## Review derived ego stats
 

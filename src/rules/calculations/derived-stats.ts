@@ -1,6 +1,8 @@
 import type { Ego } from '../../types/character.ts';
 import { coreDerivedStatRules } from '../datasets/derived-stats.ts';
 import { traceEgoTraits } from './ego-traits.ts';
+import { startingPsiLevel } from './psi.ts';
+import { infectionRatingPerLevel } from '../datasets/psi.ts';
 
 export function traceDerivedEgoStats({ aptitudes, traits }: Pick<Ego, 'aptitudes' | 'traits'>) {
   const { ref, int, wil } = aptitudes;
@@ -15,7 +17,7 @@ export function traceDerivedEgoStats({ aptitudes, traits }: Pick<Ego, 'aptitudes
   const insanity = lucidity === undefined ? undefined : lucidity * insanityMultiplier;
   const roundTrace = (value: number) => `${value} → ${Math.round(value)}`;
   const noModifiers: typeof modifiers = [];
-  return [
+  const stats = [
     { id: 'initiative', label: 'Initiative', formula: '(REF + INT) ÷ 5', total: initiative === undefined ? undefined : Math.round(initiative),
       inputs: [{ source: 'Reflexes', value: ref }, { source: 'Intuition', value: int }], modifiers: noModifiers,
       calculation: initiative === undefined ? undefined : `(${ref} + ${int}) ÷ ${initiativeDivisor} = ${roundTrace(initiative)}` },
@@ -29,4 +31,14 @@ export function traceDerivedEgoStats({ aptitudes, traits }: Pick<Ego, 'aptitudes
       inputs: [{ source: 'Lucidity', value: lucidity }], modifiers: noModifiers,
       calculation: insanity === undefined ? undefined : `${lucidity} × ${insanityMultiplier} = ${insanity}` },
   ];
+  const psiLevel = startingPsiLevel(traits);
+  if (psiLevel) {
+    const total = psiLevel * infectionRatingPerLevel;
+    stats.push({
+      id: 'infection-rating', label: 'Infection Rating', formula: `Psi level × ${infectionRatingPerLevel}`, total,
+      inputs: [{ source: 'Psi level', value: psiLevel }], modifiers: noModifiers,
+      calculation: `${psiLevel} × ${infectionRatingPerLevel} = ${total}`,
+    });
+  }
+  return stats;
 }

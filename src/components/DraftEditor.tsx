@@ -11,6 +11,8 @@ import { parseReputation, traceReputation } from '../rules/calculations/reputati
 import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
 import { evaluateStartingMorphBudget, isStartingMorphAllowance, parseStartingMorphAllowance } from '../rules/calculations/starting-morph-budget.ts';
 import { evaluateMorphTraits } from '../rules/calculations/morph-traits.ts';
+import { isUnknownHardening } from '../rules/calculations/ego-traits.ts';
+import { traceStartingPsi } from '../rules/calculations/psi.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { reputationNetworks } from '../rules/datasets/reputation.ts';
@@ -29,6 +31,7 @@ import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearEditor } from './StartingGear.tsx';
 import { StartingEquipmentEditor } from './StartingEquipment.tsx';
+import { StartingPsiSection } from './StartingPsi.tsx';
 import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 import { Card } from './ui/card.tsx';
 
@@ -64,6 +67,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [skillPurchases, setSkillPurchases] = useState(draft?.ego.skillPurchases ?? []);
   const [specializations, setSpecializations] = useState(draft?.ego.specializations ?? []);
   const [traits, setTraits] = useState(draft?.ego.traits ?? []);
+  const [psi, setPsi] = useState(draft?.ego.psi);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [egoFlex, setEgoFlex] = useState<number>(draft?.ego.egoFlex ?? startingEgoFlex);
   const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
@@ -78,6 +82,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [conflict, setConflict] = useState(false);
   const startingMorph = findSampleMorph(assignedFirstSleeve?.morphDefinitionId ?? morphId);
   const { entries: appliedMorphTraits, bonus: morphTraitBonus } = evaluateMorphTraits(startingMorph, morphTraits);
+  const startingPsi = traceStartingPsi({ packages, traits, psi });
   const parsed = parseAptitudes(inputs);
   const parsedRep = parseReputation(repInputs);
   const { allowance, issue: allowanceInputIssue } = parseStartingMorphAllowance(morphAllowance);
@@ -100,6 +105,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || JSON.stringify(skillPurchases) !== JSON.stringify(draft?.ego.skillPurchases ?? [])
     || JSON.stringify(specializations) !== JSON.stringify(draft?.ego.specializations ?? [])
     || JSON.stringify(traits) !== JSON.stringify(draft?.ego.traits ?? [])
+    || JSON.stringify(psi) !== JSON.stringify(draft?.ego.psi)
     || egoFlex !== (draft?.ego.egoFlex ?? startingEgoFlex)
     || JSON.stringify(languages) !== JSON.stringify(draft?.ego.languages ?? [])
     || reputationNetworks.some(({ id }) => (repInputs[id] ?? '') !== (draft?.ego.reputation?.[id]?.toString() ?? ''))
@@ -133,6 +139,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       const updatedAt = new Date().toISOString();
       const sleeves = draft?.sleeves ?? [];
       const savedPackages = cleanFactionMotivation(packages);
+      const savedTraits = startingPsi.level ? traits : traits.filter((choice) => !isUnknownHardening(choice));
       const { appliedSwaps, usesInfomorphPack } = deriveStartingGear(
         startingCampaign, savedPackages.career?.id, startingMorph?.category, gearSwaps, useInfomorphPack,
       );
@@ -174,7 +181,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(skillTransfers.length ? { skillTransfers } : {}),
           ...(skillPurchases.length ? { skillPurchases } : {}),
           ...(specializations.length ? { specializations } : {}),
-          ...(traits.length ? { traits } : {}),
+          ...(savedTraits.length ? { traits: savedTraits } : {}),
+          ...(startingPsi.selection ? { psi: startingPsi.selection } : {}),
         },
         sleeves: firstSleeve ? [firstSleeve, ...sleeves.slice(1)] : sleeves,
       };
@@ -241,6 +249,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             </Card>
             <ReputationEditor inputs={repInputs} issue={parsedRep.issue} onChange={setRepInputs} />
             <EgoTraitEditor choices={traits} onChange={setTraits} />
+            <StartingPsiSection psi={startingPsi} onChange={setPsi}
+              discardedSleight={Boolean(psi?.freeSleight && !startingPsi.freeSleight)} />
             <Card className="editor-panel">
               <h2>Customization</h2>
               <div className="identity-fields">

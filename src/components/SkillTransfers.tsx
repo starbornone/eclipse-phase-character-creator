@@ -3,6 +3,8 @@ import { resolveCustomActiveField } from '../rules/calculations/active-fields.ts
 import { calculateStartingSkills, knowFieldKey } from '../rules/calculations/starting-skills.ts';
 import type { SkillInputs } from '../rules/calculations/starting-skills.ts';
 import { activeFieldCategories, activeSkillNames } from '../rules/datasets/active-skills.ts';
+import { startingPsiLevel } from '../rules/calculations/psi.ts';
+import { psiSkill } from '../rules/datasets/psi.ts';
 import { aptitudes } from '../types/character.ts';
 import type { SkillPointPurchase, SkillPointTransfer } from '../types/character.ts';
 
@@ -34,7 +36,8 @@ export function SkillTransfers({ ego, ledger, onChange, onPurchasesChange, onTog
   const editable = Boolean(onPurchasesChange || (onChange && sources.length));
   if (!editable && !ledger.transferResults.length && !ledger.purchaseResults.length) return null;
   const listedSkills = new Set(ledger.skills.map(({ id }) => id));
-  const newActiveSkills = activeSkillNames.filter((name) => !listedSkills.has(`active:${name}`));
+  const hasPsi = Boolean(startingPsiLevel(ego.traits));
+  const newActiveSkills = activeSkillNames.filter((name) => (name !== psiSkill || hasPsi) && !listedSkills.has(`active:${name}`));
   const isNewKnow = to === newKnowDestination;
   const isNewActive = to === newActiveFieldDestination;
   const activeFieldCategory = activeFieldCategories.find(({ id }) => id === activeCategory);

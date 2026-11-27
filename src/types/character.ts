@@ -68,6 +68,12 @@ export interface EgoTraitChoice {
   network?: ReputationNetwork;
 }
 
+export interface PsiConfiguration {
+  subStrain: string;
+  drawback?: string;
+  freeSleight?: string;
+}
+
 export interface StartingGearSwap {
   packId: string;
   item: string;
@@ -95,6 +101,7 @@ export interface Ego {
   skillPurchases?: SkillPointPurchase[];
   specializations?: SkillSpecialization[];
   traits?: EgoTraitChoice[];
+  psi?: PsiConfiguration;
 }
 
 export interface MorphDefinition {

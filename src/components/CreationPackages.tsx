@@ -92,6 +92,7 @@ export function CreationPackages({ packages, onChange }: {
               </div>
               {choice && (
                 <>
+                    {choice.requiresPsi && <p className="rules-note">Requires the Psi trait.</p>}
                   <ul className="package-grants">
                     {choice.grants.map(({ skill, points, slot, skillOptions }) => {
                       const field = slot && selection?.fields?.[slot]?.trim();

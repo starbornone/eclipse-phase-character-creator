@@ -1,6 +1,7 @@
 import type { EgoTraitChoice } from '../../types/character.ts';
-import { findEgoTrait, supportedHardeningStressTypes } from '../datasets/ego-traits.ts';
+import { findEgoTrait, supportedHardeningStressTypes, unknownHardeningStressType } from '../datasets/ego-traits.ts';
 import { reputationNetworks } from '../datasets/reputation.ts';
+import { startingPsiLevel } from './psi.ts';
 
 export function normalizeTraitDetail(detail: string) {
   return detail.normalize('NFC').trim().replace(/\s+/g, ' ');
@@ -12,7 +13,15 @@ export function egoTraitChoiceKey(choice: EgoTraitChoice) {
     : choice.id;
 }
 
-export function scopedEgoTraitIssue(choice: EgoTraitChoice, existing: readonly EgoTraitChoice[] = []) {
+export function isUnknownHardening(choice: EgoTraitChoice) {
+  return choice.id === 'hardening' && normalizeTraitDetail(choice.detail ?? '').toLowerCase() === unknownHardeningStressType.toLowerCase();
+}
+
+export function scopedEgoTraitIssue(
+  choice: EgoTraitChoice,
+  existing: readonly EgoTraitChoice[] = [],
+  allowUnknown = Boolean(startingPsiLevel(existing)),
+) {
   const selection = findEgoTrait(choice.id)?.selection;
   if (!selection) return 'Choose a supported repeatable trait.';
   const detail = normalizeTraitDetail(choice.detail ?? '');
@@ -21,18 +30,20 @@ export function scopedEgoTraitIssue(choice: EgoTraitChoice, existing: readonly E
   if (selection === 'contact' && !reputationNetworks.some(({ id }) => id === choice.network)) return 'Choose a reputation network for this contact.';
   if (selection === 'morph' && choice.network !== undefined) return 'Morph Familiarity does not use a reputation network.';
   if (selection === 'stress') {
-    if (!supportedHardeningStressTypes.some((type) => type.toLowerCase() === detail.toLowerCase())) return 'Choose Alienation, Helplessness, or Violence. Unknown awaits Psi support.';
+    const isKnownStress = supportedHardeningStressTypes.some((type) => type.toLowerCase() === detail.toLowerCase());
+    if (!isKnownStress && !(allowUnknown && isUnknownHardening(choice))) return 'Choose a supported Hardening stress type. Unknown requires Psi.';
     if (choice.network !== undefined) return 'Hardening does not use a reputation network.';
   }
   if (existing.some((entry) => egoTraitChoiceKey(entry) === egoTraitChoiceKey(choice))) return 'That trait choice is already recorded.';
 }
 
 export function traceEgoTraits(choices: readonly EgoTraitChoice[] = []) {
+  const allowUnknown = Boolean(startingPsiLevel(choices));
   return choices.flatMap((choice) => {
     const { id, level, skillId, detail, network } = choice;
     const trait = findEgoTrait(id);
     const cp = Number.isInteger(level) ? trait?.cpByLevel[level - 1] : undefined;
-    return trait && cp !== undefined && (!trait.selection || !scopedEgoTraitIssue(choice))
+    return trait && cp !== undefined && (!trait.selection || !scopedEgoTraitIssue(choice, [], allowUnknown))
       ? [{ ...trait, level, cp, skillId, detail, network, key: egoTraitChoiceKey(choice) }] : [];
   });
 }

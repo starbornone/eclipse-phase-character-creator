@@ -8,6 +8,7 @@ import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts'
 import { traceStartingEquipment } from '../../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../../rules/calculations/starting-morph-budget.ts';
 import { morphProfileForSleeve } from '../../rules/calculations/morph-traits.ts';
+import { traceStartingPsi } from '../../rules/calculations/psi.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import type { CharacterDraft } from '../../types/character.ts';
 
@@ -42,6 +43,7 @@ export function buildPrintableDossier(
     skillLedger,
     specializations,
     traits: draft.ego.traits,
+    psi: traceStartingPsi(draft.ego),
     concept: audience === 'player' ? draft.ego.concept : '',
     packages: audience === 'player' ? draft.ego.packages : undefined,
     motivations: audience === 'player' ? listStartingMotivations(draft.ego) : [],

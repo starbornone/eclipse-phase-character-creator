@@ -13,9 +13,9 @@ test('starter package grants match the core category totals', () => {
   assert.deepEqual(findCreationPackage('faction', 'factionless').grants, [{ skill: 'Know', points: 30, slot: 'know-1' }]);
 });
 
-test('support every core background except Lost with the sourced grants and combat choices', () => {
+test('support every core background with the sourced grants and combat choices', () => {
   assert.deepEqual(coreCreationPackages.background.map(({ id }) => id), [
-    'colonist', 'enclaver', 'freelancer', 'hyperelite', 'indenture', 'infolife', 'isolate', 'underclass', 'uplift',
+    'colonist', 'enclaver', 'freelancer', 'hyperelite', 'indenture', 'infolife', 'isolate', 'lost', 'underclass', 'uplift',
   ]);
   for (const [id, fixed, slots] of [
     ['indenture', [['Free Fall', 40], ['Interface', 40], ['Perceive', 20]], [['combat-1', 20], ['hardware-1', 50], ['know-1', 60], ['know-2', 30]]],

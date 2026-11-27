@@ -1,5 +1,6 @@
 import { creationPackageKinds } from '../../types/character.ts';
 import type { CreationPackageKind, CreationPackages } from '../../types/character.ts';
+import { psiSkill } from './psi.ts';
 
 interface SkillGrant {
   skill: string;
@@ -16,6 +17,7 @@ interface CreationPackage {
   page: number;
   grants: readonly SkillGrant[];
   group?: string;
+  requiresPsi?: boolean;
 }
 
 export const packageLabels: Record<CreationPackageKind, string> = {
@@ -62,6 +64,10 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'isolate', name: 'Isolate', page: 39, grants: [
       grant('Free Fall', 40), grant('Guns', 20), hardware(40, ['Aerospace', 'Electronics', 'Robotics']),
       grant('Medicine: Paramedic', 20), pilot(30), grant('Survival', 20), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'lost', name: 'Lost', page: 39, requiresPsi: true, grants: [
+      grant('Deceive', 40), grant('Infiltrate', 20), grant('Kinesics', 40), grant('Perceive', 20),
+      grant(psiSkill, 50), know('know-1', 60), know('know-2', 30),
     ] },
     { id: 'underclass', name: 'Underclass', page: 39, grants: [
       grant('Deceive', 30), grant('Fray', 20), combatChoice(40, ['Guns', 'Melee']), grant('Kinesics', 40),
@@ -131,6 +137,9 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     ] },
     { id: 'artist-icon', name: 'Artist/Icon', page: 42, grants: [
       grant('Deceive', 40), grant('Kinesics', 20), grant('Provoke', 40), know('know-1', 40),
+    ] },
+    { id: 'async', name: 'Async', page: 42, requiresPsi: true, grants: [
+      grant('Deceive', 40), grant('Perceive', 20), grant(psiSkill, 40), know('know-1', 40),
     ] },
     { id: 'commander', name: 'Commander', page: 42, grants: [
       grant('Interface', 20), grant('Persuade', 40), grant('Provoke', 40), grant('Know: Administration', 40),

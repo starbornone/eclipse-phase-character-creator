@@ -19,6 +19,7 @@ import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
 import { StartingEquipmentSummary } from './StartingEquipment.tsx';
+import { StartingPsiSection } from './StartingPsi.tsx';
 import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
@@ -138,10 +139,12 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
         </section>
         <ReputationSummary scores={dossier.reputation} />
         <EgoTraitSummary choices={dossier.traits} />
+        <StartingPsiSection psi={dossier.psi} />
         <section className="print-skills">
           <h3>Ego skills</h3>
           {dossier.skillLedger.unassignedKnowPoints > 0 && <p>{dossier.skillLedger.unassignedKnowPoints} Know points await a field choice.</p>}
           {dossier.skillLedger.unassignedActivePoints > 0 && <p>{dossier.skillLedger.unassignedActivePoints} Active points await a skill or field choice.</p>}
+          {dossier.skillLedger.pendingPsiPoints > 0 && <p>{dossier.skillLedger.pendingPsiPoints} Psi points await the Psi trait.</p>}
           {dossier.skillLedger.skills.length > 0 ? (
             <table>
               <thead><tr><th scope="col">Skill</th><th scope="col">Points</th><th scope="col">Aptitude base</th><th scope="col">Total</th></tr></thead>

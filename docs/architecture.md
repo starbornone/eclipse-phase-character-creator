@@ -14,7 +14,7 @@ The draft editor reads published aptitude arrays from `src/rules/datasets/aptitu
 
 The editor reads starter packages from `src/rules/datasets/creation-packages.ts`. The ego stores optional selections as stable ids, plus player-entered Know fields and a faction motivation. Grants are resolved from the versioned dataset. The backup parser validates each id in its category and checks its field slots against that package. Earlier drafts and backups can omit the optional package selections.
 
-All 15 non-Psi core interests are available. Pilot uses separate `pilot-1` and `pilot-2` field slots for its 30- and 40-point grants; other packages keep their existing `pilot-1` slot. Both fields use the existing sample/custom field resolver and merge when they name the same skill. Unfilled slots stay pending, and changes replay saved allocations against the resulting ledger. Interest additions require no storage schema change. Async remains deferred with Psi support.
+All 16 core interests are available. Pilot uses separate `pilot-1` and `pilot-2` field slots for its 30- and 40-point grants; other packages keep their existing `pilot-1` slot. Both fields use the existing sample/custom field resolver and merge when they name the same skill. Unfilled slots stay pending, and changes replay saved allocations against the resulting ledger. Interest additions require no storage schema change. Async’s Psi points require the Psi trait.
 
 `src/rules/calculations/starting-skills.ts` matches named Know fields without regard to case or extra spaces and sums each skill’s grants with their source labels. The ledger derives the aptitude base and over-cap amount. The ego and its backup may include optional Art classifications for player-entered Know fields. Missing aptitudes leave totals pending, and unnamed Know grants remain unassigned.
 
@@ -26,7 +26,7 @@ Allocations to custom Active fields carry their category, display name, and link
 
 Package Active field slots use the same skill IDs as transfers and purchases. A named Hardware or Pilot field resolves to a sample ID when one matches, or to a custom ID with the same category’s aptitude. Blank Active slots track pending points separately from blank Know slots.
 
-Nine core backgrounds are supported; Lost awaits its required Psi trait and skill support. Indenture and Underclass use a restricted combat-skill slot stored in the existing package `fields` map. The dataset supplies the allowed skills, the editor renders a native select, and the ledger assigns the grant only to a valid choice. Blank or unsupported choices stay pending as Active points. Backup import accepts blank choices, trims selected values, and rejects selections outside the package's allowed list. Changing a choice replays the saved transfers and purchases against the updated ledger. No draft schema change is needed.
+All ten core backgrounds are supported. Lost’s Psi points require the Psi trait. Indenture and Underclass use a restricted combat-skill slot stored in the existing package `fields` map. The dataset supplies the allowed skills, the editor renders a native select, and the ledger assigns the grant only to a valid choice. Blank or unsupported choices stay pending as Active points. Backup import accepts blank choices, trims selected values, and rejects selections outside the package's allowed list. Changing a choice replays the saved transfers and purchases against the updated ledger. No draft schema change is needed.
 
 Personal motivations use three optional ego slots with a stance and text. A named faction supplies the first displayed motivation from its stored override or the default interests label. It reserves the third personal slot for use without a faction. Legacy Factionless text is read into the third slot and moves there when the draft is saved. The player print layout shows the currently active choices.
 
@@ -62,7 +62,7 @@ Expert Training also stores the chosen ledger skill ID. The calculation applies 
 
 Contact and Morph Familiarity are repeatable scoped ego traits. Their selections add `detail` for a contact name or morph type, and Contact also requires a supported reputation `network`. Each entry costs one CP. A shared key normalizes Unicode, whitespace, and case and combines the trait id, detail, and network; the editor and backup parser reject duplicate scopes. Other traits remain unique by id, including Expert Training. The summary uses these keys to render repeated purchases separately in the dossier and both print layouts. Additive optional fields preserve existing version 2 drafts and backup version 1 records. Situational effects remain reference text rather than changing reputation scores or automatically resolving Integration Tests.
 
-Hardening uses the same repeatable detail field with a restricted stress type. Alienation, Helplessness, and Violence each cost one CP; Unknown is rejected until its required Psi support exists. The trait trace excludes incomplete or unsupported scopes. Each valid purchase contributes −10 to the WIL Check trace and a separate −10 Persuade Test modifier. Skill rows retain their unmodified rating and cap excess alongside `testModifiers`, their sum, and `testTarget`. Transfers and purchases enforce caps against the rating; specializations add their situational bonus to the adjusted test target. The editor, dossier, and both print layouts show the penalty sources. Mobile ledgers with modifier traces scroll within the named table region, and printed trait entries stay together across page breaks.
+Hardening uses the same repeatable detail field with a restricted stress type. Alienation, Helplessness, and Violence each cost one CP. Unknown also costs one CP and requires Psi. The trait trace excludes incomplete or unsupported scopes. Each valid purchase contributes −10 to the WIL Check trace and a separate −10 Persuade Test modifier. Skill rows retain their unmodified rating and cap excess alongside `testModifiers`, their sum, and `testTarget`. Transfers and purchases enforce caps against the rating; specializations add their situational bonus to the adjusted test target. The editor, dossier, and both print layouts show the penalty sources. Mobile ledgers with modifier traces scroll within the named table region, and printed trait entries stay together across page breaks.
 
 Draft schema version 2 stores sleeves in save order, with the last sleeve active. `src/features/sleeve/history.ts` reads version 1 drafts by putting any existing sleeve at the start of that history. Resleeving appends a new sleeve and optional event details in the same transaction as the revision update. A recorded event date can precede a previous event without changing which sleeve is active.
 
@@ -85,6 +85,10 @@ flowchart TD
     Import["JSON import"] --> Checks["Schema validation and migration"]
     Checks --> Local
 ```
+
+## Starting Psi
+
+The Psi trait uses the shared ego trait CP budget. The optional `psi` configuration holds a sub-strain ID and its selected drawback and free sleight. Backup validation uses the same sub-strain lookup and level gate as the editor. The required drawback has zero CP budget impact. Infection Rating is derived from the Psi level. The ledger keeps Lost and Async Psi grants pending until the trait is selected and replays Psi allocations when eligibility changes.
 
 ## Data and responsibilities
 

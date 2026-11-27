@@ -10,6 +10,7 @@ import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
 import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
 import { morphProfileForSleeve } from '../rules/calculations/morph-traits.ts';
+import { traceStartingPsi } from '../rules/calculations/psi.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
@@ -24,6 +25,7 @@ import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
 import { StartingEquipmentSummary } from './StartingEquipment.tsx';
 import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
+import { StartingPsiSection } from './StartingPsi.tsx';
 import { Card } from './ui/card.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
 
@@ -97,6 +99,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
           <MotivationSummary motivations={listStartingMotivations(draft.ego)} />
           <ReputationSummary scores={draft.ego.reputation} />
           <EgoTraitSummary choices={draft.ego.traits} />
+          <StartingPsiSection psi={traceStartingPsi(draft.ego)} />
         </Card>
         <Card className="editor-panel">
           <h2>Morph</h2>

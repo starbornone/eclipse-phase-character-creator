@@ -5,6 +5,8 @@ import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
 import { expertTraining } from '../datasets/ego-traits.ts';
 import { traitSkillTestModifiers } from './ego-traits.ts';
+import { startingPsiLevel } from './psi.ts';
+import { psiSkill, psiSkillId } from '../datasets/psi.ts';
 
 // Eclipse Phase Second Edition, pp. 45 and 48–50.
 const startingSkillCap = 80;
@@ -43,12 +45,18 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   const artisticFields = new Set(artisticKnowFields);
   let unassignedKnowPoints = 0;
   let unassignedActivePoints = 0;
+  let pendingPsiPoints = 0;
+  const hasPsi = Boolean(startingPsiLevel(traits));
 
   for (const kind of creationPackageKinds) {
     const selection = packages?.[kind];
     const chosen = findCreationPackage(kind, selection?.id);
     if (!chosen) continue;
     for (const { skill, points, slot, activeField, skillOptions } of chosen.grants) {
+      if (skill === psiSkill && !hasPsi) {
+        pendingPsiPoints += points;
+        continue;
+      }
       if (skillOptions) {
         const selectedSkill = slot && selection?.fields?.[slot]?.trim();
         if (!selectedSkill || !skillOptions.includes(selectedSkill)) {
@@ -118,6 +126,7 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
 
   const balances = new Map([...rows].map(([id, row]) => [id, calculateRow(id, row)]));
   function destination({ to, newKnowField, customActiveField }: SkillPointPurchase) {
+    if (to === psiSkillId && !hasPsi) return { issue: 'Choose the Psi trait before allocating points to Psi.' };
     const existing = balances.get(to);
     if (customActiveField !== undefined) {
       const custom = resolveCustomActiveField(customActiveField);
@@ -155,12 +164,13 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
   const transferResults = skillTransfers.map((transfer) => {
     const source = balances.get(transfer.from);
     const { target, issue: destinationIssue } = destination(transfer);
-    const fromName = source?.name ?? customActiveFieldDisplayName(transfer.from) ?? transfer.from;
-    const toName = target?.name ?? customActiveFieldDisplayName(transfer.to) ?? transfer.to;
+    const fromName = source?.name ?? (transfer.from === psiSkillId ? psiSkill : customActiveFieldDisplayName(transfer.from) ?? transfer.from);
+    const toName = target?.name ?? (transfer.to === psiSkillId ? psiSkill : customActiveFieldDisplayName(transfer.to) ?? transfer.to);
     let issue = destinationIssue;
 
     if (!source) {
-      issue = 'Choose a source skill with package points.';
+      issue = transfer.from === psiSkillId && !hasPsi
+        ? 'Choose the Psi trait before moving points from Psi.' : 'Choose a source skill with package points.';
     } else if (target) {
       if (source === target) issue = 'Choose two different skills.';
       else if (!Number.isSafeInteger(transfer.points) || transfer.points < 1) issue = 'Enter a positive whole number of points.';
@@ -190,7 +200,7 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
         balances.set(target.id, target);
       }
     }
-    return { purchase, toName: target?.name ?? customActiveFieldDisplayName(purchase.to) ?? purchase.to, issue };
+    return { purchase, toName: target?.name ?? (purchase.to === psiSkillId ? psiSkill : customActiveFieldDisplayName(purchase.to) ?? purchase.to), issue };
   });
 
   const totals = [...balances.values()].map((skill) => {
@@ -200,5 +210,5 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
     const testTarget = total === undefined ? undefined : total + testModifier;
     return { ...skill, total, testModifiers, testModifier, testTarget, excess: total === undefined ? 0 : Math.max(0, total - skill.cap), purchasedOnly: !transferSkillIds.has(skill.id) };
   }).sort((first, second) => first.name.localeCompare(second.name));
-  return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, unassignedActivePoints, cap: startingSkillCap };
+  return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, unassignedActivePoints, pendingPsiPoints, cap: startingSkillCap };
 }

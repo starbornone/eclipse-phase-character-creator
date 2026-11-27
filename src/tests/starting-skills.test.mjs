@@ -282,7 +282,7 @@ test('leave new destinations out of the ledger when a move fails validation', ()
   const ledger = calculateStartingSkills({ ...input, skillTransfers });
   assert.match(ledger.transferResults[0].issue, /only move/);
   assert.match(ledger.transferResults[1].issue, /linked aptitude/);
-  assert.match(ledger.transferResults[2].issue, /supported destination/);
+  assert.match(ledger.transferResults[2].issue, /Psi trait/);
   assert.match(ledger.transferResults[3].issue, /matches the destination/);
   assert.match(ledger.transferResults[4].issue, /above the starting cap/);
   assert.deepEqual(ledger.skills, calculateStartingSkills(input).skills);

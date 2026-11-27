@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:52:15+11:00",
+  "updatedAt": "2026-11-28T02:00:09+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -378,6 +378,13 @@
       "group": "Character creation",
       "notes": "Added Toughness, Dominant Limb, Hypersensitivity, Planned Obsolescence, Proprietary Tech, and Zero-G Nausea for eligible physical sleeves. Verified the 6 MP cap, derived health and rounding, backup validation, the 390 px editor, save and reload, both print previews, and that traits stay on their original sleeve after resleeving. All 161 tests and the production build pass.",
       "completedAt": "2026-11-28T01:52:15+11:00"
+    },
+    {
+      "id": "add-starting-psi-lost-and-async",
+      "title": "Add starting Psi, Lost, and Async",
+      "group": "Character creation",
+      "notes": "Added Psi levels, WIL-linked skill and pending package grants, the five sub-strains with zero-CP drawbacks and free sleights, Infection Rating, and Psi-gated Unknown Hardening. Verified grant totals, skill allocation replay, backup validation, level gating, 390 px layout, save and reload, resleeving, and both print previews. All 166 tests and the production build pass.",
+      "completedAt": "2026-11-28T02:00:09+11:00"
     }
   ]
 }

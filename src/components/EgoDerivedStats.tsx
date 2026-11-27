@@ -20,7 +20,7 @@ export function EgoDerivedStats({ stats, styled = false, headingLevel = 2 }: {
           </dd>
         </div>)}
       </dl>
-      <p className="rules-note">Use aptitude scores for these values. Division <a href={coreDerivedStatRules.roundingUrl}>rounds to the nearest whole number</a>.</p>
+      <p className="rules-note">Division <a href={coreDerivedStatRules.roundingUrl}>rounds to the nearest whole number</a>.</p>
       <p className="rules-note">Adapted from <a href={coreDerivedStatRules.sourceUrl}>Eclipse Phase Second Edition, p. 46</a> by{' '}
         <a href="https://eclipsephase.com/">Posthuman Studios, LLC</a> under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
     </section>

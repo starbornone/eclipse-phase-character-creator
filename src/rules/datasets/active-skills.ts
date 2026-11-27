@@ -1,7 +1,8 @@
 import type { Aptitude } from '../../types/character.ts';
+import { psiSkill } from './psi.ts';
 
-// Eclipse Phase Second Edition, pp. 48–50. Psi requires trait support.
-const skillsByAptitude: Record<Exclude<Aptitude, 'wil'>, string[]> = {
+// Eclipse Phase Second Edition, Active Skill List. Psi requires the Psi trait.
+const skillsByAptitude: Record<Aptitude, string[]> = {
   cog: [
     'Hardware: Aerospace', 'Hardware: Armorer', 'Hardware: Demolitions', 'Hardware: Electronics',
     'Hardware: Groundcraft', 'Hardware: Industrial', 'Hardware: Nautical', 'Hardware: Robotics',
@@ -16,6 +17,7 @@ const skillsByAptitude: Record<Exclude<Aptitude, 'wil'>, string[]> = {
   ],
   sav: ['Deceive', 'Exotic Skill: Animal Handling', 'Kinesics', 'Persuade', 'Provoke'],
   som: ['Athletics', 'Free Fall', 'Melee'],
+  wil: [psiSkill],
 };
 
 const activeSkills = new Map<string, Aptitude>();

@@ -5,7 +5,8 @@ import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
 import { personalMotivationSlots } from '../../rules/calculations/motivations.ts';
 import { resolveCustomActiveField } from '../../rules/calculations/active-fields.ts';
-import { egoTraitChoiceKey, evaluateEgoTraitBudget, normalizeTraitDetail, scopedEgoTraitIssue } from '../../rules/calculations/ego-traits.ts';
+import { egoTraitChoiceKey, evaluateEgoTraitBudget, isUnknownHardening, normalizeTraitDetail, scopedEgoTraitIssue } from '../../rules/calculations/ego-traits.ts';
+import { startingPsiLevel, traceStartingPsi } from '../../rules/calculations/psi.ts';
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
 import { isStartingMorphAllowance } from '../../rules/calculations/starting-morph-budget.ts';
@@ -19,7 +20,7 @@ import { findStartingEquipment } from '../../rules/datasets/starting-equipment.t
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
-import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, EgoTraitChoice, PersonalMotivations, ReputationScores, ResleevingEvent, Sleeve, StartingGearSwap } from '../../types/character.ts';
+import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, EgoTraitChoice, PersonalMotivations, PsiConfiguration, ReputationScores, ResleevingEvent, Sleeve, StartingGearSwap } from '../../types/character.ts';
 
 const format = 'eclipse-phase-character-backup';
 const backupVersion = 1;
@@ -200,7 +201,7 @@ function readEgoTraits(value: unknown, path: string) {
       const network = choice.network === undefined ? undefined : reputationNetworks.find(({ id }) => id === choice.network)?.id;
       if (choice.network !== undefined && !network) badField(`${field}.network`, 'a supported reputation network');
       const selected: EgoTraitChoice = { id, level, detail, ...(network ? { network } : {}) };
-      const issue = scopedEgoTraitIssue(selected);
+      const issue = scopedEgoTraitIssue(selected, [], true);
       if (issue) badField(field, `a valid trait selection: ${issue}`);
       return selected;
     }
@@ -214,10 +215,26 @@ function readEgoTraits(value: unknown, path: string) {
     return { id, level };
   });
   ensureUnique(traits.map(egoTraitChoiceKey), path);
+  if (!startingPsiLevel(traits) && traits.some(isUnknownHardening)) {
+    badField(path, 'a valid trait selection: Unknown requires Psi');
+  }
   if (evaluateEgoTraitBudget(traits).bonus > coreAptitudeRules.maximumTraitBonus) {
     badField(path, `within the ${coreAptitudeRules.maximumTraitBonus} CP limit for negative traits`);
   }
   return traits;
+}
+
+function readPsiConfiguration(value: unknown, traits: EgoTraitChoice[] | undefined, path: string): PsiConfiguration {
+  const config = object(value, path);
+  const subStrain = string(config.subStrain, `${path}.subStrain`, true);
+  const drawback = config.drawback === undefined ? undefined : string(config.drawback, `${path}.drawback`, true);
+  const freeSleight = config.freeSleight === undefined ? undefined : string(config.freeSleight, `${path}.freeSleight`, true);
+  const trace = traceStartingPsi({ traits, psi: { subStrain, drawback, freeSleight } });
+  if (!trace.level) badField(path, 'present only with the Psi trait');
+  if (!trace.selection) badField(`${path}.subStrain`, 'a supported starting sub-strain');
+  if (drawback !== trace.selection.drawback) badField(`${path}.drawback`, 'a drawback for the selected sub-strain');
+  if (freeSleight !== trace.selection.freeSleight) badField(`${path}.freeSleight`, 'a sleight allowed for the sub-strain and Psi level');
+  return trace.selection;
 }
 
 function readEgo(value: unknown, path: string): Ego {
@@ -286,6 +303,7 @@ function readEgo(value: unknown, path: string): Ego {
       if (!findStartingEquipment(id)) badField(entryPath, 'a supported equipment ID');
       return id;
     });
+  const traits = ego.traits === undefined ? undefined : readEgoTraits(ego.traits, `${path}.traits`);
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -308,7 +326,8 @@ function readEgo(value: unknown, path: string): Ego {
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),
     ...(specializations === undefined ? {} : { specializations }),
-    ...(ego.traits === undefined ? {} : { traits: readEgoTraits(ego.traits, `${path}.traits`) }),
+    ...(traits === undefined ? {} : { traits }),
+    ...(ego.psi === undefined ? {} : { psi: readPsiConfiguration(ego.psi, traits, `${path}.psi`) }),
   };
 }
 

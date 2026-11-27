@@ -5,7 +5,7 @@ import { calculateStartingSkills } from '../rules/calculations/starting-skills.t
 import { encodeBackup, previewBackup } from '../features/backup/backup.ts';
 import { buildPrintableDossier } from '../features/dossier/print.ts';
 
-const interests = coreCreationPackages.interest;
+const interests = coreCreationPackages.interest.filter(({ requiresPsi }) => !requiresPsi);
 const aptitudes = { cog: 15, int: 20, ref: 25, sav: 10, som: 15, wil: 20 };
 const pilotFields = { 'hardware-1': 'Aerospace', 'pilot-1': 'Air', 'pilot-2': 'Space' };
 const calculate = (id, fields, extra = {}) => calculateStartingSkills({ aptitudes, packages: { interest: { id, fields } }, ...extra });
@@ -17,7 +17,6 @@ const row = (ledger, name) => ledger.skills.find((skill) => skill.name === name)
 
 test('fifteen non-Psi interests each account for 100 Active and 40 Know points, including incomplete drafts', () => {
   assert.equal(interests.length, 15);
-  assert.ok(!interests.some(({ id }) => id === 'async'));
   for (const { id, name } of interests) {
     for (const scores of [aptitudes, {}]) {
       const ledger = calculate(id, undefined, { aptitudes: scores });

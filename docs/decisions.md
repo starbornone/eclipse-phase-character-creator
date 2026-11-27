@@ -124,4 +124,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Resleeving preserves the first sleeve's choices in history and starts the new sleeve with its base profile. Older drafts can omit the added field. [Core morph trait rules](https://eclipsephase.github.io/en/04/28-traits.html)
 
+## 16. Keep Psi package grants pending until the trait is chosen
+
+**Context.** Lost and Async require Psi. The existing editor supports incomplete drafts and rechecks saved skill allocations when their prerequisites change.
+
+**Decision.** Keep the package choices available and hold their Psi grants until the ego takes the trait. Store the sub-strain choices independently of the trait so the required drawback can grant zero CP. Validate free sleights against the sub-strain and the selected level.
+
+**Consequences.** Removing Psi invalidates new and saved Psi allocations, which can be replayed when the trait returns. Saving without Psi releases the Unknown Hardening selection. Saving at Level 1 retains eligible psi-chi choices. [Core Psi rules](https://eclipsephase.github.io/en/04/28-traits.html#psi)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.
