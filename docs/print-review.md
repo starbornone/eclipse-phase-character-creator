@@ -25,6 +25,8 @@ Contact and Morph Familiarity were also reviewed on 27 November 2026 using two c
 
 Hardening was reviewed on 27 November 2026 with all three supported stress types, Resolve Level 2, a Face/Networker package overlap, a Persuade transfer, and a specialization. The WIL trace combines positive and negative contributions, while Persuade retains its rating beside the adjusted Test target. The player PDF spans three A4 pages and the GM PDF two; every grayscale page was inspected. Trait entries now stay together at page breaks. Mobile review at 320 px verified the named skill table's horizontal scroll region, readable skill labels, and penalty sources. Save/reload, removal, backup restore, and rejection of Unknown imports passed without browser errors.
 
+Derived ego stats and Composure were reviewed on 27 November 2026 with partial aptitudes and non-multiple-of-five scores. Player, GM, and incomplete-player A4 PDFs each span two pages; all six grayscale pages retain readable formulas, rounding steps, Composure's source contribution, pending values, and attribution. The 320 px editor and saved dossier have no horizontal overflow. Live edits, Composure removal, save/reload, resleeving from Bouncer to Synth, and backup restore preserve the expected values. No browser errors were reported.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

@@ -12,6 +12,7 @@ type EgoTrait = {
   checkModifier?: { aptitude: Aptitude; perLevel: number };
   selection?: 'contact' | 'morph' | 'stress';
   skillTestModifier?: { skill: string; perLevel: number };
+  lucidityModifier?: number;
 };
 
 // Hardening's Unknown option requires Psi (errata 1.4); defer it with Psi support.
@@ -26,6 +27,7 @@ export const egoTraits: readonly EgoTrait[] = [
   checkTrait('acumen', 'Acumen', 'cog'),
   { id: 'adaptability', name: 'Adaptability', cpByLevel: [2, 4], effect: '+10 per level on Integration and Resleeving Stress Tests.' },
   { id: 'common-sense', name: 'Common Sense', cpByLevel: [2], effect: 'Ask the GM for advice once per session.' },
+  { id: 'composure', name: 'Composure', cpByLevel: [2], lucidityModifier: 5, effect: '+5 Lucidity, +1 Trauma Threshold, and +10 Insanity Rating.' },
   { id: 'contact', name: 'Contact', cpByLevel: [1], selection: 'contact', effect: '+10 on Rep Tests using this contact in the chosen network. Agree the relationship with the GM.' },
   { id: 'direction-sense', name: 'Direction Sense', cpByLevel: [1], effect: 'Know your orientation and gain +10 on navigation tests.' },
   checkTrait('empathy', 'Empathy', 'sav'),

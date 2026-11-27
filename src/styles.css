@@ -391,6 +391,11 @@ textarea { resize: vertical; }
 .concept-text { white-space: pre-wrap; margin-top: .3rem; }
 .assigned-morph { display: flex; gap: .6rem; align-items: center; margin: .55rem 0; }
 .dossier-stats { margin-top: 1rem; }
+.derived-ego-stats { margin-top: 1rem; }
+.derived-ego-stat-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem 1rem; margin-top: .65rem; }
+.derived-ego-stat-list > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .15rem .5rem; padding-bottom: .4rem; border-bottom: 1px solid var(--line); }
+.derived-ego-stat-list dt { font-weight: 650; }
+.derived-stat-calculation { grid-column: 1 / -1; color: var(--muted); font-size: .8125rem; overflow-wrap: anywhere; }
 .dossier-stats table { width: 100%; margin-top: .65rem; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .dossier-stats :is(th, td) { border-bottom: 1px solid var(--line); padding: .65rem .35rem; text-align: right; }
 .dossier-stats tr > :first-child { text-align: left; }
@@ -434,6 +439,7 @@ textarea { resize: vertical; }
   .aptitude-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .aptitude-template { grid-template-columns: 1fr; }
   .package-choices { grid-template-columns: 1fr; }
+  .derived-ego-stat-list { grid-template-columns: 1fr; }
   .skill-transfers .identity-fields { grid-template-columns: 1fr; }
   .aptitude-template .button { justify-self: start; }
   .dossier-stats :is(th, td) { padding-inline: .2rem; font-size: .875rem; }
@@ -454,7 +460,7 @@ textarea { resize: vertical; }
   .print-sheet h2 { font-size: 26pt; }
   .print-sheet :is(header, h3, h4) { break-after: avoid; }
   .print-sheet table { break-after: avoid; }
-  .print-sheet :is(tr, .print-checks div, .print-history li, .ego-trait-summary li, .print-credit) { break-inside: avoid; }
+  .print-sheet :is(tr, .print-checks div, .print-history li, .ego-trait-summary li, .derived-ego-stat-list > div, .print-credit) { break-inside: avoid; }
   .print-sheet .print-credit { break-before: avoid; }
   .print-sheet .error { color: #111; }
   .print-gm { font-size: 10pt; }

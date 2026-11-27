@@ -8,6 +8,7 @@ import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
+import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
 import { SkillTestModifiers } from './SkillTestModifiers.tsx';
@@ -120,6 +121,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           <p className="rules-note"><a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
           {dossier.checks.some(({ modifier }) => modifier !== 0) && <p className="rules-note">Check modifiers: <a href={egoTraitsSource}>Core ego trait rules</a>.</p>}
         </section>
+        <EgoDerivedStats stats={dossier.derivedStats} headingLevel={3} />
         <section>
           <h3>Ego Flex and languages</h3>
           <p>Ego Flex <strong>{dossier.egoFlex}</strong></p>

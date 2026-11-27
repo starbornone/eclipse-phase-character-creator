@@ -5,6 +5,7 @@ import { parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
+import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
@@ -16,6 +17,7 @@ import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, Creation
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
 import { EgoTraitEditor } from './EgoTraits.tsx';
+import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
 import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
@@ -229,6 +231,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 invalidReputation={Boolean(parsedRep.issue)}
               />
             </Card>
+            <EgoDerivedStats stats={traceDerivedEgoStats({ aptitudes: parsed.scores ?? {}, traits })} styled />
             <StartingSkills
               ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations, traits }}
               onTransfersChange={setSkillTransfers}

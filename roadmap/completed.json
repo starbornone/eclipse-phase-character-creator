@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T19:24:12+11:00",
+  "updatedAt": "2026-11-27T19:32:45+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -322,6 +322,13 @@
       "group": "Character creation",
       "notes": "Added one-CP Hardening choices for Alienation, Helplessness, and Violence, with duplicate checks and cumulative minus-ten WIL Check and Persuade Test penalties per purchase. Unknown remains deferred with required Psi support under errata 1.4. The ledger keeps skill ratings and cap validation separate from adjusted test targets; specialization targets include the penalty once. Verified partial drafts, invalid scopes, positive and negative check traces, CP costs, cap enforcement, allocation replay, save/reload, backup rejection and restore, removal, mobile table scrolling, and all five grayscale player/GM PDF pages. Trait entries now stay together when printed. All 127 tests and the production build pass.",
       "completedAt": "2026-11-27T19:24:12+11:00"
+    },
+    {
+      "id": "derive-ego-stats-and-composure",
+      "title": "Derive core ego stats and apply Composure",
+      "group": "Character creation",
+      "notes": "Added traced Initiative, Lucidity, Trauma Threshold, and Insanity Rating to the live editor, dossier, and both print layouts. Division uses normal nearest-integer rounding under the core rules. Composure costs two CP, adds five Lucidity, and propagates into dependent mental health stats. Missing aptitudes remain pending and check-only modifiers do not alter aptitude bases. Verified rounding boundaries, zeroes, partial drafts, CP release on removal, backup validation and restore, resleeving, keyboard access, 320 px layouts, and all six grayscale player/GM/incomplete-player PDF pages. All 136 tests and the production build pass. Infection Rating remains deferred with Psi support.",
+      "completedAt": "2026-11-27T19:32:45+11:00"
     }
   ]
 }

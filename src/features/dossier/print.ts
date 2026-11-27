@@ -1,5 +1,6 @@
 import { activeSleeve } from '../sleeve/history.ts';
 import { traceAptitudeChecks } from '../../rules/calculations/draft.ts';
+import { traceDerivedEgoStats } from '../../rules/calculations/derived-stats.ts';
 import { listStartingMotivations } from '../../rules/calculations/motivations.ts';
 import { traceSkillSpecializations } from '../../rules/calculations/skill-specializations.ts';
 import { calculateStartingSkills } from '../../rules/calculations/starting-skills.ts';
@@ -45,6 +46,7 @@ export function buildPrintableDossier(
     hasSleeve: Boolean(sleeve),
     morph: findSampleMorph(sleeve?.morphDefinitionId),
     checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits),
+    derivedStats: traceDerivedEgoStats(draft.ego),
     history: audience === 'gm'
       ? [...draft.sleeves].reverse().map(({ id, morphDefinitionId, event, assignedAt }, index) => ({
         id,

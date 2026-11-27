@@ -117,6 +117,21 @@ Choose **Morph Familiarity**, enter a morph type, and select **Add Morph Familia
 
 Choose **Hardening**, select **Alienation**, **Helplessness**, or **Violence**, and select **Add Hardening**. Each distinct stress type costs 1 CP and grants immunity to stress of that type. Each purchase also applies −10 to WIL Checks and Persuade Tests, cumulatively. **Unknown** awaits its required Psi support. The ledger shows the Persuade rating and a separate **Test target** with penalty sources. The rating still determines the starting cap: a penalty does not free skill points or permit an over-cap purchase. Persuade specialization targets include both Hardening and the specialization's +10. Remove an entry to release its CP and penalty. On phones, scroll within **Starting skill totals** to read the expanded calculation.
 
+## Review derived ego stats
+
+**Derived ego stats** updates in the editor as you change aptitudes or Composure. The saved dossier and both print layouts show the same calculations and sources.
+
+| Stat | Calculation |
+| --- | --- |
+| Initiative | (Reflexes + Intuition) ÷ 5, rounded normally |
+| Lucidity | Willpower × 2, plus Composure if selected |
+| Trauma Threshold | Lucidity ÷ 5, rounded normally |
+| Insanity Rating | Lucidity × 2 |
+
+Normal rounding goes to the nearest whole number. For example, Reflexes 16 and Intuition 17 give Initiative 7 from 6.6. **Composure** costs 2 CP and adds 5 Lucidity, which also raises Trauma Threshold by 1 and Insanity Rating by 10. Willpower 12 with Composure gives Lucidity 29, Trauma Threshold 6, and Insanity Rating 58. Select **None** to remove it and release its CP.
+
+These values use aptitude scores. Resolve, Quickness, Good Instincts, and Hardening modify checks rather than these bases. Missing aptitudes leave their dependent stats **Pending**, including when Composure is selected. Composure and these ego stats follow the ego through resleeving and backup restore. Morph health and gear effects remain separate.
+
 ## Compare morph profiles
 
 Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
