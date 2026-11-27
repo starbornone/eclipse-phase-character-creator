@@ -76,4 +76,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Each entry costs one CP and renders separately in dossier and print summaries. The current draft and backup versions can read earlier choices unchanged. Situational benefits stay as reference text. Freeform morph type names allow GM-approved scope without expanding the supported morph catalogue. [Rules sources](rules-sources.md#source-inventory)
 
+## 10. Keep skill ratings separate from trait-adjusted test targets
+
+**Context.** Hardening applies a cumulative Persuade Test penalty for each stress immunity. Subtracting that penalty from the skill rating would conceal excess package points and incorrectly permit purchases above the starting cap.
+
+**Decision.** Retain the existing skill rating, allocations, and cap checks. Derive a separate test target with named trait modifier contributions after allocation. Specialization targets add their situational bonus to that adjusted target. Show both values wherever a penalty applies. Use the existing scoped trait representation for Hardening's distinct stress types and defer Unknown with Psi support.
+
+**Consequences.** Removing Hardening changes test targets and CP costs while preserving skill allocations. Pending aptitudes stay pending. Existing drafts and backups require no new fields or version changes. [Rules sources](rules-sources.md#source-inventory)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

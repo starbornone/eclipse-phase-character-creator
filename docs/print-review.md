@@ -23,6 +23,8 @@ An additional review on 27 November 2026 covered all six aptitude check ego trai
 
 Contact and Morph Familiarity were also reviewed on 27 November 2026 using two contact/network entries and two familiar morph types. Each appears separately in the saved dossier and in player and GM A4 PDFs. All four grayscale pages retain the names, networks, effects, and attribution. Add/remove, duplicate rejection, save/reload, resleeving, and backup restore passed in an isolated Edge profile. The 320 px editor has readable Remove buttons and no horizontal overflow.
 
+Hardening was reviewed on 27 November 2026 with all three supported stress types, Resolve Level 2, a Face/Networker package overlap, a Persuade transfer, and a specialization. The WIL trace combines positive and negative contributions, while Persuade retains its rating beside the adjusted Test target. The player PDF spans three A4 pages and the GM PDF two; every grayscale page was inspected. Trait entries now stay together at page breaks. Mobile review at 320 px verified the named skill table's horizontal scroll region, readable skill labels, and penalty sources. Save/reload, removal, backup restore, and rejection of Unknown imports passed without browser errors.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).
