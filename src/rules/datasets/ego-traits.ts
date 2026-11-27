@@ -10,6 +10,7 @@ type EgoTrait = {
   cpByLevel: readonly number[];
   effect: string;
   checkModifier?: { aptitude: Aptitude; perLevel: number };
+  selection?: 'contact' | 'morph';
 };
 
 const checkTrait = (id: string, name: string, aptitude: Aptitude): EgoTrait => ({
@@ -21,11 +22,13 @@ export const egoTraits: readonly EgoTrait[] = [
   checkTrait('acumen', 'Acumen', 'cog'),
   { id: 'adaptability', name: 'Adaptability', cpByLevel: [2, 4], effect: '+10 per level on Integration and Resleeving Stress Tests.' },
   { id: 'common-sense', name: 'Common Sense', cpByLevel: [2], effect: 'Ask the GM for advice once per session.' },
+  { id: 'contact', name: 'Contact', cpByLevel: [1], selection: 'contact', effect: '+10 on Rep Tests using this contact in the chosen network. Agree the relationship with the GM.' },
   { id: 'direction-sense', name: 'Direction Sense', cpByLevel: [1], effect: 'Know your orientation and gain +10 on navigation tests.' },
   checkTrait('empathy', 'Empathy', 'sav'),
   { id: expertTraining.id, name: 'Expert Training', cpByLevel: [expertTraining.cost], effect: `The chosen skill has a starting cap of ${expertTraining.cap}.` },
   checkTrait('fitness', 'Fitness', 'som'),
   checkTrait('good-instincts', 'Good Instincts', 'int'),
+  { id: 'morph-familiarity', name: 'Morph Familiarity', cpByLevel: [1], selection: 'morph', effect: 'Skip Integration Tests when sleeving this morph type.' },
   checkTrait('quickness', 'Quickness', 'ref'),
   checkTrait('resolve', 'Resolve', 'wil'),
   { id: 'bad-luck', name: 'Bad Luck', cpByLevel: [-6], effect: 'You cannot spend pool points to reverse the digits of a roll.' },

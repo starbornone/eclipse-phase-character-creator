@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T19:07:32+11:00",
+  "updatedAt": "2026-11-27T19:14:28+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -308,6 +308,13 @@
       "group": "Character creation",
       "notes": "Added Acumen, Empathy, Fitness, Good Instincts, Quickness, and Resolve at three levels each. Check targets add five per level after aptitude multiplication, with trait source traces in the dossier and both print layouts. CP costs and backup validation use existing trait selections. Verified partial aptitudes, zeroes, level changes and removal, unchanged skill bases and language thresholds, save/reload/restore, keyboard access, 320 px layout, and every page of player/GM grayscale PDFs. All 111 tests and the production build pass.",
       "completedAt": "2026-11-27T19:07:32+11:00"
+    },
+    {
+      "id": "support-repeatable-contact-and-morph-traits",
+      "title": "Support repeatable Contact and Morph Familiarity purchases",
+      "group": "Character creation",
+      "notes": "Added one-CP Contact purchases with a name and reputation network, and Morph Familiarity purchases with a morph type. Shared normalized scope keys prevent duplicates while preserving existing singleton trait validation. Each entry has independent add/remove controls, CP accounting, backup fields, dossier and player/GM print summaries, and persists across resleeving. Verified malformed imports preserve saved drafts, restore-as-copy, keyboard access, 320 px layout, and every page of grayscale PDFs. All 118 tests and the production build pass.",
+      "completedAt": "2026-11-27T19:14:28+11:00"
     }
   ]
 }

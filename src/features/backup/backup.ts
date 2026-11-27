@@ -5,7 +5,7 @@ import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
 import { isStartingReputationScore } from '../../rules/calculations/reputation.ts';
 import { personalMotivationSlots } from '../../rules/calculations/motivations.ts';
 import { resolveCustomActiveField } from '../../rules/calculations/active-fields.ts';
-import { evaluateEgoTraitBudget } from '../../rules/calculations/ego-traits.ts';
+import { egoTraitChoiceKey, evaluateEgoTraitBudget, normalizeTraitDetail, scopedEgoTraitIssue } from '../../rules/calculations/ego-traits.ts';
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
@@ -13,7 +13,7 @@ import { findGearCampaign } from '../../rules/datasets/starting-gear.ts';
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
-import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, PersonalMotivations, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
+import type { AptitudeScores, CharacterDraft, CreationPackages, Ego, EgoTraitChoice, PersonalMotivations, ReputationScores, ResleevingEvent, Sleeve } from '../../types/character.ts';
 
 const format = 'eclipse-phase-character-backup';
 const backupVersion = 1;
@@ -176,6 +176,17 @@ function readEgoTraits(value: unknown, path: string) {
     if (typeof level !== 'number' || !Number.isInteger(level) || level < 1 || level > definition.cpByLevel.length) {
       badField(`${field}.level`, 'a supported level for this trait');
     }
+    if (definition.selection) {
+      if (choice.skillId !== undefined) badField(`${field}.skillId`, 'absent for this trait');
+      const detail = normalizeTraitDetail(string(choice.detail, `${field}.detail`, true));
+      const network = choice.network === undefined ? undefined : reputationNetworks.find(({ id }) => id === choice.network)?.id;
+      if (choice.network !== undefined && !network) badField(`${field}.network`, 'a supported reputation network');
+      const selected: EgoTraitChoice = { id, level, detail, ...(network ? { network } : {}) };
+      const issue = scopedEgoTraitIssue(selected);
+      if (issue) badField(field, `a valid trait selection: ${issue}`);
+      return selected;
+    }
+    if (choice.detail !== undefined || choice.network !== undefined) badField(field, 'without contact or morph details for this trait');
     if (id === expertTraining.id) {
       const skillId = string(choice.skillId, `${field}.skillId`, true);
       if (!skillNameFromId(skillId)) badField(`${field}.skillId`, 'a supported skill ID');
@@ -184,7 +195,7 @@ function readEgoTraits(value: unknown, path: string) {
     if (choice.skillId !== undefined) badField(`${field}.skillId`, 'absent for this trait');
     return { id, level };
   });
-  ensureUnique(traits.map(({ id }) => id), path);
+  ensureUnique(traits.map(egoTraitChoiceKey), path);
   if (evaluateEgoTraitBudget(traits).bonus > coreAptitudeRules.maximumTraitBonus) {
     badField(path, `within the ${coreAptitudeRules.maximumTraitBonus} CP limit for negative traits`);
   }

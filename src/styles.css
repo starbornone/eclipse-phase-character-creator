@@ -292,6 +292,7 @@ section.comparison { padding: 1.25rem; }
 .skill-transfers .identity-fields { align-items: end; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .skill-transfers .identity-fields button { justify-self: start; }
 .skill-transfers li { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.repeatable-traits li .button { flex-shrink: 0; }
 input[aria-invalid="true"] { border-color: var(--error); }
 textarea { resize: vertical; }
 .morph-picker fieldset { min-width: 0; }

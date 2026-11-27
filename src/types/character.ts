@@ -64,6 +64,8 @@ export interface EgoTraitChoice {
   id: string;
   level: number;
   skillId?: string;
+  detail?: string;
+  network?: ReputationNetwork;
 }
 
 export interface Ego {

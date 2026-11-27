@@ -5,6 +5,7 @@ import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
 import { egoTraits, egoTraitsSource, expertTraining } from '../rules/datasets/ego-traits.ts';
 import type { EgoTraitChoice } from '../types/character.ts';
 import { Card } from './ui/card.tsx';
+import { RepeatableEgoTraits } from './RepeatableEgoTraits.tsx';
 
 function describeCp(cp: number) {
   return cp > 0 ? `${cp} CP cost` : `${-cp} CP bonus`;
@@ -34,7 +35,7 @@ export function EgoTraitEditor({ choices, onChange }: {
       <p className="muted">Choose from the supported traits. Negative traits can add up to {maximumTraitBonus} CP.</p>
       <p className="rules-note">Acumen, Empathy, Fitness, Good Instincts, Quickness, and Resolve add to aptitude checks in the dossier. Skill bases and aptitude scores stay the same.</p>
       <div className="identity-fields">
-        {egoTraits.filter(({ id }) => id !== expertTraining.id).map(({ id, name, cpByLevel, effect }) => (
+        {egoTraits.filter(({ id, selection }) => id !== expertTraining.id && !selection).map(({ id, name, cpByLevel, effect }) => (
           <div key={id}>
             <label>
               {name}
@@ -54,6 +55,7 @@ export function EgoTraitEditor({ choices, onChange }: {
         ))}
       </div>
       {issue && <p className="error" role="alert">{issue}</p>}
+      <RepeatableEgoTraits choices={choices} onChange={onChange} />
       <p className="rules-note"><a href={egoTraitsSource}>Core ego trait rules</a></p>
     </Card>
   );
@@ -67,9 +69,10 @@ export function EgoTraitSummary({ choices }: { choices?: EgoTraitChoice[] }) {
     <section>
       <h3>Ego traits</h3>
       <ul>
-        {traits.map(({ id, name, level, cpByLevel, effect, skillId }) => (
-          <li key={id}>
+        {traits.map(({ key, name, level, cpByLevel, effect, skillId, detail, network }) => (
+          <li key={key}>
             <strong>{name}{cpByLevel.length > 1 && ` · Level ${level}`}</strong>
+            {detail && <p>{detail}{network && ` · ${network}`}</p>}
             {skillId && <p>Skill <strong>{skillNameFromId(skillId)}</strong></p>}
             <p>{effect}</p>
           </li>
