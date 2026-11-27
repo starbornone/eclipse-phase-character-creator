@@ -59,6 +59,10 @@ All 14 core careers are available, each with its sourced skill grants and matchi
 
 **Hacker**, **Scavenger**, **Scientist**, and **Techie** also have matching gear packs and two optional Know fields. The last three offer a Hardware field; Scavenger also offers a Pilot field. Use a suggested field or enter a custom one. Leaving a field blank keeps those points pending. Choosing Demolitions for Scavenger's open Hardware field combines it with the package's fixed Demolitions grant; review the cap before play.
 
+All 15 core interests that do not require Psi are available, from **Animal Handler** to **Survivalist**. **Async** awaits Psi trait and skill support. **Pilot** offers a 30-point Hardware field and two separate Pilot fields worth 30 and 40 points. Fill them independently; matching fields combine and can exceed the cap. **Jammer** has one 40-point Pilot field. **Animal Handler** and **Forensics Specialist** supply their fixed Active fields directly. **Jack-of-All-Trades** splits its Active points into four 25-point grants.
+
+For **Artist/Icon**, enter an artistic Know field such as Music and choose **Art field** in the ledger to link it to Intuition. Other interests with an open Know field use the same control. Changing interest clears the previous package's field selections and rechecks saved allocations; save the draft to retain the new selection.
+
 Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted separately as unassigned Active or Know points. Matching fields from different packages combine in the ledger, which flags totals above the starting cap.
 
 Under **Allocate skill points**, select a source skill and destination, enter a positive number of points, and select **Add transfer**. For a new destination, choose a skill from the **New Active skill** group or select **New Know field…** and enter a name. Select **Art field (Intuition)** to use Intuition for the new field. Active package points can move to either skill type. Know package points can move to another Know skill. Destination totals must stay at or below 80.
