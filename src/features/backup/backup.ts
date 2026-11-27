@@ -267,6 +267,9 @@ function readEgo(value: unknown, path: string): Ego {
   const campaign = ego.startingCampaign === undefined ? undefined
     : findGearCampaign(string(ego.startingCampaign, `${path}.startingCampaign`, true));
   if (ego.startingCampaign !== undefined && !campaign) badField(`${path}.startingCampaign`, 'a supported starting campaign');
+  if (ego.startingInfomorphPack !== undefined && ego.startingInfomorphPack !== true) {
+    badField(`${path}.startingInfomorphPack`, 'true when the optional Infomorph pack is selected');
+  }
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -279,6 +282,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(ego.personalMotivations === undefined ? {} : { personalMotivations: readPersonalMotivations(ego.personalMotivations, `${path}.personalMotivations`) }),
     ...(campaign ? { startingCampaign: campaign.id } : {}),
+    ...(ego.startingInfomorphPack ? { startingInfomorphPack: true } : {}),
     ...(ego.startingGearSwaps === undefined ? {} : {
       startingGearSwaps: readStartingGearSwaps(ego.startingGearSwaps, `${path}.startingGearSwaps`),
     }),
@@ -369,8 +373,13 @@ export function previewBackup(text: string): BackupPreview {
   const parsed = records.map(readDraft);
   const drafts = parsed.map(({ draft }) => draft);
   drafts.forEach((draft, index) => {
-    const swaps = draft.ego.startingGearSwaps;
-    if (swaps?.length && startingGearForDraft(draft).appliedSwaps.length !== swaps.length) {
+    const { startingGearSwaps: swaps, startingInfomorphPack } = draft.ego;
+    if (!startingInfomorphPack && !swaps?.length) return;
+    const gear = startingGearForDraft(draft);
+    if (startingInfomorphPack && !gear.usesInfomorphPack) {
+      badField(`Draft ${index + 1}.ego.startingInfomorphPack`, 'selected only for an infomorph first sleeve');
+    }
+    if (swaps?.length && gear.appliedSwaps.length !== swaps.length) {
       badField(`Draft ${index + 1}.ego.startingGearSwaps`, 'unique equal-GP replacements for active starting pack items');
     }
   });

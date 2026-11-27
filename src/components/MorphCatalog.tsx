@@ -1,28 +1,47 @@
-import { Atom, Bot, Dna } from 'lucide-react';
+import { Atom, Bot, Dna, Monitor } from 'lucide-react';
 import { useRef, useState } from 'react';
-import { quickStartPageUrl, quickStartRules, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
+import { quickStartRules, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { MorphDefinition } from '../types/character.ts';
 import { Card } from './ui/card.tsx';
 
+const poolFields = [
+  ['insight', 'Insight'],
+  ['moxie', 'Moxie'],
+  ['vigor', 'Vigor'],
+  ['flex', 'Morph Flex'],
+] as const;
+
 export function MorphIcon({ morph }: { morph: MorphDefinition }) {
-  const Icon = morph.category === 'Biomorph' ? Dna : morph.id === 'case' || morph.id === 'vector-frame' ? Atom : Bot;
+  const Icon = morph.category === 'Infomorph' ? Monitor
+    : morph.category === 'Biomorph' ? Dna
+    : morph.id === 'case' || morph.id === 'vector-frame' ? Atom : Bot;
   return <span aria-hidden="true" className={`morph-icon ${morph.id}`}><Icon size={20} /></span>;
 }
 
 export function MorphStats({ morph }: { morph: MorphDefinition }) {
+  const { pools } = morph;
   return (
     <span className="morph-stats">
       <span>Durability <strong>{morph.durability}</strong></span>
       {morph.woundThreshold !== undefined && <span>Wound threshold <strong>{morph.woundThreshold}</strong></span>}
       {morph.deathRating !== undefined && <span>Death rating <strong>{morph.deathRating}</strong></span>}
+      {morph.morphPoints !== undefined && <span>Cost <strong>{morph.morphPoints} MP</strong></span>}
+      {pools && poolFields.map(([id, label]) => (
+        <span key={id}>{label} <strong>{pools[id]}</strong></span>
+      ))}
     </span>
   );
 }
 
 export function MorphSource({ morph }: { morph: MorphDefinition }) {
-  return morph.sourcePage === undefined
-    ? <p className="rules-note">Legacy morph profile. Its durability is illustrative.</p>
-    : <p className="rules-note"><a href={quickStartPageUrl(morph.sourcePage)}>Quick-Start Rules, p. {morph.sourcePage}</a></p>;
+  if (!morph.source) return <p className="rules-note">Legacy morph profile. Its durability is illustrative.</p>;
+  return (
+    <p className="rules-note">
+      <a href={morph.source.url}>{morph.source.label}</a>
+      {morph.category === 'Infomorph' && <> · <a href={quickStartRules.publisherUrl}>{quickStartRules.publisher}</a> ·{' '}
+        <a href={quickStartRules.licenseUrl}>{quickStartRules.license}</a></>}
+    </p>
+  );
 }
 
 export function QuickStartCredit() {
@@ -74,6 +93,18 @@ export function MorphProfileTable({ columns, titleId, noteId }: {
               {columns.map(({ id, morph }) => <td key={id}>{morph?.[field] ?? 'Unverified'}</td>)}
             </tr>
           ))}
+          {columns.some(({ morph }) => morph?.morphPoints !== undefined) && (
+            <tr>
+              <th scope="row">Cost (MP)</th>
+              {columns.map(({ id, morph }) => <td key={id}>{morph?.morphPoints ?? 'Unverified'}</td>)}
+            </tr>
+          )}
+          {columns.some(({ morph }) => morph?.pools) && poolFields.map(([field, label]) => (
+            <tr key={field}>
+              <th scope="row">{label}</th>
+              {columns.map(({ id, morph }) => <td key={id}>{morph?.pools?.[field] ?? 'Unverified'}</td>)}
+            </tr>
+          ))}
           <tr>
             <th scope="row">Source</th>
             {columns.map(({ id, morph }) => <td key={id}>{morph ? <MorphSource morph={morph} /> : 'Unavailable'}</td>)}
@@ -92,7 +123,7 @@ function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onCle
         <button type="button" className="button secondary" onClick={onClear}>Clear comparison</button>
       </div>
       <p className="muted" id="comparison-note">
-        Creation restrictions are unverified for these Quick-Start profiles.
+        Quick-Start profiles show published sample health. Core infomorph profiles also show their listed costs and pools.
       </p>
       <MorphProfileTable
         columns={morphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}
@@ -137,7 +168,7 @@ export function MorphCatalog() {
     <>
       <header className="page-heading">
         <h1 tabIndex={-1}>Morph library</h1>
-        <p>Browse sample bodies for your first sleeve. These profiles show the health values published in the Quick-Start Rules.</p>
+        <p>Browse Quick-Start morphs and core infomorphs for your first sleeve.</p>
       </header>
       <div className="catalog-filters">
         <label>

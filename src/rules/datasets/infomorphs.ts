@@ -1,0 +1,36 @@
+import type { MorphDefinition } from '../../types/character.ts';
+
+// Eclipse Phase Second Edition, Infomorphs, p. 67, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
+const sourceUrl = 'https://eclipsephase.github.io/en/04/26-infomorphs.html';
+const source = (id: string) => ({ label: 'Core rules, p. 67', url: `${sourceUrl}#${id}` });
+
+export const coreInfomorphs: readonly MorphDefinition[] = [
+  {
+    id: 'digimorph', name: 'Digimorph', category: 'Infomorph',
+    description: 'A basic digital sleeve for running an ego without a physical body.',
+    durability: 25, woundThreshold: 5, deathRating: 50, morphPoints: 0,
+    pools: { insight: 0, moxie: 0, vigor: 0, flex: 0 },
+    source: source('digimorph'),
+  },
+  {
+    id: 'ikon', name: 'Ikon', category: 'Infomorph',
+    description: 'A digital sleeve for performers and social work on the mesh.',
+    durability: 30, woundThreshold: 6, deathRating: 60, morphPoints: 1,
+    pools: { insight: 1, moxie: 3, vigor: 0, flex: 0 },
+    source: source('ikon'),
+  },
+  {
+    id: 'agent', name: 'Agent', category: 'Infomorph',
+    description: 'A digital sleeve specialized for information security.',
+    durability: 40, woundThreshold: 8, deathRating: 80, morphPoints: 2,
+    pools: { insight: 4, moxie: 0, vigor: 0, flex: 0 },
+    source: source('agent'),
+  },
+  {
+    id: 'operator', name: 'Operator', category: 'Infomorph',
+    description: 'A digital sleeve for remotely operating drones and other machines.',
+    durability: 35, woundThreshold: 7, deathRating: 70, morphPoints: 2,
+    pools: { insight: 3, moxie: 0, vigor: 0, flex: 1 },
+    source: source('operator'),
+  },
+];

@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status:** Early prototype. Start an ego with core aptitude templates, nine core backgrounds, all 14 core careers, the core faction choices, and all 15 non-Psi interests; review skill allocations, aptitude checks, and derived ego stats; compare and resleeve Quick-Start morphs; and print or back up your draft.
+> **Status:** Early prototype. Start an ego with core aptitude templates, nine core backgrounds, all 14 core careers, the core faction choices, and all 15 non-Psi interests. Review skill allocations and derived stats, compare and resleeve Quick-Start morphs and core infomorphs, and print or back up your draft.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
@@ -10,7 +10,7 @@ A TypeScript web application for creating, validating, saving, and printing **Ec
 
 With Node.js 22.12 or later, run `npm ci` and `npm run dev`, then open the local URL printed by Vite. Run `npm test` for calculation checks and `npm run build` for a type-checked production build.
 
-The prototype uses selected Quick-Start morph health profiles and the Second Edition aptitude check rule. Full character creation is planned.
+The prototype includes selected Quick-Start morph health profiles, all four core infomorph profiles, and their optional starting gear pack. Full character creation is planned.
 
 ## Documentation
 
@@ -37,7 +37,7 @@ The prototype uses selected Quick-Start morph health profiles and the Second Edi
 
 ## Licensing and content policy
 
-Posthuman Studios provides base licensing terms for Eclipse Phase releases. The prototype adapts Quick-Start Rules v2.4 game data for noncommercial use under CC BY-NC-SA 4.0. The app credits the publisher on screen and in print. See [Rules sources and content policy](docs/rules-sources.md) for the release-specific checks.
+Posthuman Studios provides base licensing terms for Eclipse Phase releases. The prototype adapts Quick-Start Rules v2.4 and selected Second Edition core game data for noncommercial use under CC BY-NC-SA 4.0. The app credits the publisher on screen and in print. See [Rules sources and content policy](docs/rules-sources.md) for the release-specific checks.
 
 Project policy:
 

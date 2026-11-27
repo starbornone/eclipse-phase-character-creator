@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { deriveStartingGear, startingGearForDraft } from '../rules/calculations/starting-gear.ts';
+import { deriveStartingGear, startingGearForDraft, startingGearReplacements } from '../rules/calculations/starting-gear.ts';
 import { coreCreationPackages } from '../rules/datasets/creation-packages.ts';
 import { careerGearPacks } from '../rules/datasets/starting-gear.ts';
 import { encodeBackup, previewBackup } from '../features/backup/backup.ts';
@@ -149,4 +149,53 @@ test('backups and player print retain swaps tied to the first sleeve and reject 
   assert.throws(() => previewBackup(encodeBackup([{ ...next, sleeves: [...next.sleeves].reverse() }])), /equal-GP replacements/);
   const duplicate = { ...draft, ego: { ...draft.ego, startingGearSwaps: [swapTacNet, { ...swapTacNet, replacement: 'Tracker App' }] } };
   assert.throws(() => previewBackup(encodeBackup([duplicate])), /unique equal-GP replacements/);
+});
+
+test('the optional Infomorph pack replaces only the campaign pack and keeps its sourced gear', () => {
+  const defaults = deriveStartingGear('firewall', 'academic', 'Infomorph');
+  const { packs, usesInfomorphPack } = deriveStartingGear('firewall', 'academic', 'Infomorph', [], true);
+  assert.equal(usesInfomorphPack, true);
+  assert.equal(packs.length, 2);
+  assert.equal(packs[0].gp, 10);
+  assert.equal(packs[0].usesSynthAlternatives, false);
+  assert.ok(packs[0].source.endsWith('#optional-pack-infomorph'));
+  assert.deepEqual(packs[0].items.map(({ name, gp }) => [name, gp]), [
+    ['Drone Rig', 2], ['Enhanced Security', 2], ['Exploit App', 2], ['Gnat', 1], ['Guardian Angel', 2], ['Private Server', 1],
+  ]);
+  assert.deepEqual(packs[0].items.filter(({ restricted }) => restricted).map(({ name }) => name), ['Exploit App']);
+  assert.equal(defaults.packs[0].name, 'Firewall Agent / Criminal');
+  assert.deepEqual(packs[1], defaults.packs[1]);
+  for (const category of ['Biomorph', 'Synthmorph', undefined]) {
+    assert.deepEqual(deriveStartingGear('firewall', 'academic', category, [], true), deriveStartingGear('firewall', 'academic', category));
+    assert.ok(!startingGearReplacements(category).some(({ name }) => name === 'Drone Rig'));
+  }
+  const swap = { packId: 'optional-pack-infomorph', item: 'Drone Rig', replacement: 'TacNet App' };
+  const swapped = deriveStartingGear('firewall', 'academic', 'Infomorph', [swap], true);
+  assert.deepEqual(swapped.appliedSwaps, [swap]);
+  assert.equal(swapped.packs[0].gp, 10);
+  assert.deepEqual(deriveStartingGear('firewall', 'academic', 'Infomorph', [swap]).appliedSwaps, []);
+  const regularPackSwap = { packId: 'firewall-agentcriminal', item: 'TacNet App', replacement: 'Drone Rig' };
+  assert.deepEqual(deriveStartingGear('firewall', 'academic', 'Infomorph', [regularPackSwap]).appliedSwaps, [regularPackSwap]);
+});
+
+test('save-oriented models preserve the optional pack across resleeving and back up only eligible selections', () => {
+  const updatedAt = '2026-11-28T00:00:00.000Z';
+  const draft = {
+    schemaVersion: 2, rulesVersion: 'ep2-quick-start-2.4', revision: 1, updatedAt,
+    ego: { id: 'info-test', name: 'Infomorph test', pronouns: '', concept: '', aptitudes: {},
+      startingCampaign: 'firewall', startingInfomorphPack: true },
+    sleeves: [{ id: 'first', egoId: 'info-test', morphDefinitionId: 'operator', assignedAt: updatedAt }],
+  };
+  for (const audience of ['player', 'gm']) {
+    assert.equal(buildPrintableDossier(draft, audience, []).morph.id, 'operator');
+  }
+  const next = recordResleeving(draft, 'second', 'synth', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  const restored = previewBackup(encodeBackup([next])).drafts[0];
+  assert.deepEqual(restored, next);
+  const player = buildPrintableDossier(restored, 'player', []);
+  assert.equal(player.morph.id, 'synth');
+  assert.equal(player.startingGear.packs[0].name, 'Infomorph');
+  assert.throws(() => previewBackup(encodeBackup([{ ...draft, sleeves: [] }])), /infomorph first sleeve/);
+  assert.throws(() => previewBackup(encodeBackup([{ ...next, sleeves: [...next.sleeves].reverse() }])), /infomorph first sleeve/);
+  assert.throws(() => previewBackup(encodeBackup([{ ...draft, ego: { ...draft.ego, startingInfomorphPack: 'true' } }])), /true when/);
 });

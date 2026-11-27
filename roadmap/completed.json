@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:26:51+11:00",
+  "updatedAt": "2026-11-28T01:32:15+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -350,6 +350,13 @@
       "group": "Character creation",
       "notes": "Added equal-GP replacements with source links and Restricted labels. Verified first-sleeve alternatives, payload-cost exclusions, backup round-trip and rejection of invalid or duplicate swaps, original-item restoration, stale choices, save and reload, resleeving, 390 px layout, and the player print preview with print styling. All 145 tests and the production build pass.",
       "completedAt": "2026-11-28T01:26:51+11:00"
+    },
+    {
+      "id": "add-core-infomorphs-and-gear-pack",
+      "title": "Add core infomorph sleeves and their optional starting gear pack",
+      "group": "Character creation",
+      "notes": "Added Digimorph, Ikon, Agent, and Operator with sourced health, MP costs, and pools. Added the optional 10 GP Infomorph pack in the campaign slot with equal-GP swap support. Verified eligibility, backup validation, filtering and comparison, 390 px layout, save and reload, resleeving, and both print previews. All 148 tests and the production build pass.",
+      "completedAt": "2026-11-28T01:32:15+11:00"
     }
   ]
 }

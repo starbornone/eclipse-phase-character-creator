@@ -22,6 +22,7 @@ export interface GearPack {
 const gear = (name: string, gp: number): GearItem => ({ name, gp });
 const replaceOnSynth = (name: string, gp: number): GearItem => ({ name, gp, replacedOnSynth: true });
 const mediumPistol = { name: 'Medium Pistol Firearm', gp: 1, restricted: true };
+const exploitApp = { name: 'Exploit App', gp: 2, restricted: true };
 const tacNet = gear('TacNet App', 2);
 const archive = gear('Portable SolArchive', 1);
 const synthArmor = [gear('Anti-Glare', 1), gear('Industrial Armor', 1)];
@@ -42,6 +43,15 @@ const gatecrashing: GearPack = {
     mediumPistol, archive, replaceOnSynth('Standard Vacsuit', 3), tacNet,
   ],
   synthAlternatives: [...synthArmor, gear('Medichines', 3)],
+};
+
+// Core rules, p. 68, Campaign Packs.
+export const infomorphGearPack: GearPack = {
+  name: 'Infomorph', anchor: 'optional-pack-infomorph',
+  items: [
+    gear('Drone Rig', 2), gear('Enhanced Security', 2), exploitApp,
+    gear('Gnat', 1), gear('Guardian Angel', 2), gear('Private Server', 1),
+  ],
 };
 
 export const gearCampaigns = [
@@ -104,7 +114,7 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
   ['hacker', {
     name: 'Hacker', anchor: 'hacker',
     items: [
-      { name: 'Exploit App', gp: 2, restricted: true }, gear('Gray Box', 1), gear('Radio Booster', 1),
+      exploitApp, gear('Gray Box', 1), gear('Radio Booster', 1),
       gear('Sniffer App', 2), { name: 'Spoofer App', gp: 2, restricted: true }, gear('Tracker App', 2),
     ],
   }],

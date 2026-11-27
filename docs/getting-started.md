@@ -97,7 +97,9 @@ Choosing a synthmorph as the first sleeve applies the listed campaign and career
 
 Expand **Swap [pack name] gear** and choose a replacement for a fixed-cost item. The list offers gear of the same GP from the supported campaign and career packs and labels Restricted entries. Select **Keep [item name]** to restore the original. If a pack or first-morph change invalidates a swap, the editor displays a notice. Return to the earlier choice before saving to recover the swap.
 
-The dossier and player print preview show the replacement, its source, and which item it replaced. JSON backups preserve the campaign and the applied swaps. Gear chapter choices, the optional infomorph pack, and extra gear purchases are planned.
+For a Digimorph, Ikon, Agent, or Operator first sleeve, you can select **Use the optional Infomorph pack in place of the campaign pack**. This gives you the 10 GP Infomorph pack alongside your career pack and free muse. Clear the checkbox to return to the chosen campaign pack. The Infomorph pack's fixed-cost items are also available as equal-GP swaps when your first sleeve is an infomorph.
+
+The dossier and player print preview show the packs and each replacement, its source, and which item it replaced. JSON backups preserve the campaign, optional pack choice, and applied swaps. Resleeving keeps the first sleeve's gear setup. Gear chapter choices and extra gear purchases are planned.
 
 The **Soldier** career pack also has a synthmorph alternative: **Fixer Swarm** replaces **Meds (5 doses)** when the first sleeve is synthetic. Both versions cost 10 GP. The Enforcer pack shows the Shredder’s Restricted label, and the Soldier pack labels the Assault Rifle Railgun as Restricted. Gear is listed for reference; its effects are not automatically applied to checks or pools.
 
@@ -142,7 +144,7 @@ These values use aptitude scores. Resolve, Quickness, Good Instincts, and Harden
 
 ## Compare morph profiles
 
-Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
+Open **Morph library**. Search by name or description, or choose a category such as **Infomorph**. Select two or three **Compare** checkboxes to see health values and source links side by side. Core infomorphs also show their published Morph Point costs and pools as reference values. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
 
 ## Resleeve an ego
 

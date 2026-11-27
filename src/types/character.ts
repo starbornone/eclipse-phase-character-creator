@@ -86,6 +86,7 @@ export interface Ego {
   packages?: CreationPackages;
   personalMotivations?: PersonalMotivations;
   startingCampaign?: GearCampaign;
+  startingInfomorphPack?: true;
   startingGearSwaps?: StartingGearSwap[];
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
@@ -97,12 +98,14 @@ export interface Ego {
 export interface MorphDefinition {
   id: string;
   name: string;
-  category: 'Biomorph' | 'Synthmorph';
+  category: 'Biomorph' | 'Synthmorph' | 'Infomorph';
   description: string;
   durability: number;
   woundThreshold?: number;
   deathRating?: number;
-  sourcePage?: number;
+  morphPoints?: number;
+  pools?: { insight: number; moxie: number; vigor: number; flex: number };
+  source?: { label: string; url: string };
 }
 
 export interface Sleeve {

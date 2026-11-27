@@ -1,4 +1,4 @@
-import { careerGearPacks, findGearCampaign, gearCampaigns, gearPacksSource } from '../datasets/starting-gear.ts';
+import { careerGearPacks, findGearCampaign, gearCampaigns, gearPacksSource, infomorphGearPack } from '../datasets/starting-gear.ts';
 import type { GearPack } from '../datasets/starting-gear.ts';
 import { findSampleMorph } from '../datasets/sample-morphs.ts';
 import type { CharacterDraft, MorphDefinition, StartingGearSwap } from '../../types/character.ts';
@@ -14,7 +14,8 @@ function gearPackContents(pack: GearPack, morphCategory?: MorphDefinition['categ
 }
 
 export function startingGearReplacements(morphCategory?: MorphDefinition['category']) {
-  const entries = availablePacks.flatMap((pack) => {
+  const sourcePacks = morphCategory === 'Infomorph' ? [...availablePacks, infomorphGearPack] : availablePacks;
+  const entries = sourcePacks.flatMap((pack) => {
     const { items, source } = gearPackContents(pack, morphCategory);
     return items.filter(({ additionalGpCost }) => !additionalGpCost).map((item) => ({ ...item, source }));
   });
@@ -32,12 +33,14 @@ export function deriveStartingGear(
   careerId?: string,
   morphCategory?: MorphDefinition['category'],
   swaps: readonly StartingGearSwap[] = [],
+  useInfomorphPack = false,
 ) {
-  const campaign = findGearCampaign(campaignId);
+  const usesInfomorphPack = useInfomorphPack && morphCategory === 'Infomorph';
+  const campaignPack = usesInfomorphPack ? infomorphGearPack : findGearCampaign(campaignId)?.pack;
   const career = careerId === undefined ? undefined : careerGearPacks.get(careerId);
   const replacements = swaps.length ? startingGearReplacements(morphCategory) : [];
   const appliedSwaps: StartingGearSwap[] = [];
-  const packs = [campaign?.pack, career].flatMap((pack) => {
+  const packs = [campaignPack, career].flatMap((pack) => {
     if (!pack) return [];
     const base = gearPackContents(pack, morphCategory);
     const items = base.items.map((original) => {
@@ -60,10 +63,11 @@ export function deriveStartingGear(
       hasAdditionalGpCosts: items.some(({ additionalGpCost }) => Boolean(additionalGpCost)),
     }];
   });
-  return { packs, appliedSwaps };
+  return { packs, appliedSwaps, usesInfomorphPack };
 }
 
 export function startingGearForDraft(draft: CharacterDraft) {
   const firstMorph = findSampleMorph(draft.sleeves[0]?.morphDefinitionId);
-  return deriveStartingGear(draft.ego.startingCampaign, draft.ego.packages?.career?.id, firstMorph?.category, draft.ego.startingGearSwaps);
+  const { startingCampaign, packages, startingGearSwaps, startingInfomorphPack } = draft.ego;
+  return deriveStartingGear(startingCampaign, packages?.career?.id, firstMorph?.category, startingGearSwaps, startingInfomorphPack);
 }

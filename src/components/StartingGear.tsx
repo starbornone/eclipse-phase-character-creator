@@ -61,15 +61,17 @@ function GearContents({ packs, replacements, onSwap }: {
   );
 }
 
-export function StartingGearEditor({ campaign, career, morphCategory, swaps, onChange, onSwapsChange }: {
+export function StartingGearEditor({ campaign, career, morphCategory, swaps, useInfomorphPack, onChange, onSwapsChange, onInfomorphPackChange }: {
   campaign?: GearCampaign;
   career?: string;
   morphCategory?: MorphDefinition['category'];
   swaps: StartingGearSwap[];
+  useInfomorphPack: boolean;
   onChange: (value?: GearCampaign) => void;
   onSwapsChange: (swaps: StartingGearSwap[]) => void;
+  onInfomorphPackChange: (selected: boolean) => void;
 }) {
-  const { packs, appliedSwaps } = deriveStartingGear(campaign, career, morphCategory, swaps);
+  const { packs, appliedSwaps, usesInfomorphPack } = deriveStartingGear(campaign, career, morphCategory, swaps, useInfomorphPack);
   function updateSwap(swap: StartingGearSwap) {
     const next = swaps.filter(({ packId, item }) => packId !== swap.packId || item !== swap.item);
     if (swap.replacement) next.push(swap);
@@ -88,9 +90,16 @@ export function StartingGearEditor({ campaign, career, morphCategory, swaps, onC
           </select>
         </label>
       </div>
+      {morphCategory === 'Infomorph' && (
+        <label className="compare-toggle">
+          <input type="checkbox" checked={usesInfomorphPack} onChange={(event) => onInfomorphPackChange(event.target.checked)} />
+          <span>Use the optional Infomorph pack in place of the campaign pack</span>
+        </label>
+      )}
       <p className="rules-note">Your career adds a second pack. Swap fixed-cost items for gear of the same GP from the supported packs.</p>
       {campaign && !morphCategory && <p className="rules-note">Choose a first morph to apply any synthmorph alternatives.</p>}
       <div role="status">
+        {useInfomorphPack && !usesInfomorphPack && <p className="rules-note">The optional Infomorph pack requires an infomorph first sleeve. Saving will use the selected campaign pack.</p>}
         {appliedSwaps.length < swaps.length && <p className="rules-note">Some swaps no longer fit these packs or the first morph. Saving will remove those swaps.</p>}
       </div>
       <GearContents packs={packs} replacements={packs.length ? startingGearReplacements(morphCategory) : undefined} onSwap={updateSwap} />

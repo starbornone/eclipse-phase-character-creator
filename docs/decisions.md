@@ -92,4 +92,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Swaps preserve pack totals. Inactive choices can return if the player restores the earlier selection before saving. A save keeps applicable swaps, and an import validates every supplied swap before restore. Resleeving preserves the original first-sleeve context. [Core gear pack rules](https://eclipsephase.github.io/en/04/27-gear-packs.html#gear-packs)
 
+## 12. Offer the optional Infomorph pack in the campaign slot
+
+**Context.** The core book places the optional 10 GP Infomorph pack in its Campaign Packs section and assigns two starting gear packs to each character.
+
+**Decision.** Let a player with an infomorph first sleeve opt into the Infomorph pack for the campaign slot. Save the choice independently of the campaign so the original campaign pack can be restored.
+
+**Consequences.** The career still supplies its own pack. The first sleeve governs eligibility for the pack and its swap items across edits, backup restore, and later resleeving. [Core campaign packs](https://eclipsephase.github.io/en/04/27-gear-packs.html#optional-pack-infomorph)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

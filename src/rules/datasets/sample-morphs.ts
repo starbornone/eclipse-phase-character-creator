@@ -1,4 +1,5 @@
 import type { MorphDefinition } from '../../types/character.ts';
+import { coreInfomorphs } from './infomorphs.ts';
 
 export const quickStartRules = {
   title: 'Eclipse Phase Second Edition Quick-Start Rules',
@@ -15,6 +16,8 @@ export function quickStartPageUrl(printedPage: number) {
   return `${quickStartRules.url}#page=${printedPage + 1}`;
 }
 
+const source = (page: number) => ({ label: `Quick-Start Rules, p. ${page}`, url: quickStartPageUrl(page) });
+
 // Adapted from the Quick-Start Rules' NPC Stats, pp. 24–25. Health values
 // describe these published examples. NPC threat pools are excluded.
 export const sampleMorphs: readonly MorphDefinition[] = [
@@ -26,7 +29,7 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     durability: 35,
     woundThreshold: 7,
     deathRating: 53,
-    sourcePage: 24,
+    source: source(24),
   },
   {
     id: 'case',
@@ -36,7 +39,7 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     durability: 25,
     woundThreshold: 5,
     deathRating: 50,
-    sourcePage: 25,
+    source: source(25),
   },
   {
     id: 'synth',
@@ -46,8 +49,9 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     durability: 40,
     woundThreshold: 8,
     deathRating: 80,
-    sourcePage: 25,
+    source: source(25),
   },
+  ...coreInfomorphs,
 ];
 
 // Preserve names and health values from existing prototype sleeve records.
