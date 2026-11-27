@@ -2,7 +2,7 @@
 
 A TypeScript web application for creating, validating, saving, and printing **Eclipse Phase Second Edition** characters. The app treats an **ego** (the character’s enduring mind, identity, skills, and personal history) separately from a **morph** (the current biological, synthetic, or exotic body), so players can model resleeving clearly.
 
-> **Status.** The first core package-buy workflow and morph library are complete. Build and review a character with one starting sleeve, save it locally, and print or export it. Browse and compare 16 supported core morphs. Public beta work continues on the roadmap.
+> **Status.** The first core package-buy workflow and morph library are complete. Build a character with one starting sleeve, browse 16 supported morphs, and print or export a dossier. The workspace includes Beta help, public feedback forms, and voluntary diagnostics.
 >
 > **Primary UI stack:** Vite, TypeScript, React, shadcn/ui component patterns, Tailwind CSS
 
@@ -17,6 +17,7 @@ Follow the [first-character walkthrough](docs/getting-started.md#create-a-comple
 - [Project overview](docs/overview.md) introduces the planned character workflows.
 - [Rules sources and content policy](docs/rules-sources.md) records source versions, licensing, and rules coverage.
 - [Accessibility and layout review](docs/accessibility-review.md) records the tested keyboard, browser, and print workflows.
+- [Public beta readiness](docs/beta-readiness.md) covers known limitations, feedback, and the release checks.
 - [Agent guide](AGENTS.md) covers repository conventions and roadmap maintenance.
 - [Roadmap](roadmap/roadmap.json) lists upcoming work in priority order.
 

@@ -1,7 +1,10 @@
 import { Printer } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router';
+import { egoPath } from '../app/paths.ts';
 import { buildPrintableDossier, privatePrintFields } from '../features/dossier/print.ts';
 import type { PrintAudience, PrivatePrintField } from '../features/dossier/print.ts';
+import { recordBetaEvent } from '../features/beta/diagnostics.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
@@ -26,7 +29,13 @@ import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
-export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; onBack: () => void }) {
+export function DossierPrintRoute() {
+  const { draft } = useOutletContext<{ draft: CharacterDraft }>();
+  const navigate = useNavigate();
+  return <DossierPrintPreview key={draft.ego.id} draft={draft} onBack={() => void navigate(egoPath(draft.ego.id))} />;
+}
+
+function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; onBack: () => void }) {
   const [audience, setAudience] = useState<PrintAudience>('player');
   const [includedFields, setIncludedFields] = useState<PrivatePrintField[]>([]);
   const isPlayer = audience === 'player';
@@ -64,7 +73,10 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           </fieldset>
         )}
         <div className="actions">
-          <button type="button" className="button primary" onClick={() => window.print()}><Printer size={17} aria-hidden="true" /> Print / Save PDF</button>
+          <button type="button" className="button primary" onClick={() => {
+            recordBetaEvent('printRequested');
+            window.print();
+          }}><Printer size={17} aria-hidden="true" /> Print / Save PDF</button>
           <button type="button" className="button secondary" onClick={onBack}>Back to dossier</button>
         </div>
       </div>

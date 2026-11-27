@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { activeSleeve, recordResleeving } from '../features/sleeve/history.ts';
+import { recordBetaEvent } from '../features/beta/diagnostics.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { traceResleevingTests } from '../rules/calculations/resleeving.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
@@ -45,9 +46,11 @@ export function ResleeveEditor({ draft, initialMorphId = '', onCancel, onSaved, 
     try {
       const next = recordResleeving(draft, crypto.randomUUID(), target.id, details, new Date().toISOString());
       await saveDraft(next, draft.revision);
+      recordBetaEvent('resleeveSaved');
       onSaved(next);
     } catch (cause) {
       const stale = cause instanceof DraftConflictError;
+      recordBetaEvent(stale ? 'revisionConflict' : 'resleeveSaveFailed');
       setConflict(stale);
       setError(stale
         ? 'This draft changed in another tab. Reload to open the latest saved version.'

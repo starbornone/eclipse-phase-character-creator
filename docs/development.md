@@ -20,7 +20,7 @@ The root [README](../README.md) holds the product brief. [Architecture](architec
 
 ## Serve browser routes
 
-Vite dev and preview serve the app shell for direct visits to workspace paths. When deploying `dist/`, configure the static host to serve `index.html` for application paths without changing their URLs. Serve existing files such as `/favicon.png` and `/assets/*` directly. After deploying, open `/morphs` and refresh a nested ego URL to verify the host fallback.
+Vite dev and preview serve the app shell for direct visits to workspace paths. When deploying `dist/`, configure the static host to serve `index.html` for application paths without changing their URLs. Serve existing files such as `/favicon.png` and `/assets/*` directly. After deploying, open `/help` and `/morphs` and refresh a nested ego URL to verify the host fallback. Use the [beta release check](beta-readiness.md#beta-release-check) before sharing a build link.
 
 ## Verification as implementation lands
 

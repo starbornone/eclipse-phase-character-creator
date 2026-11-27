@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { ChangeEvent } from 'react';
 import { copyBackupDrafts, previewBackup } from '../features/backup/backup.ts';
 import type { BackupPreview } from '../features/backup/backup.ts';
+import { recordBetaEvent } from '../features/beta/diagnostics.ts';
 import { addDraftCopies } from '../lib/storage/drafts.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { Card } from './ui/card.tsx';
@@ -25,9 +26,13 @@ export function BackupRestore({ onCancel, onRestored, onSaving }: BackupRestoreP
     setReading(true);
     setError('');
     setPreview(undefined);
+    let read = false;
     try {
-      setPreview(previewBackup(await file.text()));
+      const input = await file.text();
+      read = true;
+      setPreview(previewBackup(input));
     } catch (cause) {
+      recordBetaEvent(read ? 'backupRejected' : 'backupReadFailed');
       setError(cause instanceof Error ? cause.message : 'The file could not be read.');
     } finally {
       setReading(false);
@@ -42,8 +47,10 @@ export function BackupRestore({ onCancel, onRestored, onSaving }: BackupRestoreP
     try {
       const drafts = copyBackupDrafts(preview.drafts);
       await addDraftCopies(drafts);
+      recordBetaEvent('backupRestored');
       onRestored(drafts);
     } catch {
+      recordBetaEvent('backupRestoreFailed');
       setError('The backup could not be restored. Check browser storage, then try again.');
       setSaving(false);
       onSaving(false);

@@ -1,4 +1,5 @@
 import { normalizeDraft } from '../sleeve/history.ts';
+import { recordBetaEvent } from '../beta/diagnostics.ts';
 import { findCreationPackage } from '../../rules/datasets/creation-packages.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { normalizeLanguage } from '../../rules/calculations/aptitude-budget.ts';
@@ -475,6 +476,7 @@ export function downloadBackup(drafts: CharacterDraft[], filename: string) {
   link.download = filename;
   document.body.append(link);
   link.click();
+  recordBetaEvent('backupExportRequested');
   link.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

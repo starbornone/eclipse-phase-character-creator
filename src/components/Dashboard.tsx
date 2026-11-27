@@ -46,6 +46,7 @@ export function Dashboard({ drafts, loading, loadError, onRetry }: DashboardProp
                 <span className="empty-icon" aria-hidden="true"><Fingerprint size={27} /></span>
                 <h3>No egos yet</h3>
                 <p>An ego is your character’s mind and identity. A morph is the body they inhabit.</p>
+                <Link className="text-button" to="/help">Get started with the beta</Link>
               </div>
             )}
             {drafts.length > 0 && (

@@ -15,6 +15,8 @@ Open the local URL Vite prints. The dashboard should show **My egos**, the **Cre
 
 The top navbar provides **My egos**, **Morph library**, **Import JSON**, and **Create ego** on every screen. It wraps on narrow screens. **Export all drafts** appears beside the dashboard's saved egos.
 
+Select **Get started with the beta** on an empty dashboard or **Beta help** in the footer for the in-app walkthrough, known limitations, and GitHub feedback. [Public beta readiness](beta-readiness.md)
+
 You can bookmark a dossier, editor, or print link and reopen it in the browser profile and origin where the ego was saved. Browser Back and Forward follow the screens you visited.
 
 If npm cannot find `package.json`, switch to the checkout root. If installation fails, check the Node version and registry connectivity. If local drafts cannot open, check that the browser permits site storage for the local origin. Use localhost for development so the browser can generate record ids in a secure context.

@@ -1,0 +1,20 @@
+name: Beta workflow feedback
+description: Share what helped or got in the way while using the character creator.
+body:
+  - type: markdown
+    attributes:
+      value: This issue is public. Describe the workflow with fictional examples and keep private character data out of the report.
+  - type: input
+    id: workflow
+    attributes:
+      label: What were you trying to do?
+      placeholder: Compare two morphs and choose one for a new ego.
+    validations:
+      required: true
+  - type: textarea
+    id: experience
+    attributes:
+      label: What worked or got in the way?
+      description: Describe the screen, what you tried, and what would have helped.
+    validations:
+      required: true

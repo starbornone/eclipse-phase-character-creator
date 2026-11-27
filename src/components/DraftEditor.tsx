@@ -4,6 +4,7 @@ import type { FormEvent } from 'react';
 import { evaluateAptitudeBudget, parseLanguages } from '../rules/calculations/aptitude-budget.ts';
 import { reviewCreation } from '../rules/calculations/creation-review.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
+import { recordBetaEvent } from '../features/beta/diagnostics.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
@@ -209,9 +210,11 @@ export function DraftEditor({ draft, initialMorphId, onCancel, onSaved, onDirty,
         sleeves: firstSleeve ? [firstSleeve, ...sleeves.slice(1)] : sleeves,
       };
       await saveDraft(next, draft?.revision);
+      recordBetaEvent(draft ? 'draftEdited' : 'draftCreated');
       onSaved(next);
     } catch (cause) {
       const stale = cause instanceof DraftConflictError;
+      recordBetaEvent(stale ? 'revisionConflict' : 'draftSaveFailed');
       setConflict(stale);
       setError(stale
         ? 'This draft changed in another tab. Reload to open the latest saved version.'

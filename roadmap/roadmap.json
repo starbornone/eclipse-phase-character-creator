@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-28T09:38:23+11:00",
+  "updatedAt": "2026-11-28T09:49:47+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -9,12 +9,6 @@
     "summary": "A local-first web tool for creating, validating, saving, resleeving, and printing Eclipse Phase Second Edition characters."
   },
   "items": [
-    {
-      "id": "prepare-public-beta",
-      "title": "Prepare onboarding and feedback for public beta",
-      "group": "Public beta",
-      "notes": "Document known limitations and cover the planned feedback loop, error monitoring, and privacy-respecting metrics."
-    },
     {
       "id": "verify-physical-grayscale-print",
       "title": "Verify grayscale dossiers on a physical printer",

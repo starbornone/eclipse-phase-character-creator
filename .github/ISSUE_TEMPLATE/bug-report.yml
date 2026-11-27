@@ -1,0 +1,39 @@
+name: Beta bug report
+description: Report a reproducible problem with character creation, storage, or printing.
+body:
+  - type: markdown
+    attributes:
+      value: This issue is public. Use a fictional example and keep character names, private notes, backup files, and personal details out of the report.
+  - type: input
+    id: environment
+    attributes:
+      label: App version and browser
+      description: Find the app version on Beta help. Include your browser and operating system.
+      placeholder: "App 0.1.0, Firefox on Windows"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Start from a blank or fictional draft when possible.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Optional diagnostics
+      description: Review and paste the report from Beta help if you chose to enable it.
+      render: text

@@ -2,6 +2,7 @@ import { Boxes, HardDrive, LayoutGrid, Plus, Upload } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useBlocker, useLocation, useNavigate } from 'react-router';
 import { QuickStartCredit } from '../components/MorphProfile.tsx';
+import { recordBetaEvent } from '../features/beta/diagnostics.ts';
 import { loadDrafts } from '../lib/storage/drafts.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { egoPath } from './paths.ts';
@@ -61,7 +62,10 @@ export default function App() {
         setLoadState('ready');
       },
       () => {
-        if (active) setLoadState('error');
+        if (active) {
+          recordBetaEvent('workspaceLoadFailed');
+          setLoadState('error');
+        }
       },
     );
     return () => { active = false; };
@@ -133,6 +137,7 @@ export default function App() {
         </main>
         <footer className="screen-only">
           <p>Unofficial Eclipse Phase Second Edition character tool</p>
+          <Link className="text-button" to="/help">Beta help</Link>
           <p className="rules-note"><QuickStartCredit /></p>
         </footer>
       </div>

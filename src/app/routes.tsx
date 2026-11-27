@@ -2,9 +2,9 @@ import { Link, Outlet, createBrowserRouter, useNavigate, useOutletContext, usePa
 import { BackupRestore } from '../components/BackupRestore.tsx';
 import { Dashboard } from '../components/Dashboard.tsx';
 import { Dossier } from '../components/Dossier.tsx';
-import { DossierPrintPreview } from '../components/DossierPrintPreview.tsx';
 import { DraftEditor } from '../components/DraftEditor.tsx';
 import { ResleeveEditor } from '../components/ResleeveEditor.tsx';
+import { WorkspaceRecovery } from '../components/WorkspaceRecovery.tsx';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
@@ -125,23 +125,22 @@ function ResleeveRoute() {
   );
 }
 
-function PrintRoute() {
-  const { draft } = useOutletContext<EgoWorkspace>();
-  const navigate = useNavigate();
-  return <DossierPrintPreview key={draft.ego.id} draft={draft} onBack={() => void navigate(egoPath(draft.ego.id))} />;
-}
-
 function NotFoundRoute() {
   return <RouteMessage title="Page not found" message="Use My egos or Morph library to get back to the workspace." />;
 }
 
 export const router = createBrowserRouter([
-  { path: '/', Component: App, children: [
+  { path: '/', Component: App, ErrorBoundary: WorkspaceRecovery, children: [
     { index: true, Component: DashboardRoute },
     {
       path: 'morphs',
       HydrateFallback: MorphCatalogFallback,
       lazy: async () => ({ Component: (await import('../components/MorphCatalog.tsx')).MorphCatalog }),
+    },
+    {
+      path: 'help',
+      HydrateFallback: () => <p className="panel-message" role="status">Loading beta help…</p>,
+      lazy: async () => ({ Component: (await import('../components/BetaHelp.tsx')).BetaHelp }),
     },
     { path: 'backups/import', Component: RestoreRoute },
     { path: 'egos/new', Component: NewEgoRoute },
@@ -149,7 +148,11 @@ export const router = createBrowserRouter([
       { index: true, Component: DossierRoute },
       { path: 'edit', Component: EditEgoRoute },
       { path: 'resleeve', Component: ResleeveRoute },
-      { path: 'print', Component: PrintRoute },
+      {
+        path: 'print',
+        HydrateFallback: () => <p className="panel-message" role="status">Loading the print preview…</p>,
+        lazy: async () => ({ Component: (await import('../components/DossierPrintPreview.tsx')).DossierPrintRoute }),
+      },
     ] },
     { path: '*', Component: NotFoundRoute },
   ] },

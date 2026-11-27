@@ -155,6 +155,13 @@ footer {
 .empty-state { display: grid; min-height: 13.5rem; align-content: center; justify-items: center; padding: 1.1rem; text-align: center; }
 .empty-state h3 { margin-top: .7rem; font-size: 1.125rem; }
 .empty-state p { max-width: 25rem; margin-top: .25rem; color: var(--muted); }
+.empty-state .text-button { justify-self: center; margin-top: .7rem; }
+.beta-help-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.beta-help-panel :is(ol, ul) { padding-inline-start: 1.25rem; }
+.beta-help-panel ol { list-style: decimal; }
+.beta-help-panel ul { list-style: disc; }
+.beta-help-panel li + li { margin-top: .4rem; }
+.beta-help-panel > a { display: inline-block; margin-top: .65rem; text-decoration: underline; }
 .empty-icon, .morph-icon {
   flex: 0 0 auto;
   display: grid;
@@ -468,7 +475,7 @@ textarea { resize: vertical; }
   .workspace { min-height: 75dvh; }
   .hero { min-height: 20rem; background-position: center, 62% center; }
   .hero h1 { font-size: clamp(2.45rem, 8.6vw, 3.8rem); }
-  .editor-grid { grid-template-columns: 1fr; }
+  .editor-grid, .beta-help-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 36rem) {

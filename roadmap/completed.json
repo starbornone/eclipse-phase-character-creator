@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T09:38:23+11:00",
+  "updatedAt": "2026-11-28T09:49:47+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -462,6 +462,13 @@
       "group": "Public beta",
       "notes": "Completed the digital accessibility and layout audit in Edge, Chrome, and Firefox at desktop and 320 CSS pixels. Fixed initial skip-link focus, gear heading order, duplicate comparison landmarks, a comparison trait link target, and dashboard contrast. Axe-core reported zero violations across 11 Edge checkpoints. Verified keyboard controls, forced colors and reduced motion, 200% text sizing, the complete creation-to-restore workflow, Edge native preview and Windows print settings, and both A4 and Letter print layouts. Grayscale PDF renders and text checks preserved the 1,000-character note when selected and protected private fields by default. All 200 tests and the production build pass. With user approval, the paper check is tracked separately as verify-physical-grayscale-print because only virtual printer queues were available.",
       "completedAt": "2026-11-28T09:38:23+11:00"
+    },
+    {
+      "id": "prepare-public-beta",
+      "title": "Prepare onboarding and feedback for public beta",
+      "group": "Public beta",
+      "notes": "Added in-app Beta help with first-character onboarding, backup guidance, known limitations, and links to the public GitHub issue tracker. Added bug and workflow issue forms, maintainer triage, and a release checklist. Optional diagnostics collect fixed success and failure counters in the current tab after opt-in. Players can preview or copy the report and can clear the counters by turning diagnostics off. Added an accessible workspace recovery screen and kept feedback submission under the player’s control. Validated the forms and verified the production build in Chrome at desktop and 320 CSS pixels with axe, successful workflows, private data exclusions, clipboard and fallback, reload, tab isolation, blocked storage, and recovery from a failed route asset. All 204 tests and the production build pass.",
+      "completedAt": "2026-11-28T09:49:47+11:00"
     }
   ]
 }

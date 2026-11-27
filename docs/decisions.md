@@ -196,4 +196,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Filters remain independent of comparison selections. Browsing has no effect on local drafts until the player saves from the destination editor. The same profile IDs resolve in character creation, resleeving, and backup restore. [Rules sources](rules-sources.md#source-inventory)
 
+## 25. Keep beta diagnostics in the current tab
+
+**Context.** Beta testers need a way to report errors and workflow friction in a local-first app. Backups may contain private character data and sleeve notes.
+
+**Decision.** Use public GitHub issues with separate bug and workflow forms. Make diagnostic counting opt-in for the current tab. Store fixed counters and let the player preview and copy them alongside a report. Keep recovery guidance available when IndexedDB fails or a route cannot load.
+
+**Consequences.** Maintainers receive voluntary reports with optional counts and app version. Disabling diagnostics clears the session counters. The backup and character schemas remain the same. [Public beta readiness](beta-readiness.md)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.
