@@ -7,6 +7,7 @@ import { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts
 import { evaluateStartingMorphBudget, parseStartingMorphAllowance, startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
 import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
+import { startingEquipment } from '../rules/datasets/starting-equipment.ts';
 
 const updatedAt = '2026-11-28T00:00:00.000Z';
 const draft = {
@@ -110,4 +111,45 @@ test('extra equipment survives backup and resleeving and rejects unsupported IDs
     const broken = { ...draft, ego: { ...draft.ego, startingEquipment: ['ecto', invalid] } };
     assert.throws(() => previewBackup(encodeBackup([broken])), /startingEquipment\[1\] must be/);
   }
+});
+
+test('the expanded equipment catalogue uses the listed section, complexity, and GP for each item', () => {
+  assert.equal(new Set(startingEquipment.map(({ id }) => id)).size, startingEquipment.length);
+  for (const [category, anchor, entries] of [
+    ['Communications', 'communications', [
+      ['breadcrumb-system', 'Minor', 1], ['laser-microwave-link-micro', 'Minor', 1], ['laser-microwave-link-small', 'Moderate', 2],
+      ['radio-booster', 'Minor', 1], ['satnet-in-a-can', 'Major', 3],
+    ]],
+    ['Science tools', 'science-tools', [
+      ['adaptive-interface', 'Major', 3], ['fractal-gloves', 'Moderate', 2], ['pocket-lab', 'Moderate', 2],
+      ['portable-solarchive', 'Minor', 1], ['specimen-container', 'Minor', 1],
+    ]],
+    ['Survival tools', 'survival-tools', [
+      ['electrogravitics-net', 'Minor', 1], ['electronic-rope', 'Minor', 1], ['smart-anchors', 'Minor', 1],
+      ['spindle', 'Moderate', 2], ['spindle-climber', 'Minor', 1],
+    ]],
+  ]) {
+    for (const [id, complexity, gp] of entries) {
+      const [item] = traceStartingEquipment([id]);
+      assert.deepEqual([item.category, item.complexity, item.gp, item.restricted], [category, complexity, gp, undefined]);
+      assert.ok(item.source.endsWith(`#${anchor}`));
+    }
+  }
+});
+
+test('field gear sizes and quantities keep their prices across backup, resleeving, and print', () => {
+  const purchases = ['laser-microwave-link-micro', 'laser-microwave-link-small', 'spindle-climber', 'spindle-climber', 'adaptive-interface'];
+  const character = { ...draft, ego: { ...draft.ego, startingMorphPoints: 15, startingEquipment: purchases } };
+  const budget = startingMorphBudgetForDraft(character);
+  assert.deepEqual([budget.equipmentCost, budget.remaining, budget.temporaryFlex], [8, 4, 2]);
+  const next = recordResleeving(character, 'second', 'case', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  const restored = previewBackup(encodeBackup([next])).drafts[0];
+  assert.deepEqual(restored, next);
+  const player = buildPrintableDossier(restored, 'player', []);
+  const gm = buildPrintableDossier(restored, 'gm', []);
+  assert.deepEqual(player.startingEquipment.map(({ name, quantity, totalMp }) => [name, quantity, totalMp]), [
+    ['Adaptive Interface', 1, 3], ['Laser/Microwave Link (Micro)', 1, 1],
+    ['Laser/Microwave Link (Small)', 1, 2], ['Spindle Climber', 2, 2],
+  ]);
+  assert.deepEqual([gm.startingMorphBudget.equipmentCost, gm.startingMorphBudget.remaining, gm.startingMorphBudget.temporaryFlex], [8, 4, 0]);
 });

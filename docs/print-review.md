@@ -31,6 +31,8 @@ The Frailty review on 28 November 2026 used a Bouncer with Frailty Level 2 and U
 
 The included morph trait review on 28 November 2026 resleeved a Case with added Toughness into an Operator. Each print layout rendered to two A4 pages from the preview markup in headless Chrome. Grayscale renders and extracted text showed Digital Speed and Exotic Morphology Level 3 on the Operator and only the added Toughness cost in the trait budget. The GM summary retained Case's included and added traits in sleeve history. Edge at 390 px verified that the private location appeared only when selected in the GM preview and reset when switching layouts. Both default PDFs omitted the location.
 
+The field equipment review on 28 November 2026 used both Laser/Microwave Link sizes, two Spindle Climbers, a Pocket Lab, and a 2 GP pack swap. The player layout rendered to three A4 pages and the GM layout to two from preview markup in headless Chrome. Grayscale pages and extracted text kept the pack swap, purchased quantities, and per-item MP prices legible. Both layouts showed 7 MP spent on equipment and a 1 MP deficit. The skill table repeated its headers across the player page break, and both PDFs omitted the private resleeving location. Edge at 320 px verified the category picker, changes to temporary Flex, save and reload, and preserved equipment after resleeving.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

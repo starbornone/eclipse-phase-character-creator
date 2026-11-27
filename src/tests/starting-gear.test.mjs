@@ -105,6 +105,20 @@ test('Genehacker lists payload cost separately without inventing a GP value', ()
 const swapTacNet = { packId: 'firewall-agentcriminal', item: 'TacNet App', replacement: 'Exploit App' };
 const swapMeds = { packId: 'soldier', item: 'Meds (5 doses)', replacement: 'Ego Bridge' };
 
+test('field gear replacements match the selected size and GP and deduplicate pack entries', () => {
+  const small = { ...swapTacNet, replacement: 'Laser/Microwave Link (Small)' };
+  const micro = { ...swapTacNet, replacement: 'Laser/Microwave Link (Micro)' };
+  const valid = deriveStartingGear('firewall', undefined, 'Synthmorph', [small]);
+  assert.deepEqual(valid.appliedSwaps, [small]);
+  assert.equal(valid.packs[0].gp, 10);
+  const replacement = valid.packs[0].items.find(({ originalName }) => originalName === 'TacNet App');
+  assert.equal(replacement.name, small.replacement);
+  assert.ok(replacement.replacementSource.endsWith('#communications'));
+  assert.deepEqual(deriveStartingGear('firewall', undefined, 'Synthmorph', [micro]).appliedSwaps, []);
+  const radioBoosters = startingGearReplacements('Synthmorph').filter(({ name, gp }) => name === 'Radio Booster' && gp === 1);
+  assert.equal(radioBoosters.length, 1);
+});
+
 test('equal-GP replacements retain their own source and restrictions and preserve pack totals', () => {
   const { packs, appliedSwaps } = deriveStartingGear('firewall', 'soldier', 'Biomorph', [swapTacNet, swapMeds]);
   assert.deepEqual(appliedSwaps, [swapTacNet, swapMeds]);

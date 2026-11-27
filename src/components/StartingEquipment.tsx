@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
-import { findStartingEquipment, startingEquipment } from '../rules/datasets/starting-equipment.ts';
+import { equipmentCategories, findStartingEquipment, startingEquipment } from '../rules/datasets/starting-equipment.ts';
 import { startingMorphBudgetRules } from '../rules/datasets/starting-morph-budget.ts';
 import { Card } from './ui/card.tsx';
 
 type EquipmentItems = ReturnType<typeof traceStartingEquipment>;
+const equipmentGroups = equipmentCategories.map((category) => ({
+  category,
+  items: startingEquipment.filter((item) => item.category === category),
+}));
 
 function EquipmentList({ items, onRemove }: { items: EquipmentItems; onRemove?: (id: string) => void }) {
   return (
@@ -44,8 +48,12 @@ export function StartingEquipmentEditor({ purchases, onChange }: { purchases: st
           Equipment to buy
           <select value={selected} onChange={(event) => setSelected(event.target.value)}>
             <option value="">Choose equipment</option>
-            {startingEquipment.map(({ id, name, complexity, restricted }) => (
-              <option key={id} value={id}>{name} · {gearMpByComplexity[complexity]} MP{restricted && ' · Restricted'}</option>
+            {equipmentGroups.map(({ category, items }) => (
+              <optgroup key={category} label={category}>
+                {items.map(({ id, name, complexity, restricted }) => (
+                  <option key={id} value={id}>{name} · {gearMpByComplexity[complexity]} MP{restricted && ' · Restricted'}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </label>

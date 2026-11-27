@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T02:23:32+11:00",
+  "updatedAt": "2026-11-28T02:28:24+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -406,6 +406,13 @@
       "group": "Character creation",
       "notes": "Sourced included traits for Bouncer, Case, Synth, and all four core infomorphs. Kept base traits out of elective MP and blocked duplicates. Added eligible purchases of Limberness and Inherent Flaws. Verified older backups, the 390 px library and editor, save and reload, resleeving, both A4 print layouts in grayscale, and private location controls. All 175 tests and the production build pass.",
       "completedAt": "2026-11-28T02:23:32+11:00"
+    },
+    {
+      "id": "expand-starting-field-equipment",
+      "title": "Expand starting communications, science, and survival equipment",
+      "group": "Character creation",
+      "notes": "Added fifteen sourced items for a total of thirty-three, grouped the purchase picker, and preserved the Micro and Small Laser/Microwave Link prices. Verified equal-GP swaps, MP and temporary Flex, backup and saved quantities, the 320 px editor, resleeving, and both A4 layouts in grayscale. All 178 tests and the production build pass.",
+      "completedAt": "2026-11-28T02:28:24+11:00"
     }
   ]
 }

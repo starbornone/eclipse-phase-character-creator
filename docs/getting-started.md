@@ -125,7 +125,7 @@ The **Soldier** career pack also has a synthmorph alternative: **Fixer Swarm** r
 
 ## Buy extra starting equipment
 
-Under **Extra starting equipment**, choose an item and select **Add one**. Each click buys one unit. Select **Remove one** to reduce the count. Minor gear costs 1 MP, Moderate gear costs 2 MP, and Major gear costs 3 MP. Each purchase reduces the remaining MP used to calculate temporary Flex. Pack swaps continue to use GP.
+Under **Extra starting equipment**, choose an item by category and select **Add one**. Each click buys one unit. Select **Remove one** to reduce the count. Minor gear costs 1 MP, Moderate gear costs 2 MP, and Major gear costs 3 MP. Each purchase reduces the remaining MP used to calculate temporary Flex. Pack swaps continue to use GP. For example, the Micro Laser/Microwave Link costs 1 MP as an extra purchase and replaces 1 GP pack gear. The Small link costs 2 MP or replaces 2 GP gear.
 
 The editor, dossier, and player print preview show quantities, costs, source links, and any Restricted label. The GM summary shows the equipment spend in the starting MP budget. Backups preserve the purchases, and resleeving retains the original starting equipment record.
 
