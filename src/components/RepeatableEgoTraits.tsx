@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { egoTraitChoiceKey, normalizeTraitDetail, scopedEgoTraitIssue, traceEgoTraits } from '../rules/calculations/ego-traits.ts';
-import { egoTraits } from '../rules/datasets/ego-traits.ts';
+import { egoTraits, supportedHardeningStressTypes } from '../rules/datasets/ego-traits.ts';
 import { reputationNetworks } from '../rules/datasets/reputation.ts';
 import type { EgoTraitChoice } from '../types/character.ts';
 
@@ -13,6 +13,7 @@ export function RepeatableEgoTraits({ choices, onChange }: {
   const [network, setNetwork] = useState('');
   const [issue, setIssue] = useState('');
   const isContact = id === 'contact';
+  const isHardening = id === 'hardening';
   const definition = egoTraits.find((trait) => trait.id === id);
   const selected = traceEgoTraits(choices).filter(({ selection }) => selection);
 
@@ -28,16 +29,19 @@ export function RepeatableEgoTraits({ choices, onChange }: {
 
   return (
     <section className="skill-transfers repeatable-traits" aria-labelledby="repeatable-traits-title">
-      <h3 id="repeatable-traits-title">Contacts and morph familiarity</h3>
-      <p className="rules-note">Each choice costs 1 CP. Add another contact or morph type separately.</p>
+      <h3 id="repeatable-traits-title">Repeatable ego traits</h3>
+      <p className="rules-note">Each choice costs 1 CP. Add each contact, morph type, or Hardening stress type separately.</p>
       <div className="identity-fields">
         <label>Trait to add
           <select value={id} onChange={(event) => { setId(event.target.value); setDetail(''); setIssue(''); }}>
             {egoTraits.filter(({ selection }) => selection).map(({ id, name }) => <option value={id} key={id}>{name}</option>)}
           </select>
         </label>
-        <label>{isContact ? 'Contact name' : 'Familiar morph type'}
-          <input value={detail} maxLength={100} aria-describedby="repeatable-trait-effect" onChange={(event) => { setDetail(event.target.value); setIssue(''); }} />
+        <label>{isContact ? 'Contact name' : isHardening ? 'Hardening stress type' : 'Familiar morph type'}
+          {isHardening ? <select value={detail} aria-describedby="repeatable-trait-effect" onChange={(event) => { setDetail(event.target.value); setIssue(''); }}>
+            <option value="">Choose a stress type</option>
+            {supportedHardeningStressTypes.map((type) => <option value={type} key={type}>{type}</option>)}
+          </select> : <input value={detail} maxLength={100} aria-describedby="repeatable-trait-effect" onChange={(event) => { setDetail(event.target.value); setIssue(''); }} />}
         </label>
         {isContact && <label>Contact reputation network
           <select value={network} onChange={(event) => { setNetwork(event.target.value); setIssue(''); }}>
@@ -48,6 +52,7 @@ export function RepeatableEgoTraits({ choices, onChange }: {
         <button type="button" className="button secondary" onClick={add}>Add {definition?.name}</button>
       </div>
       <p className="rules-note" id="repeatable-trait-effect">{definition?.effect}</p>
+      {isHardening && <p className="rules-note">The Unknown stress type awaits its required Psi support.</p>}
       {issue && <p className="error" role="alert">{issue}</p>}
       {selected.length > 0 && <ul>
         {selected.map(({ key, name, detail, network }) => <li key={key}>

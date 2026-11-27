@@ -283,6 +283,8 @@ section.comparison { padding: 1.25rem; }
 .starting-skills th, .starting-skills td { padding: .45rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
 .starting-skills th { font-weight: 650; }
 .starting-skills th:first-child { overflow-wrap: anywhere; }
+.starting-skills table.with-test-modifiers { min-width: 34rem; }
+.starting-skills .with-test-modifiers th[scope="row"] { min-width: 7rem; }
 .skill-grant { display: block; font-size: .8125rem; }
 .skill-grant.error { margin-top: 0; white-space: nowrap; }
 .skill-art { display: flex; align-items: center; gap: .3rem; margin-top: .2rem; color: var(--muted); font-weight: 400; white-space: nowrap; }
@@ -452,7 +454,7 @@ textarea { resize: vertical; }
   .print-sheet h2 { font-size: 26pt; }
   .print-sheet :is(header, h3, h4) { break-after: avoid; }
   .print-sheet table { break-after: avoid; }
-  .print-sheet :is(tr, .print-checks div, .print-history li, .print-credit) { break-inside: avoid; }
+  .print-sheet :is(tr, .print-checks div, .print-history li, .ego-trait-summary li, .print-credit) { break-inside: avoid; }
   .print-sheet .print-credit { break-before: avoid; }
   .print-sheet .error { color: #111; }
   .print-gm { font-size: 10pt; }

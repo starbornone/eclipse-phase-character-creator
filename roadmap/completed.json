@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T19:14:28+11:00",
+  "updatedAt": "2026-11-27T19:24:12+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -315,6 +315,13 @@
       "group": "Character creation",
       "notes": "Added one-CP Contact purchases with a name and reputation network, and Morph Familiarity purchases with a morph type. Shared normalized scope keys prevent duplicates while preserving existing singleton trait validation. Each entry has independent add/remove controls, CP accounting, backup fields, dossier and player/GM print summaries, and persists across resleeving. Verified malformed imports preserve saved drafts, restore-as-copy, keyboard access, 320 px layout, and every page of grayscale PDFs. All 118 tests and the production build pass.",
       "completedAt": "2026-11-27T19:14:28+11:00"
+    },
+    {
+      "id": "apply-hardening-stress-trait",
+      "title": "Apply repeatable Hardening stress immunities and penalties",
+      "group": "Character creation",
+      "notes": "Added one-CP Hardening choices for Alienation, Helplessness, and Violence, with duplicate checks and cumulative minus-ten WIL Check and Persuade Test penalties per purchase. Unknown remains deferred with required Psi support under errata 1.4. The ledger keeps skill ratings and cap validation separate from adjusted test targets; specialization targets include the penalty once. Verified partial drafts, invalid scopes, positive and negative check traces, CP costs, cap enforcement, allocation replay, save/reload, backup rejection and restore, removal, mobile table scrolling, and all five grayscale player/GM PDF pages. Trait entries now stay together when printed. All 127 tests and the production build pass.",
+      "completedAt": "2026-11-27T19:24:12+11:00"
     }
   ]
 }

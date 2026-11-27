@@ -66,7 +66,7 @@ export function EgoTraitSummary({ choices }: { choices?: EgoTraitChoice[] }) {
   if (!traits.length) return null;
 
   return (
-    <section>
+    <section className="ego-trait-summary">
       <h3>Ego traits</h3>
       <ul>
         {traits.map(({ key, name, level, cpByLevel, effect, skillId, detail, network }) => (

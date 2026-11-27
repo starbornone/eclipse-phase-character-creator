@@ -6,6 +6,7 @@ import { expertTraining } from '../rules/datasets/ego-traits.ts';
 import type { Ego, EgoTraitChoice, SkillPointPurchase, SkillPointTransfer, SkillSpecialization } from '../types/character.ts';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { SkillTransfers } from './SkillTransfers.tsx';
+import { SkillTestModifiers } from './SkillTestModifiers.tsx';
 
 export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange, onSpecializationsChange, onTraitsChange }: {
   ego: SkillInputs & Pick<Ego, 'specializations'>;
@@ -54,10 +55,10 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
       {unassignedActivePoints > 0 && <p className="muted">{unassignedActivePoints} Active points await a skill or field choice.</p>}
       {skills.length ? (
         <div className="comparison-scroll" role="region" aria-label="Starting skill totals" tabIndex={0}>
-          <table>
+          <table className={skills.some(({ testModifiers }) => testModifiers.length > 0) ? 'with-test-modifiers' : undefined}>
             <thead><tr><th scope="col">Skill</th><th scope="col">Allocated points</th><th scope="col">Aptitude base</th><th scope="col">Total</th></tr></thead>
             <tbody>
-              {skills.map(({ id, name, fieldKey, grants, adjustableKnow, isArt, aptitude, aptitudeScore, base, multiplier, packagePoints, allocatedPoints, purchasedPoints, total, excess, cap }) => (
+              {skills.map(({ id, name, fieldKey, grants, adjustableKnow, isArt, aptitude, aptitudeScore, base, multiplier, packagePoints, allocatedPoints, purchasedPoints, total, excess, cap, testTarget, testModifiers }) => (
                 <tr key={id}>
                   <th scope="row">
                     {name}
@@ -84,6 +85,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
                   <td>
                     <strong>{total ?? '—'}</strong>
                     {excess > 0 && <span className="skill-grant error">{excess} over {cap}</span>}
+                    <SkillTestModifiers total={total} testTarget={testTarget} testModifiers={testModifiers} />
                   </td>
                 </tr>
               ))}

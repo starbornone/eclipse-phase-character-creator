@@ -10,6 +10,7 @@ import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
+import { SkillTestModifiers } from './SkillTestModifiers.tsx';
 import { egoTraitsSource } from '../rules/datasets/ego-traits.ts';
 import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
@@ -138,7 +139,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             <table>
               <thead><tr><th scope="col">Skill</th><th scope="col">Points</th><th scope="col">Aptitude base</th><th scope="col">Total</th></tr></thead>
               <tbody>
-                {dossier.skillLedger.skills.map(({ id, name, allocatedPoints, purchasedPoints, aptitude, aptitudeScore, multiplier, base, total, excess, cap }) => (
+                {dossier.skillLedger.skills.map(({ id, name, allocatedPoints, purchasedPoints, aptitude, aptitudeScore, multiplier, base, total, excess, cap, testTarget, testModifiers }) => (
                   <tr key={id}>
                     <th scope="row">{name}</th>
                     <td>{allocatedPoints + purchasedPoints}</td>
@@ -146,6 +147,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
                     <td>
                       <strong>{total ?? 'Pending'}</strong>
                       {excess > 0 && <span className="skill-grant error">{excess} over {cap}</span>}
+                      <SkillTestModifiers total={total} testTarget={testTarget} testModifiers={testModifiers} />
                     </td>
                   </tr>
                 ))}

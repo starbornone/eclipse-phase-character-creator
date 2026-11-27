@@ -4,9 +4,9 @@ export function AptitudeCheckCalculation({ check }: { check: ReturnType<typeof t
   const { base, multiplier, modifier, modifiers } = check;
   return (
     <>
-      {base === undefined ? '—' : `${base} × ${multiplier}${modifier ? ` + ${modifier}` : ''}`}
+      {base === undefined ? '—' : `${base} × ${multiplier}${modifier ? ` ${modifier < 0 ? '−' : '+'} ${Math.abs(modifier)}` : ''}`}
       {modifiers.map(({ source, level, points }) => (
-        <span className="skill-grant muted" key={source}>{source} · Level {level} +{points}</span>
+        <span className="skill-grant muted" key={source}>{source} · Level {level} {points < 0 ? '−' : '+'}{Math.abs(points)}</span>
       ))}
     </>
   );
