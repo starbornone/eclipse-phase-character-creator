@@ -64,7 +64,8 @@ export function StartingPsiSection({ psi, onChange, onPurchaseChange, discardedS
 
   return (
     <section className={onChange ? 'starting-psi panel editor-panel' : 'starting-psi'}>
-      <h3>Starting Psi</h3>
+      <h3 id={onChange ? 'starting-psi-title' : undefined} className={onChange ? 'creation-review-target' : undefined}
+        tabIndex={onChange ? -1 : undefined}>Starting Psi</h3>
       {!level ? (
         requiredBy.length > 0 && <p className="rules-note">{requiredBy.join(' and ')} {requiredBy.length === 1 ? 'requires' : 'require'} the Psi trait.</p>
       ) : onChange ? (

@@ -79,7 +79,7 @@ A dossier is a printable, shareable representation of a sleeve. It combines rele
 2. Use core package-buy for the first supported creation path.
 3. Enter identity and narrative anchors.
 4. Choose background, faction, aptitudes, skills, traits, motivations, and gear.
-5. Review budgets, validation messages, and calculated values.
+5. Use [Creation review](docs/getting-started.md#review-creation) to find pending choices and check the budgets and skill ledger.
 6. Save the ego independently of any current morph.
 
 ### 2. Assign a first morph

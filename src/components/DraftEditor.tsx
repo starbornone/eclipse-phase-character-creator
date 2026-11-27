@@ -1,7 +1,8 @@
 import { Fingerprint, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
-import { parseLanguages } from '../rules/calculations/aptitude-budget.ts';
+import { evaluateAptitudeBudget, parseLanguages } from '../rules/calculations/aptitude-budget.ts';
+import { reviewCreation } from '../rules/calculations/creation-review.ts';
 import { activeSleeve } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { parseAptitudes } from '../rules/calculations/draft.ts';
@@ -9,6 +10,7 @@ import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
+import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
 import { evaluateStartingMorphBudget, isStartingMorphAllowance, parseStartingMorphAllowance } from '../rules/calculations/starting-morph-budget.ts';
 import { evaluateMorphTraits } from '../rules/calculations/morph-traits.ts';
 import { isUnknownHardening } from '../rules/calculations/ego-traits.ts';
@@ -22,6 +24,7 @@ import { aptitudes } from '../types/character.ts';
 import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections, Sleeve } from '../types/character.ts';
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
+import { CreationReview } from './CreationReview.tsx';
 import { EgoTraitEditor } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
@@ -91,6 +94,19 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     ? 'Enter a smaller allowance to include the selected morph trait bonuses.' : undefined);
   const personalMotivations = cleanPersonalMotivations(motivations);
   const { languages, hasDuplicates } = parseLanguages(languageText.split('\n'));
+  const customizationBudget = parsed.scores && evaluateAptitudeBudget(parsed.scores, skillPurchases, {
+    egoFlex, languages, reputation: parsedRep.scores, specializations, traits, psi, psiSleightPurchases,
+  });
+  const morphBudget = morphAllowanceIssue ? undefined : evaluateStartingMorphBudget(
+    { startingMorphPoints: allowance, traits, startingEquipment: equipment },
+    startingMorph, (draft?.sleeves.length ?? 0) > 1, morphTraits,
+  );
+  const skillInputs = { aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations, traits };
+  const skillLedger = calculateStartingSkills(skillInputs);
+  const reviewIssues = reviewCreation({
+    aptitudeInput: parsed, reputationInput: parsedRep, morphAllowanceIssue, packages, customizationBudget,
+    startingMorph, hasFirstSleeve: Boolean(assignedFirstSleeve || morphId), morphBudget, startingPsi, skills: skillLedger,
+  });
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || morphAllowance !== (draft?.ego.startingMorphPoints?.toString() ?? '')
@@ -207,6 +223,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
         <h1 tabIndex={-1}>{draft ? 'Edit ego' : 'Create ego'}</h1>
         <p>Start with identity, core packages, and aptitudes. You can save a draft before assigning a morph.</p>
       </header>
+      <CreationReview issues={reviewIssues} />
       <form onSubmit={submit}>
         <fieldset disabled={saving} className="editor-grid">
           <div className="editor-fields">
@@ -223,7 +240,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
               if (packages.faction) setPackages({ ...packages, faction: { ...packages.faction, ...update } });
             }} />
             <Card className="editor-panel">
-              <h2>Aptitudes</h2>
+              <h2 id="creation-aptitudes-title" className="creation-review-target" tabIndex={-1}>Aptitudes</h2>
               <p className="muted">You can save a partial draft. The budget below reports how your entries fit core character creation.</p>
               <AptitudeTemplatePicker onApply={(scores) => {
                 setInputs(aptitudeInputs(scores));
@@ -274,22 +291,12 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                   {hasDuplicates && ' Duplicate names count once and are saved as one entry.'}
                 </p>
               </div>
-              <AptitudeBudget
-                scores={parsed.scores}
-                skillPurchases={skillPurchases}
-                egoFlex={egoFlex}
-                languages={languages}
-                reputation={parsedRep.scores}
-                specializations={specializations}
-                traits={traits}
-                psi={psi}
-                psiSleightPurchases={psiSleightPurchases}
-                invalidReputation={Boolean(parsedRep.issue)}
-              />
+              <AptitudeBudget budget={parsedRep.issue ? undefined : customizationBudget} />
             </Card>
             <EgoDerivedStats stats={traceDerivedEgoStats({ aptitudes: parsed.scores ?? {}, traits })} styled />
             <StartingSkills
-              ego={{ aptitudes: parsed.scores ?? {}, packages, artisticKnowFields, skillTransfers, skillPurchases, specializations, traits }}
+              ego={skillInputs}
+              ledger={skillLedger}
               onTransfersChange={setSkillTransfers}
               onPurchasesChange={setSkillPurchases}
               onSpecializationsChange={setSpecializations}
@@ -304,7 +311,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             <StartingEquipmentEditor purchases={equipment} onChange={setEquipment} />
           </div>
           <Card className="editor-panel morph-picker">
-            <h2>First morph</h2>
+            <h2 id="creation-first-morph-title" className="creation-review-target" tabIndex={-1}>First morph</h2>
             <div className="identity-fields">
               <label className="concept">
                 GM allowance (MP)
@@ -342,14 +349,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             )}
             <MorphTraitEditor key={startingMorph?.id} morph={startingMorph} choices={morphTraits}
               aptitudes={parsed.scores} egoTraits={traits} onChange={setMorphTraits} />
-            {!morphAllowanceIssue && (
-              <StartingMorphBudgetSummary
-                budget={evaluateStartingMorphBudget(
-                  { startingMorphPoints: allowance, traits, startingEquipment: equipment },
-                  startingMorph, (draft?.sleeves.length ?? 0) > 1, morphTraits,
-                )}
-                live />
-            )}
+            {morphBudget && <StartingMorphBudgetSummary budget={morphBudget} live />}
           </Card>
         </fieldset>
         {error && <p className="error" role="alert">{error}</p>}

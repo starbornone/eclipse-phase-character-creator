@@ -41,6 +41,7 @@ export function EgoTraitEditor({ choices, onChange }: {
             <label>
               {name}
               <select value={choices.find((choice) => choice.id === id)?.level ?? 0}
+                id={`ego-trait-choice-${id}`}
                 aria-describedby={`ego-trait-${id}`}
                 onChange={(event) => choose(id, Number(event.target.value))}>
                 <option value={0}>None</option>

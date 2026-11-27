@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import type { AptitudeScores, Ego, SkillPointPurchase } from '../types/character.ts';
+import type { AptitudeScores } from '../types/character.ts';
 import { aptitudes } from '../types/character.ts';
-import { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts';
-import type { StartingPsiChoices } from '../rules/calculations/psi.ts';
+import type { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts';
 import { aptitudeTemplates, coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { startingReputationRules } from '../rules/datasets/reputation.ts';
@@ -27,16 +26,10 @@ export function AptitudeTemplatePicker({ onApply }: { onApply: (scores: Aptitude
   );
 }
 
-export function AptitudeBudget({ scores, skillPurchases, invalidReputation, ...choices }:
-  Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> & StartingPsiChoices & {
-  scores?: AptitudeScores;
-  skillPurchases: SkillPointPurchase[];
-  invalidReputation: boolean;
-}) {
-  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, choices);
+export function AptitudeBudget({ budget }: { budget?: ReturnType<typeof evaluateAptitudeBudget> }) {
   return (
     <section className="aptitude-budget" aria-labelledby="aptitude-budget-title">
-      <h3 id="aptitude-budget-title">Customization Point budget</h3>
+      <h3 id="aptitude-budget-title" className="creation-review-target" tabIndex={-1}>Customization Point budget</h3>
       <div role="status">
         {budget ? (
           <>

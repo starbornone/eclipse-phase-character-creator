@@ -13,13 +13,14 @@ export function ReputationEditor({ inputs, issue, onChange }: {
   const { freePoints, networkCap, pointsPerCp, sourceUrl } = startingReputationRules;
   return (
     <Card className="editor-panel">
-      <h2>Reputation</h2>
+      <h2 id="creation-reputation-title" className="creation-review-target" tabIndex={-1}>Reputation</h2>
       <p className="muted">Assign {freePoints} free points across networks, up to {networkCap} in each. Each CP buys {pointsPerCp} more points.</p>
       <div className="aptitude-fields">
         {reputationNetworks.map(({ id, name }) => (
           <label key={id}>
             {id} · {name}
             <input
+              id={`reputation-${id}`}
               name={`reputation-${id}`}
               inputMode="numeric"
               value={inputs[id] ?? ''}

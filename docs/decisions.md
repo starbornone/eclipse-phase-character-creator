@@ -172,4 +172,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Players get a traced target or Integration waiver before saving. Missing scores stay pending, and situational effects remain for the table to resolve. The saved sleeve records the selected profile and event details.
 
+## 22. Keep the creation review compatible with partial drafts
+
+**Context.** Character creation is iterative. The editor can save pending package choices and budgets, and its existing form checks reject malformed numeric input.
+
+**Decision.** Build the review from the same parsed input and calculated results used in the editor. Mark existing save blockers as input errors and list pending or out-of-budget rules findings as advisory. Link each issue to a focusable field or section.
+
+**Consequences.** The review updates during editing and is recalculated when a draft reopens. Players can use it to correct input or plan the next choices while saving partial progress.
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

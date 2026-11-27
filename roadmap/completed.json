@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T02:44:32+11:00",
+  "updatedAt": "2026-11-28T08:34:13+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -427,6 +427,13 @@
       "group": "Character creation",
       "notes": "Added Morphing Disorder to the shared CP budget and traced resleeving modifiers from the proposed morph. Included the Exotic Morphology preview override and recognized matching Morph Familiarity scopes. Verified backup validation, pending and zero targets, the 320 px flow, save and reload, sleeve history, and both grayscale A4 layouts. All 186 tests and the production build pass.",
       "completedAt": "2026-11-28T02:44:32+11:00"
+    },
+    {
+      "id": "link-creation-review-to-editor-fields",
+      "title": "Show a live creation review with links to editor fields",
+      "group": "Character creation",
+      "notes": "Reused the editor parsing, budgets, skill ledger, and Psi trace. Distinguished malformed input from advisory findings on pending choices and rules. Verified keyboard focus, live updates, saving and reopening an over-budget draft, and passing checks on the 320 px editor. All 190 tests and the production build pass.",
+      "completedAt": "2026-11-28T08:34:13+11:00"
     }
   ]
 }

@@ -12,7 +12,8 @@ export function StartingMorphBudgetSummary({ budget, live = false }: {
 
   return (
     <section className="starting-morph-budget">
-      <h3>Starting Morph Point budget</h3>
+      <h3 id={live ? 'starting-morph-budget-title' : undefined} className={live ? 'creation-review-target' : undefined}
+        tabIndex={live ? -1 : undefined}>Starting Morph Point budget</h3>
       <dl className="print-checks" aria-live={live ? 'polite' : undefined}>
         <div><dt>GM allowance</dt><dd>{allowance} MP</dd></div>
         {resources > 0 && <div><dt>Resources</dt><dd>+{resources} MP</dd></div>}

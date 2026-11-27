@@ -238,6 +238,13 @@ section.comparison { padding: 1.25rem; }
 .morph-stats strong { color: var(--accent); font-variant-numeric: tabular-nums; }
 .editor-grid { display: grid; grid-template-columns: 1.55fr minmax(15rem, 1fr); gap: 1rem; align-items: start; min-width: 0; }
 .editor-fields { display: grid; gap: 1rem; min-width: 0; }
+.creation-review { margin-bottom: 1rem; }
+.creation-review h3 { margin-top: .65rem; }
+.creation-review ul { list-style: disc; padding-inline-start: 1.25rem; }
+.creation-review li { margin-top: .25rem; }
+.creation-review a { text-decoration: underline; text-underline-offset: .15em; }
+.creation-review-target { scroll-margin-block-start: 1rem; }
+.creation-review-target:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
 .editor-panel { min-width: 0; padding: 1.25rem; }
 .editor-panel h2 { display: flex; align-items: center; gap: .5rem; margin-bottom: .55rem; font-size: 1.32rem; }
 .editor-panel h2 svg { color: var(--accent); }

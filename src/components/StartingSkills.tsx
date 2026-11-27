@@ -8,15 +8,15 @@ import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { SkillTransfers } from './SkillTransfers.tsx';
 import { SkillTestModifiers } from './SkillTestModifiers.tsx';
 
-export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchasesChange, onSpecializationsChange, onTraitsChange }: {
+export function StartingSkills({ ego, ledger = calculateStartingSkills(ego), onToggleArt, onTransfersChange, onPurchasesChange, onSpecializationsChange, onTraitsChange }: {
   ego: SkillInputs & Pick<Ego, 'specializations'>;
+  ledger?: ReturnType<typeof calculateStartingSkills>;
   onToggleArt?: (field: string) => void;
   onTransfersChange?: (transfers: SkillPointTransfer[]) => void;
   onPurchasesChange?: (purchases: SkillPointPurchase[]) => void;
   onSpecializationsChange?: (specializations: SkillSpecialization[]) => void;
   onTraitsChange?: (traits: EgoTraitChoice[]) => void;
 }) {
-  const ledger = calculateStartingSkills(ego);
   const { skills, unassignedKnowPoints, unassignedActivePoints, pendingPsiPoints, transferResults } = ledger;
   const specializations = traceSkillSpecializations(skills, ego.specializations);
   const expertSkillId = ego.traits?.find(({ id }) => id === expertTraining.id)?.skillId;
@@ -32,7 +32,7 @@ export function StartingSkills({ ego, onToggleArt, onTransfersChange, onPurchase
 
   return (
     <section className="panel editor-panel starting-skills" aria-labelledby="starting-skills-title">
-      <h2 id="starting-skills-title">Starting skill ledger</h2>
+      <h2 id="starting-skills-title" className="creation-review-target" tabIndex={-1}>Starting skill ledger</h2>
       <p className="muted">Totals add allocated points to the linked aptitude. Fray and Perceive use twice their aptitude.</p>
       {onTraitsChange && (
         <div className="identity-fields">

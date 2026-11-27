@@ -38,7 +38,7 @@ export function CreationPackages({ packages, onChange }: {
 
   return (
     <Card className="editor-panel">
-      <h2>Core creation packages</h2>
+      <h2 id="creation-packages-title" className="creation-review-target" tabIndex={-1}>Core creation packages</h2>
       <p className="muted">Choose from the supported starter packages. The grants below are package points for the later skill calculation.</p>
       <div className="package-choices">
         {creationPackageKinds.map((kind) => {

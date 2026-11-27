@@ -27,6 +27,12 @@ If npm cannot find `package.json`, switch to the checkout root. If installation 
 
 You can also save without a morph and assign one later from **Edit ego**. Older prototype drafts still open with their original morph assignment. See [rules sources](rules-sources.md) and the [roadmap](../roadmap/roadmap.json).
 
+## Review creation
+
+**Creation review** appears at the top of **Create ego** and **Edit ego**. Select an item to move focus to the affected field or section. The list updates as you edit.
+
+**Fix before saving** lists input errors for aptitude scores, reputation scores, and the GM's MP allowance. **Review before play** covers pending packages and skill points, core aptitude bounds, available reputation points, CP and MP deficits, skill caps and invalid allocations, starting Psi choices, and the first sleeve's price. You can save an incomplete or over-budget draft. Reopening it runs the checks again from the saved choices.
+
 ## Set the starting Morph Point budget
 
 Under **First morph**, leave **GM allowance (MP)** blank to use 6 MP or enter the whole number your GM assigns. Zero is a valid allowance. Under **Ego traits**, **Resources** costs 2 CP per level and adds that level to your starting MP.
