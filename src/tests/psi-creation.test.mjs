@@ -8,7 +8,7 @@ import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { calculateStartingSkills } from '../rules/calculations/starting-skills.ts';
 import { traceStartingPsi } from '../rules/calculations/psi.ts';
-import { psiSubStrains } from '../rules/datasets/psi.ts';
+import { psiSleights, psiSubStrains } from '../rules/datasets/psi.ts';
 import { findCreationPackage } from '../rules/datasets/creation-packages.ts';
 
 const psi = (level) => ({ id: 'psi', level });
@@ -103,5 +103,60 @@ test('backups preserve valid or partial Psi choices and reject invalid drawbacks
     [{ traits: [psi(2)], psi: { ...config, subStrain: 'invalid' } }, /supported starting sub-strain/],
   ]) {
     assert.throws(() => previewBackup(encodeBackup([draft(details)])), error);
+  }
+});
+
+test('the core catalogue gates 20 psi-chi and 37 psi-gamma sleights by Psi level', () => {
+  const basic = traceStartingPsi({ traits: [psi(1)] });
+  const full = traceStartingPsi({ traits: [psi(2)] });
+  assert.equal(basic.purchaseOptions.length, 20);
+  assert.ok(basic.purchaseOptions.every(({ minimumLevel }) => minimumLevel === 1));
+  assert.equal(full.purchaseOptions.length, 57);
+  assert.equal(new Set(psiSleights.map(({ name }) => name)).size, 57);
+  assert.deepEqual(traceStartingPsi({}).purchaseOptions, []);
+});
+
+test('purchases share the CP budget, allow ten in addition to the free sleight, and recheck eligibility', () => {
+  const config = { subStrain: 'architect', freeSleight: 'Grok' };
+  const chi = psiSleights.filter(({ name, minimumLevel }) => name !== 'Grok' && minimumLevel === 1)
+    .map(({ name }) => name);
+  const choices = { traits: [psi(2)], psi: config, psiSleightPurchases: ['Grok', 'Grok', 'Mindlink', ...chi.slice(0, 10)] };
+  const trace = traceStartingPsi(choices);
+  assert.equal(trace.freeSleight.name, 'Grok');
+  assert.deepEqual(trace.purchasedNames, ['Mindlink', ...chi.slice(0, 9)]);
+  assert.equal(trace.discardedPurchases, 3);
+  assert.ok(trace.purchaseOptions.every(({ name }) => name !== 'Grok' && !trace.purchasedNames.includes(name)));
+  const budget = evaluateAptitudeBudget({}, [{ to: 'active:Psi', points: 5 }], { ...choices, egoFlex: 2 });
+  assert.deepEqual([budget.sleightCp, budget.totalCp, budget.cpLeft], [10, 17, 3]);
+  const downgraded = traceStartingPsi({ ...choices, traits: [psi(1)] });
+  assert.deepEqual(downgraded.purchasedNames, chi.slice(0, 10));
+  assert.equal(evaluateAptitudeBudget({}, [], { ...choices, traits: [] }).sleightCp, 0);
+  assert.deepEqual(traceStartingPsi(choices).purchasedNames, trace.purchasedNames);
+  assert.equal(traceStartingPsi({
+    ...choices, psi: { ...config, freeSleight: 'Enhanced Creativity' },
+  }).purchasedNames[0], 'Grok');
+});
+
+test('paid sleights survive backup, resleeving, and print, while invalid purchases are rejected', () => {
+  const traits = [psi(2)];
+  const psiSleightPurchases = ['Charisma', 'Mindlink'];
+  const character = draft({ traits, psiSleightPurchases });
+  assert.deepEqual(previewBackup(encodeBackup([character])).drafts[0], character);
+  const replay = recordResleeving(character, 'second', 'case', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  for (const audience of ['player', 'gm']) {
+    const { psi: printPsi } = buildPrintableDossier(replay, audience, []);
+    assert.deepEqual(printPsi.purchasedNames, psiSleightPurchases);
+    assert.equal(printPsi.purchaseCp, 2);
+  }
+  for (const details of [
+    { traits: [] },
+    { traits: [psi(1)] },
+    { psiSleightPurchases: ['Unknown sleight'] },
+    { psiSleightPurchases: ['Mindlink', 'Mindlink'] },
+    { psi: { subStrain: 'architect', freeSleight: 'Grok' }, psiSleightPurchases: ['Grok'] },
+    { psiSleightPurchases: psiSleights.slice(0, 11).map(({ name }) => name) },
+    { psiSleightPurchases: 'Mindlink' },
+  ]) {
+    assert.throws(() => previewBackup(encodeBackup([draft({ traits, psiSleightPurchases, ...details })])), /psiSleightPurchases/);
   }
 });

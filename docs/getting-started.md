@@ -151,7 +151,9 @@ Choose **Hardening**, select **Alienation**, **Helplessness**, or **Violence**, 
 
 Under **Ego traits**, choose **Psi** Level 1 for 2 CP or Level 2 for 4 CP. This unlocks the Willpower-linked Psi skill and activates the 50 Psi points from **Lost** or the 40 from **Async**. If you choose a package first, its Psi grant waits for the trait. Losing the prerequisite sends saved Psi allocations to **Needs review**.
 
-Under **Starting Psi**, choose one of the five sub-strains, its required drawback, and one free sleight. The drawback grants 0 CP. Level 1 offers psi-chi sleights. Level 2 also offers the sub-strain’s psi-gamma choices. The selected drawback and sleight are references for play. Extra sleight purchases are planned. The editor, dossier, and both print layouts derive Infection Rating as 10 times the Psi level.
+Under **Starting Psi**, choose one of the five sub-strains, its required drawback, and one free sleight. The drawback grants 0 CP. Level 1 offers psi-chi sleights and Level 2 unlocks psi-gamma.
+
+Use **Sleight to purchase** to add up to ten more core sleights at 1 CP each. The CP budget shows the cost of eligible purchases as you edit. If a level change or a new free choice makes a purchase ineligible, you can restore its eligibility before saving. Saving drops ineligible purchases. The dossier and both print layouts list the selected sleights for reference during play. The editor and dossier derive starting Infection Rating as 10 times the Psi level, including in print.
 
 ## Review derived ego stats
 

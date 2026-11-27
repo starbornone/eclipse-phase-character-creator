@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { AptitudeScores, Ego, SkillPointPurchase } from '../types/character.ts';
 import { aptitudes } from '../types/character.ts';
 import { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts';
+import type { StartingPsiChoices } from '../rules/calculations/psi.ts';
 import { aptitudeTemplates, coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { startingReputationRules } from '../rules/datasets/reputation.ts';
@@ -26,13 +27,13 @@ export function AptitudeTemplatePicker({ onApply }: { onApply: (scores: Aptitude
   );
 }
 
-export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, reputation, specializations, traits, invalidReputation }:
-  Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations' | 'traits'> & {
+export function AptitudeBudget({ scores, skillPurchases, invalidReputation, ...choices }:
+  Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> & StartingPsiChoices & {
   scores?: AptitudeScores;
   skillPurchases: SkillPointPurchase[];
   invalidReputation: boolean;
 }) {
-  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, { egoFlex, languages, reputation, specializations, traits });
+  const budget = scores && !invalidReputation && evaluateAptitudeBudget(scores, skillPurchases, choices);
   return (
     <section className="aptitude-budget" aria-labelledby="aptitude-budget-title">
       <h3 id="aptitude-budget-title">Customization Point budget</h3>
@@ -46,6 +47,7 @@ export function AptitudeBudget({ scores, skillPurchases, egoFlex, languages, rep
               <div><dt>CP for languages</dt><dd>{budget.languageCp}</dd></div>
               <div><dt>CP for reputation</dt><dd>{budget.reputationBudget.cp}</dd></div>
               <div><dt>CP for specializations</dt><dd>{budget.specializationCp}</dd></div>
+              <div><dt>CP for sleights</dt><dd>{budget.sleightCp}</dd></div>
               <div><dt>CP for positive traits</dt><dd>{budget.traitBudget.cost}</dd></div>
               <div><dt>CP from negative traits</dt><dd>{budget.traitBudget.bonus} / {coreAptitudeRules.maximumTraitBonus}</dd></div>
               <div><dt>Total spent</dt><dd>{budget.totalCp} / {budget.availableCp}</dd></div>

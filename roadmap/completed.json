@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T02:00:09+11:00",
+  "updatedAt": "2026-11-28T02:05:53+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -385,6 +385,13 @@
       "group": "Character creation",
       "notes": "Added Psi levels, WIL-linked skill and pending package grants, the five sub-strains with zero-CP drawbacks and free sleights, Infection Rating, and Psi-gated Unknown Hardening. Verified grant totals, skill allocation replay, backup validation, level gating, 390 px layout, save and reload, resleeving, and both print previews. All 166 tests and the production build pass.",
       "completedAt": "2026-11-28T02:00:09+11:00"
+    },
+    {
+      "id": "buy-core-psi-sleights",
+      "title": "Buy core Psi sleights during character creation",
+      "group": "Character creation",
+      "notes": "Added all 57 core sleights with shared level gates, free-choice deduplication, a ten-purchase cap, and live CP accounting. Verified backup validation, 390 px editor, save and reload, resleeving, both print layouts, and saving after a level downgrade. All 169 tests and the production build pass.",
+      "completedAt": "2026-11-28T02:05:53+11:00"
     }
   ]
 }

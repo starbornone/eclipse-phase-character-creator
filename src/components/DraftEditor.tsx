@@ -68,6 +68,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [specializations, setSpecializations] = useState(draft?.ego.specializations ?? []);
   const [traits, setTraits] = useState(draft?.ego.traits ?? []);
   const [psi, setPsi] = useState(draft?.ego.psi);
+  const [psiSleightPurchases, setPsiSleightPurchases] = useState(draft?.ego.psiSleightPurchases ?? []);
   const [inputs, setInputs] = useState(() => aptitudeInputs(draft?.ego.aptitudes));
   const [egoFlex, setEgoFlex] = useState<number>(draft?.ego.egoFlex ?? startingEgoFlex);
   const [languageText, setLanguageText] = useState(draft?.ego.languages?.join('\n') ?? '');
@@ -82,7 +83,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [conflict, setConflict] = useState(false);
   const startingMorph = findSampleMorph(assignedFirstSleeve?.morphDefinitionId ?? morphId);
   const { entries: appliedMorphTraits, bonus: morphTraitBonus } = evaluateMorphTraits(startingMorph, morphTraits);
-  const startingPsi = traceStartingPsi({ packages, traits, psi });
+  const startingPsi = traceStartingPsi({ packages, traits, psi, psiSleightPurchases });
   const parsed = parseAptitudes(inputs);
   const parsedRep = parseReputation(repInputs);
   const { allowance, issue: allowanceInputIssue } = parseStartingMorphAllowance(morphAllowance);
@@ -183,6 +184,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(specializations.length ? { specializations } : {}),
           ...(savedTraits.length ? { traits: savedTraits } : {}),
           ...(startingPsi.selection ? { psi: startingPsi.selection } : {}),
+          ...(startingPsi.purchasedNames.length ? { psiSleightPurchases: startingPsi.purchasedNames } : {}),
         },
         sleeves: firstSleeve ? [firstSleeve, ...sleeves.slice(1)] : sleeves,
       };
@@ -250,6 +252,9 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             <ReputationEditor inputs={repInputs} issue={parsedRep.issue} onChange={setRepInputs} />
             <EgoTraitEditor choices={traits} onChange={setTraits} />
             <StartingPsiSection psi={startingPsi} onChange={setPsi}
+              onPurchaseChange={(name, selected) => setPsiSleightPurchases((current) => (
+                selected ? [...current, name] : current.filter((purchase) => purchase !== name)
+              ))}
               discardedSleight={Boolean(psi?.freeSleight && !startingPsi.freeSleight)} />
             <Card className="editor-panel">
               <h2>Customization</h2>
@@ -277,6 +282,8 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 reputation={parsedRep.scores}
                 specializations={specializations}
                 traits={traits}
+                psi={psi}
+                psiSleightPurchases={psiSleightPurchases}
                 invalidReputation={Boolean(parsedRep.issue)}
               />
             </Card>

@@ -3,6 +3,7 @@ import type { AptitudeScores, Ego, SkillPointPurchase } from '../../types/charac
 import { coreAptitudeRules } from '../datasets/aptitude-templates.ts';
 import { coreCustomizationRules } from '../datasets/customization.ts';
 import { evaluateEgoTraitBudget } from './ego-traits.ts';
+import { traceStartingPsi, type StartingPsiChoices } from './psi.ts';
 import { evaluateReputation } from './reputation.ts';
 
 export function normalizeLanguage(language: string) {
@@ -25,8 +26,8 @@ export function parseLanguages(entries: readonly string[]) {
 export function evaluateAptitudeBudget(
   scores: AptitudeScores,
   skillPurchases: readonly SkillPointPurchase[] = [],
-  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation, specializations = [], traits }:
-    Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations' | 'traits'> = {},
+  { egoFlex = coreCustomizationRules.startingEgoFlex, languages = [], reputation, specializations = [], traits, psi, psiSleightPurchases }:
+    Pick<Ego, 'egoFlex' | 'languages' | 'reputation' | 'specializations'> & StartingPsiChoices = {},
 ) {
   const entered = aptitudes.flatMap(({ id, label }) => {
     const score = scores[id];
@@ -45,10 +46,11 @@ export function evaluateAptitudeBudget(
   const languageCp = Math.max(0, languages.length - freeLanguages) * coreCustomizationRules.cpPerExtraLanguage;
   const reputationBudget = evaluateReputation(reputation);
   const specializationCp = specializations.length * coreCustomizationRules.cpPerSpecialization;
+  const { purchaseCp: sleightCp } = traceStartingPsi({ traits, psi, psiSleightPurchases });
   const traitBudget = evaluateEgoTraitBudget(traits);
   const traitBonus = Math.min(traitBudget.bonus, coreAptitudeRules.maximumTraitBonus);
   const availableCp = coreAptitudeRules.startingCp + traitBonus;
-  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp + specializationCp + traitBudget.cost;
+  const totalCp = aptitudeCp + skillCp + flexCp + languageCp + reputationBudget.cp + specializationCp + traitBudget.cost + sleightCp;
 
   return {
     entered: entered.length,
@@ -62,6 +64,7 @@ export function evaluateAptitudeBudget(
     languageCp,
     reputationBudget,
     specializationCp,
+    sleightCp,
     traitBudget,
     availableCp,
     cpLeft: availableCp - totalCp,

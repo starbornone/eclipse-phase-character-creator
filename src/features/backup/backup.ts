@@ -304,6 +304,13 @@ function readEgo(value: unknown, path: string): Ego {
       return id;
     });
   const traits = ego.traits === undefined ? undefined : readEgoTraits(ego.traits, `${path}.traits`);
+  const psi = ego.psi === undefined ? undefined : readPsiConfiguration(ego.psi, traits, `${path}.psi`);
+  const purchasesPath = `${path}.psiSleightPurchases`;
+  const psiSleightPurchases = ego.psiSleightPurchases === undefined ? undefined
+    : list(ego.psiSleightPurchases, purchasesPath).map((value, index) => string(value, `${purchasesPath}[${index}]`, true));
+  if (psiSleightPurchases && traceStartingPsi({ traits, psi, psiSleightPurchases }).discardedPurchases) {
+    badField(purchasesPath, 'up to ten distinct sleights eligible for the Psi level and different from the free sleight');
+  }
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -327,7 +334,8 @@ function readEgo(value: unknown, path: string): Ego {
     ...(skillPurchases === undefined ? {} : { skillPurchases }),
     ...(specializations === undefined ? {} : { specializations }),
     ...(traits === undefined ? {} : { traits }),
-    ...(ego.psi === undefined ? {} : { psi: readPsiConfiguration(ego.psi, traits, `${path}.psi`) }),
+    ...(psi === undefined ? {} : { psi }),
+    ...(psiSleightPurchases === undefined ? {} : { psiSleightPurchases }),
   };
 }
 

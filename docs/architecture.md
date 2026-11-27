@@ -88,7 +88,7 @@ flowchart TD
 
 ## Starting Psi
 
-The Psi trait uses the shared ego trait CP budget. The optional `psi` configuration holds a sub-strain ID and its selected drawback and free sleight. Backup validation uses the same sub-strain lookup and level gate as the editor. The required drawback has zero CP budget impact. Infection Rating is derived from the Psi level. The ledger keeps Lost and Async Psi grants pending until the trait is selected and replays Psi allocations when eligibility changes.
+The Psi trait uses the shared ego trait CP budget. The optional `psi` configuration holds a sub-strain ID and its selected drawback and free sleight. The required drawback has zero CP budget impact. The optional `psiSleightPurchases` array holds paid sleight names, including purchases made before the sub-strain is chosen. A shared trace supplies the editor, CP budget, backup validator, dossier, and both print layouts. It checks the Psi level, excludes the free sleight, and counts up to ten distinct purchases. Save persists eligible choices and backup import rejects ineligible purchases. Infection Rating is derived from the Psi level. The ledger keeps Lost and Async Psi grants pending until the trait is selected and replays Psi allocations when eligibility changes.
 
 ## Data and responsibilities
 

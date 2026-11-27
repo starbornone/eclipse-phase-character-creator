@@ -257,7 +257,7 @@ section.comparison { padding: 1.25rem; }
   font-weight: 400;
 }
 .aptitude-fields input { font-variant-numeric: tabular-nums; }
-.aptitude-template { align-items: end; grid-template-columns: minmax(0, 1fr) auto; }
+.aptitude-template, .sleight-purchase-fields { align-items: end; grid-template-columns: minmax(0, 1fr) auto; }
 .aptitude-template .rules-note { margin: 0; }
 .aptitude-budget { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid var(--line); }
 .aptitude-budget h3 { font-size: 1.075rem; }
@@ -302,8 +302,10 @@ section.comparison { padding: 1.25rem; }
 .skill-transfers .identity-fields { align-items: end; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .starting-morph-traits .identity-fields { grid-template-columns: 1fr; }
 .skill-transfers .identity-fields button { justify-self: start; }
-.skill-transfers li { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
-.repeatable-traits li .button { flex-shrink: 0; }
+.skill-transfers li, .sleight-purchases li { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+:is(.repeatable-traits, .sleight-purchases) li .button { flex-shrink: 0; }
+.sleight-purchases { margin-top: .65rem; }
+.starting-psi h4 { margin-top: .75rem; }
 input[aria-invalid="true"] { border-color: var(--error); }
 textarea { resize: vertical; }
 .morph-picker fieldset { min-width: 0; }
@@ -393,6 +395,7 @@ textarea { resize: vertical; }
 .print-checks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .35rem .8rem; }
 .print-checks div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .1rem .45rem; padding-block: .2rem; border-bottom: 1px solid var(--line); }
 .print-checks dd { font-variant-numeric: tabular-nums; font-weight: 650; }
+.purchased-sleight-summary { grid-column: 1 / -1; }
 .print-history li { border-top: 1px solid var(--line); padding: .35rem 0; }
 .print-history h4 { font-weight: 650; }
 .print-history h4 span { font-weight: 400; }

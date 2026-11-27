@@ -132,4 +132,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Removing Psi invalidates new and saved Psi allocations, which can be replayed when the trait returns. Saving without Psi releases the Unknown Hardening selection. Saving at Level 1 retains eligible psi-chi choices. [Core Psi rules](https://eclipsephase.github.io/en/04/28-traits.html#psi)
 
+## 17. Track paid sleights separately from the sub-strain
+
+**Context.** Starting Psi includes a free sub-strain sleight and allows up to ten paid sleights. Both use the same Psi level requirements.
+
+**Decision.** Store purchased names on the ego so drafts can buy sleights before choosing a sub-strain. Give the free choice priority when the same sleight is also in the purchase list. Use one core catalogue for the types and eligibility of both selections.
+
+**Consequences.** The editor keeps ineligible selections available for restoration while editing and charges CP for eligible purchases only. Saving drops ineligible purchases. The dossier retains paid sleights across resleeving. [Starting sleight purchases](https://eclipsephase.github.io/en/04/13-step-10-customization.html#psi-sleights)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

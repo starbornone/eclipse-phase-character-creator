@@ -102,6 +102,7 @@ export interface Ego {
   specializations?: SkillSpecialization[];
   traits?: EgoTraitChoice[];
   psi?: PsiConfiguration;
+  psiSleightPurchases?: string[];
 }
 
 export interface MorphDefinition {
