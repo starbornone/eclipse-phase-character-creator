@@ -21,6 +21,8 @@ The review found missing skill totals in both print layouts. The print view now 
 
 An additional review on 27 November 2026 covered all six aptitude check ego traits at mixed levels. The saved dossier and restored backup showed the same adjusted targets and source contributions. Player and GM A4 PDFs each spanned two pages; every page was rendered in grayscale and checked for readable formulas, trait levels, repeated skill headers, and attribution. The dossier at 320 px had no horizontal overflow. A draft with traits and blank aptitudes retained pending check targets. Changing levels updated CP costs, and removing the traits restored the base checks without changing the skill ledger.
 
+Contact and Morph Familiarity were also reviewed on 27 November 2026 using two contact/network entries and two familiar morph types. Each appears separately in the saved dossier and in player and GM A4 PDFs. All four grayscale pages retain the names, networks, effects, and attribution. Add/remove, duplicate rejection, save/reload, resleeving, and backup restore passed in an isolated Edge profile. The 320 px editor has readable Remove buttons and no horizontal overflow.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).

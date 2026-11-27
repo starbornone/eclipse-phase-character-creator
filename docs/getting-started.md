@@ -111,6 +111,10 @@ The dossier and both print previews list the chosen traits and their effects for
 
 In the **Starting skill ledger**, choose an **Expert Training skill** to spend 2 CP and raise that skill’s starting cap from 80 to 90. The trait changes the cap. Allocate points to raise the skill itself. If the field is new, add it to the ledger before choosing Expert Training. Removing or changing the choice rechecks existing allocations and flags any that now exceed the cap.
 
+Under **Contacts and morph familiarity**, choose **Contact**, enter a contact name, select its reputation network, and select **Add Contact**. Each purchase costs 1 CP. Add other contacts separately. The same contact/network combination is rejected even if spacing or capitalization differs. The +10 applies to Rep Tests using that contact; the recorded reputation score stays unchanged. Agree the contact's relationship with the GM.
+
+Choose **Morph Familiarity**, enter a morph type, and select **Add Morph Familiarity** for another 1 CP. You can buy it for multiple distinct morph types. It exempts Integration Tests when sleeving that type. Naming a type here does not add a morph to the library. Use **Remove** to release a purchase's CP; remove and add a replacement to correct its details. Select **Add** before saving the draft. These choices follow the ego through resleeving, appear in both print layouts, and round-trip in backups.
+
 ## Compare morph profiles
 
 Open **Morph library**. Search by name or description, or choose a category. Select two or three **Compare** checkboxes to see health values and source links side by side. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.

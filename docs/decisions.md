@@ -68,4 +68,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The selector offers 21 named affiliations plus Factionless. Grouping is dataset metadata and does not enter the saved ego schema. Knowledge of an old faction can use the existing Know transfer workflow while motivation follows the selected allegiance. [Core faction source](rules-sources.md#source-inventory)
 
+## 9. Identify repeatable ego traits by their scope
+
+**Context.** Contact and Morph Familiarity can be bought more than once, while existing trait controls and backup validation assume one selection per trait id. Each repeat needs its own contact/network or morph type and CP cost.
+
+**Decision.** Extend ego trait choices with optional detail and reputation network fields. Require both for Contact and only a morph type detail for Morph Familiarity. Treat the normalized trait/detail/network tuple as the identity for these two traits. Preserve id-only uniqueness for all existing traits. Use explicit Add and Remove controls so unnamed or duplicate entries do not become saved purchases.
+
+**Consequences.** Each entry costs one CP and renders separately in dossier and print summaries. The current draft and backup versions can read earlier choices unchanged. Situational benefits stay as reference text. Freeform morph type names allow GM-approved scope without expanding the supported morph catalogue. [Rules sources](rules-sources.md#source-inventory)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.
