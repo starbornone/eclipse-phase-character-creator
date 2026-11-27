@@ -49,6 +49,8 @@ Saved scores appear in the dossier, both print layouts, and JSON backups.
 
 In **Create ego** or **Edit ego**, pick a supported background, career, interest, or faction under **Core creation packages**. Each card lists the package’s skill points and source page. When a package asks for a Hardware or Pilot field, choose a suggested name or enter your own. You can leave Active and Know fields blank while you draft. Choose **Factionless** to enter a Know field of your choice.
 
+The faction selector covers the 15 broad affiliations in the core book and lists **Solarian**, **Sifter**, **Belter**, **Europan**, **Ringer**, and **Skimmer** under **Regional**. Each named choice adds 30 points to its faction Know skill. You can also leave the faction undecided or select **Factionless**.
+
 Nine core backgrounds are available, including **Indenture**, **Infolife**, **Isolate**, **Underclass**, and **Uplift**. **Lost** is deferred until its required Psi trait and skill are supported. Indenture asks you to choose **Fray** or **Melee** for 20 points; Underclass offers **Guns** or **Melee** for 40 points. Leave **Choose a skill** selected to keep those points pending. Changing that choice updates the ledger and rechecks existing transfers. Save the draft to retain it in backups and print output.
 
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
@@ -76,6 +78,8 @@ Save the draft to keep the choice in the dossier and JSON backup. Both print pre
 ## Record starting motivations
 
 Under **Motivations**, enter a short phrase for each personal choice and select **Support** or **Oppose**. A named faction supplies a default faction motivation and leaves two personal slots. Enter a signed phrase in **Faction motivation** to override the default. With no faction or **Factionless**, you can enter three personal motivations.
+
+The faction default is an editable **+Name Interests** placeholder. Each regional affiliation gets its own name. To represent a defector with knowledge of an old faction, keep the new allegiance selected and use a Know-to-Know skill transfer to move the faction's 30 points to the old faction's field.
 
 You can save a draft with empty slots. If the ego joins a faction, an existing third personal motivation stays in the draft and returns when the ego has no faction. Active motivations appear in the dossier and player print preview. JSON backups preserve the choices.
 

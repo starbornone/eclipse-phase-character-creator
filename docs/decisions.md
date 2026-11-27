@@ -60,4 +60,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The workspace uses the full available width. Existing browser routes, active-link semantics, keyboard focus, unsaved-edit guards, and print visibility continue to apply. Workspace export remains a contextual dashboard action beside the saved drafts. Contributor docs continue to describe the app's current scope and limitations.
 
+## 8. Expand Regional into concrete faction choices
+
+**Context.** The core faction sidebar lists 15 broad affiliations and a Regional category naming Solarian, Sifter, Belter, Europan, Ringer, and Skimmer. A generic Regional selection would leave both the faction Know field and motivation vague.
+
+**Decision.** Expose the six regional affiliations as individual choices under a native Regional optgroup. Give each a stable id, a 30-point faction Know grant, and the same editable motivation default used by other named factions. Preserve the original Anarchist, Argonaut, and Factionless choices.
+
+**Consequences.** The selector offers 21 named affiliations plus Factionless. Grouping is dataset metadata and does not enter the saved ego schema. Knowledge of an old faction can use the existing Know transfer workflow while motivation follows the selected allegiance. [Core faction source](rules-sources.md#source-inventory)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.
