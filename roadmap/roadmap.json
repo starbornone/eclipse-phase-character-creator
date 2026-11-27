@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-28T09:11:10+11:00",
+  "updatedAt": "2026-11-28T09:38:23+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -10,16 +10,16 @@
   },
   "items": [
     {
-      "id": "verify-accessibility-and-layouts",
-      "title": "Verify keyboard access, mobile layouts, and print",
-      "group": "Public beta",
-      "notes": "Run the planned accessibility audit and test the complete player workflow across supported layouts. The initial Edge PDF and grayscale review is recorded in docs/print-review.md. Verify native print-dialog controls, physical grayscale output, very long notes, and other supported browsers."
-    },
-    {
       "id": "prepare-public-beta",
       "title": "Prepare onboarding and feedback for public beta",
       "group": "Public beta",
       "notes": "Document known limitations and cover the planned feedback loop, error monitoring, and privacy-respecting metrics."
+    },
+    {
+      "id": "verify-physical-grayscale-print",
+      "title": "Verify grayscale dossiers on a physical printer",
+      "group": "Public beta",
+      "notes": "Print synthetic player and GM dossiers on a physical printer using its grayscale setting. Check legibility, clipped margins, page breaks, repeated skill headings, and the selected private-note output on paper. The digital print and accessibility audit is complete in verify-accessibility-and-layouts."
     }
   ]
 }

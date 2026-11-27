@@ -41,6 +41,20 @@ The Everyday Technology review on 28 November 2026 used two tool kits, a shop, a
 
 The [first-character walkthrough](getting-started.md#create-a-complete-first-character) passed on 28 November 2026 in Edge at 375 px. Creation review, IndexedDB reload, JSON export and restore, and the first resleeve retained the expected values. Headless Chrome rendered the player and GM previews to four and three A4 pages. The grayscale pages and extracted text show the same pool values, built-in ware, specialization target, and source credits. The player copy includes the purchased Spider Hand and the campaign gear swap.
 
+## Digital print and long notes
+
+The 28 November 2026 review opened Edge's print preview from the dossier button. **More settings** exposed paper size, scaling, margins, and background options. Turning off **Headers and footers** removed the date and title from the preview. The native preview repaginated the sample from three A4 pages to four Letter pages. The Windows system print dialog showed the printer, orientation, and page-range controls. The available printer queues were virtual. [Edge print settings](https://support.microsoft.com/en-us/edge/print-in-microsoft-edge)
+
+Chrome rendered each layout directly from the app route with browser headers, footers, and backgrounds disabled. Poppler rendered the PDF pages in grayscale for visual inspection. Text extraction confirmed the expected page sizes, readable content, and private-field exclusions.
+
+| Layout | A4 pages | Letter pages | Private-data check |
+| --- | --- | --- | --- |
+| Player dossier | 4 | 4 | All private sleeve event fields omitted |
+| Default GM summary | 3 | 3 | All private sleeve event fields omitted |
+| GM summary with notes selected | 4 | 4 | All 72 numbered lines and the 380-character unbroken string preserved. Location and cause omitted. |
+
+The selected note used the full 1,000-character field and continued across pages. The same draft stayed within the viewport at 320 CSS pixels in Edge, Chrome, and Firefox. The separate [physical grayscale check](../roadmap/roadmap.json) covers paper output from a physical printer.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).
@@ -49,4 +63,4 @@ The [first-character walkthrough](getting-started.md#create-a-complete-first-cha
 4. Save GM PDFs with all private fields off, then with only notes on. Check the preview and extracted PDF text. Switch layouts and verify the private choices reset.
 5. Review the preview at a narrow phone width. Also print an incomplete draft and check that missing aptitude totals remain pending.
 
-Native print-dialog controls, browser headers and footers, physical grayscale output, very long notes, and the complete accessibility audit remain in the [layout verification roadmap item](../roadmap/roadmap.json).
+For the separate paper check, use the same app layouts and confirm margins, page breaks, and legibility on the actual printer.

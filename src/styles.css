@@ -110,7 +110,7 @@ footer {
   border: 1px solid #2d435c;
   border-radius: .8rem;
   background-color: #0e2032;
-  background-image: linear-gradient(90deg, #091120 0%, #091120e0 23%, #09112044 65%, #0911200a 100%), url("./assets/orbital-habitat.jpg");
+  background-image: linear-gradient(90deg, #091120 0%, #091120d1 min(37rem, 100%), #0911200a 100%), url("./assets/orbital-habitat.jpg");
   background-position: center, 62% center;
   background-size: cover;
 }
@@ -236,6 +236,7 @@ section.comparison { padding: 1.25rem; }
 .comparison th { font-weight: 600; }
 .comparison tr > :first-child { position: sticky; left: 0; background: var(--surface); }
 .comparison td .rules-note { margin: 0; }
+.comparison .included-morph-traits a { display: inline-flex; align-items: center; min-height: 1.5rem; }
 .catalog-comparison { margin-bottom: 1rem; }
 .comparison-selected { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .7rem; }
 .comparison-selected li { display: flex; align-items: baseline; gap: .5rem; padding: .2rem .55rem; border: 1px solid var(--line); border-radius: .35rem; font-size: .875rem; }
@@ -478,7 +479,7 @@ textarea { resize: vertical; }
   .workspace-status { gap: .35rem; }
   .workspace-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .workspace-nav a { gap: .4rem; padding-inline: .55rem; font-size: .875rem; }
-  .hero { background-image: linear-gradient(90deg, #091120 0%, #091120dc 37%, #09112065 100%), url("./assets/orbital-habitat.jpg"); }
+  .hero { background-image: linear-gradient(90deg, #091120 0%, #091120dc 37%, #091120d1 100%), url("./assets/orbital-habitat.jpg"); }
   .dashboard-grid, .catalog-grid, .dossier-grid { grid-template-columns: 1fr; }
   .catalog-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .print-checks { grid-template-columns: repeat(2, minmax(0, 1fr)); }

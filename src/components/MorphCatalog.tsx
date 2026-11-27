@@ -128,7 +128,7 @@ export function MorphCatalog() {
         }}>Reset filters</button>}
       </div>
       {selectedMorphs.length > 0 && (
-        <section className="panel comparison catalog-comparison" aria-labelledby="comparison-title">
+        <section className="panel comparison catalog-comparison">
           <div className="comparison-heading">
             <h2 ref={comparisonTitle} id="comparison-title" tabIndex={-1}>Morph comparison</h2>
             <button ref={clearComparisonButton} type="button" className="button secondary" onClick={clearComparison}>Clear comparison</button>

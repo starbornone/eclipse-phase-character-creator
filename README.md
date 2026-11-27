@@ -16,6 +16,7 @@ Follow the [first-character walkthrough](docs/getting-started.md#create-a-comple
 
 - [Project overview](docs/overview.md) introduces the planned character workflows.
 - [Rules sources and content policy](docs/rules-sources.md) records source versions, licensing, and rules coverage.
+- [Accessibility and layout review](docs/accessibility-review.md) records the tested keyboard, browser, and print workflows.
 - [Agent guide](AGENTS.md) covers repository conventions and roadmap maintenance.
 - [Roadmap](roadmap/roadmap.json) lists upcoming work in priority order.
 

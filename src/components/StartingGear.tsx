@@ -6,17 +6,19 @@ import { Card } from './ui/card.tsx';
 
 type StartingGear = ReturnType<typeof deriveStartingGear>;
 
-function GearContents({ packs, replacements, onSwap }: {
+function GearContents({ packs, replacements, onSwap, headingLevel = 4 }: {
   packs: StartingGear['packs'];
   replacements?: ReturnType<typeof startingGearReplacements>;
   onSwap?: (swap: StartingGearSwap) => void;
+  headingLevel?: 3 | 4;
 }) {
+  const PackHeading = headingLevel === 3 ? 'h3' : 'h4';
   return (
     <>
       <p className="muted">Free starting gear <strong>Muse ALI</strong></p>
       {packs.map(({ id, name, source, items, gp, usesSynthAlternatives, hasAdditionalGpCosts }) => (
         <section className="starting-gear-pack" key={source}>
-          <h4><a href={source}>{name}</a> · {gp} GP{hasAdditionalGpCosts && ' base'}</h4>
+          <PackHeading><a href={source}>{name}</a> · {gp} GP{hasAdditionalGpCosts && ' base'}</PackHeading>
           {usesSynthAlternatives && <p className="muted">Includes synthmorph alternatives.</p>}
           <dl className="print-checks">
             {items.map(({ name: item, originalName, replacementSource, gp: value, restricted, additionalGpCost }) => (
@@ -102,7 +104,7 @@ export function StartingGearEditor({ campaign, gear, morphCategory, swaps, useIn
         {useInfomorphPack && !usesInfomorphPack && <p className="rules-note">The optional Infomorph pack requires an infomorph first sleeve. Saving will use the selected campaign pack.</p>}
         {appliedSwaps.length < swaps.length && <p className="rules-note">Some swaps no longer fit these packs or the first morph. Saving will remove those swaps.</p>}
       </div>
-      <GearContents packs={packs} replacements={packs.length ? startingGearReplacements(morphCategory) : undefined} onSwap={updateSwap} />
+      <GearContents packs={packs} replacements={packs.length ? startingGearReplacements(morphCategory) : undefined} onSwap={updateSwap} headingLevel={3} />
     </Card>
   );
 }

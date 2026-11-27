@@ -82,7 +82,7 @@ export function ResleeveEditor({ draft, initialMorphId = '', onCancel, onSaved, 
             </div>
           </Card>
           {target && (
-            <section className="panel comparison" aria-labelledby="resleeve-comparison-title">
+            <section className="panel comparison">
               <div className="comparison-heading"><h2 id="resleeve-comparison-title">Current and proposed sleeves</h2></div>
               <p className="muted" id="resleeve-comparison-note">Health and morph trait modifiers follow the sleeve. Aptitude scores follow the ego.</p>
               <MorphProfileTable

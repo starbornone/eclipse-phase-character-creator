@@ -27,7 +27,7 @@ export default function App() {
   const dirtyRef = useRef(false);
   const savingRef = useRef(false);
   const main = useRef<HTMLElement>(null);
-  const focusedPath = useRef<string | undefined>(undefined);
+  const focusedPath = useRef(location.pathname);
   const notice = typeof location.state?.notice === 'string' ? location.state.notice : '';
 
   const setDirty = useCallback((value: boolean) => {
@@ -68,7 +68,7 @@ export default function App() {
   }, [loadAttempt]);
 
   useEffect(() => {
-    if (focusedPath.current === location.pathname && document.activeElement !== document.body) return;
+    if (focusedPath.current === location.pathname || loadState === 'loading') return;
     focusedPath.current = location.pathname;
     main.current?.querySelector('h1')?.focus({ preventScroll: true });
     window.scrollTo(0, 0);

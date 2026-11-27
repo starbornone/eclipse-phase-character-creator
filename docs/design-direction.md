@@ -42,7 +42,7 @@ Review the wireframes for an empty dashboard, an incomplete draft, an over-budge
 
 For the first table-ready player dossier, include identity, aptitude checks, skills, the active morph and its health stats and pools, traits and equipment, and the rules credit. The GM view should lead with the values needed during play and include private notes only when selected. Preserve the ego and morph headings in grayscale. Use the [official sheet](rules-sources.md#source-inventory) to check field names.
 
-The dashboard, draft editor, sample library, and dossier can be reviewed in the current prototype. Both comparison tables scroll on narrow screens. The player and GM print previews have been reviewed for private-field visibility and narrow layouts. The aptitude editor has been reviewed for range and CP warnings on narrow screens. The [grayscale print review](print-review.md) checks PDF pagination, skill calculations, warnings, and attribution. The complete creation workflow and native print-dialog audit remain open.
+The dashboard, draft editor, morph library, and dossier are available in the prototype. Both comparison tables scroll on narrow screens. The player and GM print previews have been reviewed for private-field visibility and narrow layouts. The [accessibility and layout review](accessibility-review.md) covers the creation workflow and keyboard controls. The [print review](print-review.md) covers native digital print settings, grayscale PDFs, and long notes.
 
 ## Dashboard artwork
 
