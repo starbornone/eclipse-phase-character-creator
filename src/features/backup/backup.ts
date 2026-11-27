@@ -8,6 +8,7 @@ import { resolveCustomActiveField } from '../../rules/calculations/active-fields
 import { egoTraitChoiceKey, evaluateEgoTraitBudget, normalizeTraitDetail, scopedEgoTraitIssue } from '../../rules/calculations/ego-traits.ts';
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
+import { isStartingMorphAllowance } from '../../rules/calculations/starting-morph-budget.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
 import { findGearCampaign } from '../../rules/datasets/starting-gear.ts';
@@ -267,6 +268,10 @@ function readEgo(value: unknown, path: string): Ego {
   const campaign = ego.startingCampaign === undefined ? undefined
     : findGearCampaign(string(ego.startingCampaign, `${path}.startingCampaign`, true));
   if (ego.startingCampaign !== undefined && !campaign) badField(`${path}.startingCampaign`, 'a supported starting campaign');
+  const startingMorphPoints = ego.startingMorphPoints;
+  if (startingMorphPoints !== undefined && !isStartingMorphAllowance(startingMorphPoints)) {
+    badField(`${path}.startingMorphPoints`, 'a supported whole number of Morph Points, zero or greater');
+  }
   if (ego.startingInfomorphPack !== undefined && ego.startingInfomorphPack !== true) {
     badField(`${path}.startingInfomorphPack`, 'true when the optional Infomorph pack is selected');
   }
@@ -281,6 +286,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(ego.reputation === undefined ? {} : { reputation: readReputation(ego.reputation, `${path}.reputation`) }),
     ...(ego.packages === undefined ? {} : { packages: readCreationPackages(ego.packages, `${path}.packages`) }),
     ...(ego.personalMotivations === undefined ? {} : { personalMotivations: readPersonalMotivations(ego.personalMotivations, `${path}.personalMotivations`) }),
+    ...(startingMorphPoints === undefined ? {} : { startingMorphPoints }),
     ...(campaign ? { startingCampaign: campaign.id } : {}),
     ...(ego.startingInfomorphPack ? { startingInfomorphPack: true } : {}),
     ...(ego.startingGearSwaps === undefined ? {} : {

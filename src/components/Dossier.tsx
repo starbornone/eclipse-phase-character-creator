@@ -7,6 +7,7 @@ import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { listStartingMotivations } from '../rules/calculations/motivations.ts';
 import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
+import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
@@ -18,6 +19,7 @@ import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
+import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 import { Card } from './ui/card.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
 
@@ -105,6 +107,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
           ) : (
             <p className="muted">{sleeve ? 'This draft references a morph outside the current library.' : 'Assign a sample morph from the ego editor.'}</p>
           )}
+          <StartingMorphBudgetSummary budget={startingMorphBudgetForDraft(draft)} />
         </Card>
       </div>
       <Card className="editor-panel dossier-stats">

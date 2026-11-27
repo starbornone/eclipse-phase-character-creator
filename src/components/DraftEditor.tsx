@@ -9,10 +9,12 @@ import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
+import { evaluateStartingMorphBudget, parseStartingMorphAllowance } from '../rules/calculations/starting-morph-budget.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { reputationNetworks } from '../rules/datasets/reputation.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
+import { startingMorphBudgetRules } from '../rules/datasets/starting-morph-budget.ts';
 import { aptitudes } from '../types/character.ts';
 import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections } from '../types/character.ts';
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
@@ -24,6 +26,7 @@ import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearEditor } from './StartingGear.tsx';
+import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 import { Card } from './ui/card.tsx';
 
 function aptitudeInputs(scores?: AptitudeScores) {
@@ -62,6 +65,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [repInputs, setRepInputs] = useState<ReputationInputs>(() =>
     Object.fromEntries(traceReputation(draft?.ego.reputation).map(({ id, score }) => [id, String(score)])));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
+  const [morphAllowance, setMorphAllowance] = useState(draft?.ego.startingMorphPoints?.toString() ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
@@ -70,10 +74,12 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const startingMorph = findSampleMorph(draft?.sleeves[0]?.morphDefinitionId ?? morphId);
   const parsed = parseAptitudes(inputs);
   const parsedRep = parseReputation(repInputs);
+  const { allowance, issue: morphAllowanceIssue } = parseStartingMorphAllowance(morphAllowance);
   const personalMotivations = cleanPersonalMotivations(motivations);
   const { languages, hasDuplicates } = parseLanguages(languageText.split('\n'));
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
+    || morphAllowance !== (draft?.ego.startingMorphPoints?.toString() ?? '')
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
     || startingCampaign !== draft?.ego.startingCampaign
     || useInfomorphPack !== (draft?.ego.startingInfomorphPack ?? false)
@@ -102,6 +108,10 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     }
     if (parsedRep.issue) {
       form.querySelector<HTMLInputElement>(`[name="reputation-${parsedRep.issue.id}"]`)?.focus();
+      return;
+    }
+    if (morphAllowanceIssue) {
+      form.querySelector<HTMLInputElement>('#starting-morph-allowance')?.focus();
       return;
     }
 
@@ -137,6 +147,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(languages.length ? { languages } : {}),
           ...(Object.keys(parsedRep.scores).length ? { reputation: parsedRep.scores } : {}),
           ...(Object.keys(savedPackages).length ? { packages: savedPackages } : {}),
+          ...(allowance === undefined ? {} : { startingMorphPoints: allowance }),
           ...(startingCampaign ? { startingCampaign } : {}),
           ...(usesInfomorphPack ? { startingInfomorphPack: true } : {}),
           ...(appliedSwaps.length ? { startingGearSwaps: appliedSwaps } : {}),
@@ -258,6 +269,17 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           </div>
           <Card className="editor-panel morph-picker">
             <h2>First morph</h2>
+            <div className="identity-fields">
+              <label className="concept">
+                GM allowance (MP)
+                <input id="starting-morph-allowance" inputMode="numeric" placeholder={String(startingMorphBudgetRules.defaultAllowance)}
+                  value={morphAllowance} aria-invalid={Boolean(morphAllowanceIssue) || undefined}
+                  aria-describedby={morphAllowanceIssue ? 'morph-allowance-issue' : 'morph-allowance-default'}
+                  onChange={(event) => setMorphAllowance(event.target.value)} />
+              </label>
+            </div>
+            <p className="rules-note" id="morph-allowance-default">Leave blank to use the default {startingMorphBudgetRules.defaultAllowance} MP.</p>
+            {morphAllowanceIssue && <p className="error" role="alert" id="morph-allowance-issue">{morphAllowanceIssue}</p>}
             {currentSleeve ? (
               <>
                 <p className="muted">This ego already has a sleeve.</p>
@@ -281,6 +303,11 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                   </label>
                 ))}
               </fieldset>
+            )}
+            {!morphAllowanceIssue && (
+              <StartingMorphBudgetSummary
+                budget={evaluateStartingMorphBudget({ startingMorphPoints: allowance, traits }, startingMorph, (draft?.sleeves.length ?? 0) > 1)}
+                live />
             )}
           </Card>
         </fieldset>

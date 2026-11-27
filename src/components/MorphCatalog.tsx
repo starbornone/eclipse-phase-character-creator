@@ -38,7 +38,8 @@ export function MorphSource({ morph }: { morph: MorphDefinition }) {
   return (
     <p className="rules-note">
       <a href={morph.source.url}>{morph.source.label}</a>
-      {morph.category === 'Infomorph' && <> · <a href={quickStartRules.publisherUrl}>{quickStartRules.publisher}</a> ·{' '}
+      {morph.morphPointsSource && <> · <a href={morph.morphPointsSource.url}>{morph.morphPointsSource.label}</a></>}
+      {(morph.category === 'Infomorph' || morph.morphPointsSource) && <> · <a href={quickStartRules.publisherUrl}>{quickStartRules.publisher}</a> ·{' '}
         <a href={quickStartRules.licenseUrl}>{quickStartRules.license}</a></>}
     </p>
   );
@@ -123,7 +124,7 @@ function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onCle
         <button type="button" className="button secondary" onClick={onClear}>Clear comparison</button>
       </div>
       <p className="muted" id="comparison-note">
-        Quick-Start profiles show published sample health. Core infomorph profiles also show their listed costs and pools.
+        Compare published health and Morph Point costs. Core infomorphs also show their listed pools.
       </p>
       <MorphProfileTable
         columns={morphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}

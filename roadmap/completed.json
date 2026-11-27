@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:32:15+11:00",
+  "updatedAt": "2026-11-28T01:38:23+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -357,6 +357,13 @@
       "group": "Character creation",
       "notes": "Added Digimorph, Ikon, Agent, and Operator with sourced health, MP costs, and pools. Added the optional 10 GP Infomorph pack in the campaign slot with equal-GP swap support. Verified eligibility, backup validation, filtering and comparison, 390 px layout, save and reload, resleeving, and both print previews. All 148 tests and the production build pass.",
       "completedAt": "2026-11-28T01:32:15+11:00"
+    },
+    {
+      "id": "budget-starting-morph-points-and-flex",
+      "title": "Budget starting Morph Points and temporary Flex",
+      "group": "Character creation",
+      "notes": "Added the 6 MP default and GM override, Resources at all four levels, sourced prices for all seven selectable sleeves, an over-budget warning, and temporary Flex that expires on resleeving. Verified zero and pending values, odd MP, the Flex cap, invalid allowance rejection, backup restore, the 390 px editor, save and reload, and both print previews. All 153 tests and the production build pass.",
+      "completedAt": "2026-11-28T01:38:23+11:00"
     }
   ]
 }

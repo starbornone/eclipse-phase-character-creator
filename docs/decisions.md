@@ -100,4 +100,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The career still supplies its own pack. The first sleeve governs eligibility for the pack and its swap items across edits, backup restore, and later resleeving. [Core campaign packs](https://eclipsephase.github.io/en/04/27-gear-packs.html#optional-pack-infomorph)
 
+## 13. Derive temporary Flex from the starting morph budget
+
+**Context.** The core rules give a GM-set starting MP allowance and a Resources bonus. The conversion to temporary Flex costs 2 MP per point and lasts until resleeving.
+
+**Decision.** Store the optional GM allowance and derive the rest from the Resources trait and original sleeve. Interpret the conversion as one Flex per complete 2 MP pair. A second sleeve expires the bonus.
+
+**Consequences.** The dossier retains the starting budget through resleeving and backup restore. Pending and over-budget drafts can still be saved. Ego Flex and the published morph pools keep their own values. [Starting morph and gear rules](https://eclipsephase.github.io/en/04/15-step-12-starting-morph-gear.html)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

@@ -19,7 +19,7 @@ export function quickStartPageUrl(printedPage: number) {
 const source = (page: number) => ({ label: `Quick-Start Rules, p. ${page}`, url: quickStartPageUrl(page) });
 
 // Adapted from the Quick-Start Rules' NPC Stats, pp. 24–25. Health values
-// describe these published examples. NPC threat pools are excluded.
+// describe these published examples. Player MP prices come from the core rules.
 export const sampleMorphs: readonly MorphDefinition[] = [
   {
     id: 'bouncer',
@@ -29,6 +29,8 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     durability: 35,
     woundThreshold: 7,
     deathRating: 53,
+    morphPoints: 4,
+    morphPointsSource: { label: 'Core Bouncer cost', url: 'https://eclipsephase.github.io/en/04/22-common-biomorphs.html#bouncer' },
     source: source(24),
   },
   {
@@ -39,6 +41,8 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     durability: 25,
     woundThreshold: 5,
     deathRating: 50,
+    morphPoints: 0,
+    morphPointsSource: { label: 'Core Case cost', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#case' },
     source: source(25),
   },
   {
@@ -49,6 +53,8 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     durability: 40,
     woundThreshold: 8,
     deathRating: 80,
+    morphPoints: 3,
+    morphPointsSource: { label: 'Core Synth cost', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#synth' },
     source: source(25),
   },
   ...coreInfomorphs,

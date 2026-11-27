@@ -85,6 +85,7 @@ export interface Ego {
   reputation?: ReputationScores;
   packages?: CreationPackages;
   personalMotivations?: PersonalMotivations;
+  startingMorphPoints?: number;
   startingCampaign?: GearCampaign;
   startingInfomorphPack?: true;
   startingGearSwaps?: StartingGearSwap[];
@@ -104,6 +105,7 @@ export interface MorphDefinition {
   woundThreshold?: number;
   deathRating?: number;
   morphPoints?: number;
+  morphPointsSource?: { label: string; url: string };
   pools?: { insight: number; moxie: number; vigor: number; flex: number };
   source?: { label: string; url: string };
 }

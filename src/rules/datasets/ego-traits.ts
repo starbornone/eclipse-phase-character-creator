@@ -3,6 +3,10 @@ import type { Aptitude } from '../../types/character.ts';
 // Eclipse Phase Second Edition, Traits, pp. 72–80, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 export const egoTraitsSource = 'https://eclipsephase.github.io/en/04/28-traits.html';
 export const expertTraining = { id: 'expert-training', cap: 90, cost: 2 } as const;
+export const resourcesTrait = {
+  id: 'resources', name: 'Resources', cpByLevel: [2, 4, 6, 8],
+  effect: 'Gain bonus Morph Points and Gear Points equal to the trait level when acquiring morphs or gear.',
+} as const;
 
 type EgoTrait = {
   id: string;
@@ -41,6 +45,7 @@ export const egoTraits: readonly EgoTrait[] = [
   { id: 'morph-familiarity', name: 'Morph Familiarity', cpByLevel: [1], selection: 'morph', effect: 'Skip Integration Tests when sleeving this morph type.' },
   checkTrait('quickness', 'Quickness', 'ref'),
   checkTrait('resolve', 'Resolve', 'wil'),
+  resourcesTrait,
   { id: 'bad-luck', name: 'Bad Luck', cpByLevel: [-6], effect: 'You cannot spend pool points to reverse the digits of a roll.' },
   { id: 'enemy', name: 'Enemy', cpByLevel: [-2], effect: 'Work with the GM to define a recurring adversary.' },
   checkTrait('feebleness', 'Feebleness', 'som', -5),

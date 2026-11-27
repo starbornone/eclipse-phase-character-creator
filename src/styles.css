@@ -277,6 +277,7 @@ section.comparison { padding: 1.25rem; }
 .dossier-starting-skills { margin-top: 1rem; }
 .dossier > .starting-gear { margin-top: 1rem; }
 .starting-gear-pack { margin-top: .85rem; }
+.starting-morph-budget { margin-top: .85rem; }
 .starting-gear-pack a { text-decoration: underline; text-underline-offset: .15em; }
 .gear-swap-source { display: block; color: var(--muted); }
 .gear-swaps { margin-top: .65rem; }

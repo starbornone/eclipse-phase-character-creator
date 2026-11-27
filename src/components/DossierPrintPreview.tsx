@@ -17,6 +17,7 @@ import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
+import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
@@ -92,6 +93,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             </>
           ) : <p>{dossier.hasSleeve ? 'Unknown morph' : 'No morph assigned'}</p>}
         </section>
+        <StartingMorphBudgetSummary budget={dossier.startingMorphBudget} />
         <section>
           <h3>Ego aptitude checks</h3>
           {isPlayer ? (

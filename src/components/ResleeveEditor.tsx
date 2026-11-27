@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { activeSleeve, recordResleeving } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
+import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft, ResleevingEvent } from '../types/character.ts';
 import { MorphProfileTable } from './MorphCatalog.tsx';
@@ -23,6 +24,7 @@ export function ResleeveEditor({ draft, onCancel, onSaved, onDirty, onSaving }: 
   const [error, setError] = useState('');
   const current = findSampleMorph(activeSleeve(draft)?.morphDefinitionId);
   const target = sampleMorphs.find((morph) => morph.id === targetId);
+  const { temporaryFlex } = startingMorphBudgetForDraft(draft);
   const dirty = Boolean(targetId || details.date || details.location || details.cause || details.notes);
 
   useEffect(() => onDirty(dirty), [dirty, onDirty]);
@@ -58,6 +60,7 @@ export function ResleeveEditor({ draft, onCancel, onSaved, onDirty, onSaving }: 
         <fieldset disabled={saving} className="resleeve-fields">
           <Card className="editor-panel">
             <h2>New sleeve</h2>
+            {Boolean(temporaryFlex) && <p className="rules-note">Your starting MP granted {temporaryFlex} temporary Flex. It expires when you resleeve.</p>}
             <div className="identity-fields">
               <label>
                 New morph

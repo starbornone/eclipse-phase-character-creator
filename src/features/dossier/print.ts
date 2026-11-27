@@ -5,6 +5,7 @@ import { listStartingMotivations } from '../../rules/calculations/motivations.ts
 import { traceSkillSpecializations } from '../../rules/calculations/skill-specializations.ts';
 import { calculateStartingSkills } from '../../rules/calculations/starting-skills.ts';
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
+import { startingMorphBudgetForDraft } from '../../rules/calculations/starting-morph-budget.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import { findSampleMorph } from '../../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../../types/character.ts';
@@ -43,6 +44,7 @@ export function buildPrintableDossier(
     packages: audience === 'player' ? draft.ego.packages : undefined,
     motivations: audience === 'player' ? listStartingMotivations(draft.ego) : [],
     startingGear: audience === 'player' ? startingGearForDraft(draft) : undefined,
+    startingMorphBudget: startingMorphBudgetForDraft(draft),
     hasSleeve: Boolean(sleeve),
     morph: findSampleMorph(sleeve?.morphDefinitionId),
     checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits),

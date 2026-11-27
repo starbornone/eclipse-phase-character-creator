@@ -27,6 +27,14 @@ If npm cannot find `package.json`, switch to the checkout root. If installation 
 
 You can also save without a morph and assign one later from **Edit ego**. Older prototype drafts still open with their original morph assignment. See [rules sources](rules-sources.md) and the [roadmap](../roadmap/roadmap.json).
 
+## Set the starting Morph Point budget
+
+Under **First morph**, leave **GM allowance (MP)** blank to use 6 MP or enter the whole number your GM assigns. Zero is a valid allowance. Under **Ego traits**, **Resources** costs 2 CP per level and adds that level to your starting MP.
+
+The budget shows the first sleeve’s sourced cost, remaining MP, and temporary Flex. Each complete pair of unused MP gives 1 temporary Flex, up to 3. For example, a 6 MP allowance with Synth at 3 MP leaves 3 MP and grants 1 temporary Flex. The dossier and both print previews show the starting budget. The temporary bonus expires on the first resleeve, and the budget continues to refer to the original sleeve.
+
+Drafts can be saved with a pending cost or an over-budget warning. Missing and legacy unpriced sleeves leave the balance pending. JSON backups preserve the allowance and Resources choice. Extra equipment and morph trait purchases are planned.
+
 ## Apply an aptitude template
 
 In **Create ego** or **Edit ego**, choose a **Core aptitude template** and select **Apply template** to fill the six scores. Adjust the values and check **Customization Point budget**. Moving points between aptitudes leaves the total unchanged. Each point above the starting total of 90 costs 1 Customization Point (CP).
@@ -144,7 +152,7 @@ These values use aptitude scores. Resolve, Quickness, Good Instincts, and Harden
 
 ## Compare morph profiles
 
-Open **Morph library**. Search by name or description, or choose a category such as **Infomorph**. Select two or three **Compare** checkboxes to see health values and source links side by side. Core infomorphs also show their published Morph Point costs and pools as reference values. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
+Open **Morph library**. Search by name or description, or choose a category such as **Infomorph**. Select two or three **Compare** checkboxes to see health values, Morph Point costs, and source links side by side. Core infomorphs also show their published pools. Selections remain in the table when a filter hides a card. On a narrow screen, scroll within the comparison to see all profiles. Use **Clear comparison** to start again.
 
 ## Resleeve an ego
 
