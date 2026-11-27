@@ -9,6 +9,9 @@ import { egoTraitChoiceKey, evaluateEgoTraitBudget, normalizeTraitDetail, scoped
 import { normalizeSpecializationName, specializationKey } from '../../rules/calculations/skill-specializations.ts';
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
 import { isStartingMorphAllowance } from '../../rules/calculations/starting-morph-budget.ts';
+import { evaluateMorphTraits } from '../../rules/calculations/morph-traits.ts';
+import { findSampleMorph } from '../../rules/datasets/sample-morphs.ts';
+import { startingMorphBudgetRules } from '../../rules/datasets/starting-morph-budget.ts';
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
 import { findGearCampaign } from '../../rules/datasets/starting-gear.ts';
@@ -332,12 +335,28 @@ function readEvent(value: unknown, path: string): ResleevingEvent {
 function readSleeve(value: unknown, egoId: string, path: string): Sleeve {
   const sleeve = object(value, path);
   if (sleeve.egoId !== egoId) badField(`${path}.egoId`, 'the id of its draft’s ego');
+  const morphDefinitionId = string(sleeve.morphDefinitionId, `${path}.morphDefinitionId`, true);
+  const morphTraits = sleeve.morphTraits === undefined ? undefined
+    : list(sleeve.morphTraits, `${path}.morphTraits`).map((value, index) => {
+      const traitPath = `${path}.morphTraits[${index}]`;
+      const choice = object(value, traitPath);
+      const { level } = choice;
+      if (typeof level !== 'number' || !Number.isInteger(level)) badField(`${traitPath}.level`, 'a supported whole-number level');
+      return { id: string(choice.id, `${traitPath}.id`, true), level };
+    });
+  if (morphTraits?.length) {
+    const { entries, bonus } = evaluateMorphTraits(findSampleMorph(morphDefinitionId), morphTraits);
+    if (entries.length !== morphTraits.length) badField(`${path}.morphTraits`, 'unique supported traits and levels for this sleeve');
+    const { negativeMorphTraitCap } = startingMorphBudgetRules;
+    if (bonus > negativeMorphTraitCap) badField(`${path}.morphTraits`, `within the ${negativeMorphTraitCap} MP bonus cap`);
+  }
   return {
     id: string(sleeve.id, `${path}.id`, true),
     egoId,
-    morphDefinitionId: string(sleeve.morphDefinitionId, `${path}.morphDefinitionId`, true),
+    morphDefinitionId,
     assignedAt: timestamp(sleeve.assignedAt, `${path}.assignedAt`),
     ...(sleeve.event === undefined ? {} : { event: readEvent(sleeve.event, `${path}.event`) }),
+    ...(morphTraits === undefined ? {} : { morphTraits }),
   };
 }
 
@@ -388,7 +407,14 @@ export function previewBackup(text: string): BackupPreview {
   const parsed = records.map(readDraft);
   const drafts = parsed.map(({ draft }) => draft);
   drafts.forEach((draft, index) => {
-    const { startingGearSwaps: swaps, startingInfomorphPack } = draft.ego;
+    const { startingGearSwaps: swaps, startingInfomorphPack, startingMorphPoints } = draft.ego;
+    const first = draft.sleeves[0];
+    if (startingMorphPoints !== undefined && first?.morphTraits?.length) {
+      const { bonus } = evaluateMorphTraits(findSampleMorph(first.morphDefinitionId), first.morphTraits);
+      if (!isStartingMorphAllowance(startingMorphPoints, bonus)) {
+        badField(`Draft ${index + 1}.ego.startingMorphPoints`, 'within the supported range after applying morph trait bonuses');
+      }
+    }
     if (!startingInfomorphPack && !swaps?.length) return;
     const gear = startingGearForDraft(draft);
     if (startingInfomorphPack && !gear.usesInfomorphPack) {

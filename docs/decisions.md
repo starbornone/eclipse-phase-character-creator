@@ -116,4 +116,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The editor and saved outputs show the same MP spend and recalculate temporary Flex after additions or removals. The catalogue can expand independently of existing draft records. [Step 12, Extra Gear](https://eclipsephase.github.io/en/04/15-step-12-starting-morph-gear.html#extra-gear)
 
+## 15. Store morph traits on individual sleeves
+
+**Context.** Morph traits affect a particular sleeve. Their starting MP cost or bonus remains part of the original budget after resleeving.
+
+**Decision.** Save the selected trait IDs and levels on the first sleeve. Derive health from those inputs and keep the base catalogue profiles available for comparison. Use published eligibility and the 6 MP cap for negative traits.
+
+**Consequences.** Resleeving preserves the first sleeve's choices in history and starts the new sleeve with its base profile. Older drafts can omit the added field. [Core morph trait rules](https://eclipsephase.github.io/en/04/28-traits.html)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

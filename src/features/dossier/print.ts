@@ -7,8 +7,8 @@ import { calculateStartingSkills } from '../../rules/calculations/starting-skill
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
 import { traceStartingEquipment } from '../../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../../rules/calculations/starting-morph-budget.ts';
+import { morphProfileForSleeve } from '../../rules/calculations/morph-traits.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
-import { findSampleMorph } from '../../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../../types/character.ts';
 
 export type PrintAudience = 'player' | 'gm';
@@ -28,6 +28,7 @@ export function buildPrintableDossier(
   includedFields: readonly PrivatePrintField[],
 ) {
   const sleeve = activeSleeve(draft);
+  const { morph, entries: activeMorphTraits } = morphProfileForSleeve(sleeve);
   const skillLedger = calculateStartingSkills(draft.ego);
   const specializations = draft.ego.specializations?.length
     ? traceSkillSpecializations(skillLedger.skills, draft.ego.specializations).filter(({ missingSkill }) => !missingSkill)
@@ -48,19 +49,25 @@ export function buildPrintableDossier(
     startingEquipment: audience === 'player' ? traceStartingEquipment(draft.ego.startingEquipment) : [],
     startingMorphBudget: startingMorphBudgetForDraft(draft),
     hasSleeve: Boolean(sleeve),
-    morph: findSampleMorph(sleeve?.morphDefinitionId),
+    morph,
+    activeMorphTraits,
     checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits),
     derivedStats: traceDerivedEgoStats(draft.ego),
     history: audience === 'gm'
-      ? [...draft.sleeves].reverse().map(({ id, morphDefinitionId, event, assignedAt }, index) => ({
-        id,
-        morphName: findSampleMorph(morphDefinitionId)?.name ?? 'Unknown morph',
-        active: index === 0,
-        date: includedFields.includes('date') ? event?.date || assignedAt : undefined,
-        location: includedFields.includes('location') ? event?.location : undefined,
-        cause: includedFields.includes('cause') ? event?.cause : undefined,
-        notes: includedFields.includes('notes') ? event?.notes : undefined,
-      }))
+      ? [...draft.sleeves].reverse().map((entry, index) => {
+        const { id, event, assignedAt } = entry;
+        const { morph: historicalMorph, entries: traitEntries } = morphProfileForSleeve(entry);
+        return {
+          id,
+          morphName: historicalMorph?.name ?? 'Unknown morph',
+          morphTraits: traitEntries,
+          active: index === 0,
+          date: includedFields.includes('date') ? event?.date || assignedAt : undefined,
+          location: includedFields.includes('location') ? event?.location : undefined,
+          cause: includedFields.includes('cause') ? event?.cause : undefined,
+          notes: includedFields.includes('notes') ? event?.notes : undefined,
+        };
+      })
       : [],
   };
 }

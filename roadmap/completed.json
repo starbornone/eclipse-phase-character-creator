@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:45:52+11:00",
+  "updatedAt": "2026-11-28T01:52:15+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -371,6 +371,13 @@
       "group": "Character creation",
       "notes": "Added eighteen sourced items for one-unit purchases at 1, 2, or 3 MP by complexity and equal-GP pack swaps. Verified quantities, price tiers, source and Restricted labels, pending and over-budget drafts, Flex recalculation, backup validation, 390 px layout, save and reload, resleeving, and both print previews. All 156 tests and the production build pass.",
       "completedAt": "2026-11-28T01:45:52+11:00"
+    },
+    {
+      "id": "buy-first-sleeve-morph-traits",
+      "title": "Apply starting morph trait costs, bonuses, and Toughness health",
+      "group": "Character creation",
+      "notes": "Added Toughness, Dominant Limb, Hypersensitivity, Planned Obsolescence, Proprietary Tech, and Zero-G Nausea for eligible physical sleeves. Verified the 6 MP cap, derived health and rounding, backup validation, the 390 px editor, save and reload, both print previews, and that traits stay on their original sleeve after resleeving. All 161 tests and the production build pass.",
+      "completedAt": "2026-11-28T01:52:15+11:00"
     }
   ]
 }

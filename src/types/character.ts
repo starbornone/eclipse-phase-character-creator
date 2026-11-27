@@ -111,11 +111,17 @@ export interface MorphDefinition {
   source?: { label: string; url: string };
 }
 
+export interface MorphTraitChoice {
+  id: string;
+  level: number;
+}
+
 export interface Sleeve {
   id: string;
   egoId: string;
   morphDefinitionId: string;
   assignedAt: string;
+  morphTraits?: MorphTraitChoice[];
   event?: ResleevingEvent;
 }
 

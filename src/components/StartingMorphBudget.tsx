@@ -6,7 +6,7 @@ export function StartingMorphBudgetSummary({ budget, live = false }: {
   budget: ReturnType<typeof evaluateStartingMorphBudget>;
   live?: boolean;
 }) {
-  const { allowance, resources, available, cost, equipmentCost, remaining, temporaryFlex, hasResleeved, morphName, costSource } = budget;
+  const { allowance, resources, available, cost, equipmentCost, morphTraitBonus, morphTraitCost, remaining, temporaryFlex, hasResleeved, morphName, costSource } = budget;
   const { mpPerTemporaryFlex, temporaryFlexCap, sourceUrl } = startingMorphBudgetRules;
   const showCostSource = cost !== undefined && costSource;
 
@@ -16,12 +16,14 @@ export function StartingMorphBudgetSummary({ budget, live = false }: {
       <dl className="print-checks" aria-live={live ? 'polite' : undefined}>
         <div><dt>GM allowance</dt><dd>{allowance} MP</dd></div>
         {resources > 0 && <div><dt>Resources</dt><dd>+{resources} MP</dd></div>}
+        {morphTraitBonus > 0 && <div><dt>Negative morph traits</dt><dd>+{morphTraitBonus} MP</dd></div>}
         <div><dt>Available</dt><dd>{available} MP</dd></div>
         <div>
           <dt>First sleeve{morphName && <> · {showCostSource ? <a href={costSource.url}>{morphName}</a> : morphName}</>}</dt>
           <dd>{cost === undefined ? 'Cost pending' : `${cost} MP`}</dd>
         </div>
         {equipmentCost > 0 && <div><dt>Extra equipment</dt><dd>{equipmentCost} MP</dd></div>}
+        {morphTraitCost > 0 && <div><dt>Positive morph traits</dt><dd>{morphTraitCost} MP</dd></div>}
         <div>
           <dt>Remaining</dt>
           <dd>{remaining === undefined ? 'Pending' : remaining < 0 ? `${-remaining} MP over budget` : `${remaining} MP`}</dd>

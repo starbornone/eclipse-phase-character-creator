@@ -9,13 +9,15 @@ import { listStartingMotivations } from '../rules/calculations/motivations.ts';
 import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
 import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
+import { morphProfileForSleeve } from '../rules/calculations/morph-traits.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
-import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
+import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { MorphTraitSummary } from './MorphTraits.tsx';
 import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
@@ -33,7 +35,7 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
       <h2 id="sleeve-history-title">Sleeve history</h2>
       <ol>
         {[...draft.sleeves].reverse().map((sleeve, index) => {
-          const profile = findSampleMorph(sleeve.morphDefinitionId);
+          const { morph: profile, entries } = morphProfileForSleeve(sleeve);
           const { event } = sleeve;
           const date = event?.date || dateLabel.format(new Date(sleeve.assignedAt));
           return (
@@ -43,6 +45,7 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
                 <span className="caption">{index === 0 ? 'Active' : 'Previous'}</span>
                 <time dateTime={event?.date || sleeve.assignedAt}>{date}</time>
               </div>
+              {index > 0 && <MorphTraitSummary entries={entries} />}
               {event && (
                 <>
                   {event.location && <p className="muted">Location <strong>{event.location}</strong></p>}
@@ -61,7 +64,7 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
 export function Dossier({ draft }: { draft: CharacterDraft }) {
   const egoId = draft.ego.id;
   const sleeve = activeSleeve(draft);
-  const morph = findSampleMorph(sleeve?.morphDefinitionId);
+  const { morph, entries: activeMorphTraits } = morphProfileForSleeve(sleeve);
   const values = traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits);
 
   return (
@@ -105,6 +108,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
               </div>
               <MorphStats morph={morph} />
               <MorphSource morph={morph} />
+              <MorphTraitSummary entries={activeMorphTraits} />
             </>
           ) : (
             <p className="muted">{sleeve ? 'This draft references a morph outside the current library.' : 'Assign a sample morph from the ego editor.'}</p>

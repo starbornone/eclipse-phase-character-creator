@@ -9,19 +9,21 @@ import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { cleanFactionMotivation, cleanPersonalMotivations, personalMotivationChoices } from '../rules/calculations/motivations.ts';
 import { parseReputation, traceReputation } from '../rules/calculations/reputation.ts';
 import { deriveStartingGear } from '../rules/calculations/starting-gear.ts';
-import { evaluateStartingMorphBudget, parseStartingMorphAllowance } from '../rules/calculations/starting-morph-budget.ts';
+import { evaluateStartingMorphBudget, isStartingMorphAllowance, parseStartingMorphAllowance } from '../rules/calculations/starting-morph-budget.ts';
+import { evaluateMorphTraits } from '../rules/calculations/morph-traits.ts';
 import type { ReputationInputs } from '../rules/calculations/reputation.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { reputationNetworks } from '../rules/datasets/reputation.ts';
 import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import { startingMorphBudgetRules } from '../rules/datasets/starting-morph-budget.ts';
 import { aptitudes } from '../types/character.ts';
-import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections } from '../types/character.ts';
+import type { Aptitude, AptitudeInputs, AptitudeScores, CharacterDraft, CreationPackages as PackageSelections, Sleeve } from '../types/character.ts';
 import { AptitudeBudget, AptitudeTemplatePicker } from './AptitudeBudget.tsx';
 import { CreationPackages } from './CreationPackages.tsx';
 import { EgoTraitEditor } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphIcon, MorphSource, MorphStats } from './MorphCatalog.tsx';
+import { MorphTraitEditor } from './MorphTraits.tsx';
 import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
@@ -47,6 +49,7 @@ interface DraftEditorProps {
 
 export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: DraftEditorProps) {
   const currentSleeve = activeSleeve(draft);
+  const assignedFirstSleeve = draft?.sleeves[0];
   const [name, setName] = useState(draft?.ego.name ?? '');
   const [pronouns, setPronouns] = useState(draft?.ego.pronouns ?? '');
   const [concept, setConcept] = useState(draft?.ego.concept ?? '');
@@ -67,21 +70,25 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [repInputs, setRepInputs] = useState<ReputationInputs>(() =>
     Object.fromEntries(traceReputation(draft?.ego.reputation).map(({ id, score }) => [id, String(score)])));
   const [morphId, setMorphId] = useState(currentSleeve?.morphDefinitionId ?? '');
+  const [morphTraits, setMorphTraits] = useState(assignedFirstSleeve?.morphTraits ?? []);
   const [morphAllowance, setMorphAllowance] = useState(draft?.ego.startingMorphPoints?.toString() ?? '');
   const [issue, setIssue] = useState<{ id: Aptitude; message: string }>();
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [conflict, setConflict] = useState(false);
-  const assignedMorph = findSampleMorph(currentSleeve?.morphDefinitionId);
-  const startingMorph = findSampleMorph(draft?.sleeves[0]?.morphDefinitionId ?? morphId);
+  const startingMorph = findSampleMorph(assignedFirstSleeve?.morphDefinitionId ?? morphId);
+  const { entries: appliedMorphTraits, bonus: morphTraitBonus } = evaluateMorphTraits(startingMorph, morphTraits);
   const parsed = parseAptitudes(inputs);
   const parsedRep = parseReputation(repInputs);
-  const { allowance, issue: morphAllowanceIssue } = parseStartingMorphAllowance(morphAllowance);
+  const { allowance, issue: allowanceInputIssue } = parseStartingMorphAllowance(morphAllowance);
+  const morphAllowanceIssue = allowanceInputIssue ?? (allowance !== undefined && !isStartingMorphAllowance(allowance, morphTraitBonus)
+    ? 'Enter a smaller allowance to include the selected morph trait bonuses.' : undefined);
   const personalMotivations = cleanPersonalMotivations(motivations);
   const { languages, hasDuplicates } = parseLanguages(languageText.split('\n'));
   const dirty = name !== (draft?.ego.name ?? '') || pronouns !== (draft?.ego.pronouns ?? '')
     || concept !== (draft?.ego.concept ?? '') || morphId !== (currentSleeve?.morphDefinitionId ?? '')
     || morphAllowance !== (draft?.ego.startingMorphPoints?.toString() ?? '')
+    || JSON.stringify(morphTraits) !== JSON.stringify(assignedFirstSleeve?.morphTraits ?? [])
     || JSON.stringify(packages) !== JSON.stringify(draft?.ego.packages ?? {})
     || startingCampaign !== draft?.ego.startingCampaign
     || useInfomorphPack !== (draft?.ego.startingInfomorphPack ?? false)
@@ -129,12 +136,19 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
       const { appliedSwaps, usesInfomorphPack } = deriveStartingGear(
         startingCampaign, savedPackages.career?.id, startingMorph?.category, gearSwaps, useInfomorphPack,
       );
-      const firstSleeve = !currentSleeve && morphId ? {
+      const firstSleeve: Sleeve | undefined = assignedFirstSleeve ? { ...assignedFirstSleeve } : morphId ? {
         id: crypto.randomUUID(),
         egoId,
         morphDefinitionId: morphId,
         assignedAt: updatedAt,
       } : undefined;
+      if (firstSleeve) {
+        if (appliedMorphTraits.length) {
+          firstSleeve.morphTraits = appliedMorphTraits.map(({ id, level }) => ({ id, level }));
+        } else {
+          delete firstSleeve.morphTraits;
+        }
+      }
       const next: CharacterDraft = {
         schemaVersion: 2,
         rulesVersion: 'ep2-quick-start-2.4',
@@ -162,7 +176,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(specializations.length ? { specializations } : {}),
           ...(traits.length ? { traits } : {}),
         },
-        sleeves: firstSleeve ? [firstSleeve] : sleeves,
+        sleeves: firstSleeve ? [firstSleeve, ...sleeves.slice(1)] : sleeves,
       };
       await saveDraft(next, draft?.revision);
       onSaved(next);
@@ -285,14 +299,14 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             </div>
             <p className="rules-note" id="morph-allowance-default">Leave blank to use the default {startingMorphBudgetRules.defaultAllowance} MP.</p>
             {morphAllowanceIssue && <p className="error" role="alert" id="morph-allowance-issue">{morphAllowanceIssue}</p>}
-            {currentSleeve ? (
+            {assignedFirstSleeve ? (
               <>
-                <p className="muted">This ego already has a sleeve.</p>
+                <p className="muted">This ego's first sleeve is assigned.</p>
                 <div className="assigned-morph">
-                  {assignedMorph && <MorphIcon morph={assignedMorph} />}
-                  <strong>{assignedMorph?.name ?? 'Unknown morph'}</strong>
+                  {startingMorph && <MorphIcon morph={startingMorph} />}
+                  <strong>{startingMorph?.name ?? 'Unknown morph'}</strong>
                 </div>
-                {assignedMorph && <MorphSource morph={assignedMorph} />}
+                {startingMorph && <MorphSource morph={startingMorph} />}
               </>
             ) : (
               <fieldset>
@@ -309,10 +323,12 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
                 ))}
               </fieldset>
             )}
+            <MorphTraitEditor key={startingMorph?.id} morph={startingMorph} choices={morphTraits} onChange={setMorphTraits} />
             {!morphAllowanceIssue && (
               <StartingMorphBudgetSummary
                 budget={evaluateStartingMorphBudget(
-                  { startingMorphPoints: allowance, traits, startingEquipment: equipment }, startingMorph, (draft?.sleeves.length ?? 0) > 1,
+                  { startingMorphPoints: allowance, traits, startingEquipment: equipment },
+                  startingMorph, (draft?.sleeves.length ?? 0) > 1, morphTraits,
                 )}
                 live />
             )}

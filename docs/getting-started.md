@@ -33,7 +33,15 @@ Under **First morph**, leave **GM allowance (MP)** blank to use 6 MP or enter th
 
 The budget shows the first sleeve’s sourced cost, remaining MP, and temporary Flex. Each complete pair of unused MP gives 1 temporary Flex, up to 3. For example, a 6 MP allowance with Synth at 3 MP leaves 3 MP and grants 1 temporary Flex. The dossier and both print previews show the starting budget. The temporary bonus expires on the first resleeve, and the budget continues to refer to the original sleeve.
 
-Drafts can be saved with a pending cost or an over-budget warning. Missing and legacy unpriced sleeves leave the balance pending. JSON backups preserve the allowance and Resources choice. Morph trait purchases are planned.
+Drafts can be saved with a pending cost or an over-budget warning. Missing and legacy unpriced sleeves leave the balance pending. JSON backups preserve the allowance and Resources choice.
+
+## Choose first sleeve traits
+
+Under **First sleeve traits**, choose a priced biomorph or synthmorph to see its options. **Toughness** costs 2 MP per level and adds 5 Durability per level. The editor recalculates Wound Threshold and Death Rating. For example, Bouncer with Toughness Level 1 has Durability 40, Wound Threshold 8, and Death Rating 60.
+
+Negative morph traits grant up to 6 MP in total. **Dominant Limb** and **Planned Obsolescence** each grant 1 MP on supported physical sleeves. **Hypersensitivity** grants 3 MP and **Zero-G Nausea** grants 2 MP on biomorphs. **Proprietary Tech** grants 2 MP on synthmorphs. Their situational effects are listed for use during play.
+
+The budget includes both the cost and bonus. If a first-morph change invalidates a choice, returning to the earlier morph before saving restores it. The dossier and both print layouts show the active sleeve's adjusted health and traits. Resleeving keeps the original traits in sleeve history and the starting budget. Backups retain the individual sleeve choices.
 
 ## Apply an aptitude template
 

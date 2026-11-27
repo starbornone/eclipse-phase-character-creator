@@ -3,7 +3,8 @@ import type { FormEvent } from 'react';
 import { activeSleeve, recordResleeving } from '../features/sleeve/history.ts';
 import { DraftConflictError, saveDraft } from '../lib/storage/drafts.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
-import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
+import { sampleMorphs } from '../rules/datasets/sample-morphs.ts';
+import { morphProfileForSleeve } from '../rules/calculations/morph-traits.ts';
 import type { CharacterDraft, ResleevingEvent } from '../types/character.ts';
 import { MorphProfileTable } from './MorphCatalog.tsx';
 import { Card } from './ui/card.tsx';
@@ -22,7 +23,7 @@ export function ResleeveEditor({ draft, onCancel, onSaved, onDirty, onSaving }: 
   const [saving, setSaving] = useState(false);
   const [conflict, setConflict] = useState(false);
   const [error, setError] = useState('');
-  const current = findSampleMorph(activeSleeve(draft)?.morphDefinitionId);
+  const { morph: current } = morphProfileForSleeve(activeSleeve(draft));
   const target = sampleMorphs.find((morph) => morph.id === targetId);
   const { temporaryFlex } = startingMorphBudgetForDraft(draft);
   const dirty = Boolean(targetId || details.date || details.location || details.cause || details.notes);
