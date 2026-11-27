@@ -164,4 +164,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Resleeving switches the morph part of the calculation. The first sleeve retains its choices and MP budget, and both print layouts reconstruct checks from the active sleeve. Skill bases continue to use the ego's aptitude scores.
 
+## 21. Preview resleeving tests for the proposed morph
+
+**Context.** Integration and Resleeving Stress start with SOM and WIL Checks. Their effects depend on the proposed morph and the circumstances of the transfer. The GM can adjust Exotic Morphology and the Stress Value. [Core resleeving tests](https://eclipsephase.github.io/en/15/02-resleeving.html#resleeving-tests)
+
+**Decision.** Start each preview from the proposed profile's check trace. Apply the sourced trait modifiers and recognize Morph Familiarity by its normalized exact catalogue name. Provide a local Exotic Morphology waiver for GM adjustments.
+
+**Consequences.** Players get a traced target or Integration waiver before saving. Missing scores stay pending, and situational effects remain for the table to resolve. The saved sleeve records the selected profile and event details.
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

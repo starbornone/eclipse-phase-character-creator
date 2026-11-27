@@ -3,6 +3,7 @@ import { egoTraitChoiceKey, isUnknownHardening, normalizeTraitDetail, scopedEgoT
 import { egoTraits, supportedHardeningStressTypes, unknownHardeningStressType } from '../rules/datasets/ego-traits.ts';
 import { startingPsiLevel } from '../rules/calculations/psi.ts';
 import { reputationNetworks } from '../rules/datasets/reputation.ts';
+import { sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { EgoTraitChoice } from '../types/character.ts';
 
 export function RepeatableEgoTraits({ choices, onChange }: {
@@ -44,8 +45,14 @@ export function RepeatableEgoTraits({ choices, onChange }: {
           {isHardening ? <select value={detail} aria-describedby="repeatable-trait-effect" onChange={(event) => { setDetail(event.target.value); setIssue(''); }}>
             <option value="">Choose a stress type</option>
             {stressTypes.map((type) => <option value={type} key={type}>{type}</option>)}
-          </select> : <input value={detail} maxLength={100} aria-describedby="repeatable-trait-effect" onChange={(event) => { setDetail(event.target.value); setIssue(''); }} />}
+          </select> : <input value={detail} maxLength={100} list={id === 'morph-familiarity' ? 'familiar-morph-types' : undefined}
+            aria-describedby="repeatable-trait-effect" onChange={(event) => { setDetail(event.target.value); setIssue(''); }} />}
         </label>
+        {id === 'morph-familiarity' && (
+          <datalist id="familiar-morph-types">
+            {sampleMorphs.map(({ id, name }) => <option key={id} value={name} />)}
+          </datalist>
+        )}
         {isContact && <label>Contact reputation network
           <select value={network} onChange={(event) => { setNetwork(event.target.value); setIssue(''); }}>
             <option value="">Choose a network</option>

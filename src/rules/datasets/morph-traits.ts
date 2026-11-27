@@ -10,6 +10,7 @@ const biomorph: readonly MorphCategory[] = ['Biomorph'];
 const synthmorph: readonly MorphCategory[] = ['Synthmorph'];
 const infomorph: readonly MorphCategory[] = ['Infomorph'];
 const allCategories = [...physical, ...infomorph];
+export const exoticMorphology = { id: 'exotic-morphology', integrationPerLevel: -10 } as const;
 
 interface MorphTraitLevel {
   mp: number;
@@ -48,7 +49,7 @@ export const morphTraits: readonly MorphTrait[] = [
     effect: 'The sleeve can use its built-in implants only.' },
   { id: 'inherent-flaws', name: 'Inherent Flaws', levels: [traitLevel(-2, synthmorph)],
     effect: 'A critical failure carries a 10% chance of also taking a wound. Synthmorphs only.' },
-  { id: 'exotic-morphology', name: 'Exotic Morphology', levels: [{ mp: -2 }, { mp: -4 }, { mp: -6 }],
+  { id: exoticMorphology.id, name: 'Exotic Morphology', levels: [{ mp: -2 }, { mp: -4 }, { mp: -6 }],
     effect: 'Take −10 per level on Integration Tests with this sleeve. Uplift and infolife egos ignore the penalty in their original morph.' },
   { id: 'planned-obsolescence', name: 'Planned Obsolescence', levels: [traitLevel(-1)],
     effect: 'Without monthly Moderate maintenance, lose one pool point of the GM’s choice. At zero pools, take a wound each missed month.' },

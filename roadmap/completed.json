@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T02:37:47+11:00",
+  "updatedAt": "2026-11-28T02:44:32+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -420,6 +420,13 @@
       "group": "Character creation",
       "notes": "Added the twelve core sleeve aptitude traits at 1/2/3 MP, with the existing negative cap. Combined and labeled ego and active sleeve modifiers after multiplying the base aptitude. Verified pending scores, backup eligibility, skill bases, the 320 px editor and dossier, save and reload, resleeving, and both grayscale A4 layouts. All 182 tests and the production build pass.",
       "completedAt": "2026-11-28T02:37:47+11:00"
+    },
+    {
+      "id": "preview-resleeving-test-targets",
+      "title": "Preview Integration and Resleeving Stress Test targets",
+      "group": "Character creation",
+      "notes": "Added Morphing Disorder to the shared CP budget and traced resleeving modifiers from the proposed morph. Included the Exotic Morphology preview override and recognized matching Morph Familiarity scopes. Verified backup validation, pending and zero targets, the 320 px flow, save and reload, sleeve history, and both grayscale A4 layouts. All 186 tests and the production build pass.",
+      "completedAt": "2026-11-28T02:44:32+11:00"
     }
   ]
 }

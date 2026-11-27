@@ -94,7 +94,7 @@ A dossier is a printable, shareable representation of a sleeve. It combines rele
 
 1. Select “Resleeve” from a saved ego or sleeve.
 2. Choose a new morph.
-3. Compare old and new derived statistics side by side.
+3. Compare old and new derived statistics and review the Integration and Resleeving Stress Test targets.
 4. Record date, location, cause, and notes for the resleeving event.
 5. Save a new sleeve record without altering prior sleeve history.
 

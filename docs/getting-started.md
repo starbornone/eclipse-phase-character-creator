@@ -149,7 +149,7 @@ In the **Starting skill ledger**, choose an **Expert Training skill** to spend 2
 
 Under **Repeatable ego traits**, choose **Contact**, enter a contact name, select its reputation network, and select **Add Contact**. Each purchase costs 1 CP. Add other contacts separately. The same contact/network combination is rejected even if spacing or capitalization differs. The +10 applies to Rep Tests using that contact; the recorded reputation score stays unchanged. Agree the contact's relationship with the GM.
 
-Choose **Morph Familiarity**, enter a morph type, and select **Add Morph Familiarity** for another 1 CP. You can buy it for multiple distinct morph types. It exempts Integration Tests when sleeving that type. Naming a type here does not add a morph to the library. Use **Remove** to release a purchase's CP; remove and add a replacement to correct its details. Select **Add** before saving the draft. These choices follow the ego through resleeving, appear in both print layouts, and round-trip in backups.
+Choose **Morph Familiarity**, enter a morph type, and select **Add Morph Familiarity** for another 1 CP. You can buy it for multiple distinct morph types. Choose a suggested catalogue name to let the resleeving preview identify the Integration waiver for that type. You can also record a custom morph type for use at the table. Use **Remove** to release a purchase's CP, or remove and add a replacement to correct its details. Select **Add** before saving the draft. These choices follow the ego through resleeving, appear in both print layouts, and round-trip in backups.
 
 Choose **Hardening**, select **Alienation**, **Helplessness**, or **Violence**, and select **Add Hardening**. Each distinct stress type costs 1 CP and grants immunity to stress of that type. Each purchase also applies −10 to WIL Checks and Persuade Tests, cumulatively. Characters with the Psi trait can also choose **Unknown**. The ledger shows the Persuade rating and a separate **Test target** with penalty sources. The rating still determines the starting cap: a penalty does not free skill points or permit an over-cap purchase. Persuade specialization targets include both Hardening and the specialization's +10. Remove an entry to release its CP and penalty. On phones, scroll within **Starting skill totals** to read the expanded calculation.
 
@@ -186,8 +186,9 @@ Open **Morph library**. Search by name or description, or choose a category such
 
 1. Open a dossier with an assigned morph and select **Resleeve**.
 2. Choose a new morph. Compare its health values with the current sleeve. The same morph profile can be used for a different body.
-3. Enter an optional event date, location, cause, and notes. Save the new sleeve.
-4. Check that **Sleeve history** shows the new sleeve as active and the old sleeve as previous. Reload and reopen the dossier to verify the history and aptitude checks.
+3. Review **Resleeving test targets** for the Integration SOM Check and the Resleeving Stress WIL Check. Adaptability adds 10 per level to both. Morphing Disorder grants 2 CP per level at creation within the shared 6 CP bonus cap and subtracts 10 per level from both tests. Exotic Morphology modifies Integration for the proposed morph. Use the preview checkbox if your GM waives it. A matching Morph Familiarity choice waives Integration. Apply any other circumstances and the GM's Stress Value when rolling at the table.
+4. Enter an optional event date, location, cause, and notes. Save the new sleeve.
+5. Check that **Sleeve history** shows the new sleeve as active and the old sleeve as previous. Reload and reopen the dossier to verify the history and aptitude checks.
 
 History is shown in save order, newest first. If you leave the event date blank, the history displays the save date. Event details appear in the on-screen history and can be selected separately for GM printing.
 

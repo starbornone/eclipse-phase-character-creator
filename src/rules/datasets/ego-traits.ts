@@ -19,6 +19,7 @@ type EgoTrait = {
   selection?: 'contact' | 'morph' | 'stress';
   skillTestModifier?: { skill: string; perLevel: number };
   lucidityModifier?: number;
+  resleevingModifier?: number;
 };
 
 export const supportedHardeningStressTypes = ['Alienation', 'Helplessness', 'Violence'] as const;
@@ -30,7 +31,8 @@ const egoCheckTrait = ({ costByLevel, ...trait }: AptitudeCheckTrait): EgoTrait 
 
 export const egoTraits: readonly EgoTrait[] = [
   egoCheckTrait(aptitudeCheckTraits.acumen),
-  { id: 'adaptability', name: 'Adaptability', cpByLevel: [2, 4], effect: '+10 per level on Integration and Resleeving Stress Tests.' },
+  { id: 'adaptability', name: 'Adaptability', cpByLevel: [2, 4], resleevingModifier: 10,
+    effect: '+10 per level on Integration and Resleeving Stress Tests.' },
   { id: 'common-sense', name: 'Common Sense', cpByLevel: [2], effect: 'Ask the GM for advice once per session.' },
   { id: 'composure', name: 'Composure', cpByLevel: [2], lucidityModifier: 5, effect: '+5 Lucidity, +1 Trauma Threshold, and +10 Insanity Rating.' },
   { id: 'contact', name: 'Contact', cpByLevel: [1], selection: 'contact', effect: '+10 on Rep Tests using this contact in the chosen network. Agree the relationship with the GM.' },
@@ -53,6 +55,8 @@ export const egoTraits: readonly EgoTrait[] = [
   { id: 'identity-crisis', name: 'Identity Crisis', cpByLevel: [-1], effect: 'Unfamiliar morph physiology can impose a −10 penalty.' },
   egoCheckTrait(aptitudeCheckTraits.indifference),
   { id: 'instability', name: 'Instability', cpByLevel: [-2, -4], lucidityModifier: -5, effect: 'Per level, lose 5 Lucidity, 1 Trauma Threshold, and 10 Insanity Rating.' },
+  { id: 'morphing-disorder', name: 'Morphing Disorder', cpByLevel: [-2, -4, -6], resleevingModifier: -10,
+    effect: '−10 per level on Integration and Resleeving Stress Tests.' },
   egoCheckTrait(aptitudeCheckTraits.obtuseness),
   egoCheckTrait(aptitudeCheckTraits.poorCoordination),
   egoCheckTrait(aptitudeCheckTraits.poorInstincts),

@@ -35,6 +35,8 @@ The field equipment review on 28 November 2026 used both Laser/Microwave Link si
 
 The sleeve aptitude review on 28 November 2026 used ego and sleeve Resolve, a sleeve Timidity penalty, and two pending checks with sleeve penalties. Both layouts rendered to three A4 pages from preview markup in headless Chrome. All six grayscale pages were reviewed, and extracted text confirmed the separate trait contributions, the 6 MP bonus, and the original WIL 15 skill base. The player table repeated its headers at the page break. Edge at 320 px showed Willpower 60 in the configured Bouncer and 50 after resleeving to a Case. The GM preview kept the first sleeve's traits in history and excluded the private location by default.
 
+The resleeving target review on 28 November 2026 used Adaptability, Morphing Disorder, and Morph Familiarity. Edge at 320 px verified the SOM and WIL targets, a zero target, the Exotic Morphology override reset, and the Integration waiver for a familiar Case. A later save assigned an Operator and kept the previous Bouncer's Fitness in history. Player and GM dossiers each rendered to two A4 pages from preview markup in headless Chrome. Grayscale pages and extracted text confirmed the new trait and the active checks. Both layouts kept the event location private by default.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).
