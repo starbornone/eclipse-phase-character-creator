@@ -21,7 +21,7 @@ export function MorphStats({ morph }: { morph: MorphDefinition }) {
 
 export function MorphSource({ morph }: { morph: MorphDefinition }) {
   return morph.sourcePage === undefined
-    ? <p className="rules-note">Legacy prototype morph. Its durability is illustrative.</p>
+    ? <p className="rules-note">Legacy morph profile. Its durability is illustrative.</p>
     : <p className="rules-note"><a href={quickStartPageUrl(morph.sourcePage)}>Quick-Start Rules, p. {morph.sourcePage}</a></p>;
 }
 

@@ -35,3 +35,18 @@ test('combat careers match the core grants and keep their Know fields optional',
     ]);
   }
 });
+
+test('technical careers retain fixed grants and optional Active and Know field slots', () => {
+  for (const [id, page, fixed, fields] of [
+    ['hacker', 40, [['Infosec', 60], ['Interface', 40], ['Program', 30]], []],
+    ['scavenger', 41, [['Hardware: Demolitions', 40]], [['hardware-1', 60], ['pilot-1', 30]]],
+    ['scientist', 41, [['Program', 30], ['Research', 60]], [['hardware-1', 40]]],
+    ['techie', 41, [['Infosec', 40], ['Program', 30]], [['hardware-1', 60]]],
+  ]) {
+    const career = findCreationPackage('career', id);
+    assert.equal(career.page, page);
+    assert.deepEqual(career.grants.filter(({ slot }) => !slot).map(({ skill, points }) => [skill, points]), fixed);
+    assert.deepEqual(career.grants.filter(({ activeField }) => activeField).map(({ slot, points }) => [slot, points]), fields);
+    assert.deepEqual(career.grants.filter(({ skill }) => skill === 'Know').map(({ slot, points }) => [slot, points]), [['know-1', 60], ['know-2', 30]]);
+  }
+});

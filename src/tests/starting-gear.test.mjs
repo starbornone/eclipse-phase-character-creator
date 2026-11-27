@@ -40,3 +40,21 @@ test('Soldier synth alternative replaces Meds and preserves starting gear throug
   const enforcer = deriveStartingGear(undefined, 'enforcer', 'Synthmorph').packs[0];
   assert.equal(enforcer.usesSynthAlternatives, false);
 });
+
+test('technical career gear retains sourced items, GP totals, and Hacker restrictions', () => {
+  for (const [career, expected] of [
+    ['hacker', [['Exploit App', 2], ['Gray Box', 1], ['Radio Booster', 1], ['Sniffer App', 2], ['Spoofer App', 2], ['Tracker App', 2]]],
+    ['scavenger', [['Breadcrumb System', 1], ['Diamond Axe', 1], ['Disassembly Tools', 2], ['Guardian Swarm', 2], ['Nanodetector', 1], ['Orbital Hash (5 doses)', 1], ['Robomule', 2]]],
+    ['scientist', [['Enhanced Vision', 2], ['Mind Amp', 3], ['Mission Recorder', 1], ['Pocket Lab', 2], ['Servitor', 1], ['Specimen Container', 1]]],
+    ['techie', [['Automech', 2], ['Electrical Sense', 1], ['Fixer Swarm', 2], ['Fokus (5 doses)', 1], ['Medium Fabber', 2], ['Tools (Kit)', 1], ['Utilitool', 1]]],
+  ]) {
+    for (const category of [undefined, 'Biomorph', 'Synthmorph']) {
+      const [pack] = deriveStartingGear(undefined, career, category).packs;
+      assert.equal(pack.gp, 10);
+      assert.equal(pack.usesSynthAlternatives, false);
+      assert.deepEqual(pack.items.map(({ name, gp }) => [name, gp]), expected);
+      assert.deepEqual(pack.items.filter(({ restricted }) => restricted).map(({ name }) => name), career === 'hacker' ? ['Exploit App', 'Spoofer App'] : []);
+      assert.ok(pack.source.endsWith(`#${career}`));
+    }
+  }
+});

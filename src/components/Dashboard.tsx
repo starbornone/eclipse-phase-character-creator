@@ -1,4 +1,4 @@
-import { ChevronRight, Download, Fingerprint, Layers3, Plus, Upload } from 'lucide-react';
+import { ChevronRight, Download, Fingerprint, Layers3 } from 'lucide-react';
 import { Link } from 'react-router';
 import { egoPath } from '../app/paths.ts';
 import { downloadBackup } from '../features/backup/backup.ts';
@@ -25,9 +25,6 @@ export function Dashboard({ drafts, loading, loadError, onRetry }: DashboardProp
           <p className="caption">Eclipse Phase · Second Edition</p>
           <h1 id="dashboard-title" tabIndex={-1}>Character<br />&amp; Morph Creator</h1>
           <p>Build an ego, choose a morph, and see how they come together in a sleeve.</p>
-          <Link className="button primary" to="/egos/new">
-            <Plus size={18} aria-hidden="true" /> Create ego
-          </Link>
         </div>
       </section>
       <div className="dashboard-grid">
@@ -73,16 +70,13 @@ export function Dashboard({ drafts, loading, loadError, onRetry }: DashboardProp
               </ul>
             )}
           </Card>
-          <div className="actions">
-            <Link className="button secondary" to="/backups/import">
-              <Upload size={17} aria-hidden="true" /> Import JSON
-            </Link>
-            {drafts.length > 0 && (
+          {drafts.length > 0 && (
+            <div className="actions">
               <button type="button" className="button secondary" aria-describedby="backup-content-note" onClick={() => downloadBackup(drafts, 'eclipse-phase-drafts.json')}>
                 <Download size={17} aria-hidden="true" /> Export all drafts
               </button>
-            )}
-          </div>
+            </div>
+          )}
           <p className="storage-note"><Layers3 size={16} aria-hidden="true" /> Drafts are saved in this browser.</p>
           {drafts.length > 0 && <p className="rules-note" id="backup-content-note">JSON backups include all saved fields, including sleeve notes.</p>}
         </section>

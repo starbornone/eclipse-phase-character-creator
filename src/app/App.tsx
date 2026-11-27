@@ -1,4 +1,4 @@
-import { Boxes, CircleDot, HardDrive, LayoutGrid } from 'lucide-react';
+import { Boxes, HardDrive, LayoutGrid, Plus, Upload } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Outlet, useBlocker, useLocation, useNavigate } from 'react-router';
 import { QuickStartCredit } from '../components/MorphCatalog.tsx';
@@ -111,22 +111,22 @@ export default function App() {
         event.preventDefault();
         main.current?.focus();
       }}>Skip to content</a>
-      <aside className="sidebar screen-only">
-        <Link className="brand" to="/" aria-disabled={saving || undefined}>
-          <img className="brand-mark" src={`${import.meta.env.BASE_URL}favicon.png`} width={40} height={40} alt="" />
-          <span><strong>Eclipse Phase</strong><span>Character creator</span></span>
-        </Link>
-        <nav aria-label="Workspace">
-          <NavLink to="/" end aria-disabled={saving || undefined}><LayoutGrid size={18} aria-hidden="true" /> My egos</NavLink>
-          <NavLink to="/morphs" aria-disabled={saving || undefined}><Boxes size={18} aria-hidden="true" /> Morph library</NavLink>
-        </nav>
-        <span className="sidebar-status"><HardDrive size={16} aria-hidden="true" /> Local workspace</span>
-      </aside>
-      <div className="workspace">
-        <div className="topbar screen-only">
-          <span>Character workspace</span>
-          <span className="prototype-label"><CircleDot size={13} aria-hidden="true" /> Prototype</span>
+      <header className="navbar screen-only">
+        <div className="navbar-inner">
+          <Link className="brand" to="/" aria-disabled={saving || undefined}>
+            <img className="brand-mark" src={`${import.meta.env.BASE_URL}favicon.png`} width={40} height={40} alt="" />
+            <span><strong>Eclipse Phase</strong><span>Character creator</span></span>
+          </Link>
+          <nav className="workspace-nav" aria-label="Workspace">
+            <NavLink to="/" end aria-disabled={saving || undefined}><LayoutGrid size={18} aria-hidden="true" /> My egos</NavLink>
+            <NavLink to="/morphs" aria-disabled={saving || undefined}><Boxes size={18} aria-hidden="true" /> Morph library</NavLink>
+            <NavLink to="/backups/import" aria-disabled={saving || undefined}><Upload size={18} aria-hidden="true" /> Import JSON</NavLink>
+            <NavLink className="nav-create" to="/egos/new" aria-disabled={saving || undefined}><Plus size={18} aria-hidden="true" /> Create ego</NavLink>
+          </nav>
+          <span className="workspace-status"><HardDrive size={16} aria-hidden="true" /> Local workspace</span>
         </div>
+      </header>
+      <div className="workspace">
         <main id="main" ref={main} tabIndex={-1}>
           <div className="screen-only" role="status">{notice && <p className="save-notice">{notice}</p>}</div>
           <Outlet context={workspace} />

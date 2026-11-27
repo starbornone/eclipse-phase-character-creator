@@ -1,5 +1,6 @@
 // Eclipse Phase Second Edition, Gear Packs, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 // Enforcer: p. 69. Soldier and its synth alternative: p. 71, with errata 1.4 dose quantities.
+// Hacker: p. 70. Scavenger, Scientist, and Techie: p. 71, checked against errata 1.4.
 export const gearPacksSource = 'https://eclipsephase.github.io/en/04/27-gear-packs.html';
 
 interface GearItem {
@@ -82,6 +83,27 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
       gear('Neuromodulation', 2), gear('Smart Hawk', 1), gear('Stiff (5 doses)', 1),
     ],
   }],
+  ['hacker', {
+    name: 'Hacker', anchor: 'hacker',
+    items: [
+      { name: 'Exploit App', gp: 2, restricted: true }, gear('Gray Box', 1), gear('Radio Booster', 1),
+      gear('Sniffer App', 2), { name: 'Spoofer App', gp: 2, restricted: true }, gear('Tracker App', 2),
+    ],
+  }],
+  ['scavenger', {
+    name: 'Scavenger', anchor: 'scavenger',
+    items: [
+      gear('Breadcrumb System', 1), gear('Diamond Axe', 1), gear('Disassembly Tools', 2), gear('Guardian Swarm', 2),
+      gear('Nanodetector', 1), gear('Orbital Hash (5 doses)', 1), gear('Robomule', 2),
+    ],
+  }],
+  ['scientist', {
+    name: 'Scientist', anchor: 'scientist',
+    items: [
+      gear('Enhanced Vision', 2), gear('Mind Amp', 3), gear('Mission Recorder', 1),
+      gear('Pocket Lab', 2), gear('Servitor', 1), gear('Specimen Container', 1),
+    ],
+  }],
   ['soldier', {
     name: 'Soldier', anchor: 'soldier',
     items: [
@@ -89,5 +111,12 @@ export const careerGearPacks: ReadonlyMap<string, GearPack> = new Map([
       gear('Grin (5 doses)', 1), replaceOnSynth('Meds (5 doses)', 2), gear('Neurachem', 3),
     ],
     synthAlternatives: [gear('Fixer Swarm', 2)],
+  }],
+  ['techie', {
+    name: 'Techie', anchor: 'techie',
+    items: [
+      gear('Automech', 2), gear('Electrical Sense', 1), gear('Fixer Swarm', 2), gear('Fokus (5 doses)', 1),
+      gear('Medium Fabber', 2), gear('Tools (Kit)', 1), gear('Utilitool', 1),
+    ],
   }],
 ]);

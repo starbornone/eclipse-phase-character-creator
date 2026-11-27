@@ -15,6 +15,7 @@ The patterns below come from the corresponding local source checkouts.
 
 ## Visual language
 
+- Use one top navbar for the workspace destinations, create/import actions, brand, and local storage indicator. Keep all four links visible on phones in a two-column layout, with clear active and keyboard focus states. Give the workspace the full content width below it.
 - Use deep navy and graphite surfaces, pale text, and a restrained cool accent for focus, selection, and active controls. Reserve warning colours for warnings and pair them with a label or icon.
 - Use a legible sans serif for navigation, prose, and form labels. Use tabular numerals for aligned stats and deltas. Restrict monospaced text to short technical readouts where it supports scanning.
 - Use fine dividers, clear field labels, and consistent spacing to organize dense information. Confine any original orbital or habitat imagery to a quiet header or empty state, so the workspace stays easy to read.
@@ -34,7 +35,7 @@ Review the wireframes for an empty dashboard, an incomplete draft, an over-budge
 
 | Screen | Desktop reading order | Narrow-screen reading order |
 | --- | --- | --- |
-| Dashboard | Workspace navigation → Create ego → saved egos beside the morph preview | Navigation → Create ego → saved egos → morph preview |
+| Dashboard | Workspace navbar → introduction → saved egos beside the morph preview | Workspace navbar → introduction → saved egos → morph preview |
 | Builder | Section navigation → active editor next to budget and validation → save controls | Section navigation → compact budget summary → active editor → linked validation and save controls |
 | Morph library | Search and filters → results beside selected morphs → comparison table | Search and filters → result cards → selected morphs → scrollable comparison with labelled columns |
 | Dossier | Identity and actions → separate Ego and Morph panels → calculations → print options | Identity → actions → Ego → Morph → calculations → print options |

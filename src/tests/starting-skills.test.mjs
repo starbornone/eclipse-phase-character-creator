@@ -50,6 +50,37 @@ test('combat careers combine Fray grants with its doubled base and reallocate ex
   assert.equal(enforcer.skills.find(({ name }) => name === 'Provoke').total, 45);
 });
 
+test('Scavenger fields remain pending and merge with fixed grants when the same field is chosen', () => {
+  const aptitudes = { cog: 20, ref: 15, int: 15 };
+  const pending = calculateStartingSkills({ aptitudes, packages: { career: { id: 'scavenger' } } });
+  assert.equal(pending.unassignedActivePoints, 90);
+  assert.equal(pending.unassignedKnowPoints, 90);
+  assert.equal(pending.skills.find(({ name }) => name === 'Hardware: Demolitions').total, 60);
+  const named = calculateStartingSkills({ aptitudes, packages: { career: { id: 'scavenger', fields: {
+    'hardware-1': 'Demolitions', 'pilot-1': 'Space', 'know-1': 'Scavenging',
+  } } } });
+  const demolition = named.skills.find(({ name }) => name === 'Hardware: Demolitions');
+  assert.deepEqual([demolition.packagePoints, demolition.base, demolition.total, demolition.excess], [100, 20, 120, 40]);
+  assert.equal(named.skills.filter(({ name }) => name === 'Hardware: Demolitions').length, 1);
+  assert.equal(named.skills.find(({ name }) => name === 'Pilot: Space').total, 45);
+  assert.equal(named.skills.find(({ name }) => name === 'Know: Scavenging').total, 80);
+  assert.equal(named.unassignedActivePoints, 0);
+  assert.equal(named.unassignedKnowPoints, 30);
+});
+
+test('technical careers use linked aptitudes and custom Hardware fields in their ledgers', () => {
+  for (const [id, expected] of [
+    ['hacker', [['Infosec', 80], ['Interface', 60], ['Program', 50]]],
+    ['scientist', [['Hardware: Drone Maintenance', 60], ['Program', 50], ['Research', 75]]],
+    ['techie', [['Hardware: Drone Maintenance', 80], ['Infosec', 60], ['Program', 50]]],
+  ]) {
+    const { skills } = calculateStartingSkills({ aptitudes: { cog: 20, int: 15 }, packages: {
+      career: { id, fields: id === 'hacker' ? undefined : { 'hardware-1': 'Drone Maintenance' } },
+    } });
+    for (const [name, total] of expected) assert.equal(skills.find((row) => row.name === name)?.total, total, `${id}: ${name}`);
+  }
+});
+
 test('merge matching Know fields and link player-classified Art fields to Intuition', () => {
   const { skills } = calculateStartingSkills({
     aptitudes: { cog: 20, int: 15 },

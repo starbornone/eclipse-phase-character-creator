@@ -13,6 +13,8 @@ npm run dev
 
 Open the local URL Vite prints. The dashboard should show **My egos**, the **Create ego** action, and the sample morph library. Drafts belong to this browser profile and origin. If Vite selects another port, use the original URL to reopen drafts created there.
 
+The top navbar provides **My egos**, **Morph library**, **Import JSON**, and **Create ego** on every screen. It wraps on narrow screens. **Export all drafts** appears beside the dashboard's saved egos.
+
 You can bookmark a dossier, editor, or print link and reopen it in the browser profile and origin where the ego was saved. Browser Back and Forward follow the screens you visited.
 
 If npm cannot find `package.json`, switch to the checkout root. If installation fails, check the Node version and registry connectivity. If local drafts cannot open, check that the browser permits site storage for the local origin. Use localhost for development so the browser can generate record ids in a secure context.
@@ -50,6 +52,8 @@ In **Create ego** or **Edit ego**, pick a supported background, career, interest
 Your selections appear in the dossier and player print view, and are included in JSON backups. The package cards report individual grants. The **Starting skill ledger** combines matching grants, shows their source packages, and adds the linked aptitude. Fray and Perceive use double their linked aptitude.
 
 The supported careers include **Enforcer** and **Soldier**, each with two optional Know fields and a matching gear pack. Their Fray grants combine with double Reflexes, so review the total when adding another package with Fray points.
+
+**Hacker**, **Scavenger**, **Scientist**, and **Techie** also have matching gear packs and two optional Know fields. The last three offer a Hardware field; Scavenger also offers a Pilot field. Use a suggested field or enter a custom one. Leaving a field blank keeps those points pending. Choosing Demolitions for Scavenger's open Hardware field combines it with the package's fixed Demolitions grant; review the cap before play.
 
 Choose **Art field** for a player-entered Know field that uses Intuition. Other Know fields use Cognition. Blank field choices are counted separately as unassigned Active or Know points. Matching fields from different packages combine in the ledger, which flags totals above the starting cap.
 

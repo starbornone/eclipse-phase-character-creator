@@ -63,8 +63,23 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     { id: 'face', name: 'Face', page: 40, grants: [
       grant('Deceive', 40), grant('Kinesics', 30), grant('Persuade', 60), know('know-1', 60), know('know-2', 30),
     ] },
+    { id: 'hacker', name: 'Hacker', page: 40, grants: [
+      grant('Infosec', 60), grant('Interface', 40), grant('Program', 30), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'scavenger', name: 'Scavenger', page: 41, grants: [
+      hardware(60, ['Electronics', 'Industrial', 'Robotics']), grant('Hardware: Demolitions', 40),
+      pilot(30), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'scientist', name: 'Scientist', page: 41, grants: [
+      hardware(40, ['Electronics', 'Robotics']), grant('Program', 30), grant('Research', 60),
+      know('know-1', 60), know('know-2', 30),
+    ] },
     { id: 'soldier', name: 'Soldier', page: 41, grants: [
       grant('Fray', 40), grant('Guns', 60), grant('Melee', 30), know('know-1', 60), know('know-2', 30),
+    ] },
+    { id: 'techie', name: 'Techie', page: 41, grants: [
+      hardware(60, ['Electronics', 'Industrial', 'Robotics']), grant('Infosec', 40), grant('Program', 30),
+      know('know-1', 60), know('know-2', 30),
     ] },
   ],
   interest: [

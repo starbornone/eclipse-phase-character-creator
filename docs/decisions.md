@@ -52,4 +52,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** Each shipped option needs a versioned source reference and matching validation. The prototype can continue to save incomplete egos while package-buy tables and budgets are verified. [Rules source inventory](rules-sources.md)
 
-See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for open discovery work.
+## 7. Consolidate workspace navigation in a top navbar
+
+**Context.** The working app has two primary destinations, My egos and Morph library. A sidebar takes space from character editing, while create/import actions were only available on the dashboard.
+
+**Decision.** Put the brand, two primary destinations, Create ego, Import JSON, and the local workspace indicator in a shared top navbar. Remove the separate status bar and Prototype badge. Keep all links visible on small screens, with two columns on phones.
+
+**Consequences.** The workspace uses the full available width. Existing browser routes, active-link semantics, keyboard focus, unsaved-edit guards, and print visibility continue to apply. Workspace export remains a contextual dashboard action beside the saved drafts. Contributor docs continue to describe the app's current scope and limitations.
+
+See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

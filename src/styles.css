@@ -42,17 +42,16 @@ strong { font-weight: 650; }
 }
 .skip-link:focus { translate: 0; }
 
-.app { display: grid; grid-template-columns: 14.5rem minmax(0, 1fr); min-height: 100dvh; }
-.sidebar {
-  position: sticky;
-  top: 0;
-  height: 100dvh;
+.app { display: flex; flex-direction: column; min-height: 100dvh; }
+.navbar { border-bottom: 1px solid #1c2a3d; background: #0c1421; }
+.navbar-inner {
   display: flex;
-  flex-direction: column;
-  gap: 2.25rem;
-  padding: 1.55rem 1rem;
-  border-right: 1px solid #1c2a3d;
-  background: #0c1421;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+  width: min(100%, 91rem);
+  margin-inline: auto;
+  padding: .85rem clamp(1rem, 3.3vw, 3.5rem);
 }
 .brand { display: flex; align-items: center; gap: .75rem; padding: .15rem .35rem; text-align: left; }
 .brand strong { display: block; font-size: 1.0625rem; letter-spacing: -.02em; }
@@ -62,12 +61,13 @@ strong { font-weight: 650; }
   height: 2.5rem;
   flex: 0 0 auto;
 }
-.sidebar nav { display: grid; gap: .35rem; }
-.sidebar nav a {
+.workspace-nav { display: flex; flex-wrap: wrap; gap: .35rem; margin-left: auto; }
+.workspace-nav a {
   display: flex;
   align-items: center;
-  gap: .7rem;
-  padding: .7rem .75rem;
+  gap: .5rem;
+  min-height: 2.75rem;
+  padding: .55rem .7rem;
   border: 1px solid transparent;
   border-radius: .45rem;
   color: var(--muted);
@@ -75,42 +75,20 @@ strong { font-weight: 650; }
   font-size: .9375rem;
   font-weight: 600;
 }
-.sidebar nav a:hover:not([aria-disabled]) { background: #132235; color: #f1f5fc; }
-.sidebar nav a[aria-current] { border-color: #294858; background: #142a39; color: var(--accent); }
-.sidebar a[aria-disabled] { opacity: .55; cursor: not-allowed; }
-.sidebar-status {
+.workspace-nav a:hover:not([aria-disabled]) { background: #132235; color: #f1f5fc; }
+.workspace-nav a[aria-current] { border-color: #294858; background: #142a39; color: var(--accent); }
+.workspace-nav .nav-create { border-color: var(--accent); background: var(--accent); color: #092321; }
+.workspace-nav .nav-create:hover:not([aria-disabled]), .workspace-nav .nav-create[aria-current] { border-color: #a0f2e8; background: #a0f2e8; color: #092321; }
+.navbar a[aria-disabled] { opacity: .55; cursor: not-allowed; }
+.workspace-status {
   display: flex;
   align-items: center;
   gap: .55rem;
-  margin-top: auto;
-  padding: .9rem .4rem 0;
-  border-top: 1px solid var(--line);
+  white-space: nowrap;
   color: var(--muted);
   font-size: .8125rem;
 }
-.workspace { display: flex; min-width: 0; flex-direction: column; }
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  min-height: 4.25rem;
-  padding: .7rem clamp(1rem, 3.3vw, 3.5rem);
-  border-bottom: 1px solid #1c2a3d;
-  color: var(--muted);
-  font-size: .875rem;
-}
-.prototype-label {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  padding: .25rem .55rem;
-  border: 1px solid #304056;
-  border-radius: .35rem;
-  color: #cbd7e9;
-  font-size: .75rem;
-}
-.prototype-label svg { color: var(--accent); }
+.workspace { display: flex; flex: 1; min-width: 0; flex-direction: column; }
 main {
   width: min(100%, 91rem);
   margin-inline: auto;
@@ -422,17 +400,13 @@ textarea { resize: vertical; }
 .print-only { display: none; }
 
 @media (max-width: 62rem) {
-  .app { grid-template-columns: 11.5rem minmax(0, 1fr); }
+  .workspace-status { margin-left: auto; }
+  .workspace-nav { order: 1; width: 100%; margin-left: 0; }
   .dashboard-grid { grid-template-columns: 1.2fr 1fr; gap: 1rem; }
   .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 48rem) {
-  .app { display: block; }
-  .sidebar { position: static; height: auto; gap: .7rem; padding: .75rem 1rem; border-right: 0; border-bottom: 1px solid var(--line); }
-  .sidebar nav { display: flex; flex-wrap: wrap; }
-  .sidebar nav a { padding: .5rem .65rem; }
-  .sidebar-status, .topbar { display: none; }
   .workspace { min-height: 75dvh; }
   .hero { min-height: 20rem; background-position: center, 62% center; }
   .hero h1 { font-size: clamp(2.45rem, 8.6vw, 3.8rem); }
@@ -440,6 +414,13 @@ textarea { resize: vertical; }
 }
 
 @media (max-width: 36rem) {
+  .navbar-inner { column-gap: .5rem; }
+  .brand { gap: .5rem; padding-inline: 0; }
+  .brand strong { font-size: 1rem; }
+  .brand span span, .workspace-status { font-size: .75rem; }
+  .workspace-status { gap: .35rem; }
+  .workspace-nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .workspace-nav a { gap: .4rem; padding-inline: .55rem; font-size: .875rem; }
   .hero { background-image: linear-gradient(90deg, #091120 0%, #091120dc 37%, #09112065 100%), url("./assets/orbital-habitat.jpg"); }
   .dashboard-grid, .catalog-grid, .dossier-grid { grid-template-columns: 1fr; }
   .catalog-filters { grid-template-columns: 1fr; }

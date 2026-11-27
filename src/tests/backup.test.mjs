@@ -168,6 +168,18 @@ test('round-trip combat careers and their named Know fields without changing sav
   }
 });
 
+test('round-trip technical careers and validate each career field slot', () => {
+  for (const id of ['hacker', 'scavenger', 'scientist', 'techie']) {
+    const fields = { 'know-1': 'Engineering', 'know-2': 'Habitat Ops' };
+    if (id !== 'hacker') fields['hardware-1'] = 'Drone Maintenance';
+    if (id === 'scavenger') fields['pilot-1'] = 'Space';
+    const character = { ...draft, ego: { ...ego, packages: { career: { id, fields } } } };
+    assert.deepEqual(previewBackup(encodeBackup([character])).drafts[0], character);
+    const invalid = { ...character, ego: { ...character.ego, packages: { career: { id, fields: { ...fields, 'know-3': 'Extra field' } } } } };
+    assert.throws(() => previewBackup(encodeBackup([invalid])), /limited to slots/);
+  }
+});
+
 test('reject malformed JSON, unsupported formats, and incomplete or conflicting records', () => {
   assert.throws(() => previewBackup('{'), /invalid JSON/);
   assert.throws(() => previewBackup('{}'), /Eclipse Phase character backup/);

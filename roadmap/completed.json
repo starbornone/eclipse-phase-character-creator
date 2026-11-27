@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T17:11:00+11:00",
+  "updatedAt": "2026-11-27T17:21:53+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -259,6 +259,20 @@
       "group": "Character creation",
       "notes": "Added sourced skill grants, optional Know fields, 10-GP gear packs, Restricted labels, corrected five-dose quantities, and the Soldier synthmorph replacement. Verified combined Fray totals, transfers, save and reload, career changes, backups and restore, first-sleeve gear preservation during resleeving, narrow layouts, and grayscale player PDFs.",
       "completedAt": "2026-11-27T17:11:00+11:00"
+    },
+    {
+      "id": "add-technical-careers-and-gear",
+      "title": "Add Hacker, Scavenger, Scientist, and Techie careers and gear packs",
+      "group": "Character creation",
+      "notes": "Added sourced skill grants, optional Hardware, Pilot, and Know fields, matching 10-GP gear packs, and Hacker app restrictions. Verified pending fields, custom fields and merged Demolitions grants, source costs, save and reload, backup restore, narrow previews, and grayscale player PDFs.",
+      "completedAt": "2026-11-27T17:21:53+11:00"
+    },
+    {
+      "id": "replace-sidebar-with-navbar",
+      "title": "Consolidate workspace navigation in a top navbar",
+      "group": "Workspace",
+      "notes": "Moved the brand, My egos, Morph library, Create ego, Import JSON, and local workspace indicator into one shared top navbar. Removed the separate status bar and visible Prototype wording. Checked layouts from 280 to 1440 pixels, active links, keyboard focus, skip navigation, unsaved-edit prompts, and print hiding. Recorded the navigation decision and updated contributor and user docs.",
+      "completedAt": "2026-11-27T17:21:53+11:00"
     }
   ]
 }
