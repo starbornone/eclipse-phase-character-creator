@@ -107,6 +107,8 @@ Under **Ego traits**, choose a supported trait or level. Positive traits spend C
 
 The dossier and both print previews list the chosen traits and their effects for reference during play. JSON backups include the choices.
 
+**Acumen**, **Empathy**, **Fitness**, **Good Instincts**, **Quickness**, and **Resolve** each have three levels costing 1, 2, or 3 CP in total. They add +5 per level to Cognition, Savvy, Somatics, Intuition, Reflexes, or Willpower checks respectively. For example, Intuition 15 with Good Instincts Level 2 produces **15 × 3 + 10 = 55** in the saved dossier. The calculation names the contributing trait in both print layouts as well. An unentered aptitude stays pending. These check bonuses leave aptitude scores, linked skill bases, and free-language thresholds unchanged. Select **None** to remove the bonus and release its CP.
+
 In the **Starting skill ledger**, choose an **Expert Training skill** to spend 2 CP and raise that skill’s starting cap from 80 to 90. The trait changes the cap. Allocate points to raise the skill itself. If the field is new, add it to the ledger before choosing Expert Training. Removing or changing the choice rechecks existing allocations and flags any that now exceed the cap.
 
 ## Compare morph profiles

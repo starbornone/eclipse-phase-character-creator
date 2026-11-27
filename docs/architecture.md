@@ -44,6 +44,8 @@ Specializations store the ledger skill ID and a name. The calculation adds the s
 
 Ego trait selections store a source ID and a level. The shared budget looks up positive costs and negative bonuses from the rules dataset. The editor and backup validator enforce the six-CP negative trait limit. The dossier and print layouts show situational effects as reference text.
 
+Acumen, Empathy, Fitness, Good Instincts, Quickness, and Resolve carry a linked aptitude and per-level check modifier in the trait dataset. `traceAptitudeChecks` adds those modifiers after multiplying the aptitude score by three and records each source, level, and contribution. A missing score leaves the target pending even when a modifier is known. The dossier and both print layouts use that trace through a shared calculation component. The stored aptitude, skill bases, free-language thresholds, and aptitude CP calculation continue to use the original scores. Existing trait ids and levels suffice for persistence and backup validation; no schema change is needed.
+
 Expert Training also stores the chosen ledger skill ID. The calculation applies its 90-point cap to that skill at each transfer and purchase. Changing or removing the trait replays the same saved allocations against the updated cap.
 
 Draft schema version 2 stores sleeves in save order, with the last sleeve active. `src/features/sleeve/history.ts` reads version 1 drafts by putting any existing sleeve at the start of that history. Resleeving appends a new sleeve and optional event details in the same transaction as the revision update. A recorded event date can precede a previous event without changing which sleeve is active.

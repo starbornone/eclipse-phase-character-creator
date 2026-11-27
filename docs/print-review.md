@@ -19,6 +19,8 @@ Imported a backup into an isolated browser profile, restored it as a copy, opene
 
 The review found missing skill totals in both print layouts. The print view now uses the existing starting skill calculation, including transfers, purchases, pending aptitudes, unnamed field points, over-cap warnings, and rejected allocation notices. Regression tests cover incomplete and over-cap drafts. The review also led to darker preview warnings and page-break rules that keep source notes with their tables and short sleeve entries together.
 
+An additional review on 27 November 2026 covered all six aptitude check ego traits at mixed levels. The saved dossier and restored backup showed the same adjusted targets and source contributions. Player and GM A4 PDFs each spanned two pages; every page was rendered in grayscale and checked for readable formulas, trait levels, repeated skill headers, and attribution. The dossier at 320 px had no horizontal overflow. A draft with traits and blank aptitudes retained pending check targets. Changing levels updated CP costs, and removing the traits restored the base checks without changing the skill ledger.
+
 ## Repeat the review
 
 1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).
