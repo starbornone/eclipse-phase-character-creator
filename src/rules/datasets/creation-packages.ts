@@ -26,8 +26,8 @@ const grant = (skill: string, points: number): SkillGrant => ({ skill, points })
 const know = (slot: string, points: number): SkillGrant => ({ skill: 'Know', points, slot });
 const hardware = (points: number, suggestedFields: readonly string[]): SkillGrant =>
   ({ skill: 'Hardware', activeField: 'hardware', slot: 'hardware-1', points, suggestedFields });
-const pilot = (points: number): SkillGrant =>
-  ({ skill: 'Pilot', activeField: 'pilot', slot: 'pilot-1', points, suggestedFields: ['Air', 'Ground', 'Nautical', 'Space'] });
+const pilot = (points: number, slot = 'pilot-1'): SkillGrant =>
+  ({ skill: 'Pilot', activeField: 'pilot', slot, points, suggestedFields: ['Air', 'Ground', 'Nautical', 'Space'] });
 const combatChoice = (points: number, skillOptions: readonly string[]): SkillGrant =>
   ({ skill: 'Combat skill', slot: 'combat-1', points, skillOptions });
 
@@ -125,15 +125,52 @@ export const coreCreationPackages: Record<CreationPackageKind, readonly Creation
     ] },
   ],
   interest: [
+    { id: 'animal-handler', name: 'Animal Handler', page: 42, grants: [
+      grant('Exotic Skill: Animal Handling', 40), grant('Medicine: Veterinary', 40),
+      grant('Provoke', 20), grant('Know: Smart Animals', 40),
+    ] },
+    { id: 'artist-icon', name: 'Artist/Icon', page: 42, grants: [
+      grant('Deceive', 40), grant('Kinesics', 20), grant('Provoke', 40), know('know-1', 40),
+    ] },
+    { id: 'commander', name: 'Commander', page: 42, grants: [
+      grant('Interface', 20), grant('Persuade', 40), grant('Provoke', 40), grant('Know: Administration', 40),
+    ] },
+    { id: 'fighter', name: 'Fighter', page: 42, grants: [
+      grant('Fray', 20), grant('Guns', 40), grant('Melee', 40), grant('Know: Security Ops', 40),
+    ] },
+    { id: 'forensics-specialist', name: 'Forensics Specialist', page: 42, grants: [
+      grant('Medicine: Forensics', 40), grant('Perceive', 40), grant('Research', 20), grant('Know: Physiology', 40),
+    ] },
+    { id: 'jack-of-all-trades', name: 'Jack-of-All-Trades', page: 42, grants: [
+      grant('Guns', 25), grant('Infosec', 25), grant('Persuade', 25), grant('Research', 25), know('know-1', 40),
+    ] },
+    { id: 'jammer', name: 'Jammer', page: 42, grants: [
+      grant('Hardware: Robotics', 40), grant('Interface', 20), pilot(40), grant('Know: Bot Models', 40),
+    ] },
     { id: 'networker', name: 'Networker', page: 42, grants: [
       grant('Deceive', 30), grant('Persuade', 40), grant('Provoke', 30), grant('Know: Rep Nets', 40),
     ] },
     { id: 'paramedic', name: 'Paramedic', page: 42, grants: [
       grant('Fray', 20), grant('Kinesics', 40), grant('Medicine: Paramedic', 40), grant('Know: Emergency Services', 40),
     ] },
+    { id: 'pilot', name: 'Pilot', page: 42, grants: [
+      hardware(30, ['Aerospace', 'Groundcraft', 'Nautical']), pilot(30), pilot(40, 'pilot-2'), grant('Know: Flight Crew Ops', 40),
+    ] },
+    { id: 'rogue', name: 'Rogue', page: 42, grants: [
+      grant('Deceive', 40), grant('Fray', 20), grant('Infiltrate', 40), know('know-1', 40),
+    ] },
+    { id: 'slacker', name: 'Slacker', page: 43, grants: [
+      grant('Interface', 40), grant('Persuade', 30), grant('Research', 30), know('know-1', 40),
+    ] },
     { id: 'spacer', name: 'Spacer', page: 43, grants: [
       grant('Free Fall', 40), hardware(40, ['Electronics', 'Industrial', 'Robotics']),
       grant('Interface', 20), know('know-1', 40),
+    ] },
+    { id: 'student', name: 'Student', page: 43, grants: [
+      grant('Interface', 40), grant('Program', 20), grant('Research', 40), know('know-1', 40),
+    ] },
+    { id: 'survivalist', name: 'Survivalist', page: 43, grants: [
+      grant('Guns', 40), grant('Medicine: Paramedic', 30), grant('Survival', 30), know('know-1', 40),
     ] },
   ],
   faction: [

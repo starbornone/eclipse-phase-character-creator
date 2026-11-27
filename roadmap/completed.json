@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-27T18:09:27+11:00",
+  "updatedAt": "2026-11-27T18:52:38+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -294,6 +294,13 @@
       "group": "Character creation",
       "notes": "Added the remaining core factions and six concrete regional affiliations under a native Regional group, for 21 named choices plus Factionless. Preserved existing ids, 30-point Know grants, custom motivation text and goals, and the inactive third personal slot. Verified all named choices, missing aptitudes, grant merging and caps, old-faction Know transfers, save and reload, backup restore, keyboard access, mobile layout, and player/GM PDF output.",
       "completedAt": "2026-11-27T18:09:27+11:00"
+    },
+    {
+      "id": "complete-non-psi-core-interests",
+      "title": "Complete the non-Psi core interest packages",
+      "group": "Character creation",
+      "notes": "Added the twelve remaining non-Psi interests, bringing the catalogue to fifteen. Pilot stores independent 30- and 40-point field choices; matching sample or custom fields merge through the existing ledger. Verified fixed fields, Art classification, doubled bases, cap warnings, allocation replay, partial drafts, backup validation and restore, mobile layout, and player/GM print output. Async remains with Psi support. All 104 tests and the production build pass.",
+      "completedAt": "2026-11-27T18:52:38+11:00"
     }
   ]
 }
