@@ -25,8 +25,8 @@ export function traceAptitudeChecks(scores: AptitudeScores, choices?: readonly E
   const traits = traceEgoTraits(choices);
   return aptitudes.map(({ id, label }) => {
     const base = scores[id];
-    const modifiers = traits.flatMap(({ name, level, checkModifier }) => checkModifier?.aptitude === id
-      ? [{ source: name, level, points: checkModifier.perLevel * level }] : []);
+    const modifiers = traits.flatMap(({ name, detail, level, checkModifier }) => checkModifier?.aptitude === id
+      ? [{ source: detail ? `${name} (${detail})` : name, level, points: checkModifier.perLevel * level }] : []);
     const modifier = modifiers.reduce((sum, { points }) => sum + points, 0);
     return {
       id,

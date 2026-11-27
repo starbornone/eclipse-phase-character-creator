@@ -11,7 +11,7 @@ export function specializationKey({ skillId, name }: SkillSpecialization) {
 }
 
 export function traceSkillSpecializations(
-  skills: readonly { id: string; name: string; total?: number }[],
+  skills: readonly { id: string; name: string; total?: number; testTarget?: number }[],
   specializations: readonly SkillSpecialization[] = [],
 ) {
   const ledger = new Map(skills.map((skill) => [skill.id, skill]));
@@ -19,7 +19,7 @@ export function traceSkillSpecializations(
     const { skillId } = specialization;
     const skill = ledger.get(skillId);
     const skillName = skill?.name ?? skillNameFromId(skillId) ?? skillId;
-    const target = skill?.total === undefined ? undefined : skill.total + coreCustomizationRules.specializationBonus;
+    const target = skill?.total === undefined ? undefined : (skill.testTarget ?? skill.total) + coreCustomizationRules.specializationBonus;
     return { ...specialization, skillName, target, missingSkill: !skill };
   });
 }

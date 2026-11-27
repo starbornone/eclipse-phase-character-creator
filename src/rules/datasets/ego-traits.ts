@@ -10,8 +10,12 @@ type EgoTrait = {
   cpByLevel: readonly number[];
   effect: string;
   checkModifier?: { aptitude: Aptitude; perLevel: number };
-  selection?: 'contact' | 'morph';
+  selection?: 'contact' | 'morph' | 'stress';
+  skillTestModifier?: { skill: string; perLevel: number };
 };
+
+// Hardening's Unknown option requires Psi (errata 1.4); defer it with Psi support.
+export const supportedHardeningStressTypes = ['Alienation', 'Helplessness', 'Violence'] as const;
 
 const checkTrait = (id: string, name: string, aptitude: Aptitude): EgoTrait => ({
   id, name, cpByLevel: [1, 2, 3], effect: `+5 per level to ${aptitude.toUpperCase()} Checks.`,
@@ -28,6 +32,9 @@ export const egoTraits: readonly EgoTrait[] = [
   { id: expertTraining.id, name: 'Expert Training', cpByLevel: [expertTraining.cost], effect: `The chosen skill has a starting cap of ${expertTraining.cap}.` },
   checkTrait('fitness', 'Fitness', 'som'),
   checkTrait('good-instincts', 'Good Instincts', 'int'),
+  { id: 'hardening', name: 'Hardening', cpByLevel: [1], selection: 'stress',
+    effect: 'Immune to stress from the chosen type. Each purchase applies −10 to WIL Checks and Persuade Tests; penalties accumulate.',
+    checkModifier: { aptitude: 'wil', perLevel: -10 }, skillTestModifier: { skill: 'Persuade', perLevel: -10 } },
   { id: 'morph-familiarity', name: 'Morph Familiarity', cpByLevel: [1], selection: 'morph', effect: 'Skip Integration Tests when sleeving this morph type.' },
   checkTrait('quickness', 'Quickness', 'ref'),
   checkTrait('resolve', 'Resolve', 'wil'),

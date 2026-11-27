@@ -4,6 +4,7 @@ import { customActiveFieldDisplayName, resolveCustomActiveField, resolveFixedAct
 import { activeSkillAptitude } from '../datasets/active-skills.ts';
 import { findCreationPackage } from '../datasets/creation-packages.ts';
 import { expertTraining } from '../datasets/ego-traits.ts';
+import { traitSkillTestModifiers } from './ego-traits.ts';
 
 // Eclipse Phase Second Edition, pp. 45 and 48–50.
 const startingSkillCap = 80;
@@ -194,7 +195,10 @@ export function calculateStartingSkills({ aptitudes, packages, artisticKnowField
 
   const totals = [...balances.values()].map((skill) => {
     const total = skill.base === undefined ? undefined : skill.allocatedPoints + skill.purchasedPoints + skill.base;
-    return { ...skill, total, excess: total === undefined ? 0 : Math.max(0, total - skill.cap), purchasedOnly: !transferSkillIds.has(skill.id) };
+    const testModifiers = traitSkillTestModifiers(traits, skill.name);
+    const testModifier = testModifiers.reduce((sum, { points }) => sum + points, 0);
+    const testTarget = total === undefined ? undefined : total + testModifier;
+    return { ...skill, total, testModifiers, testModifier, testTarget, excess: total === undefined ? 0 : Math.max(0, total - skill.cap), purchasedOnly: !transferSkillIds.has(skill.id) };
   }).sort((first, second) => first.name.localeCompare(second.name));
   return { skills: totals, transferResults, purchaseResults, unassignedKnowPoints, unassignedActivePoints, cap: startingSkillCap };
 }
