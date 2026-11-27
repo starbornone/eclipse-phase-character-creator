@@ -26,6 +26,7 @@ import { MotivationEditor } from './Motivations.tsx';
 import { ReputationEditor } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearEditor } from './StartingGear.tsx';
+import { StartingEquipmentEditor } from './StartingEquipment.tsx';
 import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 import { Card } from './ui/card.tsx';
 
@@ -53,6 +54,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
   const [startingCampaign, setStartingCampaign] = useState(draft?.ego.startingCampaign);
   const [useInfomorphPack, setUseInfomorphPack] = useState(draft?.ego.startingInfomorphPack ?? false);
   const [gearSwaps, setGearSwaps] = useState(draft?.ego.startingGearSwaps ?? []);
+  const [equipment, setEquipment] = useState(draft?.ego.startingEquipment ?? []);
   const [motivations, setMotivations] = useState(() => personalMotivationChoices(draft?.ego));
   const [artisticKnowFields, setArtisticKnowFields] = useState(draft?.ego.artisticKnowFields ?? []);
   const [skillTransfers, setSkillTransfers] = useState(draft?.ego.skillTransfers ?? []);
@@ -84,6 +86,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
     || startingCampaign !== draft?.ego.startingCampaign
     || useInfomorphPack !== (draft?.ego.startingInfomorphPack ?? false)
     || JSON.stringify(gearSwaps) !== JSON.stringify(draft?.ego.startingGearSwaps ?? [])
+    || JSON.stringify(equipment) !== JSON.stringify(draft?.ego.startingEquipment ?? [])
     || JSON.stringify(personalMotivations) !== JSON.stringify(cleanPersonalMotivations(personalMotivationChoices(draft?.ego)))
     || JSON.stringify(artisticKnowFields) !== JSON.stringify(draft?.ego.artisticKnowFields ?? [])
     || JSON.stringify(skillTransfers) !== JSON.stringify(draft?.ego.skillTransfers ?? [])
@@ -151,6 +154,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
           ...(startingCampaign ? { startingCampaign } : {}),
           ...(usesInfomorphPack ? { startingInfomorphPack: true } : {}),
           ...(appliedSwaps.length ? { startingGearSwaps: appliedSwaps } : {}),
+          ...(equipment.length ? { startingEquipment: equipment } : {}),
           ...(Object.keys(personalMotivations).length ? { personalMotivations } : {}),
           ...(artisticKnowFields.length ? { artisticKnowFields } : {}),
           ...(skillTransfers.length ? { skillTransfers } : {}),
@@ -266,6 +270,7 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             <StartingGearEditor campaign={startingCampaign} career={packages.career?.id}
               morphCategory={startingMorph?.category} swaps={gearSwaps} useInfomorphPack={useInfomorphPack}
               onChange={setStartingCampaign} onSwapsChange={setGearSwaps} onInfomorphPackChange={setUseInfomorphPack} />
+            <StartingEquipmentEditor purchases={equipment} onChange={setEquipment} />
           </div>
           <Card className="editor-panel morph-picker">
             <h2>First morph</h2>
@@ -306,7 +311,9 @@ export function DraftEditor({ draft, onCancel, onSaved, onDirty, onSaving }: Dra
             )}
             {!morphAllowanceIssue && (
               <StartingMorphBudgetSummary
-                budget={evaluateStartingMorphBudget({ startingMorphPoints: allowance, traits }, startingMorph, (draft?.sleeves.length ?? 0) > 1)}
+                budget={evaluateStartingMorphBudget(
+                  { startingMorphPoints: allowance, traits, startingEquipment: equipment }, startingMorph, (draft?.sleeves.length ?? 0) > 1,
+                )}
                 live />
             )}
           </Card>

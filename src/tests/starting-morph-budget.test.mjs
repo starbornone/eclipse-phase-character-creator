@@ -5,6 +5,7 @@ import { buildPrintableDossier } from '../features/dossier/print.ts';
 import { recordResleeving } from '../features/sleeve/history.ts';
 import { evaluateAptitudeBudget } from '../rules/calculations/aptitude-budget.ts';
 import { evaluateStartingMorphBudget, parseStartingMorphAllowance, startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
+import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
 
 const updatedAt = '2026-11-28T00:00:00.000Z';
@@ -75,5 +76,38 @@ test('the dossier keeps the first sleeve cost and expires starting temporary Fle
     assert.equal(morph.id, 'case');
     assert.deepEqual([budget.morphName, budget.cost, budget.remaining, budget.temporaryFlex, budget.hasResleeved], ['Synth', 3, 3, 0, true]);
     assert.equal(egoFlex, 1);
+  }
+});
+
+test('extra equipment counts units and charges the MP cost of each complexity tier', () => {
+  const purchases = ['ecto', 'ecto', 'exploit-app', 'emergency-bubble'];
+  const items = traceStartingEquipment(purchases);
+  const ecto = items.find(({ id }) => id === 'ecto');
+  const restricted = items.find(({ id }) => id === 'exploit-app');
+  const bubble = items.find(({ id }) => id === 'emergency-bubble');
+  assert.deepEqual([ecto.quantity, ecto.mpPerItem, ecto.totalMp], [2, 1, 2]);
+  assert.deepEqual([restricted.complexity, restricted.mpPerItem, restricted.restricted], ['Moderate', 2, true]);
+  assert.deepEqual([bubble.complexity, bubble.mpPerItem, bubble.totalMp], ['Major', 3, 3]);
+  const ego = { startingMorphPoints: 10, startingEquipment: purchases };
+  const budget = evaluateStartingMorphBudget(ego, findSampleMorph('digimorph'));
+  assert.deepEqual([budget.equipmentCost, budget.remaining, budget.temporaryFlex], [7, 3, 1]);
+  const removed = evaluateStartingMorphBudget({ ...ego, startingEquipment: purchases.slice(1) }, findSampleMorph('digimorph'));
+  assert.deepEqual([removed.equipmentCost, removed.remaining, removed.temporaryFlex], [6, 4, 2]);
+  const pending = evaluateStartingMorphBudget(ego);
+  assert.deepEqual([pending.equipmentCost, pending.remaining, pending.temporaryFlex], [7, undefined, undefined]);
+});
+
+test('extra equipment survives backup and resleeving and rejects unsupported IDs', () => {
+  const character = { ...draft, ego: { ...draft.ego, startingEquipment: ['ecto', 'ecto', 'emergency-bubble'] } };
+  assert.equal(startingMorphBudgetForDraft(character).remaining, -2);
+  const resleeved = recordResleeving(character, 'second', 'bouncer', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  const restored = previewBackup(encodeBackup([resleeved])).drafts[0];
+  assert.deepEqual(restored, resleeved);
+  const print = buildPrintableDossier(restored, 'player', []);
+  assert.deepEqual(print.startingEquipment, traceStartingEquipment(character.ego.startingEquipment));
+  assert.deepEqual([print.startingMorphBudget.cost, print.startingMorphBudget.equipmentCost, print.startingMorphBudget.remaining], [3, 5, -2]);
+  for (const invalid of ['invented-item', 2, '']) {
+    const broken = { ...draft, ego: { ...draft.ego, startingEquipment: ['ecto', invalid] } };
+    assert.throws(() => previewBackup(encodeBackup([broken])), /startingEquipment\[1\] must be/);
   }
 });

@@ -7,6 +7,7 @@ import { traceAptitudeChecks } from '../rules/calculations/draft.ts';
 import { traceDerivedEgoStats } from '../rules/calculations/derived-stats.ts';
 import { listStartingMotivations } from '../rules/calculations/motivations.ts';
 import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
+import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { findSampleMorph, quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
@@ -19,6 +20,7 @@ import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
+import { StartingEquipmentSummary } from './StartingEquipment.tsx';
 import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 import { Card } from './ui/card.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
@@ -130,6 +132,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
       <EgoDerivedStats stats={traceDerivedEgoStats(draft.ego)} styled />
       <div className="screen-only dossier-starting-skills"><StartingSkills ego={draft.ego} /></div>
       <StartingGearSummary gear={startingGearForDraft(draft)} styled />
+      <StartingEquipmentSummary items={traceStartingEquipment(draft.ego.startingEquipment)} styled />
       {sleeve && <SleeveHistory draft={draft} />}
       <p className="print-only rules-note"><QuickStartCredit /></p>
     </article>

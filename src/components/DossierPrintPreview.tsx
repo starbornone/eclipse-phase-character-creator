@@ -17,6 +17,7 @@ import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
+import { StartingEquipmentSummary } from './StartingEquipment.tsx';
 import { StartingMorphBudgetSummary } from './StartingMorphBudget.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
@@ -164,6 +165,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
         </section>
         <SkillSpecializations entries={dossier.specializations} />
         <StartingGearSummary gear={dossier.startingGear} />
+        <StartingEquipmentSummary items={dossier.startingEquipment} />
         {dossier.history.length > 0 && (
           <section className="print-history">
             <h3>Sleeve history</h3>

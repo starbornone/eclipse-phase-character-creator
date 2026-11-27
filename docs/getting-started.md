@@ -33,7 +33,7 @@ Under **First morph**, leave **GM allowance (MP)** blank to use 6 MP or enter th
 
 The budget shows the first sleeve’s sourced cost, remaining MP, and temporary Flex. Each complete pair of unused MP gives 1 temporary Flex, up to 3. For example, a 6 MP allowance with Synth at 3 MP leaves 3 MP and grants 1 temporary Flex. The dossier and both print previews show the starting budget. The temporary bonus expires on the first resleeve, and the budget continues to refer to the original sleeve.
 
-Drafts can be saved with a pending cost or an over-budget warning. Missing and legacy unpriced sleeves leave the balance pending. JSON backups preserve the allowance and Resources choice. Extra equipment and morph trait purchases are planned.
+Drafts can be saved with a pending cost or an over-budget warning. Missing and legacy unpriced sleeves leave the balance pending. JSON backups preserve the allowance and Resources choice. Morph trait purchases are planned.
 
 ## Apply an aptitude template
 
@@ -103,13 +103,19 @@ Under **Starting gear**, select Firewall, Criminal, or Gatecrashing. Firewall an
 
 Choosing a synthmorph as the first sleeve applies the listed campaign and career alternatives. Resleeving leaves starting gear tied to the first sleeve.
 
-Expand **Swap [pack name] gear** and choose a replacement for a fixed-cost item. The list offers gear of the same GP from the supported campaign and career packs and labels Restricted entries. Select **Keep [item name]** to restore the original. If a pack or first-morph change invalidates a swap, the editor displays a notice. Return to the earlier choice before saving to recover the swap.
+Expand **Swap [pack name] gear** and choose a replacement for a fixed-cost item. The list offers gear of the same GP from the supported packs and selected Gear chapter listings. It labels Restricted entries. Select **Keep [item name]** to restore the original. If a pack or first-morph change invalidates a swap, the editor displays a notice. Return to the earlier choice before saving to recover the swap.
 
 For a Digimorph, Ikon, Agent, or Operator first sleeve, you can select **Use the optional Infomorph pack in place of the campaign pack**. This gives you the 10 GP Infomorph pack alongside your career pack and free muse. Clear the checkbox to return to the chosen campaign pack. The Infomorph pack's fixed-cost items are also available as equal-GP swaps when your first sleeve is an infomorph.
 
-The dossier and player print preview show the packs and each replacement, its source, and which item it replaced. JSON backups preserve the campaign, optional pack choice, and applied swaps. Resleeving keeps the first sleeve's gear setup. Gear chapter choices and extra gear purchases are planned.
+The dossier and player print preview show the packs and each replacement, its source, and which item it replaced. JSON backups preserve the campaign, optional pack choice, and applied swaps. Resleeving keeps the first sleeve's gear setup.
 
 The **Soldier** career pack also has a synthmorph alternative: **Fixer Swarm** replaces **Meds (5 doses)** when the first sleeve is synthetic. Both versions cost 10 GP. The Enforcer pack shows the Shredder’s Restricted label, and the Soldier pack labels the Assault Rifle Railgun as Restricted. Gear is listed for reference; its effects are not automatically applied to checks or pools.
+
+## Buy extra starting equipment
+
+Under **Extra starting equipment**, choose an item and select **Add one**. Each click buys one unit. Select **Remove one** to reduce the count. Minor gear costs 1 MP, Moderate gear costs 2 MP, and Major gear costs 3 MP. Each purchase reduces the remaining MP used to calculate temporary Flex. Pack swaps continue to use GP.
+
+The editor, dossier, and player print preview show quantities, costs, source links, and any Restricted label. The GM summary shows the equipment spend in the starting MP budget. Backups preserve the purchases, and resleeving retains the original starting equipment record.
 
 **Covert Operative** replaces **Skinflex** with **Synthetic Mask** for a synthetic first sleeve. Resleeving preserves that starting choice. The **Mindhacker** pack follows errata 1.4: it includes Psychosurgery App, with Fokus and Servitor removed. **Medic** includes five doses of Meds.
 

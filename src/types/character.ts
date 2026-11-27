@@ -89,6 +89,7 @@ export interface Ego {
   startingCampaign?: GearCampaign;
   startingInfomorphPack?: true;
   startingGearSwaps?: StartingGearSwap[];
+  startingEquipment?: string[];
   artisticKnowFields?: string[];
   skillTransfers?: SkillPointTransfer[];
   skillPurchases?: SkillPointPurchase[];

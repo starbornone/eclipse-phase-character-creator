@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-28T01:38:23+11:00",
+  "updatedAt": "2026-11-28T01:45:52+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -364,6 +364,13 @@
       "group": "Character creation",
       "notes": "Added the 6 MP default and GM override, Resources at all four levels, sourced prices for all seven selectable sleeves, an over-budget warning, and temporary Flex that expires on resleeving. Verified zero and pending values, odd MP, the Flex cap, invalid allowance rejection, backup restore, the 390 px editor, save and reload, and both print previews. All 153 tests and the production build pass.",
       "completedAt": "2026-11-28T01:38:23+11:00"
+    },
+    {
+      "id": "buy-extra-starting-equipment",
+      "title": "Buy extra starting equipment and swap supported Gear chapter items",
+      "group": "Character creation",
+      "notes": "Added eighteen sourced items for one-unit purchases at 1, 2, or 3 MP by complexity and equal-GP pack swaps. Verified quantities, price tiers, source and Restricted labels, pending and over-budget drafts, Flex recalculation, backup validation, 390 px layout, save and reload, resleeving, and both print previews. All 156 tests and the production build pass.",
+      "completedAt": "2026-11-28T01:45:52+11:00"
     }
   ]
 }

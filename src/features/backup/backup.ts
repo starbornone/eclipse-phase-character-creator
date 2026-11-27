@@ -12,6 +12,7 @@ import { isStartingMorphAllowance } from '../../rules/calculations/starting-morp
 import { reputationNetworks, startingReputationRules } from '../../rules/datasets/reputation.ts';
 import { expertTraining, findEgoTrait } from '../../rules/datasets/ego-traits.ts';
 import { findGearCampaign } from '../../rules/datasets/starting-gear.ts';
+import { findStartingEquipment } from '../../rules/datasets/starting-equipment.ts';
 import { coreAptitudeRules } from '../../rules/datasets/aptitude-templates.ts';
 import { knowFieldKey, skillNameFromId } from '../../rules/calculations/starting-skills.ts';
 import { aptitudes, creationPackageKinds } from '../../types/character.ts';
@@ -275,6 +276,13 @@ function readEgo(value: unknown, path: string): Ego {
   if (ego.startingInfomorphPack !== undefined && ego.startingInfomorphPack !== true) {
     badField(`${path}.startingInfomorphPack`, 'true when the optional Infomorph pack is selected');
   }
+  const startingEquipment = ego.startingEquipment === undefined ? undefined
+    : list(ego.startingEquipment, `${path}.startingEquipment`).map((value, index) => {
+      const entryPath = `${path}.startingEquipment[${index}]`;
+      const id = string(value, entryPath, true);
+      if (!findStartingEquipment(id)) badField(entryPath, 'a supported equipment ID');
+      return id;
+    });
   return {
     id: string(ego.id, `${path}.id`, true),
     name: string(ego.name, `${path}.name`),
@@ -292,6 +300,7 @@ function readEgo(value: unknown, path: string): Ego {
     ...(ego.startingGearSwaps === undefined ? {} : {
       startingGearSwaps: readStartingGearSwaps(ego.startingGearSwaps, `${path}.startingGearSwaps`),
     }),
+    ...(startingEquipment === undefined ? {} : { startingEquipment }),
     ...(artisticKnowFields === undefined ? {} : { artisticKnowFields }),
     ...(skillTransfers === undefined ? {} : { skillTransfers }),
     ...(skillPurchases === undefined ? {} : { skillPurchases }),

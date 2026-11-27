@@ -199,3 +199,16 @@ test('save-oriented models preserve the optional pack across resleeving and back
   assert.throws(() => previewBackup(encodeBackup([{ ...next, sleeves: [...next.sleeves].reverse() }])), /infomorph first sleeve/);
   assert.throws(() => previewBackup(encodeBackup([{ ...draft, ego: { ...draft.ego, startingInfomorphPack: 'true' } }])), /true when/);
 });
+
+test('Gear chapter entries support equal-GP pack swaps with their own source links', () => {
+  const swap = { packId: 'firewall-agentcriminal', item: 'Fake Ego ID', replacement: 'Emergency Bubble' };
+  const gear = deriveStartingGear('firewall', undefined, 'Biomorph', [swap]);
+  const item = gear.packs[0].items.find(({ originalName }) => originalName === swap.item);
+  assert.deepEqual(gear.appliedSwaps, [swap]);
+  assert.equal(gear.packs[0].gp, 10);
+  assert.equal(item.gp, 3);
+  assert.equal(item.restricted, undefined);
+  assert.ok(item.replacementSource.endsWith('18-mission-gear.html#survival-tools'));
+  const invalid = { ...swap, replacement: 'Ecto' };
+  assert.deepEqual(deriveStartingGear('firewall', undefined, 'Biomorph', [invalid]).appliedSwaps, []);
+});

@@ -1,6 +1,7 @@
 import { careerGearPacks, findGearCampaign, gearCampaigns, gearPacksSource, infomorphGearPack } from '../datasets/starting-gear.ts';
 import type { GearPack } from '../datasets/starting-gear.ts';
 import { findSampleMorph } from '../datasets/sample-morphs.ts';
+import { startingEquipment } from '../datasets/starting-equipment.ts';
 import type { CharacterDraft, MorphDefinition, StartingGearSwap } from '../../types/character.ts';
 
 const availablePacks = [...new Set(gearCampaigns.map(({ pack }) => pack)), ...careerGearPacks.values()];
@@ -15,10 +16,11 @@ function gearPackContents(pack: GearPack, morphCategory?: MorphDefinition['categ
 
 export function startingGearReplacements(morphCategory?: MorphDefinition['category']) {
   const sourcePacks = morphCategory === 'Infomorph' ? [...availablePacks, infomorphGearPack] : availablePacks;
-  const entries = sourcePacks.flatMap((pack) => {
+  const entries: (GearPack['items'][number] & { source: string })[] = sourcePacks.flatMap((pack) => {
     const { items, source } = gearPackContents(pack, morphCategory);
     return items.filter(({ additionalGpCost }) => !additionalGpCost).map((item) => ({ ...item, source }));
   });
+  entries.push(...startingEquipment);
   const seen = new Set<string>();
   return entries.filter(({ name, gp }) => {
     const key = `${gp}:${name}`;

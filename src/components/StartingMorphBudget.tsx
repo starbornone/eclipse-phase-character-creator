@@ -6,7 +6,7 @@ export function StartingMorphBudgetSummary({ budget, live = false }: {
   budget: ReturnType<typeof evaluateStartingMorphBudget>;
   live?: boolean;
 }) {
-  const { allowance, resources, available, cost, remaining, temporaryFlex, hasResleeved, morphName, costSource } = budget;
+  const { allowance, resources, available, cost, equipmentCost, remaining, temporaryFlex, hasResleeved, morphName, costSource } = budget;
   const { mpPerTemporaryFlex, temporaryFlexCap, sourceUrl } = startingMorphBudgetRules;
   const showCostSource = cost !== undefined && costSource;
 
@@ -21,6 +21,7 @@ export function StartingMorphBudgetSummary({ budget, live = false }: {
           <dt>First sleeve{morphName && <> · {showCostSource ? <a href={costSource.url}>{morphName}</a> : morphName}</>}</dt>
           <dd>{cost === undefined ? 'Cost pending' : `${cost} MP`}</dd>
         </div>
+        {equipmentCost > 0 && <div><dt>Extra equipment</dt><dd>{equipmentCost} MP</dd></div>}
         <div>
           <dt>Remaining</dt>
           <dd>{remaining === undefined ? 'Pending' : remaining < 0 ? `${-remaining} MP over budget` : `${remaining} MP`}</dd>

@@ -108,4 +108,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The dossier retains the starting budget through resleeving and backup restore. Pending and over-budget drafts can still be saved. Ego Flex and the published morph pools keep their own values. [Starting morph and gear rules](https://eclipsephase.github.io/en/04/15-step-12-starting-morph-gear.html)
 
+## 14. Price extra starting equipment from listed complexity
+
+**Context.** Step 12 sets the MP price of extra starting gear by complexity. The core Gear chapter also lists GP values for pack swaps.
+
+**Decision.** Use one sourced equipment catalogue for both workflows. Record one item ID per purchase and derive quantity and MP cost from those IDs. Use the listed GP value for a pack swap.
+
+**Consequences.** The editor and saved outputs show the same MP spend and recalculate temporary Flex after additions or removals. The catalogue can expand independently of existing draft records. [Step 12, Extra Gear](https://eclipsephase.github.io/en/04/15-step-12-starting-morph-gear.html#extra-gear)
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.

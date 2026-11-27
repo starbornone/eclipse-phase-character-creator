@@ -96,7 +96,7 @@ export function StartingGearEditor({ campaign, career, morphCategory, swaps, use
           <span>Use the optional Infomorph pack in place of the campaign pack</span>
         </label>
       )}
-      <p className="rules-note">Your career adds a second pack. Swap fixed-cost items for gear of the same GP from the supported packs.</p>
+      <p className="rules-note">Your career adds a second pack. Swap fixed-cost items for gear of the same GP from other packs or the supported Gear chapter listings.</p>
       {campaign && !morphCategory && <p className="rules-note">Choose a first morph to apply any synthmorph alternatives.</p>}
       <div role="status">
         {useInfomorphPack && !usesInfomorphPack && <p className="rules-note">The optional Infomorph pack requires an infomorph first sleeve. Saving will use the selected campaign pack.</p>}
