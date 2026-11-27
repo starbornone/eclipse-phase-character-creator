@@ -119,18 +119,20 @@ Choose **Hardening**, select **Alienation**, **Helplessness**, or **Violence**, 
 
 ## Review derived ego stats
 
-**Derived ego stats** updates in the editor as you change aptitudes or Composure. The saved dossier and both print layouts show the same calculations and sources.
+**Derived ego stats** updates in the editor as you change aptitudes, Composure, or Instability. The saved dossier and both print layouts show the same calculations and sources.
 
 | Stat | Calculation |
 | --- | --- |
 | Initiative | (Reflexes + Intuition) ÷ 5, rounded normally |
-| Lucidity | Willpower × 2, plus Composure if selected |
+| Lucidity | Willpower × 2, adjusted by Composure and Instability |
 | Trauma Threshold | Lucidity ÷ 5, rounded normally |
 | Insanity Rating | Lucidity × 2 |
 
 Normal rounding goes to the nearest whole number. For example, Reflexes 16 and Intuition 17 give Initiative 7 from 6.6. **Composure** costs 2 CP and adds 5 Lucidity, which also raises Trauma Threshold by 1 and Insanity Rating by 10. Willpower 12 with Composure gives Lucidity 29, Trauma Threshold 6, and Insanity Rating 58. Select **None** to remove it and release its CP.
 
-These values use aptitude scores. Resolve, Quickness, Good Instincts, and Hardening modify checks rather than these bases. Missing aptitudes leave their dependent stats **Pending**, including when Composure is selected. Composure and these ego stats follow the ego through resleeving and backup restore. Morph health and gear effects remain separate.
+**Instability** grants 2 CP at Level 1 or 4 CP at Level 2, within the shared 6 CP cap for negative traits. Each level reduces Lucidity by 5, Trauma Threshold by 1, and Insanity Rating by 10. Willpower 12 with Instability Level 2 gives Lucidity 14, Trauma Threshold 3, and Insanity Rating 28. If you also select Composure, the formula shows both contributions.
+
+These values use aptitude scores. Resolve, Quickness, Good Instincts, and Hardening apply their aptitude modifiers to checks. Missing aptitudes leave their dependent stats **Pending**. Trait selections and these ego stats follow the ego through resleeving and backup restore.
 
 ## Compare morph profiles
 

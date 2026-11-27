@@ -7,9 +7,10 @@ export function traceDerivedEgoStats({ aptitudes, traits }: Pick<Ego, 'aptitudes
   const { initiativeDivisor, lucidityMultiplier, traumaDivisor, insanityMultiplier } = coreDerivedStatRules;
   const modifiers = traceEgoTraits(traits).flatMap(({ name, level, lucidityModifier }) => lucidityModifier === undefined
     ? [] : [{ source: name, points: lucidityModifier * level }]);
-  const bonus = modifiers.reduce((sum, { points }) => sum + points, 0);
+  const adjustment = modifiers.reduce((sum, { points }) => sum + points, 0);
+  const modifierSteps = modifiers.map(({ points }) => ` ${points < 0 ? '−' : '+'} ${Math.abs(points)}`).join('');
   const initiative = ref === undefined || int === undefined ? undefined : (ref + int) / initiativeDivisor;
-  const lucidity = wil === undefined ? undefined : wil * lucidityMultiplier + bonus;
+  const lucidity = wil === undefined ? undefined : wil * lucidityMultiplier + adjustment;
   const trauma = lucidity === undefined ? undefined : lucidity / traumaDivisor;
   const insanity = lucidity === undefined ? undefined : lucidity * insanityMultiplier;
   const roundTrace = (value: number) => `${value} → ${Math.round(value)}`;
@@ -20,7 +21,7 @@ export function traceDerivedEgoStats({ aptitudes, traits }: Pick<Ego, 'aptitudes
       calculation: initiative === undefined ? undefined : `(${ref} + ${int}) ÷ ${initiativeDivisor} = ${roundTrace(initiative)}` },
     { id: 'lucidity', label: 'Lucidity', formula: 'WIL × 2', total: lucidity,
       inputs: [{ source: 'Willpower', value: wil }], modifiers,
-      calculation: lucidity === undefined ? undefined : `${wil} × ${lucidityMultiplier}${bonus ? ` + ${bonus}` : ''} = ${lucidity}` },
+      calculation: lucidity === undefined ? undefined : `${wil} × ${lucidityMultiplier}${modifierSteps} = ${lucidity}` },
     { id: 'trauma-threshold', label: 'Trauma Threshold', formula: 'LUC ÷ 5', total: trauma === undefined ? undefined : Math.round(trauma),
       inputs: [{ source: 'Lucidity', value: lucidity }], modifiers: noModifiers,
       calculation: trauma === undefined ? undefined : `${lucidity} ÷ ${traumaDivisor} = ${roundTrace(trauma)}` },

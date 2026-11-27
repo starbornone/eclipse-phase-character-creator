@@ -43,6 +43,7 @@ export const egoTraits: readonly EgoTrait[] = [
   { id: 'bad-luck', name: 'Bad Luck', cpByLevel: [-6], effect: 'You cannot spend pool points to reverse the digits of a roll.' },
   { id: 'enemy', name: 'Enemy', cpByLevel: [-2], effect: 'Work with the GM to define a recurring adversary.' },
   { id: 'identity-crisis', name: 'Identity Crisis', cpByLevel: [-1], effect: 'Unfamiliar morph physiology can impose a −10 penalty.' },
+  { id: 'instability', name: 'Instability', cpByLevel: [-2, -4], lucidityModifier: -5, effect: 'Per level, lose 5 Lucidity, 1 Trauma Threshold, and 10 Insanity Rating.' },
 ];
 
 export function findEgoTrait(id: string) {

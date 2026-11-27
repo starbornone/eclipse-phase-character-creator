@@ -67,6 +67,41 @@ test('Composure uses two shared CP, removal releases its cost, and invalid level
   }
 });
 
+test('Instability grants 2 CP per level and reduces Lucidity before dependent stats', () => {
+  for (const level of [1, 2]) {
+    const traits = [{ id: 'instability', level }];
+    const stats = traceDerivedEgoStats({ aptitudes: { ...scores, wil: 12 }, traits });
+    assert.deepEqual(stats.map(({ total }) => total), [6, 24 - 5 * level, 5 - level, 48 - 10 * level]);
+    assert.deepEqual(stat(stats, 'lucidity').modifiers, [{ source: 'Instability', points: -5 * level }]);
+    assert.equal(stat(stats, 'lucidity').calculation, `12 × 2 − ${5 * level} = ${24 - 5 * level}`);
+    assert.equal(evaluateAptitudeBudget(scores, [], { traits }).availableCp, 20 + 2 * level);
+    assert.deepEqual(traceAptitudeChecks(scores, traits), traceAptitudeChecks(scores));
+    assert.equal(stat(traceDerivedEgoStats({ aptitudes: {}, traits }), 'lucidity').total, undefined);
+  }
+  assert.equal(evaluateAptitudeBudget(scores, [], { traits: [] }).availableCp, 20);
+});
+
+test('Instability and Composure retain both modifiers even when they cancel', () => {
+  const stats = traceDerivedEgoStats({ aptitudes: scores, traits: [composure, { id: 'instability', level: 1 }] });
+  assert.equal(stat(stats, 'lucidity').calculation, '15 × 2 + 5 − 5 = 30');
+  assert.deepEqual(stat(stats, 'lucidity').modifiers, [
+    { source: 'Composure', points: 5 },
+    { source: 'Instability', points: -5 },
+  ]);
+});
+
+test('backups and both print audiences support Instability within the shared trait bonus limit', () => {
+  const instability = { id: 'instability', level: 2 };
+  const character = draft([instability, { id: 'enemy', level: 1 }]);
+  const restored = previewBackup(encodeBackup([character])).drafts[0];
+  assert.deepEqual(restored, character);
+  for (const audience of ['player', 'gm']) {
+    assert.deepEqual(buildPrintableDossier(restored, audience, []).derivedStats.map(({ total }) => total), [6, 20, 4, 40]);
+  }
+  assert.throws(() => previewBackup(encodeBackup([draft([instability, { id: 'bad-luck', level: 1 }])])), /6 CP limit/);
+  assert.throws(() => previewBackup(encodeBackup([draft([{ ...instability, level: 3 }])])), /must be/);
+});
+
 test('check-only trait bonuses and Hardening do not change Initiative or mental health bases', () => {
   const traits = [{ id: 'resolve', level: 3 }, { id: 'quickness', level: 3 }, { id: 'good-instincts', level: 3 }, { id: 'hardening', level: 1, detail: 'Violence' }];
   assert.deepEqual(totals({ aptitudes: scores, traits }), [6, 30, 6, 60]);

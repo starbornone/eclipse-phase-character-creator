@@ -16,7 +16,7 @@ export function EgoDerivedStats({ stats, styled = false, headingLevel = 2 }: {
           <dd><strong>{total ?? 'Pending'}</strong></dd>
           <dd className="derived-stat-calculation">
             {calculation ?? `${formula} · Needs ${inputs.filter(({ value }) => value === undefined).map(({ source }) => source).join(' and ')}.`}
-            {modifiers.map(({ source, points }) => <span className="skill-grant" key={source}>{source} +{points}</span>)}
+            {modifiers.map(({ source, points }) => <span className="skill-grant" key={source}>{source} {points < 0 ? '−' : '+'}{Math.abs(points)}</span>)}
           </dd>
         </div>)}
       </dl>
