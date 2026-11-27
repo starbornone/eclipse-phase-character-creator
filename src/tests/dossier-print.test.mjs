@@ -78,6 +78,46 @@ test('print applicable skill specializations and omit missing choices', () => {
   }
 });
 
+test('both print layouts retain skill allocations, doubled bases, and incomplete totals', () => {
+  const skilled = { ...draft, ego: {
+    ...draft.ego,
+    packages: { background: { id: 'freelancer', fields: { 'know-1': 'Astronomy' } } },
+    skillTransfers: [
+      { from: 'active:Interface', to: 'active:Fray', points: 5 },
+      { from: 'active:Interface', to: 'active:Perceive', points: 10 },
+    ],
+    skillPurchases: [{ to: 'active:Perceive', points: 5 }],
+  } };
+  for (const audience of ['player', 'gm']) {
+    const { skillLedger } = buildPrintableDossier(skilled, audience, []);
+    const perceive = skillLedger.skills.find(({ id }) => id === 'active:Perceive');
+    assert.equal(perceive.base, 30);
+    assert.equal(perceive.purchasedPoints, 5);
+    assert.equal(perceive.allocatedPoints, 10);
+    assert.equal(perceive.total, 45);
+    assert.equal(skillLedger.skills.find(({ id }) => id === 'active:Interface').allocatedPoints, 30);
+    const astronomy = skillLedger.skills.find(({ id }) => id === 'know:astronomy');
+    assert.equal(astronomy.allocatedPoints, 60);
+    assert.equal(astronomy.total, undefined);
+    assert.equal(skillLedger.unassignedKnowPoints, 30);
+    assert.match(skillLedger.transferResults[0].issue, /Enter the linked aptitude/);
+  }
+});
+
+test('print skill totals preserve over-cap warnings and skipped purchases for review', () => {
+  const overCap = { ...draft, ego: {
+    ...draft.ego, aptitudes: { cog: 30, int: 30 },
+    packages: { career: { id: 'academic' } },
+    skillPurchases: [{ to: 'active:Research', points: 5 }],
+  } };
+  const { skillLedger } = buildPrintableDossier(overCap, 'player', []);
+  const research = skillLedger.skills.find(({ id }) => id === 'active:Research');
+  assert.equal(research.total, 90);
+  assert.equal(research.excess, 10);
+  assert.equal(research.purchasedPoints, 0);
+  assert.match(skillLedger.purchaseResults[0].issue, /above the starting cap/);
+});
+
 test('print saved ego traits for both audiences', () => {
   const traits = [{ id: 'adaptability', level: 2 }, { id: 'identity-crisis', level: 1 }];
   const withTraits = { ...draft, ego: { ...draft.ego, traits } };

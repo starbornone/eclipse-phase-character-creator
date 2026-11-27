@@ -31,3 +31,5 @@ Vite dev and preview serve the app shell for direct visits to workspace paths. W
 | End to end | Create and save an ego and sleeve, reload an incomplete draft, resleeve and inspect history, export and re-import, and print a complete dossier. Verify that malformed imports preserve existing local characters. |
 
 The README calls for calculation and character-creation constraint coverage before UI code depends on those rules. For UI work, include visible focus, error cues that are understandable without colour, and layouts that remain legible on phones and in print. See [Contributing](contributing.md) for review expectations.
+
+For print changes, repeat the [dossier grayscale review](print-review.md), including multi-page tables and private-field checks in the generated PDF text.

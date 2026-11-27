@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "completed",
-  "updatedAt": "2026-11-25T12:50:22+11:00",
+  "updatedAt": "2026-11-27T16:58:50+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -245,6 +245,13 @@
       "group": "Character creation",
       "notes": "Added the core campaign packs, three supported career packs, and the free muse. Verified Gear Point totals, first-sleeve synthmorph alternatives, backup validation, draft reload, and player print output.",
       "completedAt": "2026-11-25T12:50:22+11:00"
+    },
+    {
+      "id": "wireframe-core-screens",
+      "title": "Draft and review the core screen wireframes",
+      "group": "Discovery",
+      "notes": "Reviewed core screens and completed the grayscale dossier review using Edge PDFs at A4 and Letter. Added missing skill totals, pending and over-cap warnings, darker preview warnings, and pagination fixes. Checked backup restore and reload, private-field selection and reset, repeated table headers, attribution, and the narrow preview. See docs/print-review.md for scope and remaining accessibility work.",
+      "completedAt": "2026-11-27T16:58:50+11:00"
     }
   ]
 }

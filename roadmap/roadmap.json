@@ -1,7 +1,7 @@
 {
   "schema": "name -roadmap/v1",
   "file": "roadmap",
-  "updatedAt": "2026-11-25T12:50:22+11:00",
+  "updatedAt": "2026-11-27T16:58:50+11:00",
   "project": {
     "key": "eclipse-phase-character-creator",
     "title": "Eclipse Phase 2e Character & Morph Creator",
@@ -9,12 +9,6 @@
     "summary": "A local-first web tool for creating, validating, saving, resleeving, and printing Eclipse Phase Second Edition characters."
   },
   "items": [
-    {
-      "id": "wireframe-core-screens",
-      "title": "Draft and review the core screen wireframes",
-      "group": "Discovery",
-      "notes": "Reviewed library and resleeving comparisons, print previews and private-field states, aptitude warnings, and the shared CP budget through ego trait costs and bonuses. The grayscale print review remains."
-    },
     {
       "id": "complete-first-creation-workflow",
       "title": "Complete the first supported creation workflow",
@@ -31,7 +25,7 @@
       "id": "verify-accessibility-and-layouts",
       "title": "Verify keyboard access, mobile layouts, and print",
       "group": "Public beta",
-      "notes": "Run the planned accessibility audit and test the complete player workflow across supported layouts. Verify actual PDF and grayscale print output, pagination, and attribution in the browser print dialog."
+      "notes": "Run the planned accessibility audit and test the complete player workflow across supported layouts. The initial Edge PDF and grayscale review is recorded in docs/print-review.md. Verify native print-dialog controls, physical grayscale output, very long notes, and other supported browsers."
     },
     {
       "id": "prepare-public-beta",

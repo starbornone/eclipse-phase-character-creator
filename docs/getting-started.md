@@ -103,9 +103,11 @@ History is shown in save order, newest first. If you leave the event date blank,
 ## Print a player dossier or GM summary
 
 1. Open an ego’s dossier and choose **Print dossier**.
-2. Use **Player dossier** for identity, concept, the active morph, and aptitude calculations. Switch to **GM summary** for compact checks and a list of current and prior morphs.
+2. Use **Player dossier** for identity, concept, the active morph, and aptitude calculations. Switch to **GM summary** for compact checks and a list of current and prior morphs. Both layouts include starting skills with their points, aptitude bases, totals, and warnings. Incomplete totals stay pending, and invalid transfers or purchases are flagged for review.
 3. In the GM view, dates, locations, causes, and notes start excluded. Select any of those fields and check the preview. Switching layouts resets those choices.
 4. Choose **Print / Save PDF**. Select a printer or your browser’s PDF destination.
+
+The [grayscale print review](print-review.md) records the checked paper sizes and remaining layout audit work.
 
 ## Back up and restore drafts
 

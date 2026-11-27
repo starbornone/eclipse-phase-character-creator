@@ -1,0 +1,30 @@
+# Dossier print review
+
+Reviewed on 27 November 2026 using headless Microsoft Edge 158.0.4370.33 on Windows, the browser's PDF renderer, and Poppler grayscale page renders. This completes the grayscale review for the core screen wireframes. It does not complete the broader keyboard, assistive technology, browser, and physical printer audit.
+
+## Scenario and results
+
+Imported a backup into an isolated browser profile, restored it as a copy, opened the saved dossier, and reloaded it before opening the print route. The draft used Colonist, Explorer, Spacer, and Argonaut packages; named and unnamed field slots; over-cap skills; a specialization; motivations and goals; reputation; a trait; starting gear; and two sleeves with private event details.
+
+| Check | Result |
+| --- | --- |
+| Player PDF, A4 and Letter, backgrounds disabled | Three pages each. Ego and morph headings, skill calculations, warnings, gear restrictions, and attribution remain legible in grayscale. |
+| GM PDF, A4, private fields excluded | Two pages. Skill table headers repeat across pages and sleeve history distinguishes Active and Previous in text. |
+| GM PDF with only sleeve notes selected | Notes appear beneath the matching morph. Locations and causes remain excluded. |
+| Switch player → GM after selecting notes | Private choices reset, and notes disappear. |
+| Player and default GM PDF text | No private event markers appear in the extracted text. |
+| Player preview at 390 px width | No document-level horizontal overflow. Skill headings and warning text remain readable. |
+| Incomplete player draft, no morph | Missing aptitude totals stay Pending; unnamed Active and Know points and a rejected purchase are visible. |
+| Browser runtime | No page errors during import, reload, and print layout changes. |
+
+The review found missing skill totals in both print layouts. The print view now uses the existing starting skill calculation, including transfers, purchases, pending aptitudes, unnamed field points, over-cap warnings, and rejected allocation notices. Regression tests cover incomplete and over-cap drafts. The review also led to darker preview warnings and page-break rules that keep source notes with their tables and short sleeve entries together.
+
+## Repeat the review
+
+1. Follow [local setup](getting-started.md#start-the-prototype) and [the print walkthrough](getting-started.md#print-a-player-dossier-or-gm-summary).
+2. Use a saved ego with enough skills to cross a page boundary, an unnamed field, an over-cap skill, gear packs, a specialization, and at least two sleeves. Add distinct private event markers so omissions are easy to verify.
+3. Save player PDFs at A4 and Letter with background graphics disabled. Render every page in grayscale and inspect headings, repeated table headers, row boundaries, warning text, gear restrictions, and the final attribution.
+4. Save GM PDFs with all private fields off, then with only notes on. Check the preview and extracted PDF text. Switch layouts and verify the private choices reset.
+5. Review the preview at a narrow phone width. Also print an incomplete draft and check that missing aptitude totals remain pending.
+
+Native print-dialog controls, browser headers and footers, physical grayscale output, very long notes, and the complete accessibility audit remain in the [layout verification roadmap item](../roadmap/roadmap.json).

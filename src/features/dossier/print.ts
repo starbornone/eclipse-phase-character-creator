@@ -25,8 +25,9 @@ export function buildPrintableDossier(
   includedFields: readonly PrivatePrintField[],
 ) {
   const sleeve = activeSleeve(draft);
+  const skillLedger = calculateStartingSkills(draft.ego);
   const specializations = draft.ego.specializations?.length
-    ? traceSkillSpecializations(calculateStartingSkills(draft.ego).skills, draft.ego.specializations).filter(({ missingSkill }) => !missingSkill)
+    ? traceSkillSpecializations(skillLedger.skills, draft.ego.specializations).filter(({ missingSkill }) => !missingSkill)
     : [];
   return {
     name: draft.ego.name || 'Untitled ego',
@@ -34,6 +35,7 @@ export function buildPrintableDossier(
     egoFlex: draft.ego.egoFlex ?? coreCustomizationRules.startingEgoFlex,
     languages: draft.ego.languages ?? [],
     reputation: draft.ego.reputation,
+    skillLedger,
     specializations,
     traits: draft.ego.traits,
     concept: audience === 'player' ? draft.ego.concept : '',

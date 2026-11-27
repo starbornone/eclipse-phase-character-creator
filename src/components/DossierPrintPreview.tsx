@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { buildPrintableDossier, privatePrintFields } from '../features/dossier/print.ts';
 import type { PrintAudience, PrivatePrintField } from '../features/dossier/print.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
+import { coreAptitudeRules } from '../rules/datasets/aptitude-templates.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
 import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
@@ -77,7 +78,6 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           </section>
         )}
         <MotivationSummary motivations={dossier.motivations} />
-        <StartingGearSummary gear={dossier.startingGear} />
         <section>
           <h3>Active morph</h3>
           {dossier.morph ? (
@@ -122,7 +122,34 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
         </section>
         <ReputationSummary scores={dossier.reputation} />
         <EgoTraitSummary choices={dossier.traits} />
+        <section className="print-skills">
+          <h3>Ego skills</h3>
+          {dossier.skillLedger.unassignedKnowPoints > 0 && <p>{dossier.skillLedger.unassignedKnowPoints} Know points await a field choice.</p>}
+          {dossier.skillLedger.unassignedActivePoints > 0 && <p>{dossier.skillLedger.unassignedActivePoints} Active points await a field choice.</p>}
+          {dossier.skillLedger.skills.length > 0 ? (
+            <table>
+              <thead><tr><th scope="col">Skill</th><th scope="col">Points</th><th scope="col">Aptitude base</th><th scope="col">Total</th></tr></thead>
+              <tbody>
+                {dossier.skillLedger.skills.map(({ id, name, allocatedPoints, purchasedPoints, aptitude, aptitudeScore, multiplier, base, total, excess, cap }) => (
+                  <tr key={id}>
+                    <th scope="row">{name}</th>
+                    <td>{allocatedPoints + purchasedPoints}</td>
+                    <td>{aptitude?.toUpperCase() ?? '—'} {base === undefined ? 'pending' : `${aptitudeScore} × ${multiplier} = ${base}`}</td>
+                    <td>
+                      <strong>{total ?? 'Pending'}</strong>
+                      {excess > 0 && <span className="skill-grant error">{excess} over {cap}</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : <p>No skills recorded.</p>}
+          {dossier.skillLedger.transferResults.filter(({ issue }) => issue).map(({ issue }, index) => <p key={`transfer-${index}`} className="error">Transfer needs review: {issue}</p>)}
+          {dossier.skillLedger.purchaseResults.filter(({ issue }) => issue).map(({ issue }, index) => <p key={`purchase-${index}`} className="error">Purchase needs review: {issue}</p>)}
+          <p className="rules-note">Totals add allocated and purchased points to the linked aptitude base. Pending totals need an aptitude. Review over-cap totals before play. <a href={coreAptitudeRules.coreBookUrl}>Core rulebook, pp. 45 and 48–50</a></p>
+        </section>
         <SkillSpecializations entries={dossier.specializations} />
+        <StartingGearSummary gear={dossier.startingGear} />
         {dossier.history.length > 0 && (
           <section className="print-history">
             <h3>Sleeve history</h3>

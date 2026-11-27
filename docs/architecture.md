@@ -40,7 +40,7 @@ Draft schema version 2 stores sleeves in save order, with the last sleeve active
 
 JSON backups use the `eclipse-phase-character-backup` format with an envelope version and a list of draft records. `src/features/backup/backup.ts` validates the envelope and all records before offering a preview. It normalizes draft schema 1 into schema 2 and reports how many records were converted. Restoration assigns new ego and sleeve ids, preserves the original content and timestamps, and writes the full batch in one IndexedDB transaction using insert-only operations.
 
-`src/features/dossier/print.ts` builds a printable view from the saved draft and the current audience and field choices. Player output carries the active morph and ego checks. GM output adds a compact check summary and sleeve history, with optional event dates, locations, causes, and notes. Only selected fields reach the preview markup, which doubles as the browser’s print content.
+`src/features/dossier/print.ts` builds a printable view from the saved draft and the current audience and field choices. Player output carries the active morph and ego checks. Both audiences receive the starting skill ledger from the same pure calculation used by the editor, including pending values, over-cap totals, and invalid allocation notices. GM output adds a compact check summary and sleeve history, with optional event dates, locations, causes, and notes. Only selected private fields reach the preview markup, which doubles as the browser’s print content.
 
 The diagram and component boundaries below describe the planned release and show the existing backup flow.
 
