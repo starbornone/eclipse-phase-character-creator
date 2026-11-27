@@ -20,7 +20,7 @@ test('identify the field for an invalid prototype aptitude', () => {
 test('trace an aptitude check using the Quick-Start example and preserve missing scores', () => {
   const intuition = traceAptitudeChecks({ int: 15 }).find((stat) => stat.id === 'int');
   assert.deepEqual(intuition, {
-    id: 'int', label: 'Intuition', base: 15, multiplier: 3, target: 45,
+    id: 'int', label: 'Intuition', base: 15, multiplier: 3, modifiers: [], modifier: 0, target: 45,
   });
   assert.equal(traceAptitudeChecks({}).find((stat) => stat.id === 'int').target, undefined);
   assert.equal(traceAptitudeChecks({ cog: 0 })[0].target, 0);

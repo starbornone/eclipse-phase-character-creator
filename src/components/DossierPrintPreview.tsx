@@ -9,6 +9,8 @@ import type { CharacterDraft } from '../types/character.ts';
 import { CorePackageCredit, PackageSummary } from './CreationPackages.tsx';
 import { EgoTraitSummary } from './EgoTraits.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
+import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
+import { egoTraitsSource } from '../rules/datasets/ego-traits.ts';
 import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { SkillSpecializations } from './SkillSpecializations.tsx';
@@ -94,22 +96,28 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
             <table>
               <thead><tr><th scope="col">Aptitude</th><th scope="col">Score</th><th scope="col">Calculation</th><th scope="col">Check</th></tr></thead>
               <tbody>
-                {dossier.checks.map(({ id, label, base, multiplier, target }) => (
-                  <tr key={id}>
-                    <th scope="row">{label}</th>
-                    <td>{base ?? '—'}</td>
-                    <td>{base === undefined ? '—' : `${base} × ${multiplier}`}</td>
-                    <td>{target ?? '—'}</td>
+                {dossier.checks.map((check) => (
+                  <tr key={check.id}>
+                    <th scope="row">{check.label}</th>
+                    <td>{check.base ?? '—'}</td>
+                    <td><AptitudeCheckCalculation check={check} /></td>
+                    <td>{check.target ?? '—'}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           ) : (
             <dl className="print-checks">
-              {dossier.checks.map(({ id, label, target }) => <div key={id}><dt>{label}</dt><dd>{target ?? '—'}</dd></div>)}
+              {dossier.checks.map((check) => (
+                <div key={check.id}>
+                  <dt>{check.label}</dt>
+                  <dd>{check.target ?? '—'}{check.modifiers.length > 0 && <span className="skill-grant muted"><AptitudeCheckCalculation check={check} /></span>}</dd>
+                </div>
+              ))}
             </dl>
           )}
           <p className="rules-note"><a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
+          {dossier.checks.some(({ modifier }) => modifier !== 0) && <p className="rules-note">Check modifiers: <a href={egoTraitsSource}>Core ego trait rules</a>.</p>}
         </section>
         <section>
           <h3>Ego Flex and languages</h3>

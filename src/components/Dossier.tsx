@@ -17,6 +17,7 @@ import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
 import { StartingGearSummary } from './StartingGear.tsx';
 import { Card } from './ui/card.tsx';
+import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
 
 const dateLabel = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
@@ -55,7 +56,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
   const egoId = draft.ego.id;
   const sleeve = activeSleeve(draft);
   const morph = findSampleMorph(sleeve?.morphDefinitionId);
-  const values = traceAptitudeChecks(draft.ego.aptitudes);
+  const values = traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits);
 
   return (
     <article className="dossier">
@@ -106,16 +107,16 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
       </div>
       <Card className="editor-panel dossier-stats">
         <h2>Aptitude checks</h2>
-        <p className="muted">An aptitude check is the ego’s score multiplied by 3. <a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
+        <p className="muted">Aptitude checks multiply the ego’s score by 3, then add applicable trait modifiers. <a href={quickStartPageUrl(6)}>Quick-Start Rules, p. 6</a></p>
         <table>
           <thead><tr><th scope="col">Aptitude</th><th scope="col">Ego score</th><th scope="col">Calculation</th><th scope="col">Check</th></tr></thead>
           <tbody>
-            {values.map(({ id, label, base, multiplier, target }) => (
-              <tr key={id}>
-                <th scope="row">{label}</th>
-                <td>{base ?? '—'}</td>
-                <td>{base === undefined ? '—' : `${base} × ${multiplier}`}</td>
-                <td><strong>{target ?? '—'}</strong></td>
+            {values.map((check) => (
+              <tr key={check.id}>
+                <th scope="row">{check.label}</th>
+                <td>{check.base ?? '—'}</td>
+                <td><AptitudeCheckCalculation check={check} /></td>
+                <td><strong>{check.target ?? '—'}</strong></td>
               </tr>
             ))}
           </tbody>

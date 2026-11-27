@@ -32,6 +32,7 @@ export function EgoTraitEditor({ choices, onChange }: {
     <Card className="editor-panel">
       <h2>Ego traits</h2>
       <p className="muted">Choose from the supported traits. Negative traits can add up to {maximumTraitBonus} CP.</p>
+      <p className="rules-note">Acumen, Empathy, Fitness, Good Instincts, Quickness, and Resolve add to aptitude checks in the dossier. Skill bases and aptitude scores stay the same.</p>
       <div className="identity-fields">
         {egoTraits.filter(({ id }) => id !== expertTraining.id).map(({ id, name, cpByLevel, effect }) => (
           <div key={id}>

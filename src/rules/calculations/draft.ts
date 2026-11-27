@@ -1,5 +1,6 @@
 import { aptitudes } from '../../types/character.ts';
-import type { AptitudeInputs, AptitudeScores } from '../../types/character.ts';
+import type { AptitudeInputs, AptitudeScores, EgoTraitChoice } from '../../types/character.ts';
+import { traceEgoTraits } from './ego-traits.ts';
 
 const aptitudeCheckMultiplier = 3;
 
@@ -20,15 +21,21 @@ export function parseAptitudes(inputs: AptitudeInputs) {
   return { scores } as const;
 }
 
-export function traceAptitudeChecks(scores: AptitudeScores) {
+export function traceAptitudeChecks(scores: AptitudeScores, choices?: readonly EgoTraitChoice[]) {
+  const traits = traceEgoTraits(choices);
   return aptitudes.map(({ id, label }) => {
     const base = scores[id];
+    const modifiers = traits.flatMap(({ name, level, checkModifier }) => checkModifier?.aptitude === id
+      ? [{ source: name, level, points: checkModifier.perLevel * level }] : []);
+    const modifier = modifiers.reduce((sum, { points }) => sum + points, 0);
     return {
       id,
       label,
       base,
       multiplier: aptitudeCheckMultiplier,
-      target: base === undefined ? undefined : base * aptitudeCheckMultiplier,
+      modifiers,
+      modifier,
+      target: base === undefined ? undefined : base * aptitudeCheckMultiplier + modifier,
     };
   });
 }

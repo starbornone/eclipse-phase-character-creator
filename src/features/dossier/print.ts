@@ -44,7 +44,7 @@ export function buildPrintableDossier(
     startingGear: audience === 'player' ? startingGearForDraft(draft) : undefined,
     hasSleeve: Boolean(sleeve),
     morph: findSampleMorph(sleeve?.morphDefinitionId),
-    checks: traceAptitudeChecks(draft.ego.aptitudes),
+    checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits),
     history: audience === 'gm'
       ? [...draft.sleeves].reverse().map(({ id, morphDefinitionId, event, assignedAt }, index) => ({
         id,
