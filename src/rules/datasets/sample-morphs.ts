@@ -19,7 +19,7 @@ export function quickStartPageUrl(printedPage: number) {
 const source = (page: number) => ({ label: `Quick-Start Rules, p. ${page}`, url: quickStartPageUrl(page) });
 
 // Adapted from the Quick-Start Rules' NPC Stats, pp. 24–25. Health values
-// describe these published examples. Player MP prices come from the core rules.
+// describe these examples. Player MP prices and included traits use the core profiles.
 export const sampleMorphs: readonly MorphDefinition[] = [
   {
     id: 'bouncer',
@@ -30,7 +30,8 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     woundThreshold: 7,
     deathRating: 53,
     morphPoints: 4,
-    morphPointsSource: { label: 'Core Bouncer cost', url: 'https://eclipsephase.github.io/en/04/22-common-biomorphs.html#bouncer' },
+    morphPointsSource: { label: 'Core Bouncer profile', url: 'https://eclipsephase.github.io/en/04/22-common-biomorphs.html#bouncer' },
+    includedTraits: [{ id: 'limberness', level: 1 }],
     source: source(24),
   },
   {
@@ -42,7 +43,8 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     woundThreshold: 5,
     deathRating: 50,
     morphPoints: 0,
-    morphPointsSource: { label: 'Core Case cost', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#case' },
+    morphPointsSource: { label: 'Core Case profile', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#case' },
+    includedTraits: [{ id: 'exotic-morphology', level: 1 }, { id: 'inherent-flaws', level: 1 }],
     source: source(25),
   },
   {
@@ -54,7 +56,8 @@ export const sampleMorphs: readonly MorphDefinition[] = [
     woundThreshold: 8,
     deathRating: 80,
     morphPoints: 3,
-    morphPointsSource: { label: 'Core Synth cost', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#synth' },
+    morphPointsSource: { label: 'Core Synth profile', url: 'https://eclipsephase.github.io/en/04/25-synthmorphs.html#synth' },
+    includedTraits: [{ id: 'exotic-morphology', level: 1 }],
     source: source(25),
   },
   ...coreInfomorphs,

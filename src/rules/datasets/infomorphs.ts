@@ -1,8 +1,11 @@
-import type { MorphDefinition } from '../../types/character.ts';
+import type { MorphDefinition, MorphTraitChoice } from '../../types/character.ts';
 
 // Eclipse Phase Second Edition, Infomorphs, p. 67, Posthuman Studios, LLC. CC BY-NC-SA 4.0.
 const sourceUrl = 'https://eclipsephase.github.io/en/04/26-infomorphs.html';
 const source = (id: string) => ({ label: 'Core rules, p. 67', url: `${sourceUrl}#${id}` });
+const includedTraits: readonly MorphTraitChoice[] = [
+  { id: 'digital-speed', level: 1 }, { id: 'exotic-morphology', level: 3 },
+];
 
 export const coreInfomorphs: readonly MorphDefinition[] = [
   {
@@ -10,6 +13,7 @@ export const coreInfomorphs: readonly MorphDefinition[] = [
     description: 'A basic digital sleeve for running an ego without a physical body.',
     durability: 25, woundThreshold: 5, deathRating: 50, morphPoints: 0,
     pools: { insight: 0, moxie: 0, vigor: 0, flex: 0 },
+    includedTraits,
     source: source('digimorph'),
   },
   {
@@ -17,6 +21,7 @@ export const coreInfomorphs: readonly MorphDefinition[] = [
     description: 'A digital sleeve for performers and social work on the mesh.',
     durability: 30, woundThreshold: 6, deathRating: 60, morphPoints: 1,
     pools: { insight: 1, moxie: 3, vigor: 0, flex: 0 },
+    includedTraits,
     source: source('ikon'),
   },
   {
@@ -24,6 +29,7 @@ export const coreInfomorphs: readonly MorphDefinition[] = [
     description: 'A digital sleeve specialized for information security.',
     durability: 40, woundThreshold: 8, deathRating: 80, morphPoints: 2,
     pools: { insight: 4, moxie: 0, vigor: 0, flex: 0 },
+    includedTraits,
     source: source('agent'),
   },
   {
@@ -31,6 +37,7 @@ export const coreInfomorphs: readonly MorphDefinition[] = [
     description: 'A digital sleeve for remotely operating drones and other machines.',
     durability: 35, woundThreshold: 7, deathRating: 70, morphPoints: 2,
     pools: { insight: 3, moxie: 0, vigor: 0, flex: 1 },
+    includedTraits,
     source: source('operator'),
   },
 ];

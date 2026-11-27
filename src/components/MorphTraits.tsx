@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { availableMorphTraits, deriveMorphProfile, evaluateMorphTraits } from '../rules/calculations/morph-traits.ts';
+import { availableMorphTraits, deriveMorphProfile, evaluateMorphTraits, traceIncludedMorphTraits } from '../rules/calculations/morph-traits.ts';
 import { morphTraitSource } from '../rules/datasets/morph-traits.ts';
 import { startingMorphBudgetRules } from '../rules/datasets/starting-morph-budget.ts';
 import type { MorphDefinition, MorphTraitChoice } from '../types/character.ts';
+import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
 import { MorphStats } from './MorphCatalog.tsx';
 
 const { negativeMorphTraitCap } = startingMorphBudgetRules;
@@ -48,7 +49,8 @@ export function MorphTraitEditor({ morph, choices, onChange }: {
   return (
     <section className="skill-transfers starting-morph-traits">
       <h3>First sleeve traits</h3>
-      {!options.length && <p className="rules-note">Choose a supported biomorph or synthmorph to see trait options.</p>}
+      <IncludedMorphTraits entries={traceIncludedMorphTraits(morph)} />
+      {options.length === 0 && <p className="rules-note">{morph ? 'No additional traits are available for this sleeve.' : 'Choose a first sleeve to see its traits.'}</p>}
       {entries.length < choices.length && (
         <p className="rules-note" role="status">Some traits are unavailable for this first sleeve. Saving will remove those choices.</p>
       )}

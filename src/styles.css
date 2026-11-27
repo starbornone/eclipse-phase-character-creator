@@ -280,6 +280,7 @@ section.comparison { padding: 1.25rem; }
 .starting-morph-budget { margin-top: .85rem; }
 .morph-trait-summary { margin-top: .65rem; }
 .morph-trait-summary li + li { margin-top: .35rem; }
+.starting-morph-traits .included-morph-traits li { display: block; padding: 0; border: 0; }
 .starting-gear-pack a { text-decoration: underline; text-underline-offset: .15em; }
 .gear-swap-source { display: block; color: var(--muted); }
 .gear-swaps { margin-top: .65rem; }

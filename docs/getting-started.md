@@ -37,7 +37,9 @@ Drafts can be saved with a pending cost or an over-budget warning. Missing and l
 
 ## Choose first sleeve traits
 
-Under **First sleeve traits**, choose a priced biomorph or synthmorph to see its options. **Toughness** costs 2 MP per level and adds 5 Durability per level. **Frailty** grants 2 MP per level and the app applies a 5 Durability reduction per level. The editor shows the base Durability, each adjustment, and the resulting health. For example, Bouncer with Frailty Level 2 has Durability 25, Wound Threshold 5, and Death Rating 38.
+Under **First sleeve traits**, the **Included** label identifies traits supplied by the morph profile. The library and resleeving comparison show these traits before you choose a sleeve. Included traits are part of the listed morph price. For example, Case already has Inherent Flaws, so the editor offers that 2 MP bonus on Synth only. Synth and Case can add Limberness for 1 or 2 MP. Bouncer comes with Limberness Level 1. The four core infomorphs come with Digital Speed and Exotic Morphology Level 3.
+
+On a supported physical sleeve, **Toughness** costs 2 MP per level and adds 5 Durability per level. **Frailty** grants 2 MP per level and the app applies a 5 Durability reduction per level. The editor shows the base Durability, each adjustment, and the resulting health. For example, Bouncer with Frailty Level 2 has Durability 25, Wound Threshold 5, and Death Rating 38.
 
 Negative morph traits grant up to 6 MP in total. **Dominant Limb** and **Planned Obsolescence** each grant 1 MP on supported physical sleeves. **Hypersensitivity** grants 3 MP and **Zero-G Nausea** grants 2 MP on biomorphs. **Proprietary Tech** grants 2 MP on synthmorphs.
 

@@ -3,9 +3,9 @@ import { test } from 'node:test';
 import { encodeBackup, previewBackup } from '../features/backup/backup.ts';
 import { buildPrintableDossier } from '../features/dossier/print.ts';
 import { recordResleeving } from '../features/sleeve/history.ts';
-import { availableMorphTraits, deriveMorphProfile, evaluateMorphTraits, morphProfileForSleeve } from '../rules/calculations/morph-traits.ts';
+import { availableMorphTraits, deriveMorphProfile, evaluateMorphTraits, morphProfileForSleeve, traceIncludedMorphTraits } from '../rules/calculations/morph-traits.ts';
 import { evaluateStartingMorphBudget } from '../rules/calculations/starting-morph-budget.ts';
-import { findSampleMorph } from '../rules/datasets/sample-morphs.ts';
+import { findSampleMorph, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 
 const toughness = (level) => ({ id: 'toughness', level });
 const frailty = (level) => ({ id: 'frailty', level });
@@ -141,4 +141,57 @@ test('backup and print preserve Frailty and enforce appearance level restriction
   const print = buildPrintableDossier(next, 'gm', []);
   assert.deepEqual([print.morph.durability, print.startingMorphBudget.morphTraitBonus], [40, 6]);
   assert.equal(print.history[1].morphTraits.find(({ id }) => id === 'frailty').level, 2);
+});
+
+test('the seven supported base profiles supply their sourced traits independently of starting MP', () => {
+  const infomorphTraits = [['digital-speed', undefined], ['exotic-morphology', 3]];
+  const expected = {
+    bouncer: [['limberness', 1]],
+    case: [['exotic-morphology', 1], ['inherent-flaws', undefined]],
+    synth: [['exotic-morphology', 1]],
+    digimorph: infomorphTraits, ikon: infomorphTraits, agent: infomorphTraits, operator: infomorphTraits,
+  };
+  for (const morph of sampleMorphs) {
+    const included = traceIncludedMorphTraits(morph);
+    assert.deepEqual(included.map(({ id, level }) => [id, level]), expected[morph.id]);
+    assert.ok(included.every(({ name, effect }) => name && effect));
+    const budget = evaluateStartingMorphBudget({}, morph);
+    assert.deepEqual([budget.morphTraitCost, budget.morphTraitBonus, budget.remaining], [0, 0, 6 - morph.morphPoints]);
+    assert.equal(deriveMorphProfile(morph).morph, morph);
+  }
+  assert.deepEqual(traceIncludedMorphTraits(findSampleMorph('survey-sleeve')), []);
+  assert.deepEqual(traceIncludedMorphTraits(), []);
+});
+
+test('included traits and Exotic Morphology cannot enter the elective ledger or a backup purchase', () => {
+  for (const [id, trait, level] of [
+    ['bouncer', 'limberness', 1], ['bouncer', 'limberness', 2], ['bouncer', 'exotic-morphology', 1],
+    ['case', 'inherent-flaws', 1], ['synth', 'exotic-morphology', 2], ['operator', 'digital-speed', 1],
+  ]) {
+    const choices = [{ id: trait, level }];
+    assert.deepEqual(evaluateMorphTraits(findSampleMorph(id), choices).entries, []);
+    assert.throws(() => previewBackup(encodeBackup([draft(choices, id)])), /morphTraits.*must be/);
+  }
+  const choices = [{ id: 'limberness', level: 2 }, { id: 'inherent-flaws', level: 1 }];
+  const synth = draft(choices, 'synth');
+  assert.deepEqual(previewBackup(encodeBackup([synth])).drafts[0], synth);
+  const budget = evaluateStartingMorphBudget(synth.ego, findSampleMorph('synth'), false, choices);
+  assert.deepEqual([budget.morphTraitCost, budget.morphTraitBonus, budget.remaining], [2, 2, 3]);
+});
+
+test('existing backups and newly resleeved drafts source included traits from their profile IDs', () => {
+  const first = draft([], 'case');
+  delete first.sleeves[0].morphTraits;
+  const restored = previewBackup(encodeBackup([first])).drafts[0];
+  assert.deepEqual(restored, first);
+  const next = recordResleeving(restored, 'second', 'operator', { date: '', location: '', cause: '', notes: '' }, updatedAt);
+  assert.equal(next.sleeves[1].morphTraits, undefined);
+  for (const audience of ['player', 'gm']) {
+    const output = buildPrintableDossier(next, audience, []);
+    assert.deepEqual(output.includedMorphTraits.map(({ id }) => id), ['digital-speed', 'exotic-morphology']);
+    assert.deepEqual(output.activeMorphTraits, []);
+  }
+  const gm = buildPrintableDossier(next, 'gm', []);
+  assert.deepEqual(gm.history[1].includedMorphTraits.map(({ id }) => id), ['exotic-morphology', 'inherent-flaws']);
+  assert.equal(gm.startingMorphBudget.morphTraitBonus, 0);
 });

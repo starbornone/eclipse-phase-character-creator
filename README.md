@@ -10,7 +10,7 @@ A TypeScript web application for creating, validating, saving, and printing **Ec
 
 With Node.js 22.12 or later, run `npm ci` and `npm run dev`, then open the local URL printed by Vite. Run `npm test` for calculation checks and `npm run build` for a type-checked production build.
 
-The prototype includes selected Quick-Start morph health profiles, all four core infomorph profiles, and their optional starting gear pack. The first-sleeve budget traces Morph Point costs, Resources, extra equipment, supported morph traits, and temporary Flex. Full character creation is planned.
+The prototype includes selected Quick-Start morph health profiles, all four core infomorph profiles, and their optional starting gear pack. The library and dossier show the traits included with each core profile. The first-sleeve budget traces Morph Point costs, Resources, extra equipment, added morph traits, and temporary Flex. Full character creation is planned.
 
 ## Documentation
 

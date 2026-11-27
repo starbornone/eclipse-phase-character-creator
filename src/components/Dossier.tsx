@@ -9,7 +9,7 @@ import { listStartingMotivations } from '../rules/calculations/motivations.ts';
 import { startingGearForDraft } from '../rules/calculations/starting-gear.ts';
 import { traceStartingEquipment } from '../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../rules/calculations/starting-morph-budget.ts';
-import { morphProfileForSleeve } from '../rules/calculations/morph-traits.ts';
+import { morphProfileForSleeve, traceIncludedMorphTraits } from '../rules/calculations/morph-traits.ts';
 import { traceStartingPsi } from '../rules/calculations/psi.ts';
 import { coreCustomizationRules } from '../rules/datasets/customization.ts';
 import { quickStartPageUrl } from '../rules/datasets/sample-morphs.ts';
@@ -19,6 +19,7 @@ import { EgoTraitSummary } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphIcon, MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { MorphTraitSummary } from './MorphTraits.tsx';
+import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
 import { MotivationSummary } from './Motivations.tsx';
 import { ReputationSummary } from './Reputation.tsx';
 import { StartingSkills } from './StartingSkills.tsx';
@@ -47,7 +48,12 @@ function SleeveHistory({ draft }: { draft: CharacterDraft }) {
                 <span className="caption">{index === 0 ? 'Active' : 'Previous'}</span>
                 <time dateTime={event?.date || sleeve.assignedAt}>{date}</time>
               </div>
-              {index > 0 && <MorphTraitSummary entries={entries} />}
+              {index > 0 && (
+                <>
+                  <IncludedMorphTraits entries={traceIncludedMorphTraits(profile)} />
+                  <MorphTraitSummary entries={entries} />
+                </>
+              )}
               {event && (
                 <>
                   {event.location && <p className="muted">Location <strong>{event.location}</strong></p>}
@@ -111,6 +117,7 @@ export function Dossier({ draft }: { draft: CharacterDraft }) {
               </div>
               <MorphStats morph={morph} />
               <MorphSource morph={morph} />
+              <IncludedMorphTraits entries={traceIncludedMorphTraits(morph)} />
               <MorphTraitSummary entries={activeMorphTraits} />
             </>
           ) : (

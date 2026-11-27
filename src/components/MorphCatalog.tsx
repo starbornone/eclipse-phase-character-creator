@@ -1,7 +1,9 @@
 import { Atom, Bot, Dna, Monitor } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { traceIncludedMorphTraits } from '../rules/calculations/morph-traits.ts';
 import { quickStartRules, sampleMorphs } from '../rules/datasets/sample-morphs.ts';
 import type { MorphDefinition } from '../types/character.ts';
+import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
 import { Card } from './ui/card.tsx';
 
 const poolFields = [
@@ -106,6 +108,15 @@ export function MorphProfileTable({ columns, titleId, noteId }: {
               {columns.map(({ id, morph }) => <td key={id}>{morph?.pools?.[field] ?? 'Unverified'}</td>)}
             </tr>
           ))}
+          {columns.some(({ morph }) => morph?.includedTraits?.length) && (
+            <tr>
+              <th scope="row">Included traits</th>
+              {columns.map(({ id, morph }) => {
+                const entries = traceIncludedMorphTraits(morph);
+                return <td key={id}>{entries.length ? <IncludedMorphTraits entries={entries} compact /> : 'Unverified'}</td>;
+              })}
+            </tr>
+          )}
           <tr>
             <th scope="row">Source</th>
             {columns.map(({ id, morph }) => <td key={id}>{morph ? <MorphSource morph={morph} /> : 'Unavailable'}</td>)}
@@ -124,7 +135,7 @@ function MorphComparison({ morphs, onClear }: { morphs: MorphDefinition[]; onCle
         <button type="button" className="button secondary" onClick={onClear}>Clear comparison</button>
       </div>
       <p className="muted" id="comparison-note">
-        Compare published health and Morph Point costs. Core infomorphs also show their listed pools.
+        Compare listed health, Morph Point costs, and included traits. Core infomorphs also show their pools.
       </p>
       <MorphProfileTable
         columns={morphs.map((morph) => ({ id: morph.id, label: morph.name, morph }))}
@@ -202,6 +213,7 @@ export function MorphCatalog() {
             <h2>{morph.name}</h2>
             <p>{morph.description}</p>
             <MorphStats morph={morph} />
+            <IncludedMorphTraits entries={traceIncludedMorphTraits(morph)} />
             <MorphSource morph={morph} />
             <label className="compare-toggle">
               <input

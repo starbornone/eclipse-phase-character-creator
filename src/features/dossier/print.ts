@@ -7,7 +7,7 @@ import { calculateStartingSkills } from '../../rules/calculations/starting-skill
 import { startingGearForDraft } from '../../rules/calculations/starting-gear.ts';
 import { traceStartingEquipment } from '../../rules/calculations/starting-equipment.ts';
 import { startingMorphBudgetForDraft } from '../../rules/calculations/starting-morph-budget.ts';
-import { morphProfileForSleeve } from '../../rules/calculations/morph-traits.ts';
+import { morphProfileForSleeve, traceIncludedMorphTraits } from '../../rules/calculations/morph-traits.ts';
 import { traceStartingPsi } from '../../rules/calculations/psi.ts';
 import { coreCustomizationRules } from '../../rules/datasets/customization.ts';
 import type { CharacterDraft } from '../../types/character.ts';
@@ -52,6 +52,7 @@ export function buildPrintableDossier(
     startingMorphBudget: startingMorphBudgetForDraft(draft),
     hasSleeve: Boolean(sleeve),
     morph,
+    includedMorphTraits: traceIncludedMorphTraits(morph),
     activeMorphTraits,
     checks: traceAptitudeChecks(draft.ego.aptitudes, draft.ego.traits),
     derivedStats: traceDerivedEgoStats(draft.ego),
@@ -62,6 +63,7 @@ export function buildPrintableDossier(
         return {
           id,
           morphName: historicalMorph?.name ?? 'Unknown morph',
+          includedMorphTraits: traceIncludedMorphTraits(historicalMorph),
           morphTraits: traitEntries,
           active: index === 0,
           date: includedFields.includes('date') ? event?.date || assignedAt : undefined,

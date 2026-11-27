@@ -115,6 +115,7 @@ export interface MorphDefinition {
   deathRating?: number;
   morphPoints?: number;
   morphPointsSource?: { label: string; url: string };
+  includedTraits?: readonly MorphTraitChoice[];
   pools?: { insight: number; moxie: number; vigor: number; flex: number };
   source?: { label: string; url: string };
 }

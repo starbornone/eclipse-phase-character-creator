@@ -5,10 +5,20 @@ import { findSampleMorph } from '../datasets/sample-morphs.ts';
 export function availableMorphTraits(morph?: MorphDefinition) {
   if (!morph || morph.morphPoints === undefined) return [];
   return morphTraits.flatMap((trait) => {
+    if (morph.includedTraits?.some(({ id }) => id === trait.id)) return [];
     const eligibleLevels = trait.levels.flatMap(({ mp, categories, morphIds }, index) => (
-      categories.includes(morph.category) && (!morphIds || morphIds.includes(morph.id)) ? [{ level: index + 1, mp }] : []
+      categories?.includes(morph.category) && (!morphIds || morphIds.includes(morph.id)) ? [{ level: index + 1, mp }] : []
     ));
     return eligibleLevels.length ? [{ ...trait, eligibleLevels }] : [];
+  });
+}
+
+export function traceIncludedMorphTraits(morph?: MorphDefinition) {
+  return (morph?.includedTraits ?? []).flatMap(({ id, level }) => {
+    const trait = morphTraits.find((entry) => entry.id === id);
+    if (!trait?.levels[level - 1]) return [];
+    const { name, effect, levels } = trait;
+    return [{ id, name, effect, ...(levels.length > 1 ? { level } : {}) }];
   });
 }
 

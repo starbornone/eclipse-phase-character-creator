@@ -11,6 +11,7 @@ import { EgoTraitSummary } from './EgoTraits.tsx';
 import { EgoDerivedStats } from './EgoDerivedStats.tsx';
 import { MorphSource, MorphStats, QuickStartCredit } from './MorphCatalog.tsx';
 import { MorphTraitSummary } from './MorphTraits.tsx';
+import { IncludedMorphTraits } from './IncludedMorphTraits.tsx';
 import { AptitudeCheckCalculation } from './AptitudeCheckCalculation.tsx';
 import { SkillTestModifiers } from './SkillTestModifiers.tsx';
 import { egoTraitsSource } from '../rules/datasets/ego-traits.ts';
@@ -93,6 +94,7 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
               <p><strong>{dossier.morph.name}</strong> · {dossier.morph.category}</p>
               <MorphStats morph={dossier.morph} />
               <MorphSource morph={dossier.morph} />
+              <IncludedMorphTraits entries={dossier.includedMorphTraits} />
               <MorphTraitSummary entries={dossier.activeMorphTraits} />
             </>
           ) : <p>{dossier.hasSleeve ? 'Unknown morph' : 'No morph assigned'}</p>}
@@ -175,10 +177,15 @@ export function DossierPrintPreview({ draft, onBack }: { draft: CharacterDraft; 
           <section className="print-history">
             <h3>Sleeve history</h3>
             <ol>
-              {dossier.history.map(({ id, morphName, morphTraits, active, date, location, cause, notes }) => (
+              {dossier.history.map(({ id, morphName, includedMorphTraits, morphTraits, active, date, location, cause, notes }) => (
                 <li key={id}>
                   <h4>{morphName} <span>· {active ? 'Active' : 'Previous'}</span></h4>
-                  {!active && <MorphTraitSummary entries={morphTraits} />}
+                  {!active && (
+                    <>
+                      <IncludedMorphTraits entries={includedMorphTraits} />
+                      <MorphTraitSummary entries={morphTraits} />
+                    </>
+                  )}
                   {date && <p><time dateTime={date}>{date.includes('T') ? dateLabel.format(new Date(date)) : date}</time></p>}
                   {location && <p>Location <strong>{location}</strong></p>}
                   {cause && <p>Cause <strong>{cause}</strong></p>}

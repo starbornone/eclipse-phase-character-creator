@@ -6,10 +6,12 @@ type MorphCategory = MorphDefinition['category'];
 const physical: readonly MorphCategory[] = ['Biomorph', 'Synthmorph'];
 const biomorph: readonly MorphCategory[] = ['Biomorph'];
 const synthmorph: readonly MorphCategory[] = ['Synthmorph'];
+const infomorph: readonly MorphCategory[] = ['Infomorph'];
 
 interface MorphTraitLevel {
   mp: number;
-  categories: readonly MorphCategory[];
+  // Levels without categories can only come with a base profile.
+  categories?: readonly MorphCategory[];
   morphIds?: readonly string[];
 }
 
@@ -28,6 +30,10 @@ export const morphTraits: readonly MorphTrait[] = [
     effect: 'Add 5 Durability per level and recalculate Wound Threshold and Death Rating.' },
   { id: 'striking-looks', name: 'Striking Looks', levels: [traitLevel(1), traitLevel(2, biomorph)],
     effect: 'Apply +10 to Persuade and Provoke Tests when appearance matters. Synthmorphs and uplifts are limited to Level 1.' },
+  { id: 'limberness', name: 'Limberness', levels: [traitLevel(1), traitLevel(2)],
+    effect: 'Gain +10 per level on tests that rely on flexibility, such as squeezing through a gap.' },
+  { id: 'digital-speed', name: 'Digital Speed', levels: [traitLevel(1, infomorph)],
+    effect: 'Reduce the time for mesh-based Task Actions by 25%. This stacks with time saved through superior successes.' },
   { id: 'frailty', name: 'Frailty', levels: [traitLevel(-2), traitLevel(-4)], durabilityPerLevel: -5,
     effect: 'The app applies −5 Durability per level and recalculates Wound Threshold and Death Rating.' },
   { id: 'unattractiveness', name: 'Unattractiveness', levels: [traitLevel(-1, synthmorph), { mp: -2, categories: biomorph, morphIds: ['bouncer'] }],
@@ -36,6 +42,10 @@ export const morphTraits: readonly MorphTrait[] = [
     effect: 'Choose a dominant limb. Apply −20 to tests made with other limbs.' },
   { id: 'hypersensitivity', name: 'Hypersensitivity', levels: [traitLevel(-3, biomorph)],
     effect: 'The sleeve can use its built-in implants only.' },
+  { id: 'inherent-flaws', name: 'Inherent Flaws', levels: [traitLevel(-2, synthmorph)],
+    effect: 'A critical failure carries a 10% chance of also taking a wound. Synthmorphs only.' },
+  { id: 'exotic-morphology', name: 'Exotic Morphology', levels: [{ mp: -2 }, { mp: -4 }, { mp: -6 }],
+    effect: 'Take −10 per level on Integration Tests with this sleeve. Uplift and infolife egos ignore the penalty in their original morph.' },
   { id: 'planned-obsolescence', name: 'Planned Obsolescence', levels: [traitLevel(-1)],
     effect: 'Without monthly Moderate maintenance, lose one pool point of the GM’s choice. At zero pools, take a wound each missed month.' },
   { id: 'proprietary-tech', name: 'Proprietary Tech', levels: [traitLevel(-2, synthmorph)],

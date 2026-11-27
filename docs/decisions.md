@@ -148,4 +148,12 @@ Use published morphs for v1. Defer custom morph creation until the catalogue and
 
 **Consequences.** The same trait data drives the picker, MP budget, configured health, and backup validation. Saved sleeves store IDs and levels, so future clarifications can update the calculation without rewriting backups.
 
+## 19. Resolve included traits from the morph profile
+
+**Context.** The core profiles list traits already present on a sleeve. The main trait rules generally allow each trait once, and Exotic Morphology is specific to profiles that come with it. [Core trait rules](https://eclipsephase.github.io/en/04/28-traits.html#exotic-morphology)
+
+**Decision.** Store included trait IDs and levels in the profile dataset. Derive them from the saved profile ID and use the shared trait rules for labels and effects. The MP budget counts added traits only.
+
+**Consequences.** Existing saves and backups show included traits from their catalogue entry. The editor and importer prevent duplicate purchases, and resleeving displays the new profile's included traits alongside the previous sleeve's history.
+
 See [Architecture](architecture.md) for component boundaries and the [roadmap](../roadmap/roadmap.json) for remaining work.
